@@ -67,10 +67,12 @@ jobs:
       - uses: actions/checkout@v4
 
       # ---- Rust toolchain (needed by charon, aeneas, the workspace) -------
+      # rustfmt is required because charon's Makefile runs `cargo fmt`.
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ env.RUST_TOOLCHAIN }}
+          components: rustfmt
 
       # ---- Cache: charon + aeneas binaries (built from source, slow) ------
       - name: Cache charon + aeneas binaries
