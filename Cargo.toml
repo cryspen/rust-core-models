@@ -5,14 +5,12 @@ members = [
     "alloc",
     "rust_primitives",
 ]
-# `test-suite` and `aeneas-test` are intentionally NOT members — each
-# carries its own empty `[workspace]` table to opt out, since they're
-# downstream consumers of the extraction pipeline rather than parts of
-# the model being extracted.
+# `tests` is intentionally NOT a member — it carries its own empty
+# `[workspace]` table to opt out, since it is a downstream consumer of
+# the extraction pipeline rather than part of the model being extracted.
 
 [workspace.dependencies]
 # `hax-lib` provides the `#[hax_lib::attributes]`, `#[hax_lib::requires]`
 # etc. attribute procmacros our model uses. Pinned to a specific commit
-# of cryspen/hax — bump as a single PR with the README toolchain matrix
-# updated.
+# of cryspen/hax.
 hax-lib = { git = "https://github.com/cryspen/hax", rev = "492a34e33c8744b9672eb3cf1c982ac40469f7d4" }

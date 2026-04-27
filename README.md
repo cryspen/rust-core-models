@@ -8,9 +8,11 @@ A model of Rust's `core` and `alloc` libraries, packaged as:
    [Aeneas](https://github.com/AeneasVerif/aeneas), suitable for
    downstream Aeneas-extracted Lean projects to depend on as a drop-in
    `core` model.
-3. **Test infrastructure** that exercises both the extraction
-   (`test-suite/`) and downstream consumption via Aeneas's name map
-   (`aeneas-test/`) — both must stay green before a release.
+3. A **regression-test crate** (`tests/`) that exercises items from
+   `core::*` / `std::*` and from the local `core_models::*` source.
+   Aeneas extracts it with no post-processing — every shim it depends on
+   lives in the `Aeneas` library — so this crate doubles as proof that
+   downstream code can use the library `import Aeneas` and nothing else.
 
 ## Why this exists
 
@@ -45,11 +47,11 @@ just `lake update` this repo without installing the Rust toolchain.
 │   ├── lakefile.toml
 │   ├── lean-toolchain
 │   └── Aeneas/            # hand-written + extracted, both committed
-├── test-suite/            # extraction-side regression: core_models::* → Lean
-├── aeneas-test/           # consumption-side regression: std::* → Lean
-│                          #   via Aeneas's name map
-├── patch_lean.py          # post-processes Aeneas's output to match our
-│                          #   package layout (see comment block at top)
+├── tests/                 # regression-test crate (core::*, std::*,
+│                          #   core_models::*); extracted unmodified
+├── patch_lean.py          # post-processes Aeneas's output of the
+│                          #   parent library to match our package layout
+│                          #   (see comment block at top)
 ├── Makefile               # extraction + build orchestration
 └── .github/workflows/ci.yml
 ```
@@ -68,8 +70,7 @@ just `lake update` this repo without installing the Rust toolchain.
 
 ```sh
 make lean           # extract Rust → Lean, patch, build the Aeneas library
-make test-suite     # extraction-side regression (./test-suite)
-make aeneas-test    # consumption-side regression (./aeneas-test)
+make tests          # regression test crate (./tests)
 
 make clean          # remove all generated Lean + LLBC, keep hand-written
 ```
@@ -95,18 +96,19 @@ that uses `std::*` types will resolve through this library's
 
 ## Testing methodology
 
-Two regression crates exercise orthogonal directions:
+`tests/src/lib.rs` mixes both directions in one crate:
 
-- **`test-suite/`** uses items from the local `core_models` source (e.g.
-  `core_models::option::Option::unwrap_or`). Catches breakage when you
-  change a Rust source file.
-- **`aeneas-test/`** uses `std::*` types directly (e.g. `Option<u8>`,
-  `Vec<u32>`, `&[u8]`). Catches breakage in our Lean shims that arises
-  only when downstream Aeneas extraction routes a `std::*` reference
-  through its builtin name map to a Lean symbol we provide.
+- Calls into `core::*` / `std::*` (e.g. `Vec::push`, `Option::unwrap_or`,
+  `core::mem::swap`) — exercises Aeneas's builtin name map routing
+  references to the Lean shims we provide.
+- Calls that pass through the local `core_models::*` source as charon
+  sees it — exercises the round-trip from our Rust source through
+  extraction to the same Lean shims.
 
-Run both before tagging a release. Both must be green. CI does this
-automatically on every PR.
+The crate is extracted with vanilla `aeneas` and built directly against
+`Aeneas` — no `patch_lean.py` post-processing. Anything required to
+make that work lives in the `Aeneas` library itself. CI runs the full
+extraction + Lake build on every PR.
 
 ## Known gaps
 
@@ -115,7 +117,7 @@ automatically on every PR.
   trait would require `Sealed` super-trait + `&mut` back-edge tuples for
   `get_mut`/`index_mut` + raw-pointer plumbing for `get_unchecked*`.
   Tracked as TODO in `lean/Aeneas/StdAliases.lean` and the
-  commented-out blocks in `aeneas-test/src/lib.rs`.
+  commented-out blocks in `tests/src/lib.rs`.
 - A few iterator adapter `*::next` definitions are commented out by the
   patcher because Lean rejects field-projection-on-trait-method-param.
   See `FUNS_TO_REMOVE` in `patch_lean.py` for the list.
@@ -123,10 +125,10 @@ automatically on every PR.
 ## Contributing
 
 PRs welcome. Please:
-- Run `cargo fmt --all` and `make lean test-suite aeneas-test` before
-  opening a PR (CI enforces both).
+- Run `cargo fmt --all` and `make lean tests` before opening a PR (CI
+  enforces both).
 - For new `core::*` / `alloc::*` items, add at least one function to
-  `aeneas-test/src/lib.rs` exercising the std-side path.
+  `tests/src/lib.rs` exercising the std-side path.
 
 ## License
 

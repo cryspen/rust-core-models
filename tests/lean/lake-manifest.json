@@ -8,5 +8,5 @@
    "inherited": false,
    "dir": "../../lean",
    "configFile": "lakefile.toml"}],
- "name": "CoreModelsTestSuite",
+ "name": "Tests",
  "lakeDir": ".lake"}

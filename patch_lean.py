@@ -695,43 +695,7 @@ def comment_out_blocks(text: str, name_substrings: list[str]) -> str:
 # Main
 # ---------------------------------------------------------------------------
 
-def patch_downstream_dir(dirpath: Path) -> None:
-    """Apply allocator-stripping + slice aliasing to a downstream Aeneas
-    extraction (e.g. the test-suite under `lean/TestSuite/`).
-
-    Downstream crates that use `std::vec::Vec<T>` etc. get extracted with
-    Aeneas's builtin name map, which produces references like
-    `alloc.vec.Vec T alloc.alloc.Global` and
-    `alloc.collections.vec_deque.VecDeque T alloc.alloc.Global`. Our
-    re-extracted alloc lib defines these as 1-arg, so we strip the
-    allocator argument here. We also rewrite the std-side
-    `alloc.slice.Slice.{to,into}_vec` calls to the local `Dummy` impl.
-    """
-    if not dirpath.exists():
-        return
-    for path in sorted(dirpath.glob("*.lean")):
-        text = read(path)
-        text = drop_vec_allocator_param(text)
-        text = text.replace("alloc.slice.Slice.to_vec",
-                            "alloc.slice.Dummy.to_vec")
-        text = text.replace("alloc.slice.Slice.into_vec",
-                            "alloc.slice.Dummy.into_vec")
-        write(path, text)
-        print(f"patched downstream {path}")
-
-
 def main() -> int:
-    # `--downstream-dir <dir>` mode: apply only the transforms that are
-    # relevant to a downstream Aeneas extraction (allocator stripping,
-    # slice aliasing). Skips all of the core_models / alloc patching.
-    args = sys.argv[1:]
-    if args and args[0] == "--downstream-dir":
-        if len(args) != 2:
-            print("usage: patch_lean.py --downstream-dir <dir>", file=sys.stderr)
-            return 1
-        patch_downstream_dir(Path(args[1]))
-        return 0
-
     if not LEAN_DIR.exists():
         print(f"error: {LEAN_DIR} does not exist", file=sys.stderr)
         return 1

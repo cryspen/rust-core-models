@@ -3,7 +3,7 @@ AENEAS ?= aeneas
 
 # `hax-lib` git revision. Override on the command line to test against a
 # different version, e.g. `make HAX_LIB_REV=<sha>`. Must stay in sync with
-# the workspace dep in the root Cargo.toml and the README toolchain matrix.
+# the workspace dep in the root Cargo.toml.
 HAX_LIB_REV ?= 492a34e33c8744b9672eb3cf1c982ac40469f7d4
 
 CRATE_NAME = aeneas_test
@@ -51,9 +51,8 @@ ALLOC_CHARON_EXCLUDES = \
     --exclude '{impl core::ops::index::Index<_> for alloc_models::vec::Vec<_, _>}' \
     --exclude '{impl core::ops::index::Index<_> for alloc_models::vec::Vec<_, _>}::*'
 
-.PHONY: all llbc extract patch lean build clean clean-generated test-suite \
-        test-suite-clean aeneas-test aeneas-test-clean \
-        alloc-stage alloc-llbc alloc-extract alloc-clean
+.PHONY: all llbc extract patch lean build clean clean-generated tests \
+        tests-clean alloc-stage alloc-llbc alloc-extract alloc-clean
 
 all: lean
 
@@ -175,30 +174,15 @@ clean: clean-generated alloc-clean
 	rm -rf $(LEAN_DIR)/.lake
 
 # -----------------------------------------------------------------------------
-# Test suite: a small Rust crate (./test-suite) that exercises items from
-# `core` modeled by `core-models`. It is extracted with Aeneas to Lean and
-# built against the local `Aeneas` drop-in library — this is how we verify
-# that vanilla Aeneas output stays compatible with our package.
+# Tests: a small Rust crate (./tests) that exercises items from `core::*`,
+# `std::*`, and `core_models::*` together. It is extracted with vanilla
+# Aeneas and built against the local `Aeneas` drop-in library — this is
+# how we verify that unpatched Aeneas output stays compatible with our
+# package.
 # -----------------------------------------------------------------------------
 
-# Re-extract and rebuild the test suite. Depends on `lean` so the local
-# `Aeneas` library is up-to-date first.
-test-suite: lean
-	$(MAKE) -C test-suite
+tests: lean
+	$(MAKE) -C tests
 
-test-suite-clean:
-	$(MAKE) -C test-suite clean
-
-# -----------------------------------------------------------------------------
-# Aeneas test: a second crate (./aeneas-test) that exercises std-side
-# items from a downstream user's perspective. Where ./test-suite tests
-# the *extraction* of `core_models::*`, ./aeneas-test tests the
-# *consumption* of `std::*` types via Aeneas's builtin name map. Both
-# targets must stay green before a release.
-# -----------------------------------------------------------------------------
-
-aeneas-test: lean
-	$(MAKE) -C aeneas-test
-
-aeneas-test-clean:
-	$(MAKE) -C aeneas-test clean
+tests-clean:
+	$(MAKE) -C tests clean

@@ -132,11 +132,8 @@ jobs:
       - name: Extract + build parent Lean library
         run: make CHARON=$AENEAS_DIR/charon/bin/charon AENEAS=$AENEAS_DIR/bin/aeneas lean
 
-      - name: Extraction-side regression (test-suite)
-        run: make CHARON=$AENEAS_DIR/charon/bin/charon AENEAS=$AENEAS_DIR/bin/aeneas test-suite
-
-      - name: Consumption-side regression (aeneas-test)
-        run: make CHARON=$AENEAS_DIR/charon/bin/charon AENEAS=$AENEAS_DIR/bin/aeneas aeneas-test
+      - name: Run regression tests
+        run: make CHARON=$AENEAS_DIR/charon/bin/charon AENEAS=$AENEAS_DIR/bin/aeneas tests
 
       # ---- Enforce that committed extraction matches re-extraction ------
       # If this fails: someone changed Rust source / patcher without

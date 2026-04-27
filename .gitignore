@@ -2,6 +2,7 @@
 /target
 **/target
 Cargo.lock.bak
+proptest-regressions/
 
 # Lean / Lake
 **/.lake
@@ -13,9 +14,14 @@ Cargo.lock.bak
 # Aeneas / charon intermediates
 *.llbc
 .alloc-extract/
-**/aeneas_test.llbc
-**/alloc.llbc
-**/core_models_test_suite.llbc
+
+# Aeneas-extracted output for the tests/ crate (regenerated each build).
+# The hand-written stubs (FunsExternal.lean, TypesExternal.lean) stay
+# tracked.
+tests/lean/Tests/Funs.lean
+tests/lean/Tests/Types.lean
+tests/lean/Tests/FunsExternal_Template.lean
+tests/lean/Tests/TypesExternal_Template.lean
 
 # Editor / OS
 .DS_Store

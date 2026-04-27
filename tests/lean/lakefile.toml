@@ -1,0 +1,18 @@
+name = "Tests"
+version = "0.1.0"
+defaultTargets = ["Tests"]
+
+[[lean_lib]]
+name = "Tests"
+# Aeneas writes Tests/Funs.lean and Tests/Types.lean (no `Tests.lean`
+# wrapper). Tell Lake which modules form the library.
+roots = [
+  "Tests.Funs",
+  "Tests.Types",
+  "Tests.FunsExternal",
+  "Tests.TypesExternal",
+]
+
+[[require]]
+name = "Aeneas"
+path = "../../lean"
