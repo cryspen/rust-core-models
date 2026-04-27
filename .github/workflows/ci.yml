@@ -82,13 +82,36 @@ jobs:
           path: ${{ env.AENEAS_DIR }}
           key: aeneas-${{ runner.os }}-${{ env.CHARON_REV }}-${{ env.AENEAS_REV }}
 
+      # ---- OCaml (needed to build aeneas; charon builds without it) ------
+      # Aeneas is an OCaml project. We skip charon-ml (a separate OCaml
+      # library) by using `make build-charon-rust` for charon, but the
+      # aeneas binary itself requires the OCaml toolchain + opam deps.
+      - name: Install OCaml
+        if: steps.cache-tools.outputs.cache-hit != 'true'
+        uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: '5'
+
+      - name: Install OCaml dependencies
+        if: steps.cache-tools.outputs.cache-hit != 'true'
+        # Aeneas's `dune-project` lists deps inside per-library `dune`
+        # files rather than as a single opam package, so we install
+        # them explicitly. Charon-ml's deps are listed in `charon.opam`
+        # (charon repo); aeneas adds `core_unix ocamlgraph progress
+        # domainslib` on top via `src/dune`.
+        run: |
+          opam install --yes \
+            dune easy_logging ppx_deriving unionFind visitors \
+            yojson zarith core_unix ocamlgraph progress domainslib
+
       - name: Build charon (cache miss)
         if: steps.cache-tools.outputs.cache-hit != 'true'
         run: |
           mkdir -p $AENEAS_DIR
           git clone https://github.com/AeneasVerif/charon $AENEAS_DIR/charon-src
           (cd $AENEAS_DIR/charon-src && git checkout $CHARON_REV)
-          (cd $AENEAS_DIR/charon-src && make)
+          # Only build the Rust binary; charon-ml (OCaml) is unused by us.
+          (cd $AENEAS_DIR/charon-src && make build-charon-rust)
           mv $AENEAS_DIR/charon-src $AENEAS_DIR/charon
 
       - name: Build aeneas (cache miss)
@@ -96,8 +119,10 @@ jobs:
         run: |
           git clone https://github.com/AeneasVerif/aeneas $AENEAS_DIR/aeneas-src
           (cd $AENEAS_DIR/aeneas-src && git checkout $AENEAS_REV)
-          # See aeneas README for build deps (opam, ocaml, dune).
-          (cd $AENEAS_DIR/aeneas-src && make)
+          # Aeneas's Makefile expects a built `charon` next to its source
+          # tree at ./charon/bin/charon (see check-charon target).
+          ln -s $AENEAS_DIR/charon $AENEAS_DIR/aeneas-src/charon
+          (cd $AENEAS_DIR/aeneas-src && eval $(opam env) && make build-bin-dir)
           # Aeneas binary lands at $AENEAS_DIR/bin/aeneas (matches Makefile).
           mkdir -p $AENEAS_DIR/bin
           cp $AENEAS_DIR/aeneas-src/bin/aeneas $AENEAS_DIR/bin/aeneas
@@ -114,8 +139,7 @@ jobs:
           path: |
             ~/.cache/mathlib
             lean/.lake
-            test-suite/lean/.lake
-            aeneas-test/lean/.lake
+            tests/lean/.lake
           key: lean-${{ runner.os }}-${{ hashFiles('lean/lean-toolchain') }}-${{ hashFiles('lean/lakefile.toml') }}
 
       # ---- Cache cargo too ----------------------------------------------
