@@ -83,7 +83,10 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: ${{ env.AENEAS_DIR }}
-          key: aeneas-${{ runner.os }}-${{ env.CHARON_REV }}-${{ env.AENEAS_REV }}
+          # Bump the `v2` suffix when the build invocation changes
+          # (e.g. switching between `#charon` and `#charon-portable`)
+          # to invalidate caches built with the previous flavour.
+          key: aeneas-v2-${{ runner.os }}-${{ env.CHARON_REV }}-${{ env.AENEAS_REV }}
 
       # ---- Build charon + aeneas via the upstream nix flakes -------------
       # Both projects officially support only Nix; rolling our own opam
@@ -107,12 +110,21 @@ jobs:
           primary-key: nix-${{ runner.os }}-${{ env.CHARON_REV }}-${{ env.AENEAS_REV }}
           restore-prefixes-first-match: nix-${{ runner.os }}-
 
+      # Use the `*-portable` / `*-static` flake outputs: the regular
+      # `#charon` / `#aeneas` derivations hardcode `/nix/store/...`
+      # interpreter paths in their ELF headers, so they only run while
+      # those store paths still exist on the runner. After a binary
+      # cache hit on a later run (where we skip the Nix install step),
+      # the store is gone and the kernel reports the binary as
+      # "not found" (exit 127). The portable charon is patchelf'd to
+      # `/lib64/ld-linux-x86-64.so.2`; aeneas-static is statically
+      # linked. Both work on any standard Linux without Nix.
       - name: Build charon (cache miss)
         if: steps.cache-tools.outputs.cache-hit != 'true'
         run: |
           mkdir -p $AENEAS_DIR/charon/bin
           charon_out=$(nix build --print-out-paths --no-link \
-            "github:AeneasVerif/charon/$CHARON_REV#charon")
+            "github:AeneasVerif/charon/$CHARON_REV#charon-portable")
           cp -L "$charon_out"/bin/* $AENEAS_DIR/charon/bin/
 
       - name: Build aeneas (cache miss)
@@ -120,7 +132,7 @@ jobs:
         run: |
           mkdir -p $AENEAS_DIR/bin
           aeneas_out=$(nix build --print-out-paths --no-link \
-            "github:AeneasVerif/aeneas/$AENEAS_REV#aeneas")
+            "github:AeneasVerif/aeneas/$AENEAS_REV#aeneas-static")
           cp -L "$aeneas_out"/bin/aeneas $AENEAS_DIR/bin/aeneas
 
       - name: Save charon + aeneas binaries
@@ -130,7 +142,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: ${{ env.AENEAS_DIR }}
-          key: aeneas-${{ runner.os }}-${{ env.CHARON_REV }}-${{ env.AENEAS_REV }}
+          key: aeneas-v2-${{ runner.os }}-${{ env.CHARON_REV }}-${{ env.AENEAS_REV }}
 
       # ---- Lean toolchain ------------------------------------------------
       - name: Install elan
