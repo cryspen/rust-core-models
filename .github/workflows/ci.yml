@@ -66,13 +66,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # ---- Rust toolchain (needed by charon, aeneas, the workspace) -------
-      # rustfmt is required because charon's Makefile runs `cargo fmt`.
+      # ---- Rust toolchain (needed to compile the workspace; charon's
+      # nix-built binary brings its own pinned rustc but `cargo` itself
+      # must still be on PATH so charon's cargo-wrapping can intercept
+      # the compile of `core-models/` and the `tests/` crate).
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ env.RUST_TOOLCHAIN }}
-          components: rustfmt
 
       # ---- Cache: charon + aeneas binaries (built from source, slow) ------
       - name: Cache charon + aeneas binaries
@@ -82,50 +83,30 @@ jobs:
           path: ${{ env.AENEAS_DIR }}
           key: aeneas-${{ runner.os }}-${{ env.CHARON_REV }}-${{ env.AENEAS_REV }}
 
-      # ---- OCaml (needed to build aeneas; charon builds without it) ------
-      # Aeneas is an OCaml project. We skip charon-ml (a separate OCaml
-      # library) by using `make build-charon-rust` for charon, but the
-      # aeneas binary itself requires the OCaml toolchain + opam deps.
-      - name: Install OCaml
+      # ---- Build charon + aeneas via the upstream nix flakes -------------
+      # Both projects officially support only Nix; rolling our own opam
+      # install pulled 100+ Jane Street packages and hit core_unix build
+      # failures. Nix evaluates the pinned flake, builds in a sandbox,
+      # and we copy the resulting binaries out.
+      - name: Install Nix
         if: steps.cache-tools.outputs.cache-hit != 'true'
-        uses: ocaml/setup-ocaml@v3
-        with:
-          ocaml-compiler: '5'
-
-      - name: Install OCaml dependencies
-        if: steps.cache-tools.outputs.cache-hit != 'true'
-        # Aeneas's `dune-project` lists deps inside per-library `dune`
-        # files rather than as a single opam package, so we install
-        # them explicitly. Charon-ml's deps are listed in `charon.opam`
-        # (charon repo); aeneas adds `core_unix ocamlgraph progress
-        # domainslib` on top via `src/dune`.
-        run: |
-          opam install --yes \
-            dune easy_logging ppx_deriving unionFind visitors \
-            yojson zarith core_unix ocamlgraph progress domainslib
+        uses: cachix/install-nix-action@v27
 
       - name: Build charon (cache miss)
         if: steps.cache-tools.outputs.cache-hit != 'true'
         run: |
-          mkdir -p $AENEAS_DIR
-          git clone https://github.com/AeneasVerif/charon $AENEAS_DIR/charon-src
-          (cd $AENEAS_DIR/charon-src && git checkout $CHARON_REV)
-          # Only build the Rust binary; charon-ml (OCaml) is unused by us.
-          (cd $AENEAS_DIR/charon-src && make build-charon-rust)
-          mv $AENEAS_DIR/charon-src $AENEAS_DIR/charon
+          mkdir -p $AENEAS_DIR/charon/bin
+          charon_out=$(nix build --print-out-paths --no-link \
+            "github:AeneasVerif/charon/$CHARON_REV#charon")
+          cp -L "$charon_out"/bin/* $AENEAS_DIR/charon/bin/
 
       - name: Build aeneas (cache miss)
         if: steps.cache-tools.outputs.cache-hit != 'true'
         run: |
-          git clone https://github.com/AeneasVerif/aeneas $AENEAS_DIR/aeneas-src
-          (cd $AENEAS_DIR/aeneas-src && git checkout $AENEAS_REV)
-          # Aeneas's Makefile expects a built `charon` next to its source
-          # tree at ./charon/bin/charon (see check-charon target).
-          ln -s $AENEAS_DIR/charon $AENEAS_DIR/aeneas-src/charon
-          (cd $AENEAS_DIR/aeneas-src && eval $(opam env) && make build-bin-dir)
-          # Aeneas binary lands at $AENEAS_DIR/bin/aeneas (matches Makefile).
           mkdir -p $AENEAS_DIR/bin
-          cp $AENEAS_DIR/aeneas-src/bin/aeneas $AENEAS_DIR/bin/aeneas
+          aeneas_out=$(nix build --print-out-paths --no-link \
+            "github:AeneasVerif/aeneas/$AENEAS_REV#aeneas")
+          cp -L "$aeneas_out"/bin/aeneas $AENEAS_DIR/bin/aeneas
 
       # ---- Lean toolchain ------------------------------------------------
       - name: Install elan
