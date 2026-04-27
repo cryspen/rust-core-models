@@ -73,9 +73,14 @@ jobs:
           toolchain: ${{ env.RUST_TOOLCHAIN }}
 
       # ---- Cache: charon + aeneas binaries (built from source, slow) ------
-      - name: Cache charon + aeneas binaries
+      # Use restore + save (instead of the combined `actions/cache@v4`)
+      # so the save runs unconditionally — including when a *later* step
+      # like the diff-check fails. The combined action skips its save on
+      # job failure, which means a single bad diff would force every
+      # subsequent run to rebuild charon + aeneas from scratch.
+      - name: Restore cached charon + aeneas binaries
         id: cache-tools
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: ${{ env.AENEAS_DIR }}
           key: aeneas-${{ runner.os }}-${{ env.CHARON_REV }}-${{ env.AENEAS_REV }}
@@ -88,6 +93,19 @@ jobs:
       - name: Install Nix
         if: steps.cache-tools.outputs.cache-hit != 'true'
         uses: cachix/install-nix-action@v27
+
+      # Cache the Nix store between runs. Even when CHARON_REV / AENEAS_REV
+      # change, most of the dependency graph (ocaml, nixpkgs deps, opam libs)
+      # is identical — only the charon/aeneas-specific derivations are
+      # rebuilt. `restore-prefixes-first-match` lets a fresh-rev run reuse
+      # the closest prior store; the post-job save then overlays the new
+      # paths into the cache for the next run.
+      - name: Cache Nix store
+        if: steps.cache-tools.outputs.cache-hit != 'true'
+        uses: nix-community/cache-nix-action@v6
+        with:
+          primary-key: nix-${{ runner.os }}-${{ env.CHARON_REV }}-${{ env.AENEAS_REV }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
 
       - name: Build charon (cache miss)
         if: steps.cache-tools.outputs.cache-hit != 'true'
@@ -104,6 +122,15 @@ jobs:
           aeneas_out=$(nix build --print-out-paths --no-link \
             "github:AeneasVerif/aeneas/$AENEAS_REV#aeneas")
           cp -L "$aeneas_out"/bin/aeneas $AENEAS_DIR/bin/aeneas
+
+      - name: Save charon + aeneas binaries
+        # `if: always()` so the binaries we just built persist even if a
+        # later step (e.g. the extraction diff-check) fails.
+        if: always() && steps.cache-tools.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.AENEAS_DIR }}
+          key: aeneas-${{ runner.os }}-${{ env.CHARON_REV }}-${{ env.AENEAS_REV }}
 
       # ---- Lean toolchain ------------------------------------------------
       - name: Install elan
