@@ -106,6 +106,9 @@ jobs:
         with:
           primary-key: nix-${{ runner.os }}-${{ env.CHARON_REV }}-${{ env.AENEAS_REV }}
           restore-prefixes-first-match: nix-${{ runner.os }}-
+          # Save the store even when a later step (e.g. the diff-check)
+          # fails — same reasoning as the binary cache split above.
+          save-always: true
 
       - name: Build charon (cache miss)
         if: steps.cache-tools.outputs.cache-hit != 'true'
