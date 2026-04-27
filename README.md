@@ -14,23 +14,18 @@ A model of Rust's `core` and `alloc` libraries, packaged as:
 
 ## Why this exists
 
-Verified-Rust pipelines (hax → Aeneas → Lean) need a Lean shadow of `core`
-and `alloc` to elaborate against. Aeneas ships its own model that depends
-on a full mathlib stack; this repo provides a leaner, focused alternative
-that's easier to vendor into smaller projects.
+Verified-Rust pipelines need a model of `core` and `alloc` to elaborate
+against. Writing that model in Rust (rather than directly in each
+verification tool's logic) has three advantages:
 
-## Toolchain matrix
-
-Bump any one of these as a single PR and update the row below.
-
-| Component                              | Version / SHA                                 |
-|----------------------------------------|-----------------------------------------------|
-| Rust toolchain                         | `nightly-2026-02-07`                          |
-| [charon](https://github.com/AeneasVerif/charon) | [`c0965bbc`](https://github.com/AeneasVerif/charon/commit/c0965bbccdbd87d494b240a4274707356ef0cb88) |
-| [aeneas](https://github.com/AeneasVerif/aeneas) | [`3c9b4907`](https://github.com/AeneasVerif/aeneas/commit/3c9b490747294eb39a6e830930d44b5902c60d39) |
-| Lean toolchain                         | `leanprover/lean4:v4.29.0-rc1`                |
-| mathlib (transitive via Aeneas)        | resolved by Aeneas's `lake-manifest.json`     |
-| [hax](https://github.com/cryspen/hax)  | [`492a34e3`](https://github.com/cryspen/hax/commit/492a34e33c8744b9672eb3cf1c982ac40469f7d4) |
+- **Easy to extend**: adding a new `core::*` item is just a Rust source
+  edit, no proof-assistant boilerplate.
+- **Cross-testable against the real Rust core library**: the model is
+  ordinary Rust, so we can compile and run it side-by-side with `std`
+  and check behavioral agreement.
+- **Shareable across verification tools**: a single Rust model feeds
+  multiple downstream backends — currently hax-F\*, hax-Lean, and
+  Aeneas-Lean — instead of each tool maintaining its own shadow `core`.
 
 CI verifies that the *committed* extracted Lean files in
 `lean/Aeneas/{Funs,Types,…}.lean` match what a fresh extraction produces
@@ -63,7 +58,7 @@ just `lake update` this repo without installing the Rust toolchain.
 
 ### Prerequisites
 
-- Rust toolchain pinned by `rust-toolchain.toml` (see matrix above).
+- Rust toolchain pinned by `rust-toolchain.toml`.
 - `charon` and `aeneas` built from source at the pinned SHAs. Default
   Makefile expects them under `$HOME/cryspen/aeneas/{charon/bin,bin}`;
   override with `make CHARON=… AENEAS=…` or `make AENEAS_DIR=…`.
@@ -130,7 +125,6 @@ automatically on every PR.
 PRs welcome. Please:
 - Run `cargo fmt --all` and `make lean test-suite aeneas-test` before
   opening a PR (CI enforces both).
-- Update the toolchain matrix if you bump any pinned version.
 - For new `core::*` / `alloc::*` items, add at least one function to
   `aeneas-test/src/lib.rs` exercising the std-side path.
 
