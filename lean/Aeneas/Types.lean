@@ -214,8 +214,8 @@ def convert.Infallible := Unit
 /-- [core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::closure]
     Source: 'core-models/src/core/convert.rs', lines 59:61-61:13 -/
 @[reducible]
-def convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure {T :
-  Type} (N : Std.Usize) (coremarkerCopyInst : core.marker.Copy T) :=
+def convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure (T :
+  Type) (N : Std.Usize) :=
   Slice T
 
 /-- Trait declaration: [core_models::convert::AsRef]
@@ -355,10 +355,8 @@ structure iter.adapters.zip.Zip (I1 : Type) (I2 : Type) where
 /-- [core_models::iter::adapters::flatten::Flatten]
     Source: 'core-models/src/core/iter.rs', lines 543:8-549:9
     Visibility: public -/
-structure iter.adapters.flatten.Flatten {I : Type} {Clause0_Item : Type}
-  {Clause1_Item : Type} (traitsiteratorIteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (traitsiteratorIteratorInst1 :
-  iter.traits.iterator.Iterator Clause0_Item Clause1_Item) where
+structure iter.adapters.flatten.Flatten (I : Type) (Clause0_Item : Type)
+  (Clause1_Item : Type) where
   it : I
   current : option.Option Clause0_Item
 
@@ -422,22 +420,20 @@ structure iter.traits.iterator.IteratorMethods (Self : Type) (Self_Clause0_Item
   all : forall {F : Type} (coreopsfunctionFnPTuplePBoolInst :
     core.ops.function.Fn F Self_Clause0_Item Bool), Self → F → Result Bool
   take : Self → Std.Usize → Result (iter.adapters.take.Take Self)
-  flat_map : forall {U : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-    iter.traits.iterator.Iterator U Clause0_Item)
+  flat_map : forall {U : Type} {F : Type} {Clause0_Item : Type} (IteratorInst1
+    : iter.traits.iterator.Iterator U Clause0_Item)
     (coreopsfunctionFnPTupleFPInst : core.ops.function.Fn F Self_Clause0_Item
     U), Self → F → Result (iter.adapters.flat_map.FlatMap Self U F)
-  flatten : forall {Clause0_Item : Type} (IteratorInst :
-    iter.traits.iterator.Iterator Self_Clause0_Item Clause0_Item)
-    (SelfIteratorInst : iter.traits.iterator.Iterator Self Self_Clause0_Item),
-    Self →
-    Result (iter.adapters.flatten.Flatten SelfIteratorInst IteratorInst)
-  zip : forall {I2 : Type} {Clause0_Item : Type} (IteratorInst :
+  flatten : forall {Clause0_Item : Type} (IteratorInst1 :
+    iter.traits.iterator.Iterator Self_Clause0_Item Clause0_Item), Self →
+    Result (iter.adapters.flatten.Flatten Self Self_Clause0_Item Clause0_Item)
+  zip : forall {I2 : Type} {Clause0_Item : Type} (IteratorInst1 :
     iter.traits.iterator.Iterator I2 Clause0_Item), Self → I2 → Result
     (iter.adapters.zip.Zip Self I2)
   filter : forall {P : Type} (coreopsfunctionFnPTupleSharedPBoolInst :
     core.ops.function.Fn P Self_Clause0_Item Bool), Self → P → Result
     (iter.adapters.filter.Filter Self P)
-  chain : forall {U : Type} (IteratorInst : iter.traits.iterator.Iterator U
+  chain : forall {U : Type} (IteratorInst1 : iter.traits.iterator.Iterator U
     Self_Clause0_Item), Self → U → Result (iter.adapters.chain.Chain Self
     U)
   skip : Self → Std.Usize → Result (iter.adapters.skip.Skip Self)

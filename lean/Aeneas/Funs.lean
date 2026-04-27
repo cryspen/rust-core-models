@@ -1509,27 +1509,26 @@ def convert.TryFromUTInfallible.Blanket {T : Type} {U : Type} (FromInst :
   try_from := convert.TryFromUTInfallible.Blanket.try_from FromInst
 }
 
-/-- [core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::{core::ops::function::FnMut<(usize), T> for core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::closure<0, 1, T, N>[TraitClause@0]}::call_mut]:
+/-- [core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::{core::ops::function::FnMut<(usize), T> for core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::closure<0, 1, T, N>}::call_mut]:
     Source: 'core-models/src/core/convert.rs', lines 59:61-61:13 -/
 def
   convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.CoreOpsFunctionFnMutTupleUsizeT.call_mut
   {T : Type} {N : Std.Usize} (coremarkerCopyInst : core.marker.Copy T)
-  (c : convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure N
-  coremarkerCopyInst) (tupled_args : Std.Usize) :
+  (c : convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure T N)
+  (tupled_args : Std.Usize) :
   Result (T ×
-    (convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure N
-    coremarkerCopyInst))
+    (convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure T N))
   := do
   let t ← rust_primitives.slice.slice_index c tupled_args
   ok (t, c)
 
-/-- [core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::{core::ops::function::FnOnce<(usize), T> for core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::closure<0, 1, T, N>[TraitClause@0]}::call_once]:
+/-- [core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::{core::ops::function::FnOnce<(usize), T> for core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::closure<0, 1, T, N>}::call_once]:
     Source: 'core-models/src/core/convert.rs', lines 59:61-61:13 -/
 def
   convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.CoreOpsFunctionFnOnceTupleUsizeT.call_once
   {T : Type} {N : Std.Usize} (coremarkerCopyInst : core.marker.Copy T)
-  (c : convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure N
-  coremarkerCopyInst) (i : Std.Usize) :
+  (c : convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure T N)
+  (i : Std.Usize) :
   Result T
   := do
   let (t, _) ←
@@ -1537,29 +1536,29 @@ def
       coremarkerCopyInst c i
   ok t
 
-/-- Trait implementation: [core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::{core::ops::function::FnOnce<(usize), T> for core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::closure<0, 1, T, N>[TraitClause@0]}]
+/-- Trait implementation: [core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::{core::ops::function::FnOnce<(usize), T> for core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::closure<0, 1, T, N>}]
     Source: 'core-models/src/core/convert.rs', lines 59:61-61:13 -/
 @[reducible]
 def
   convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.CoreOpsFunctionFnOnceTupleUsizeT
   {T : Type} (N : Std.Usize) (coremarkerCopyInst : core.marker.Copy T) :
   core.ops.function.FnOnce
-  (convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure N
-  coremarkerCopyInst) Std.Usize T := {
+  (convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure T N)
+  Std.Usize T := {
   call_once :=
     convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.CoreOpsFunctionFnOnceTupleUsizeT.call_once
     coremarkerCopyInst
 }
 
-/-- Trait implementation: [core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::{core::ops::function::FnMut<(usize), T> for core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::closure<0, 1, T, N>[TraitClause@0]}]
+/-- Trait implementation: [core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::{core::ops::function::FnMut<(usize), T> for core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::closure<0, 1, T, N>}]
     Source: 'core-models/src/core/convert.rs', lines 59:61-61:13 -/
 @[reducible]
 def
   convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.CoreOpsFunctionFnMutTupleUsizeT
   {T : Type} (N : Std.Usize) (coremarkerCopyInst : core.marker.Copy T) :
   core.ops.function.FnMut
-  (convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure N
-  coremarkerCopyInst) Std.Usize T := {
+  (convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure T N)
+  Std.Usize T := {
   FnOnceInst :=
     convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.CoreOpsFunctionFnOnceTupleUsizeT
     N coremarkerCopyInst
@@ -3754,7 +3753,7 @@ def iter.traits.iterator.IteratorMethods.Blanket.zip
   iter.adapters.zip.Zip.new IteratorInst IteratorInst1 self it2
 -/
 
-/-- [core_models::iter::adapters::flatten::{core_models::iter::adapters::flatten::Flatten<I, Clause0_Item, Clause1_Item>[TraitClause@0, TraitClause@1]}::new]:
+/-- [core_models::iter::adapters::flatten::{core_models::iter::adapters::flatten::Flatten<I, Clause0_Item, Clause1_Item>}::new]:
     Source: 'core-models/src/core/iter.rs', lines 554:12-559:13
     Visibility: public -/
 def iter.adapters.flatten.Flatten.new
@@ -3762,8 +3761,7 @@ def iter.adapters.flatten.Flatten.new
   (traitsiteratorIteratorInst : iter.traits.iterator.Iterator I Clause0_Item)
   (traitsiteratorIteratorInst1 : iter.traits.iterator.Iterator Clause0_Item
   Clause1_Item) (it : I) :
-  Result (iter.adapters.flatten.Flatten traitsiteratorIteratorInst
-    traitsiteratorIteratorInst1)
+  Result (iter.adapters.flatten.Flatten I Clause0_Item Clause1_Item)
   := do
   ok { it, current := option.Option.None }
 
@@ -3774,7 +3772,7 @@ def iter.traits.iterator.IteratorMethods.Blanket.flatten
   {I : Type} {Clause0_Item : Type} {Clause1_Item : Type} (IteratorInst :
   iter.traits.iterator.Iterator I Clause0_Item) (IteratorInst1 :
   iter.traits.iterator.Iterator Clause0_Item Clause1_Item) (self : I) :
-  Result (iter.adapters.flatten.Flatten IteratorInst IteratorInst1)
+  Result (iter.adapters.flatten.Flatten I Clause0_Item Clause1_Item)
   := do
   iter.adapters.flatten.Flatten.new IteratorInst IteratorInst1 self
 -/
@@ -3928,73 +3926,74 @@ def iter.traits.iterator.IteratorMethods.Blanket.fold
     Source: 'core-models/src/core/iter.rs', lines 250:8-358:9 -/
 @[reducible]
 def iter.traits.iterator.IteratorMethods.Blanket {I : Type} {Clause0_Item :
-  Type} (IteratorInst : iter.traits.iterator.Iterator I Clause0_Item) :
+  Type} (IteratorInst1 : iter.traits.iterator.Iterator I Clause0_Item) :
   iter.traits.iterator.IteratorMethods I Clause0_Item := {
-  IteratorInst := IteratorInst
+  IteratorInst := IteratorInst1
   fold := fun {B : Type} {F : Type} (coreopsfunctionFnPPairPInst :
     core.ops.function.Fn F (B × Clause0_Item) B) =>
-    iter.traits.iterator.IteratorMethods.Blanket.fold IteratorInst
+    iter.traits.iterator.IteratorMethods.Blanket.fold IteratorInst1
     coreopsfunctionFnPPairPInst
   enumerate := iter.traits.iterator.IteratorMethods.Blanket.enumerate
-    IteratorInst
-  step_by := iter.traits.iterator.IteratorMethods.Blanket.step_by IteratorInst
+    IteratorInst1
+  step_by := iter.traits.iterator.IteratorMethods.Blanket.step_by IteratorInst1
   map := fun {O : Type} {F : Type} (coreopsfunctionFnPTupleFPInst :
     core.ops.function.Fn F Clause0_Item O) =>
-    iter.traits.iterator.IteratorMethods.Blanket.map IteratorInst
+    iter.traits.iterator.IteratorMethods.Blanket.map IteratorInst1
     coreopsfunctionFnPTupleFPInst
   all := fun {F : Type} (coreopsfunctionFnPTuplePBoolInst :
     core.ops.function.Fn F Clause0_Item Bool) =>
-    iter.traits.iterator.IteratorMethods.Blanket.all IteratorInst
+    iter.traits.iterator.IteratorMethods.Blanket.all IteratorInst1
     coreopsfunctionFnPTuplePBoolInst
-  take := iter.traits.iterator.IteratorMethods.Blanket.take IteratorInst
-  flat_map := fun {U : Type} {F : Type} {Clause0_Item1 : Type} (IteratorInst1 :
+  take := iter.traits.iterator.IteratorMethods.Blanket.take IteratorInst1
+  flat_map := fun {U : Type} {F : Type} {Clause0_Item1 : Type} (IteratorInst2 :
     iter.traits.iterator.Iterator U Clause0_Item1)
     (coreopsfunctionFnPTupleFPInst : core.ops.function.Fn F Clause0_Item U) =>
-    iter.traits.iterator.IteratorMethods.Blanket.flat_map IteratorInst
-    IteratorInst1 coreopsfunctionFnPTupleFPInst
-  flatten := fun {Clause0_Item1 : Type} (IteratorInst1 :
+    iter.traits.iterator.IteratorMethods.Blanket.flat_map IteratorInst1
+    IteratorInst2 coreopsfunctionFnPTupleFPInst
+  flatten := fun {Clause0_Item1 : Type} (IteratorInst2 :
     iter.traits.iterator.Iterator Clause0_Item Clause0_Item1) =>
-    iter.traits.iterator.IteratorMethods.Blanket.flatten IteratorInst
-    IteratorInst1
-  zip := fun {I2 : Type} {Clause0_Item1 : Type} (IteratorInst1 :
+    iter.traits.iterator.IteratorMethods.Blanket.flatten IteratorInst1
+    IteratorInst2
+  zip := fun {I2 : Type} {Clause0_Item1 : Type} (IteratorInst2 :
     iter.traits.iterator.Iterator I2 Clause0_Item1) =>
-    iter.traits.iterator.IteratorMethods.Blanket.zip IteratorInst IteratorInst1
+    iter.traits.iterator.IteratorMethods.Blanket.zip IteratorInst1
+    IteratorInst2
   sorry
-  chain := fun {U : Type} (IteratorInst1 : iter.traits.iterator.Iterator U
+  chain := fun {U : Type} (IteratorInst2 : iter.traits.iterator.Iterator U
     Clause0_Item) => iter.traits.iterator.IteratorMethods.Blanket.chain
-    IteratorInst IteratorInst1
-  skip := iter.traits.iterator.IteratorMethods.Blanket.skip IteratorInst
+    IteratorInst1 IteratorInst2
+  skip := iter.traits.iterator.IteratorMethods.Blanket.skip IteratorInst1
   any := fun {F : Type} (coreopsfunctionFnPTuplePBoolInst :
     core.ops.function.Fn F Clause0_Item Bool) =>
-    iter.traits.iterator.IteratorMethods.Blanket.any IteratorInst
+    iter.traits.iterator.IteratorMethods.Blanket.any IteratorInst1
     coreopsfunctionFnPTuplePBoolInst
   sorry
   find_map := fun {B : Type} {F : Type} (coreopsfunctionFnPTupleFOptionInst :
     core.ops.function.Fn F Clause0_Item (option.Option B)) =>
-    iter.traits.iterator.IteratorMethods.Blanket.find_map IteratorInst
+    iter.traits.iterator.IteratorMethods.Blanket.find_map IteratorInst1
     coreopsfunctionFnPTupleFOptionInst
   position := fun {P : Type} (coreopsfunctionFnPTuplePBoolInst :
     core.ops.function.Fn P Clause0_Item Bool) =>
-    iter.traits.iterator.IteratorMethods.Blanket.position IteratorInst
+    iter.traits.iterator.IteratorMethods.Blanket.position IteratorInst1
     coreopsfunctionFnPTuplePBoolInst
-  count := iter.traits.iterator.IteratorMethods.Blanket.count IteratorInst
-  nth := iter.traits.iterator.IteratorMethods.Blanket.nth IteratorInst
-  last := iter.traits.iterator.IteratorMethods.Blanket.last IteratorInst
+  count := iter.traits.iterator.IteratorMethods.Blanket.count IteratorInst1
+  nth := iter.traits.iterator.IteratorMethods.Blanket.nth IteratorInst1
+  last := iter.traits.iterator.IteratorMethods.Blanket.last IteratorInst1
   for_each := fun {F : Type} (coreopsfunctionFnPTuplePTupleInst :
     core.ops.function.Fn F Clause0_Item Unit) =>
-    iter.traits.iterator.IteratorMethods.Blanket.for_each IteratorInst
+    iter.traits.iterator.IteratorMethods.Blanket.for_each IteratorInst1
     coreopsfunctionFnPTuplePTupleInst
   «reduce» := fun {F : Type} (coreopsfunctionFnPPairPInst :
     core.ops.function.Fn F (Clause0_Item × Clause0_Item) Clause0_Item) =>
-    iter.traits.iterator.IteratorMethods.Blanket.reduce IteratorInst
+    iter.traits.iterator.IteratorMethods.Blanket.reduce IteratorInst1
     coreopsfunctionFnPPairPInst
   min := fun (cmpOrdInst : cmp.Ord Clause0_Item) =>
-    iter.traits.iterator.IteratorMethods.Blanket.min IteratorInst cmpOrdInst
+    iter.traits.iterator.IteratorMethods.Blanket.min IteratorInst1 cmpOrdInst
   max := fun (cmpOrdInst : cmp.Ord Clause0_Item) =>
-    iter.traits.iterator.IteratorMethods.Blanket.max IteratorInst cmpOrdInst
+    iter.traits.iterator.IteratorMethods.Blanket.max IteratorInst1 cmpOrdInst
   collect := fun {B : Type} (collectFromIteratorInst :
     iter.traits.collect.FromIterator B Clause0_Item) =>
-    iter.traits.iterator.IteratorMethods.Blanket.collect IteratorInst
+    iter.traits.iterator.IteratorMethods.Blanket.collect IteratorInst1
     collectFromIteratorInst
 }
 -/
@@ -4259,7 +4258,7 @@ def iter.adapters.flat_map.FlatMap.Insts.Core_modelsIterTraitsIteratorIterator
     coreopsfunctionFnFTupleClause0_ItemUInst
 }
 
-/-- [core_models::iter::adapters::flatten::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flatten::Flatten<I, Clause0_Item, Clause1_Item>[TraitClause@0, TraitClause@1]}::next]: loop body 0:
+/-- [core_models::iter::adapters::flatten::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flatten::Flatten<I, Clause0_Item, Clause1_Item>}::next]: loop body 0:
     Source: 'core-models/src/core/iter.rs', lines 569:20-578:21
     Visibility: public -/
 @[rust_loop_body]
@@ -4269,11 +4268,10 @@ def
   (traitsiteratorIteratorInst : iter.traits.iterator.Iterator I Clause0_Item)
   (traitsiteratorIteratorInst1 : iter.traits.iterator.Iterator Clause0_Item
   Clause1_Item)
-  (self : iter.adapters.flatten.Flatten traitsiteratorIteratorInst
-  traitsiteratorIteratorInst1) :
-  Result (ControlFlow (iter.adapters.flatten.Flatten traitsiteratorIteratorInst
-    traitsiteratorIteratorInst1) ((option.Option Clause1_Item) × I ×
-    (option.Option Clause0_Item)))
+  (self : iter.adapters.flatten.Flatten I Clause0_Item Clause1_Item) :
+  Result (ControlFlow (iter.adapters.flatten.Flatten I Clause0_Item
+    Clause1_Item) ((option.Option Clause1_Item) × I × (option.Option
+    Clause0_Item)))
   := do
   match self.current with
   | option.Option.Some current_it =>
@@ -4294,7 +4292,7 @@ def
     | option.Option.None =>
       ok (done (option.Option.None, t, option.Option.None))
 
-/-- [core_models::iter::adapters::flatten::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flatten::Flatten<I, Clause0_Item, Clause1_Item>[TraitClause@0, TraitClause@1]}::next]: loop 0:
+/-- [core_models::iter::adapters::flatten::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flatten::Flatten<I, Clause0_Item, Clause1_Item>}::next]: loop 0:
     Source: 'core-models/src/core/iter.rs', lines 569:20-578:21
     Visibility: public -/
 @[rust_loop]
@@ -4304,8 +4302,7 @@ def
   (traitsiteratorIteratorInst : iter.traits.iterator.Iterator I Clause0_Item)
   (traitsiteratorIteratorInst1 : iter.traits.iterator.Iterator Clause0_Item
   Clause1_Item)
-  (self : iter.adapters.flatten.Flatten traitsiteratorIteratorInst
-  traitsiteratorIteratorInst1) :
+  (self : iter.adapters.flatten.Flatten I Clause0_Item Clause1_Item) :
   Result ((option.Option Clause1_Item) × I × (option.Option Clause0_Item))
   := do
   loop
@@ -4314,7 +4311,7 @@ def
       traitsiteratorIteratorInst traitsiteratorIteratorInst1 self1)
     self
 
-/-- [core_models::iter::adapters::flatten::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flatten::Flatten<I, Clause0_Item, Clause1_Item>[TraitClause@0, TraitClause@1]}::next]:
+/-- [core_models::iter::adapters::flatten::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flatten::Flatten<I, Clause0_Item, Clause1_Item>}::next]:
     Source: 'core-models/src/core/iter.rs', lines 567:12-580:13
     Visibility: public -/
 def
@@ -4323,17 +4320,16 @@ def
   (traitsiteratorIteratorInst : iter.traits.iterator.Iterator I Clause0_Item)
   (traitsiteratorIteratorInst1 : iter.traits.iterator.Iterator Clause0_Item
   Clause1_Item)
-  (self : iter.adapters.flatten.Flatten traitsiteratorIteratorInst
-  traitsiteratorIteratorInst1) :
-  Result ((option.Option Clause1_Item) × (iter.adapters.flatten.Flatten
-    traitsiteratorIteratorInst traitsiteratorIteratorInst1))
+  (self : iter.adapters.flatten.Flatten I Clause0_Item Clause1_Item) :
+  Result ((option.Option Clause1_Item) × (iter.adapters.flatten.Flatten I
+    Clause0_Item Clause1_Item))
   := do
   let (o, t, o1) ←
     iter.adapters.flatten.Flatten.Insts.Core_modelsIterTraitsIteratorIterator.next_loop
       traitsiteratorIteratorInst traitsiteratorIteratorInst1 self
   ok (o, { it := t, current := o1 })
 
-/-- Trait implementation: [core_models::iter::adapters::flatten::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flatten::Flatten<I, Clause0_Item, Clause1_Item>[TraitClause@0, TraitClause@1]}]
+/-- Trait implementation: [core_models::iter::adapters::flatten::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flatten::Flatten<I, Clause0_Item, Clause1_Item>}]
     Source: 'core-models/src/core/iter.rs', lines 562:8-581:9 -/
 @[reducible]
 def iter.adapters.flatten.Flatten.Insts.Core_modelsIterTraitsIteratorIterator
@@ -4341,7 +4337,7 @@ def iter.adapters.flatten.Flatten.Insts.Core_modelsIterTraitsIteratorIterator
   (traitsiteratorIteratorInst : iter.traits.iterator.Iterator I Clause0_Item)
   (traitsiteratorIteratorInst1 : iter.traits.iterator.Iterator Clause0_Item
   Clause1_Item) : iter.traits.iterator.Iterator (iter.adapters.flatten.Flatten
-  traitsiteratorIteratorInst traitsiteratorIteratorInst1) Clause1_Item := {
+  I Clause0_Item Clause1_Item) Clause1_Item := {
   next :=
     iter.adapters.flatten.Flatten.Insts.Core_modelsIterTraitsIteratorIterator.next
     traitsiteratorIteratorInst traitsiteratorIteratorInst1
@@ -4519,9 +4515,9 @@ def marker.Sized.Blanket (T : Type) : marker.Sized T := {
 /-- Trait implementation: [core_models::marker::{core_models::marker::Copy for T}]
     Source: 'core-models/src/core/marker.rs', lines 18:0-18:28 -/
 @[reducible]
-def marker.Copy.Blanket {T : Type} (cloneCloneInst : clone.Clone T) :
+def marker.Copy.Blanket {T : Type} (cloneCloneInst1 : clone.Clone T) :
   marker.Copy T := {
-  cloneInst := cloneCloneInst
+  cloneInst := cloneCloneInst1
 }
 
 /-- [core_models::mem::forget]:

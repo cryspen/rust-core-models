@@ -9,8 +9,8 @@ on:
 # All version pins live here.
 env:
   RUST_TOOLCHAIN: nightly-2026-02-07
-  CHARON_REV:    bb585116362158a68b2633ce871951d520a50e13
-  AENEAS_REV:    3c9b490747294eb39a6e830930d44b5902c60d39
+  CHARON_REV:    ed22146b1cd4d0b578006a58b3299d41ecbe0fd4
+  AENEAS_REV:    a2fcf1923d16684cec638f5503da11acd0ef002d
   # Where the cache step stages the charon / aeneas binaries.
   AENEAS_DIR: ${{ github.workspace }}/.tools/aeneas
 
