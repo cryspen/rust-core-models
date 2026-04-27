@@ -61,9 +61,9 @@ just `lake update` this repo without installing the Rust toolchain.
 ### Prerequisites
 
 - Rust toolchain pinned by `rust-toolchain.toml`.
-- `charon` and `aeneas` built from source at the pinned SHAs. Default
-  Makefile expects them under `$HOME/cryspen/aeneas/{charon/bin,bin}`;
-  override with `make CHARON=… AENEAS=…` or `make AENEAS_DIR=…`.
+- `charon` and `aeneas` on `PATH` (the upstream nix flakes are the
+  recommended build path; CI uses `nix build github:AeneasVerif/{charon,aeneas}`).
+  Override the Makefile lookup with `make CHARON=/path/to/charon AENEAS=/path/to/aeneas`.
 - [`elan`](https://github.com/leanprover/elan) for Lean.
 
 ### Targets

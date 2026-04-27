@@ -10,20 +10,6 @@ set_option linter.unusedVariables false
 /- You can set the `maxHeartbeats` value with the `-max-heartbeats` CLI option -/
 set_option maxHeartbeats 1000000
 
-/-- [hax_lib::prop::Prop]
-    Source: '/home/maxime/cryspen/hax-evit/hax-lib/src/prop.rs', lines 6:0-6:15
-    Name pattern: [hax_lib::prop::Prop]
-    Visibility: public -/
-@[rust_type "hax_lib::prop::Prop"]
-axiom hax_lib.prop.Prop : Type
-
-/-- [hax_lib::int::Int]
-    Source: '/home/maxime/cryspen/hax-evit/hax-lib/src/int/mod.rs', lines 17:0-17:14
-    Name pattern: [hax_lib::int::Int]
-    Visibility: public -/
-@[rust_type "hax_lib::int::Int"]
-axiom hax_lib.int.Int : Type
-
 /-- [rust_primitives::sequence::Seq]
     Source: 'rust_primitives/src/lib.rs', lines 47:4-47:21
     Name pattern: [rust_primitives::sequence::Seq]

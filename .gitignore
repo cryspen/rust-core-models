@@ -23,8 +23,9 @@ tests/lean/Tests/Types.lean
 tests/lean/Tests/FunsExternal_Template.lean
 tests/lean/Tests/TypesExternal_Template.lean
 
-# Editor / OS
+# Editor / OS / agent
 .DS_Store
 *.swp
 .idea/
 .vscode/
+.claude/

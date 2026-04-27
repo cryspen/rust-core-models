@@ -192,15 +192,17 @@ def write(path: Path, contents: str) -> None:
 
 def rewrite_imports_and_opens(text: str) -> str:
     """Rewrite top-of-file imports and `open` to match our package layout."""
-    # imports
+    # imports. Aeneas auto-derives a module prefix from the crate name
+    # (`core_models` → `CoreModels`); rewrite those to land inside our
+    # hand-written `Aeneas/` namespace.
     text = re.sub(r"^import Aeneas$", "import Aeneas.Primitives",
                   text, flags=re.MULTILINE)
-    text = re.sub(r"^import AeneasTest\.Types$", "import Aeneas.Types",
+    text = re.sub(r"^import CoreModels\.Types$", "import Aeneas.Types",
                   text, flags=re.MULTILINE)
-    text = re.sub(r"^import AeneasTest\.TypesExternal$",
+    text = re.sub(r"^import CoreModels\.TypesExternal$",
                   "import Aeneas.TypesExternal",
                   text, flags=re.MULTILINE)
-    text = re.sub(r"^import AeneasTest\.FunsExternal$",
+    text = re.sub(r"^import CoreModels\.FunsExternal$",
                   "import Aeneas.FunsExternal",
                   text, flags=re.MULTILINE)
     # open

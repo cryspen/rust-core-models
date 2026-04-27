@@ -1,12 +1,13 @@
 CHARON ?= charon
 AENEAS ?= aeneas
 
-# `hax-lib` git revision. Override on the command line to test against a
-# different version, e.g. `make HAX_LIB_REV=<sha>`. Must stay in sync with
-# the workspace dep in the root Cargo.toml.
-HAX_LIB_REV ?= 492a34e33c8744b9672eb3cf1c982ac40469f7d4
+# `hax-lib` git revision, derived from the workspace Cargo.toml so the
+# alloc-staging step (which inlines an explicit `hax-lib = { git, rev }`
+# line, see below) can never disagree with the version the rest of the
+# workspace pulls in via `hax-lib.workspace = true`.
+HAX_LIB_REV := $(shell sed -n 's/.*hax-lib.*rev = "\([^"]*\)".*/\1/p' Cargo.toml)
 
-CRATE_NAME = aeneas_test
+CRATE_NAME = core_models
 LLBC_FILE = $(CRATE_NAME).llbc
 LEAN_DIR = lean
 # The main Rust crate (`core-models`) lives under ./core-models/ — its

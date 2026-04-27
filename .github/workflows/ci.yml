@@ -11,9 +11,7 @@ env:
   RUST_TOOLCHAIN: nightly-2026-02-07
   CHARON_REV:    bb585116362158a68b2633ce871951d520a50e13
   AENEAS_REV:    3c9b490747294eb39a6e830930d44b5902c60d39
-  HAX_LIB_REV:   492a34e33c8744b9672eb3cf1c982ac40469f7d4
-  LEAN_TOOLCHAIN_FILE: lean/lean-toolchain
-  # Where the Makefile expects to find the charon / aeneas binaries.
+  # Where the cache step stages the charon / aeneas binaries.
   AENEAS_DIR: ${{ github.workspace }}/.tools/aeneas
 
 jobs:
