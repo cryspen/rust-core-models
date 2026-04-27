@@ -1,6 +1,5 @@
-AENEAS_DIR = $$HOME/cryspen/aeneas
-CHARON = $(AENEAS_DIR)/charon/bin/charon
-AENEAS = $(AENEAS_DIR)/bin/aeneas
+CHARON ?= charon
+AENEAS ?= aeneas
 
 CRATE_NAME = tests
 LLBC_FILE = $(CRATE_NAME).llbc
