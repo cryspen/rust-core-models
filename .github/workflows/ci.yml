@@ -9,10 +9,10 @@ on:
 # All version pins live here. Bump as a single PR with the matching
 # README.md row updated.
 env:
-  RUST_TOOLCHAIN: nightly-2025-11-08
-  CHARON_REV:    REPLACE_WITH_PINNED_SHA
-  AENEAS_REV:    REPLACE_WITH_PINNED_SHA
-  HAX_LIB_REV:   REPLACE_WITH_PINNED_SHA
+  RUST_TOOLCHAIN: nightly-2026-02-07
+  CHARON_REV:    c0965bbccdbd87d494b240a4274707356ef0cb88
+  AENEAS_REV:    3c9b490747294eb39a6e830930d44b5902c60d39
+  HAX_LIB_REV:   492a34e33c8744b9672eb3cf1c982ac40469f7d4
   LEAN_TOOLCHAIN_FILE: lean/lean-toolchain
   # Where the Makefile expects to find the charon / aeneas binaries.
   AENEAS_DIR: ${{ github.workspace }}/.tools/aeneas

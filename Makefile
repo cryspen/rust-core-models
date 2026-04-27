@@ -1,0 +1,204 @@
+CHARON ?= charon
+AENEAS ?= aeneas
+
+# `hax-lib` git revision. Override on the command line to test against a
+# different version, e.g. `make HAX_LIB_REV=<sha>`. Must stay in sync with
+# the workspace dep in the root Cargo.toml and the README toolchain matrix.
+HAX_LIB_REV ?= 492a34e33c8744b9672eb3cf1c982ac40469f7d4
+
+CRATE_NAME = aeneas_test
+LLBC_FILE = $(CRATE_NAME).llbc
+LEAN_DIR = lean
+# The main Rust crate (`core-models`) lives under ./core-models/ — its
+# Cargo.toml is the package manifest. The root Cargo.toml is the
+# workspace.
+CORE_MODELS_DIR = core-models
+
+# The `alloc/` crate cannot be extracted directly: its package name is
+# `alloc`, which collides with Aeneas's builtin path map for `alloc::vec::Vec`
+# and friends, crashing the type analyser. We work around this by staging a
+# copy of the crate under `.alloc-extract/` whose Cargo.toml has been
+# rewritten to `name = "alloc_models"`. After Aeneas runs, the patcher
+# rewrites the resulting Lean files to put everything back in the `alloc`
+# namespace (downstream Aeneas-extracted code expects `alloc.vec.Vec` etc.).
+ALLOC_LLBC_FILE = alloc.llbc
+ALLOC_STAGE_DIR = .alloc-extract
+
+# Hand-written files in $(LEAN_DIR) that must NOT be touched by extraction or
+# the post-extraction patcher. They live alongside the generated ones; this
+# variable is informational only — the patcher leaves the Aeneas/ subdirectory
+# alone except for the four files it explicitly moves into it.
+HAND_WRITTEN = \
+    $(LEAN_DIR)/lakefile.toml \
+    $(LEAN_DIR)/lean-toolchain \
+    $(LEAN_DIR)/Aeneas.lean \
+    $(LEAN_DIR)/Aeneas/Primitives.lean \
+    $(LEAN_DIR)/Aeneas/Instances.lean \
+    $(LEAN_DIR)/Aeneas/PureFuns.lean
+
+# Items in the `alloc` crate that can't be extracted (Aeneas crashes on them
+# even after the rename trick). They are independent of the patcher's
+# Lean-text comment-out logic.
+ALLOC_CHARON_EXCLUDES = \
+    --exclude 'alloc_models::collections::binary_heap::*' \
+    --exclude '{impl alloc_models::collections::binary_heap::BinaryHeap<_, _>}' \
+    --exclude '{impl alloc_models::collections::binary_heap::BinaryHeap<_, _>}::*' \
+    --exclude 'alloc_models::string::*' \
+    --exclude '{impl alloc_models::string::String}::*' \
+    --exclude '{impl core::iter::traits::collect::FromIterator<_> for alloc_models::vec::Vec<_, _>}' \
+    --exclude '{impl core::iter::traits::collect::FromIterator<_> for alloc_models::vec::Vec<_, _>}::*' \
+    --exclude 'alloc_models::slice::_::sort_by' \
+    --exclude '{impl core::ops::index::Index<_> for alloc_models::vec::Vec<_, _>}' \
+    --exclude '{impl core::ops::index::Index<_> for alloc_models::vec::Vec<_, _>}::*'
+
+.PHONY: all llbc extract patch lean build clean clean-generated test-suite \
+        test-suite-clean aeneas-test aeneas-test-clean \
+        alloc-stage alloc-llbc alloc-extract alloc-clean
+
+all: lean
+
+# 1. Run charon to produce LLBC from the Rust crate.
+#
+# `--exclude` removes items at the LLBC level so Aeneas never sees them.
+# We use it for pure-fn duplicates that we provide ourselves in
+# `Aeneas/PureFuns.lean` (Aeneas marks the corresponding `core::*` items
+# with `~can_fail:false`, so the extraction emits *pure* references that
+# our shims must satisfy).
+#
+# Things we *cannot* exclude here (because the rest of the crate references
+# them and Aeneas's dependency analysis crashes if they vanish):
+#   - `core_models::num::*::{MIN,MAX}` (used by `try_from` impls).
+#   - The trait/type forward declarations (`clone::Clone`, `marker::Copy`,
+#     `ops::function::{Fn,FnMut,FnOnce}`, `option::Option`).
+# These are still handled at the Lean text level by `patch_lean.py`.
+CHARON_EXCLUDES = \
+    --exclude 'core_models::mem::swap' \
+    --exclude 'core_models::mem::replace' \
+    --exclude 'core_models::option::_::is_some' \
+    --exclude 'core_models::option::_::is_none' \
+    --exclude 'core_models::option::_::unwrap_or' \
+    --exclude 'core_models::option::_::take' \
+    --exclude 'core_models::num::*::wrapping_add' \
+    --exclude 'core_models::num::*::wrapping_sub' \
+    --exclude 'core_models::num::*::wrapping_mul' \
+    --exclude 'core_models::num::*::saturating_add' \
+    --exclude 'core_models::num::*::saturating_sub' \
+    --exclude 'core_models::num::*::rotate_left' \
+    --exclude 'core_models::num::*::rotate_right' \
+    --exclude 'core_models::num::*::overflowing_add' \
+    --exclude 'core_models::slice::index::*'
+
+llbc: $(LLBC_FILE)
+
+$(LLBC_FILE): $(CORE_MODELS_DIR)/src/**/*.rs $(CORE_MODELS_DIR)/Cargo.toml
+	cd $(CORE_MODELS_DIR) && $(CHARON) cargo --preset=aeneas \
+	    $(CHARON_EXCLUDES) \
+	    --dest-file $(abspath $(LLBC_FILE))
+
+# 2. Run Aeneas to extract Lean files into $(LEAN_DIR)/.
+#    Aeneas writes Funs.lean, Types.lean, FunsExternal_Template.lean,
+#    TypesExternal_Template.lean at the root of $(LEAN_DIR). Anything inside
+#    $(LEAN_DIR)/Aeneas/ is left untouched.
+extract: $(LLBC_FILE) alloc-extract
+	mkdir -p $(LEAN_DIR)
+	# Aeneas may exit non-zero while still producing partial files; that's OK,
+	# our patcher and the surrounding hand-written library handle the gaps.
+	-$(AENEAS) -backend lean $(LLBC_FILE) -split-files -dest $(LEAN_DIR)
+
+# -----------------------------------------------------------------------------
+# alloc/ extraction (with the `alloc_models` crate-name workaround)
+# -----------------------------------------------------------------------------
+
+# Stage a renamed copy of `alloc/` so charon sees a crate named `alloc_models`
+# (avoids the Aeneas builtin name collision on `alloc::vec::Vec`). The src/
+# tree is symlinked so any source edit is picked up automatically.
+$(ALLOC_STAGE_DIR)/Cargo.toml: alloc/Cargo.toml
+	rm -rf $(ALLOC_STAGE_DIR)
+	mkdir -p $(ALLOC_STAGE_DIR)
+	cp alloc/Cargo.toml $(ALLOC_STAGE_DIR)/Cargo.toml
+	ln -s ../alloc/src $(ALLOC_STAGE_DIR)/src
+	# Rename the package and inline the workspace-inherited `hax-lib` dep so
+	# the staged crate can be built standalone (the `[workspace]` block
+	# appended at the end opts the staged crate out of our root workspace).
+	sed -i 's|^name = "alloc"$$|name = "alloc_models"|' $(ALLOC_STAGE_DIR)/Cargo.toml
+	sed -i 's|^hax-lib\.workspace = true$$|hax-lib = { git = "https://github.com/cryspen/hax", rev = "$(HAX_LIB_REV)" }|' $(ALLOC_STAGE_DIR)/Cargo.toml
+	printf '\n[workspace]\n' >> $(ALLOC_STAGE_DIR)/Cargo.toml
+
+alloc-stage: $(ALLOC_STAGE_DIR)/Cargo.toml
+
+$(ALLOC_LLBC_FILE): $(ALLOC_STAGE_DIR)/Cargo.toml alloc/src/lib.rs
+	cd $(ALLOC_STAGE_DIR) && $(CHARON) cargo --preset=aeneas \
+	    $(ALLOC_CHARON_EXCLUDES) \
+	    --dest-file $(abspath $(ALLOC_LLBC_FILE))
+
+alloc-llbc: $(ALLOC_LLBC_FILE)
+
+# Run Aeneas on the staged alloc llbc, writing into $(LEAN_DIR)/Aeneas/Alloc/.
+# `-subdir Aeneas/Alloc` makes Aeneas emit `import Aeneas.Alloc.<X>` rather
+# than the auto-derived `Alloc_models.<X>` prefix.
+alloc-extract: $(ALLOC_LLBC_FILE)
+	-$(AENEAS) -backend lean $(ALLOC_LLBC_FILE) -split-files \
+	    -dest $(LEAN_DIR) -subdir Aeneas/Alloc
+
+# 3. Move generated files into $(LEAN_DIR)/Aeneas/ and apply our patches
+#    (imports, opens, namespace rename, comment-outs of broken defs, etc.).
+patch:
+	python3 patch_lean.py
+
+# 4. Build the Lean library to verify it compiles.
+build:
+	cd $(LEAN_DIR) && lake build
+
+# Convenience target: extract, patch, build.
+lean: extract patch build
+
+# Remove only generated artifacts; preserve hand-written files.
+clean-generated:
+	rm -f $(LEAN_DIR)/Funs.lean
+	rm -f $(LEAN_DIR)/Types.lean
+	rm -f $(LEAN_DIR)/FunsExternal_Template.lean
+	rm -f $(LEAN_DIR)/TypesExternal_Template.lean
+	rm -f $(LEAN_DIR)/Aeneas/Funs.lean
+	rm -f $(LEAN_DIR)/Aeneas/Types.lean
+	rm -f $(LEAN_DIR)/Aeneas/FunsExternal_Template.lean
+	rm -f $(LEAN_DIR)/Aeneas/TypesExternal_Template.lean
+	rm -rf $(LEAN_DIR)/Aeneas/Alloc
+
+# Drop the staged alloc copy and its llbc.
+alloc-clean:
+	rm -rf $(ALLOC_STAGE_DIR)
+	rm -f $(ALLOC_LLBC_FILE)
+
+# Full clean: drop the LLBC and the build cache too.
+clean: clean-generated alloc-clean
+	rm -f $(LLBC_FILE)
+	rm -rf $(LEAN_DIR)/.lake
+
+# -----------------------------------------------------------------------------
+# Test suite: a small Rust crate (./test-suite) that exercises items from
+# `core` modeled by `core-models`. It is extracted with Aeneas to Lean and
+# built against the local `Aeneas` drop-in library — this is how we verify
+# that vanilla Aeneas output stays compatible with our package.
+# -----------------------------------------------------------------------------
+
+# Re-extract and rebuild the test suite. Depends on `lean` so the local
+# `Aeneas` library is up-to-date first.
+test-suite: lean
+	$(MAKE) -C test-suite
+
+test-suite-clean:
+	$(MAKE) -C test-suite clean
+
+# -----------------------------------------------------------------------------
+# Aeneas test: a second crate (./aeneas-test) that exercises std-side
+# items from a downstream user's perspective. Where ./test-suite tests
+# the *extraction* of `core_models::*`, ./aeneas-test tests the
+# *consumption* of `std::*` types via Aeneas's builtin name map. Both
+# targets must stay green before a release.
+# -----------------------------------------------------------------------------
+
+aeneas-test: lean
+	$(MAKE) -C aeneas-test
+
+aeneas-test-clean:
+	$(MAKE) -C aeneas-test clean

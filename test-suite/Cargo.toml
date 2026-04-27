@@ -1,0 +1,12 @@
+[package]
+name = "core_models_test_suite"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+path = "src/lib.rs"
+
+[workspace]
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(hax)', 'cfg(hax_compilation)', 'cfg(hax_backend_fstar)', 'cfg(hax_backend_lean)'] }

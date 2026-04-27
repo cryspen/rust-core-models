@@ -23,14 +23,14 @@ that's easier to vendor into smaller projects.
 
 Bump any one of these as a single PR and update the row below.
 
-| Component                              | Version / SHA                 |
-|----------------------------------------|-------------------------------|
-| Rust toolchain                         | `nightly-YYYY-MM-DD`          |
-| [charon](https://github.com/AeneasVerif/charon) | `<sha>`              |
-| [aeneas](https://github.com/AeneasVerif/aeneas) | `<sha>`              |
-| Lean toolchain                         | `leanprover/lean4:v4.X.Y-rc1` |
-| mathlib (transitive via Aeneas)        | `<rev>`                       |
-| [hax-lib](https://github.com/hacspec/hax) | `<sha>`                    |
+| Component                              | Version / SHA                                 |
+|----------------------------------------|-----------------------------------------------|
+| Rust toolchain                         | `nightly-2026-02-07`                          |
+| [charon](https://github.com/AeneasVerif/charon) | [`c0965bbc`](https://github.com/AeneasVerif/charon/commit/c0965bbccdbd87d494b240a4274707356ef0cb88) |
+| [aeneas](https://github.com/AeneasVerif/aeneas) | [`3c9b4907`](https://github.com/AeneasVerif/aeneas/commit/3c9b490747294eb39a6e830930d44b5902c60d39) |
+| Lean toolchain                         | `leanprover/lean4:v4.29.0-rc1`                |
+| mathlib (transitive via Aeneas)        | resolved by Aeneas's `lake-manifest.json`     |
+| [hax](https://github.com/cryspen/hax)  | [`492a34e3`](https://github.com/cryspen/hax/commit/492a34e33c8744b9672eb3cf1c982ac40469f7d4) |
 
 CI verifies that the *committed* extracted Lean files in
 `lean/Aeneas/{Funs,Types,…}.lean` match what a fresh extraction produces
