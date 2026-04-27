@@ -1,0 +1,150 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# All version pins live here. Bump as a single PR with the matching
+# README.md row updated.
+env:
+  RUST_TOOLCHAIN: nightly-2025-11-08
+  CHARON_REV:    REPLACE_WITH_PINNED_SHA
+  AENEAS_REV:    REPLACE_WITH_PINNED_SHA
+  HAX_LIB_REV:   REPLACE_WITH_PINNED_SHA
+  LEAN_TOOLCHAIN_FILE: lean/lean-toolchain
+  # Where the Makefile expects to find the charon / aeneas binaries.
+  AENEAS_DIR: ${{ github.workspace }}/.tools/aeneas
+
+jobs:
+  # ---------------------------------------------------------------- formatting
+  rust-fmt:
+    name: cargo fmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.RUST_TOOLCHAIN }}
+          components: rustfmt
+
+      - run: cargo fmt --all -- --check
+
+  # ---------------------------------------------------------------- rust tests
+  rust-test:
+    name: cargo test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.RUST_TOOLCHAIN }}
+
+      - name: Cache cargo registry & target
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: cargo-${{ runner.os }}-${{ hashFiles('**/Cargo.lock', '**/Cargo.toml') }}
+          restore-keys: |
+            cargo-${{ runner.os }}-
+
+      - run: cargo test --workspace
+
+  # ----------------------------------------------------------- lean extraction
+  lean-build:
+    name: aeneas extraction + lake build
+    runs-on: ubuntu-latest
+    needs: [rust-fmt]   # don't waste cycles on a formatting-broken PR
+    steps:
+      - uses: actions/checkout@v4
+
+      # ---- Rust toolchain (needed by charon, aeneas, the workspace) -------
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.RUST_TOOLCHAIN }}
+
+      # ---- Cache: charon + aeneas binaries (built from source, slow) ------
+      - name: Cache charon + aeneas binaries
+        id: cache-tools
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.AENEAS_DIR }}
+          key: aeneas-${{ runner.os }}-${{ env.CHARON_REV }}-${{ env.AENEAS_REV }}
+
+      - name: Build charon (cache miss)
+        if: steps.cache-tools.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p $AENEAS_DIR
+          git clone https://github.com/AeneasVerif/charon $AENEAS_DIR/charon-src
+          (cd $AENEAS_DIR/charon-src && git checkout $CHARON_REV)
+          (cd $AENEAS_DIR/charon-src && make)
+          mv $AENEAS_DIR/charon-src $AENEAS_DIR/charon
+
+      - name: Build aeneas (cache miss)
+        if: steps.cache-tools.outputs.cache-hit != 'true'
+        run: |
+          git clone https://github.com/AeneasVerif/aeneas $AENEAS_DIR/aeneas-src
+          (cd $AENEAS_DIR/aeneas-src && git checkout $AENEAS_REV)
+          # See aeneas README for build deps (opam, ocaml, dune).
+          (cd $AENEAS_DIR/aeneas-src && make)
+          # Aeneas binary lands at $AENEAS_DIR/bin/aeneas (matches Makefile).
+          mkdir -p $AENEAS_DIR/bin
+          cp $AENEAS_DIR/aeneas-src/bin/aeneas $AENEAS_DIR/bin/aeneas
+
+      # ---- Lean toolchain ------------------------------------------------
+      - name: Install elan
+        run: |
+          curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> $GITHUB_PATH
+
+      - name: Cache Lean / mathlib build
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/mathlib
+            lean/.lake
+            test-suite/lean/.lake
+            aeneas-test/lean/.lake
+          key: lean-${{ runner.os }}-${{ hashFiles('lean/lean-toolchain') }}-${{ hashFiles('lean/lakefile.toml') }}
+
+      # ---- Cache cargo too ----------------------------------------------
+      - name: Cache cargo registry & target
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: cargo-lean-${{ runner.os }}-${{ hashFiles('**/Cargo.lock', '**/Cargo.toml') }}
+
+      # ---- The actual pipeline ------------------------------------------
+      - name: Extract + build parent Lean library
+        run: make CHARON=$AENEAS_DIR/charon/bin/charon AENEAS=$AENEAS_DIR/bin/aeneas lean
+
+      - name: Extraction-side regression (test-suite)
+        run: make CHARON=$AENEAS_DIR/charon/bin/charon AENEAS=$AENEAS_DIR/bin/aeneas test-suite
+
+      - name: Consumption-side regression (aeneas-test)
+        run: make CHARON=$AENEAS_DIR/charon/bin/charon AENEAS=$AENEAS_DIR/bin/aeneas aeneas-test
+
+      # ---- Enforce that committed extraction matches re-extraction ------
+      # If this fails: someone changed Rust source / patcher without
+      # re-running `make lean` and committing the resulting diff.
+      - name: Committed extraction must match a fresh re-extraction
+        run: |
+          git diff --exit-code -- \
+            lean/Aeneas/Funs.lean \
+            lean/Aeneas/Types.lean \
+            lean/Aeneas/FunsExternal_Template.lean \
+            lean/Aeneas/TypesExternal_Template.lean \
+            lean/Aeneas/Alloc/Funs.lean \
+            lean/Aeneas/Alloc/Types.lean
