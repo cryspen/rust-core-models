@@ -43,7 +43,7 @@ jobs:
           toolchain: ${{ env.RUST_TOOLCHAIN }}
 
       - name: Cache cargo registry & target
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.cargo/registry
@@ -73,14 +73,14 @@ jobs:
           toolchain: ${{ env.RUST_TOOLCHAIN }}
 
       # ---- Cache: charon + aeneas binaries (built from source, slow) ------
-      # Use restore + save (instead of the combined `actions/cache@v4`)
+      # Use restore + save (instead of the combined `actions/cache@v5`)
       # so the save runs unconditionally — including when a *later* step
       # like the diff-check fails. The combined action skips its save on
       # job failure, which means a single bad diff would force every
       # subsequent run to rebuild charon + aeneas from scratch.
       - name: Restore cached charon + aeneas binaries
         id: cache-tools
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: ${{ env.AENEAS_DIR }}
           # Bump the `v2` suffix when the build invocation changes
@@ -139,7 +139,7 @@ jobs:
         # `if: always()` so the binaries we just built persist even if a
         # later step (e.g. the extraction diff-check) fails.
         if: always() && steps.cache-tools.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: ${{ env.AENEAS_DIR }}
           key: aeneas-v2-${{ runner.os }}-${{ env.CHARON_REV }}-${{ env.AENEAS_REV }}
@@ -151,7 +151,7 @@ jobs:
           echo "$HOME/.elan/bin" >> $GITHUB_PATH
 
       - name: Cache Lean / mathlib build
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.cache/mathlib
@@ -161,7 +161,7 @@ jobs:
 
       # ---- Cache cargo too ----------------------------------------------
       - name: Cache cargo registry & target
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.cargo/registry
