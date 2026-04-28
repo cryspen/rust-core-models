@@ -4,15 +4,12 @@ A model of Rust's `core` and `alloc` libraries, packaged as:
 
 1. **Rust crates** (`core-models`, `alloc`, `rust_primitives`) that mirror the
    `core::*` and `alloc::*` items downstream verified-Rust code uses.
-2. A **Lean library** (`Aeneas`) extracted from those crates by
+2. A **Lean library** (`CoreModels`) extracted from those crates by
    [Aeneas](https://github.com/AeneasVerif/aeneas), suitable for
    downstream Aeneas-extracted Lean projects to depend on as a drop-in
    `core` model.
 3. A **regression-test crate** (`tests/`) that exercises items from
-   `core::*` / `std::*` and from the local `core_models::*` source.
-   Aeneas extracts it with no post-processing — every shim it depends on
-   lives in the `Aeneas` library — so this crate doubles as proof that
-   downstream code can use the library `import Aeneas` and nothing else.
+   `core::*` / `std::*`.
 
 ## Why this exists
 
@@ -30,7 +27,7 @@ verification tool's logic) has three advantages:
   Aeneas-Lean — instead of each tool maintaining its own shadow `core`.
 
 CI verifies that the *committed* extracted Lean files in
-`lean/Aeneas/{Funs,Types,…}.lean` match what a fresh extraction produces
+`lean/CoreModels/{Funs,Types,…}.lean` match what a fresh extraction produces
 against the pinned toolchain. That means a downstream Lean consumer can
 just `lake update` this repo without installing the Rust toolchain.
 
@@ -46,12 +43,11 @@ just `lake update` this repo without installing the Rust toolchain.
 ├── lean/                  # the distributed Lean library
 │   ├── lakefile.toml
 │   ├── lean-toolchain
-│   └── Aeneas/            # hand-written + extracted, both committed
-├── tests/                 # regression-test crate (core::*, std::*,
-│                          #   core_models::*); extracted unmodified
+│   └── CoreModels/        # hand-written + extracted, both committed
+├── tests/                 # regression-test crate (core::*, std::*)
 ├── patch_lean.py          # post-processes Aeneas's output of the
 │                          #   parent library to match our package layout
-│                          #   (see comment block at top)
+│                          #   (see comment block at top of the file)
 ├── Makefile               # extraction + build orchestration
 └── .github/workflows/ci.yml
 ```
@@ -85,42 +81,23 @@ Add to your downstream `lakefile.toml`:
 ```toml
 [[require]]
 name = "CoreModels"
-git = "https://github.com/<owner>/rust-core-models"
-rev = "<tag-or-sha>"
+git = "https://github.com/cryspen/rust-core-models"
+rev = "COMMIT_HASH_HERE"
 subDir = "lean"
 ```
 
-Then `import CoreModels` in your generated Lean files. Aeneas-extracted code
-that uses `std::*` types will resolve through this library's
+Then `import CoreModels` in your generated Lean files and replace the line
+```
+open Aeneas Aeneas.Std Result ControlFlow Error
+```
+by
+```
+open CoreModels Aeneas
+open Aeneas.Std hiding namespace core
+open Result ControlFlow Error
+```
+Then the Aeneas-extracted code that uses `std::*` types will resolve through this library's
 `core.*` / `alloc.*` shims.
-
-## Testing methodology
-
-`tests/src/lib.rs` mixes both directions in one crate:
-
-- Calls into `core::*` / `std::*` (e.g. `Vec::push`, `Option::unwrap_or`,
-  `core::mem::swap`) — exercises Aeneas's builtin name map routing
-  references to the Lean shims we provide.
-- Calls that pass through the local `core_models::*` source as charon
-  sees it — exercises the round-trip from our Rust source through
-  extraction to the same Lean shims.
-
-The crate is extracted with vanilla `aeneas` and built directly against
-`Aeneas` — no `patch_lean.py` post-processing. Anything required to
-make that work lives in the `Aeneas` library itself. CI runs the full
-extraction + Lake build on every PR.
-
-## Known gaps
-
-- `core::slice::index::SliceIndex` and the trait impls are excluded from
-  extraction (see `CHARON_EXCLUDES` in `Makefile`). Modeling the full
-  trait would require `Sealed` super-trait + `&mut` back-edge tuples for
-  `get_mut`/`index_mut` + raw-pointer plumbing for `get_unchecked*`.
-  Tracked as TODO in `lean/Aeneas/StdAliases.lean` and the
-  commented-out blocks in `tests/src/lib.rs`.
-- A few iterator adapter `*::next` definitions are commented out by the
-  patcher because Lean rejects field-projection-on-trait-method-param.
-  See `FUNS_TO_REMOVE` in `patch_lean.py` for the list.
 
 ## Contributing
 
