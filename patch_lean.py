@@ -46,8 +46,8 @@ import sys
 from pathlib import Path
 
 LEAN_DIR = Path(__file__).parent / "lean"
-AENEAS_DIR = LEAN_DIR / "Aeneas"
-ALLOC_AENEAS_DIR = AENEAS_DIR / "Alloc"
+CORE_DIR = LEAN_DIR / "CoreModels"
+ALLOC_DIR = CORE_DIR / "Alloc"
 
 # files to move from `lean/` into `lean/Aeneas/`
 GENERATED_FILES = [
@@ -165,16 +165,17 @@ TYPES_TO_REMOVE = [
     "core_models::ops::function::FnOnce",
     "core_models::ops::function::FnMut",
     "core_models::ops::function::Fn",
-    "core_models::option::Option",
-    # `core_models::result::Result` is provided by Primitives.lean as a
-    # reducible alias of an inductive declared inside a guard namespace.
-    # If we let the extracted inductive land at `core.result.Result` it
-    # auto-creates a same-named namespace whose enclosing-namespace lookup
-    # shadows the monadic `Result`, breaking signatures of the form
-    # `... → Result (Option T)` inside any `def`/`axiom core.result.Result.*`.
-    # See the long comment around the alias in Primitives.lean for the full
-    # story (and the recommended upstream fix: rename Aeneas's monad).
-    "core_models::result::Result",
+    "core_models::cmp::Ordering",
+    # "core_models::option::Option",
+    # # `core_models::result::Result` is provided by Primitives.lean as a
+    # # reducible alias of an inductive declared inside a guard namespace.
+    # # If we let the extracted inductive land at `core.result.Result` it
+    # # auto-creates a same-named namespace whose enclosing-namespace lookup
+    # # shadows the monadic `Result`, breaking signatures of the form
+    # # `... → Result (Option T)` inside any `def`/`axiom core.result.Result.*`.
+    # # See the long comment around the alias in Primitives.lean for the full
+    # # story (and the recommended upstream fix: rename Aeneas's monad).
+    # "core_models::result::Result",
 ]
 
 
@@ -191,24 +192,17 @@ def write(path: Path, contents: str) -> None:
 
 
 def rewrite_imports_and_opens(text: str) -> str:
-    """Rewrite top-of-file imports and `open` to match our package layout."""
-    # imports. Aeneas auto-derives a module prefix from the crate name
-    # (`core_models` → `CoreModels`); rewrite those to land inside our
-    # hand-written `Aeneas/` namespace.
-    text = re.sub(r"^import Aeneas$", "import Aeneas.Primitives",
-                  text, flags=re.MULTILINE)
-    text = re.sub(r"^import CoreModels\.Types$", "import Aeneas.Types",
-                  text, flags=re.MULTILINE)
-    text = re.sub(r"^import CoreModels\.TypesExternal$",
-                  "import Aeneas.TypesExternal",
-                  text, flags=re.MULTILINE)
-    text = re.sub(r"^import CoreModels\.FunsExternal$",
-                  "import Aeneas.FunsExternal",
-                  text, flags=re.MULTILINE)
+    """Rewrite `imports` and `open` to match our package layout."""
+    # import
+    text = re.sub(
+        r"^import Aeneas$",
+        "import Aeneas\nimport CoreModels.Command\nimport CoreModels.Primitives",
+        text, flags=re.MULTILINE,
+    )
     # open
     text = re.sub(
         r"^open Aeneas Aeneas\.Std Result ControlFlow Error$",
-        "open core core.Std Result ControlFlow Error",
+        "open Aeneas\nopen Aeneas.Std hiding namespace core\nopen Result ControlFlow Error",
         text, flags=re.MULTILINE,
     )
     return text
@@ -573,13 +567,48 @@ def fix_flatten_signature(text: str) -> str:
 
 
 def add_instances_import(text: str) -> str:
-    """Funs.lean needs Aeneas.Instances for the scalar PartialOrd instances."""
+    """Funs.lean needs CoreModels.Instances for the scalar PartialOrd instances."""
     return text.replace(
-        "import Aeneas.Primitives\nimport Aeneas.Types\nimport Aeneas.FunsExternal\n",
-        "import Aeneas.Primitives\nimport Aeneas.Types\n"
-        "import Aeneas.Instances\nimport Aeneas.FunsExternal\n",
+        "import CoreModels.Primitives\nimport CoreModels.Types\nimport CoreModels.FunsExternal\n",
+        "import CoreModels.Primitives\nimport CoreModels.Types\n"
+        "import CoreModels.Instances\nimport CoreModels.FunsExternal\n",
     )
 
+def add_core_opens(text: str) -> str:
+    return text.replace(
+        "open Aeneas\n",
+        "open Aeneas\n"
+        "open Aeneas.Std (core.num.U8.MIN core.num.U8.MAX)\n"
+        "open Aeneas.Std (core.num.U16.MIN core.num.U16.MAX)\n"
+        "open Aeneas.Std (core.num.U32.MIN core.num.U32.MAX)\n"
+        "open Aeneas.Std (core.num.U64.MIN core.num.U64.MAX)\n"
+        "open Aeneas.Std (core.num.U128.MIN core.num.U128.MAX)\n"
+        "open Aeneas.Std (core.num.Usize.MIN core.num.Usize.MAX)\n"
+        "open Aeneas.Std (core.num.U8.MIN core.num.U8.MAX)\n"
+        "open Aeneas.Std (core.num.U16.MIN core.num.U16.MAX)\n"
+        "open Aeneas.Std (core.num.U32.MIN core.num.U32.MAX)\n"
+        "open Aeneas.Std (core.num.U64.MIN core.num.U64.MAX)\n"
+        "open Aeneas.Std (core.num.U128.MIN core.num.U128.MAX)\n"
+        "open Aeneas.Std (core.num.Usize.MIN core.num.Usize.MAX)\n"
+        "open Aeneas.Std (core.num.I8.MIN core.num.I8.MAX)\n"
+        "open Aeneas.Std (core.num.I16.MIN core.num.I16.MAX)\n"
+        "open Aeneas.Std (core.num.I32.MIN core.num.I32.MAX)\n"
+        "open Aeneas.Std (core.num.I64.MIN core.num.I64.MAX)\n"
+        "open Aeneas.Std (core.num.I128.MIN core.num.I128.MAX)\n"
+        "open Aeneas.Std (core.num.Isize.MIN core.num.Isize.MAX)\n"
+        "open Aeneas.Std.core (num.U8.MIN num.U8.MAX)\n"
+        "open Aeneas.Std.core (num.U16.MIN num.U16.MAX)\n"
+        "open Aeneas.Std.core (num.U32.MIN num.U32.MAX)\n"
+        "open Aeneas.Std.core (num.U64.MIN num.U64.MAX)\n"
+        "open Aeneas.Std.core (num.U128.MIN num.U128.MAX)\n"
+        "open Aeneas.Std.core (num.Usize.MIN num.Usize.MAX)\n"
+        "open Aeneas.Std.core (num.I8.MIN num.I8.MAX)\n"
+        "open Aeneas.Std.core (num.I16.MIN num.I16.MAX)\n"
+        "open Aeneas.Std.core (num.I32.MIN num.I32.MAX)\n"
+        "open Aeneas.Std.core (num.I64.MIN num.I64.MAX)\n"
+        "open Aeneas.Std.core (num.I128.MIN num.I128.MAX)\n"
+        "open Aeneas.Std.core (num.Isize.MIN num.Isize.MAX)\n"
+    )
 
 # Identifies the start of a top-level "block" (a doc comment, an attribute,
 # or a bare def/structure/inductive/abbrev/instance line).
@@ -701,12 +730,12 @@ def main() -> int:
     if not LEAN_DIR.exists():
         print(f"error: {LEAN_DIR} does not exist", file=sys.stderr)
         return 1
-    AENEAS_DIR.mkdir(exist_ok=True)
+    CORE_DIR.mkdir(exist_ok=True)
 
     moved_any = False
     for filename in GENERATED_FILES:
         src = LEAN_DIR / filename
-        dst = AENEAS_DIR / filename
+        dst = CORE_DIR / filename
         if not src.exists():
             print(f"warning: {src} not found, skipping", file=sys.stderr)
             continue
@@ -718,10 +747,10 @@ def main() -> int:
         print("nothing to patch (no freshly extracted files found)")
 
     # Apply transforms in dependency order: Types -> FunsExternal -> Funs
-    types_path = AENEAS_DIR / "Types.lean"
-    funs_path = AENEAS_DIR / "Funs.lean"
-    funs_ext_path = AENEAS_DIR / "FunsExternal_Template.lean"
-    types_ext_path = AENEAS_DIR / "TypesExternal_Template.lean"
+    types_path = CORE_DIR / "Types.lean"
+    funs_path = CORE_DIR / "Funs.lean"
+    funs_ext_path = CORE_DIR / "FunsExternal_Template.lean"
+    types_ext_path = CORE_DIR / "TypesExternal_Template.lean"
 
     for path in [types_path, types_ext_path, funs_ext_path, funs_path]:
         if not path.exists():
@@ -733,6 +762,7 @@ def main() -> int:
         if path == funs_path:
             text = fix_fail_panic(text)
             text = add_instances_import(text)
+            text = add_core_opens(text)
             text = comment_out_num_bounds(text)
             text = desugar_pure_num_bound_binds(text)
         if path == types_path:
@@ -770,13 +800,13 @@ def patch_alloc() -> None:
     `lean/Aeneas/FunsExternal.lean` instead, so we delete the templates
     after extraction.
     """
-    if not ALLOC_AENEAS_DIR.exists():
+    if not ALLOC_DIR.exists():
         return
 
-    funs        = ALLOC_AENEAS_DIR / "Funs.lean"
-    types       = ALLOC_AENEAS_DIR / "Types.lean"
-    funs_ext_t  = ALLOC_AENEAS_DIR / "FunsExternal_Template.lean"
-    types_ext_t = ALLOC_AENEAS_DIR / "TypesExternal_Template.lean"
+    funs        = ALLOC_DIR / "Funs.lean"
+    types       = ALLOC_DIR / "Types.lean"
+    funs_ext_t  = ALLOC_DIR / "FunsExternal_Template.lean"
+    types_ext_t = ALLOC_DIR / "TypesExternal_Template.lean"
 
     # 1. Delete the external templates — their contents live in
     #    `lean/Aeneas/{Funs,Types}External.lean` (parent directory).

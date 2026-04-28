@@ -84,13 +84,13 @@ Add to your downstream `lakefile.toml`:
 
 ```toml
 [[require]]
-name = "Aeneas"
+name = "CoreModels"
 git = "https://github.com/<owner>/rust-core-models"
 rev = "<tag-or-sha>"
 subDir = "lean"
 ```
 
-Then `import Aeneas` in your generated Lean files. Aeneas-extracted code
+Then `import CoreModels` in your generated Lean files. Aeneas-extracted code
 that uses `std::*` types will resolve through this library's
 `core.*` / `alloc.*` shims.
 
