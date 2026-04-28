@@ -15,6 +15,9 @@ proptest-regressions/
 *.llbc
 .alloc-extract/
 
+FunsExternal_Template.lean
+TypesExternal_Template.lean
+
 # Aeneas-extracted output for the tests/ crate (regenerated each build).
 # The hand-written stubs (FunsExternal.lean, TypesExternal.lean) stay
 # tracked.
