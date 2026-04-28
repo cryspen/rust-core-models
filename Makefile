@@ -135,7 +135,7 @@ patch:
 
 # 4. Build the Lean library to verify it compiles.
 build:
-	cd $(LEAN_DIR) && lake build
+	cd $(LEAN_DIR) && lake exe cache get && lake build
 
 # Convenience target: extract, patch, build.
 lean: extract patch build

@@ -29,8 +29,8 @@ extract: $(LLBC_FILE)
 	rm -f $(LEAN_DIR)/$(SUBDIR)/FunsExternal_Template.lean
 	rm -f $(LEAN_DIR)/$(SUBDIR)/TypesExternal_Template.lean
 
-# 3. Fix the `import`s and `open`s in the generated file:
-fix: extract
+# 3. Patch the `import`s and `open`s in the generated file:
+patch: extract
 	sed -i \
 		'/^open Aeneas /c\open CoreModels Aeneas\nopen Aeneas.Std hiding namespace core alloc\nopen Result ControlFlow Error' \
 		$(LEAN_DIR)/$(SUBDIR)/Funs.lean
@@ -39,8 +39,8 @@ fix: extract
 		$(LEAN_DIR)/$(SUBDIR)/Funs.lean
 
 # 4. Build the Lean library — this is the actual test.
-build: fix
-	cd $(LEAN_DIR) && lake build
+build: patch
+	cd $(LEAN_DIR) && lake exe cache get && lake build
 
 # Only remove files Aeneas re-generates; keep the hand-written
 # `FunsExternal.lean` / `TypesExternal.lean` stubs in $(SUBDIR).
