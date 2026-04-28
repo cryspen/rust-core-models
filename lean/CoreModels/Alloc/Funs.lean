@@ -6,8 +6,8 @@ import Aeneas.TypesExternal
 import Aeneas.FunsExternal
 import Aeneas.Funs
 import Aeneas.StdAliases
-import Aeneas.Alloc.Types
--- (alloc-side externals live in parent Aeneas.FunsExternal)
+import CoreModels.Alloc.Types
+import CoreModels.Alloc.FunsExternal
 open Aeneas Aeneas.Std Result ControlFlow Error
 set_option linter.dupNamespace false
 set_option linter.hashCommand false

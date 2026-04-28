@@ -25,18 +25,6 @@ CORE_MODELS_DIR = core-models
 ALLOC_LLBC_FILE = alloc.llbc
 ALLOC_STAGE_DIR = .alloc-extract
 
-# Hand-written files in $(LEAN_DIR) that must NOT be touched by extraction or
-# the post-extraction patcher. They live alongside the generated ones; this
-# variable is informational only — the patcher leaves the Aeneas/ subdirectory
-# alone except for the four files it explicitly moves into it.
-HAND_WRITTEN = \
-    $(LEAN_DIR)/lakefile.toml \
-    $(LEAN_DIR)/lean-toolchain \
-    $(LEAN_DIR)/Aeneas.lean \
-    $(LEAN_DIR)/Aeneas/Primitives.lean \
-    $(LEAN_DIR)/Aeneas/Instances.lean \
-    $(LEAN_DIR)/Aeneas/PureFuns.lean
-
 # Items in the `alloc` crate that can't be extracted (Aeneas crashes on them
 # even after the rename trick). They are independent of the patcher's
 # Lean-text comment-out logic.
@@ -133,12 +121,12 @@ $(ALLOC_LLBC_FILE): $(ALLOC_STAGE_DIR)/Cargo.toml alloc/src/lib.rs
 
 alloc-llbc: $(ALLOC_LLBC_FILE)
 
-# Run Aeneas on the staged alloc llbc, writing into $(LEAN_DIR)/Aeneas/Alloc/.
-# `-subdir Aeneas/Alloc` makes Aeneas emit `import Aeneas.Alloc.<X>` rather
+# Run Aeneas on the staged alloc llbc, writing into $(LEAN_DIR)/CoreModels/Alloc/.
+# `-subdir CoreModels/Alloc` makes Aeneas emit `import CoreModels.Alloc.<X>` rather
 # than the auto-derived `Alloc_models.<X>` prefix.
 alloc-extract: $(ALLOC_LLBC_FILE)
 	-$(AENEAS) -backend lean $(ALLOC_LLBC_FILE) -split-files \
-	    -dest $(LEAN_DIR) -subdir Aeneas/Alloc
+	    -dest $(LEAN_DIR) -subdir CoreModels/Alloc
 
 # 3. Move generated files into $(LEAN_DIR)/Aeneas/ and apply our patches
 #    (imports, opens, namespace rename, comment-outs of broken defs, etc.).

@@ -1,6 +1,10 @@
-name = "Aeneas"
+name = "CoreModels"
 version = "0.1.0"
-defaultTargets = ["Aeneas"]
+defaultTargets = ["CoreModels"]
 
 [[lean_lib]]
+name = "CoreModels"
+
+[[require]]
 name = "Aeneas"
+path = "/home/alex/Projects/aeneas/step-mvcgen/backends/lean"
