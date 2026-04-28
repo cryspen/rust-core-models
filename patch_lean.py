@@ -312,29 +312,21 @@ def drop_vec_allocator_param(text: str) -> str:
     Rewrite our extraction so `vec.Vec` (and the related drain types) take
     just `T`, with the phantom slot fixed to `core.Phantom Unit`.
     """
-    # Type definition: drop the second `(A : Type)` parameter and erase
-    # `A` in the body.
-    text = re.sub(
-        r"def vec\.Vec \(T : Type\) \(A : Type\) :=\n"
-        r"  rust_primitives\.sequence\.Seq T × core\.Phantom A",
-        "def vec.Vec (T : Type) :=\n"
-        "  rust_primitives.sequence.Seq T × core.Phantom Unit",
-        text,
-    )
-    text = re.sub(
-        r"def vec\.drain\.Drain \(T : Type\) \(A : Type\) :=\n"
-        r"  rust_primitives\.sequence\.Seq T × core\.Phantom A",
-        "def vec.drain.Drain (T : Type) :=\n"
-        "  rust_primitives.sequence.Seq T × core.Phantom Unit",
-        text,
-    )
-    text = re.sub(
-        r"def vec\.into_iter\.IntoIter \(T : Type\) \(A : Type\) :=\n"
-        r"  rust_primitives\.sequence\.Seq T × core\.Phantom A",
-        "def vec.into_iter.IntoIter (T : Type) :=\n"
-        "  rust_primitives.sequence.Seq T × core.Phantom Unit",
-        text,
-    )
+    # Type definitions: drop the second `(A : Type)` parameter and erase
+    # `A` in the body. Each is identified by its doc-comment header so that a
+    # change in line-wrapping or whitespace inside the body cannot silently
+    # turn the rewrite into a no-op.
+    text = replace_blocks(text, [
+        ("alloc::vec::Vec",
+         "def vec.Vec (T : Type) :=\n"
+         "  rust_primitives.sequence.Seq T × core.Phantom Unit"),
+        ("alloc::vec::drain::Drain",
+         "def vec.drain.Drain (T : Type) :=\n"
+         "  rust_primitives.sequence.Seq T × core.Phantom Unit"),
+        ("alloc::vec::into_iter::IntoIter",
+         "def vec.into_iter.IntoIter (T : Type) :=\n"
+         "  rust_primitives.sequence.Seq T × core.Phantom Unit"),
+    ])
     # Note: `collections.vec_deque.VecDeque` is intentionally left 2-arg
     # (Self + Allocator), matching std's `VecDeque<T, A>` shape, so that
     # downstream references like `alloc.collections.vec_deque.VecDeque T
@@ -570,12 +562,14 @@ def _find_block_end(lines: list[str], i: int, n: int) -> tuple[int, int]:
     if j < n and any(lines[j].startswith(k) for k in DEF_KEYWORDS):
         j += 1
     # 3. Consume the body: every line until the next top-level construct
-    #    (`/--`, `@[`, or a fresh def-keyword line).
+    #    (`/--`, `@[`, a fresh def-keyword line, or a namespace `end ...`).
     while j < n:
         cur = lines[j]
         if cur.startswith("/--") or cur.startswith("@["):
             break
         if any(cur.startswith(k) for k in DEF_KEYWORDS):
+            break
+        if cur.startswith("end ") or cur.rstrip() == "end":
             break
         j += 1
     # Trim trailing blank lines from the block (they belong outside).
