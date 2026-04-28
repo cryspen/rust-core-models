@@ -415,17 +415,9 @@ def rewrite_alloc_phantom_data(text: str) -> str:
     #    of a 2-tuple immediately followed by `)`.
     text = re.sub(r",\s*\(\)\)", ", core.Phantom.mk)", text)
     # 3. Erase the (now redundant) declaration block.
-    pat = re.compile(
-        r"^(/-- \[core::marker::PhantomData\]\n"
-        r"(?:[^\n]*\n)*?"
-        r"\ *Visibility:\ public\ -/\n)"
-        r"(@\[[^\]]*\]\n)?"
-        r"(def\s+core\.Phantom[^\n]*\n)",
-        re.MULTILINE,
-    )
-    return pat.sub(
-        lambda m: "/-\n" + m.group(0) + "-/  -- replaced by core.Phantom (see rewrite_alloc_phantom_data)\n",
-        text,
+    return comment_out_blocks(
+        text, ["core::marker::PhantomData"],
+        trailer="replaced by core.Phantom (see rewrite_alloc_phantom_data)",
     )
 
 
@@ -485,29 +477,14 @@ def comment_out_num_bounds(text: str) -> str:
             Visibility: public -/
         @[global_simps, irreducible] def num.X.MIN : Std.X := ...
 
-    or with the attribute on its own line and the def on the next. We wrap
-    the doc comment + (optional) attribute + def line in a `/- ... -/`
-    block comment so the doc comment doesn't dangle.
+    Wrap the doc comment + attribute + def line in `/- ... -/` so the doc
+    comment doesn't dangle.
     """
-    int_alt = "(?:U8|U16|U32|U64|U128|Usize|I8|I16|I32|I64|I128|Isize)"
-    # The full block: doc comment + optional attribute(s) + def line.
-    # The `[^\]]*` inside the doc comment is generous (no nested `]`).
-    pat = re.compile(
-        rf"""
-        ^(/--\ \[core_models::num::\{{core_models::num::[a-z0-9]+\}}::(?:MIN|MAX)\]\n
-        (?:[^\n]*\n)*?           # doc body lines
-        \ *Visibility:\ public\ -/\n)
-        ((?:@\[[^\]]*\]\s*\n?)*) # zero or more attributes (each may end the line or continue)
-        (def\s+num\.{int_alt}\.(?:MIN|MAX)[^\n]*\n)
-        """,
-        re.MULTILINE | re.VERBOSE,
-    )
-
-    def repl(m: re.Match) -> str:
-        body = m.group(0)
-        return "/-\n" + body + "-/  -- provided by Aeneas.Primitives\n"
-
-    return pat.sub(repl, text)
+    types = ("u8", "u16", "u32", "u64", "u128", "usize",
+             "i8", "i16", "i32", "i64", "i128", "isize")
+    subs = [f"{{core_models::num::{t}}}::{b}"
+            for t in types for b in ("MIN", "MAX")]
+    return comment_out_blocks(text, subs, trailer="provided by Aeneas.Primitives")
 
 
 def fix_flatten_signature(text: str) -> str:
