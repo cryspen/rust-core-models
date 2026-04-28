@@ -2,7 +2,7 @@
 -- [core_models]: type definitions
 import Aeneas
 import CoreModels.Command
-import CoreModels.Primitives
+import CoreModels.TypesPrologue
 import CoreModels.TypesExternal
 open Aeneas
 open Aeneas.Std hiding namespace core
@@ -91,6 +91,7 @@ structure ops.range.RangeFrom (T : Type) where
 @[reducible]
 def ops.range.RangeFull := Unit
 
+/-
 /-- [core_models::option::Option]
     Source: 'core-models/src/core/option.rs', lines 3:0-8:1
     Visibility: public -/
@@ -98,6 +99,7 @@ def ops.range.RangeFull := Unit
 inductive option.Option (T : Type) where
 | Some : T → option.Option T
 | None : option.Option T
+-/
 
 /-- Trait declaration: [core_models::iter::traits::iterator::Iterator]
     Source: 'core-models/src/core/iter.rs', lines 15:8-19:9

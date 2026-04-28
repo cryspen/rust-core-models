@@ -2,7 +2,6 @@
   Scalar trait instances for the Aeneas library.
   Imported after Types.lean which provides the trait structure definitions.
 -/
-import CoreModels.Primitives
 import CoreModels.Types
 
 namespace core
@@ -74,89 +73,13 @@ def cmp.PartialOrdI64   := mkIPartialOrd .I64
 def cmp.PartialOrdI128  := mkIPartialOrd .I128
 def cmp.PartialOrdIsize := mkIPartialOrd .Isize
 
--- /-! ## Array Clone / PartialEq
-
--- Aeneas extracts `<[T; N] as Clone>::clone` to `core.array.CloneArray.clone`
--- and `<[T; N] as PartialEq<[U; N]>>::eq` to
--- `core.array.equality.PartialEqArray.eq`. We provide trivial models that
--- satisfy the type signatures expected by extracted code. -/
-
--- namespace array
-
--- /-- Trivial model of array clone — returns the array unchanged. -/
--- def CloneArray.clone {T : Type} {N : Usize}
---     (_cloneInst : clone.Clone T) (a : Array T N) : Result (Array T N) := ok a
-
--- namespace equality
-
--- def PartialEqArray.eq {T U : Type} {N : Usize}
---     (partialEqInst : cmp.PartialEq T U) (a0 : Array T N) (a1 : Array U N) :
---     Result Bool := do
---   let rec loop : List T → List U → Result Bool
---     | [], []           => ok true
---     | x :: xs, y :: ys => do
---         let b ← partialEqInst.eq x y
---         if b then loop xs ys else ok false
---     | _, _             => ok false
---   loop a0.val a1.val
-
--- end equality
-
--- end array
-
--- /-! ## core::iter::range — Range iteration
-
--- Aeneas extracts `for i in lo..hi { … }` to a loop driven by
--- `core.iter.range.IteratorRange.next`, which in turn uses a
--- `core.iter.range.Step` dictionary. We provide both, plus a `StepUsize`
--- instance, so that downstream extracted code that iterates over `Range<usize>`
--- type-checks. -/
-
--- namespace iter.range
-
--- structure Step (Self : Type) where
---   cloneInst       : clone.Clone Self
---   partialOrdInst  : cmp.PartialOrd Self Self
---   steps_between   : Self → Self → Result (Usize × (Option Usize))
---   forward_checked : Self → Usize → Result (Option Self)
---   backward_checked: Self → Usize → Result (Option Self)
-
--- /-- Step instance for `Usize`. -/
--- def StepUsize : Step Usize := {
---   cloneInst       := clone.CloneUsize
---   partialOrdInst  := cmp.PartialOrdUsize
---   steps_between   := fun start «end» =>
---     if start.toNat > «end».toNat then ok (.ofNat 0, Option.none)
---     else
---       let s := .ofNat («end».toNat - start.toNat)
---       ok (s, Option.some s)
---   forward_checked := fun start n =>
---     let r := start.toNat + n.toNat
---     if r ≤ core.num.Usize.MAX.toNat then ok (Option.some (.ofNat r))
---     else ok Option.none
---   backward_checked := fun start n =>
---     if n.toNat ≤ start.toNat then ok (Option.some (.ofNat (start.toNat - n.toNat)))
---     else ok Option.none
--- }
-
--- /-- The `Iterator::next` implementation for `core::ops::range::Range<A>`,
---     parameterised over the `Step` dictionary. -/
--- def IteratorRange.next {A : Type} (StepInst : Step A) :
---     ops.range.Range A → Result ((Option A) × ops.range.Range A) := fun range => do
---   let cmp ← StepInst.partialOrdInst.partial_cmp range.start range.«end»
---   let isLess : Bool := match cmp with
---     | Option.some o => match o with
---                        | _root_.core.cmp.Ordering.Less => true
---                        | _ => false
---     | _ => false
---   if isLess then
---     let cur ← StepInst.cloneInst.clone range.start
---     let next? ← StepInst.forward_checked cur (.ofNat 1)
---     match next? with
---     | Option.none      => fail Error.panic
---     | Option.some next => ok (Option.some cur, { range with start := next })
---   else ok (Option.none, range)
-
--- end iter.range
-
 end core
+
+export Aeneas.Std (
+  core.num.U8.MIN core.num.U8.MAX core.num.I8.MIN core.num.I8.MAX
+  core.num.U16.MIN core.num.U16.MAX core.num.I16.MIN core.num.I16.MAX
+  core.num.U32.MIN core.num.U32.MAX core.num.I32.MIN core.num.I32.MAX
+  core.num.U64.MIN core.num.U64.MAX core.num.I64.MIN core.num.I64.MAX
+  core.num.U128.MIN core.num.U128.MAX core.num.I128.MIN core.num.I128.MAX
+  core.num.Usize.MIN core.num.Usize.MAX core.num.Isize.MIN core.num.Isize.MAX
+)
