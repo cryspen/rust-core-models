@@ -4,7 +4,7 @@
 -/
 import CoreModels.Types
 
-namespace core
+namespace CoreModels.core
 
 open Aeneas.Std Result
 
@@ -73,7 +73,9 @@ def cmp.PartialOrdI64   := mkIPartialOrd .I64
 def cmp.PartialOrdI128  := mkIPartialOrd .I128
 def cmp.PartialOrdIsize := mkIPartialOrd .Isize
 
-end core
+end CoreModels.core
+
+namespace CoreModels
 
 export Aeneas.Std (
   core.num.U8.MIN core.num.U8.MAX core.num.I8.MIN core.num.I8.MAX
@@ -83,3 +85,5 @@ export Aeneas.Std (
   core.num.U128.MIN core.num.U128.MAX core.num.I128.MIN core.num.I128.MAX
   core.num.Usize.MIN core.num.Usize.MAX core.num.Isize.MIN core.num.Isize.MAX
 )
+
+end CoreModels

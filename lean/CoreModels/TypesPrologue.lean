@@ -2,7 +2,7 @@ import Aeneas
 
 open Aeneas.Std
 
-namespace core
+namespace CoreModels.core
 
 namespace ops.function
 structure FnOnce (Self : Type) (Args : Type) (Self_Output : Type) where
@@ -58,10 +58,10 @@ abbrev Option := _root_.Option
 
 end option
 
-end core
+end CoreModels.core
 
-namespace hax_lib
+namespace CoreModels.hax_lib
 
 def int.Int := _root_.Int
 
-end hax_lib
+end CoreModels.hax_lib

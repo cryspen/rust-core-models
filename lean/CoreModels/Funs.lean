@@ -19,7 +19,7 @@ set_option maxHeartbeats 1000000
 /- You can remove the following line by using the CLI option `-all-computable`: -/
 noncomputable section
 
-namespace core
+namespace CoreModels.core
 
 /-- Trait implementation: [core::slice::cmp::{core::cmp::PartialEq<[U]> for [T]}]
     Source: '/rustc/library/core/src/slice/cmp.rs', lines 13:0-15:28
@@ -8666,4 +8666,4 @@ def U64.Insts.Core_modelsStrTraitsFromStrU64 : str.traits.FromStr Std.U64
   from_str := U64.Insts.Core_modelsStrTraitsFromStrU64.from_str
 }
 
-end core
+end CoreModels.core
