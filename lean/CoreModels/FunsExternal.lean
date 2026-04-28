@@ -12,6 +12,8 @@ set_option linter.dupNamespace false
 set_option linter.hashCommand false
 set_option linter.unusedVariables false
 
+namespace CoreModels
+
 /- You can set the `maxHeartbeats` value with the `-max-heartbeats` CLI option -/
 set_option maxHeartbeats 1000000
 -- open core_models removed
@@ -1570,3 +1572,5 @@ axiom rust_primitives.sequence.seq_drain
 @[rust_fun "rust_primitives::sequence::seq_index"]
 axiom rust_primitives.sequence.seq_index
   {T : Type} : rust_primitives.sequence.Seq T → Std.Usize → Result T
+
+end CoreModels

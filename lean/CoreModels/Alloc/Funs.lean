@@ -18,7 +18,7 @@ set_option maxHeartbeats 1000000
 /- You can remove the following line by using the CLI option `-all-computable`: -/
 noncomputable section
 
-namespace alloc
+namespace CoreModels.alloc
 
 /-- [alloc::borrow::{alloc::borrow::ToOwned for T}::to_owned]:
     Source: 'src/lib.rs', lines 23:8-25:9
@@ -327,4 +327,4 @@ def vec.Vec.Insts.CoreOpsDerefDerefSlice (T : Type) (A : Type) :
   deref := vec.Vec.Insts.CoreOpsDerefDerefSlice.deref
 }
 
-end alloc
+end CoreModels.alloc

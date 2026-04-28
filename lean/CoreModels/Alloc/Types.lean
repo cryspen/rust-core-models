@@ -14,7 +14,7 @@ set_option linter.unusedVariables false
 /- You can set the `maxHeartbeats` value with the `-max-heartbeats` CLI option -/
 set_option maxHeartbeats 1000000
 
-namespace alloc
+namespace CoreModels.alloc
 
 /-
 /-- [core::marker::PhantomData]
@@ -82,4 +82,4 @@ def vec.into_iter.IntoIter (T : Type) :=
 def vec.drain.Drain (T : Type) :=
   rust_primitives.sequence.Seq T × core.Phantom Unit
 
-end alloc
+end CoreModels.alloc

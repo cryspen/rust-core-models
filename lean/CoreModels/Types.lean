@@ -14,7 +14,7 @@ set_option linter.unusedVariables false
 /- You can set the `maxHeartbeats` value with the `-max-heartbeats` CLI option -/
 set_option maxHeartbeats 1000000
 
-namespace core
+namespace CoreModels.core
 
 /-- [core::marker::PhantomData]
     Source: '/rustc/library/core/src/marker.rs', lines 814:0-814:39
@@ -838,4 +838,4 @@ def str.iter.Split (T : Type) := T
 structure str.traits.FromStr (Self : Type) (Self_Err : Type) where
   from_str : Str → Result (result.Result Self Self_Err)
 
-end core
+end CoreModels.core

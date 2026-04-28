@@ -209,9 +209,9 @@ def rewrite_imports_and_opens(text: str) -> str:
 
 
 def rename_namespace(text: str) -> str:
-    text = re.sub(r"^namespace core_models$", "namespace core",
+    text = re.sub(r"^namespace core_models$", "namespace CoreModels.core",
                   text, flags=re.MULTILINE)
-    text = re.sub(r"^end core_models$", "end core",
+    text = re.sub(r"^end core_models$", "end CoreModels.core",
                   text, flags=re.MULTILINE)
     # Drop `open core_models` from external template files
     text = re.sub(r"^open core_models$", "-- open core_models removed",
@@ -239,7 +239,10 @@ def fix_fail_panic(text: str) -> str:
 
 def rename_alloc_models(text: str) -> str:
     """Rewrite every occurrence of the staged crate name back to `alloc`."""
-    return text.replace("alloc_models", "alloc")
+    text = text.replace("namespace alloc_models", "namespace CoreModels.alloc")
+    text = text.replace("end alloc_models", "end CoreModels.alloc")
+    text = text.replace("alloc_models", "alloc")
+    return text
 
 
 def rewrite_alloc_imports(text: str) -> str:
