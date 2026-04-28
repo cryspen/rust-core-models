@@ -166,7 +166,7 @@ TYPES_TO_REMOVE = [
     "core_models::ops::function::FnMut",
     "core_models::ops::function::Fn",
     "core_models::cmp::Ordering",
-    # "core_models::option::Option",
+    "core_models::option::Option",
     # # `core_models::result::Result` is provided by Primitives.lean as a
     # # reducible alias of an inductive declared inside a guard namespace.
     # # If we let the extracted inductive land at `core.result.Result` it
@@ -196,7 +196,7 @@ def rewrite_imports_and_opens(text: str) -> str:
     # import
     text = re.sub(
         r"^import Aeneas$",
-        "import Aeneas\nimport CoreModels.Command\nimport CoreModels.Primitives",
+        "import Aeneas\nimport CoreModels.Command\nimport CoreModels.TypesPrologue",
         text, flags=re.MULTILINE,
     )
     # open
@@ -257,14 +257,11 @@ def rewrite_alloc_imports(text: str) -> str:
         unchanged (those namespaces are introduced by `Primitives.lean`).
     """
     # Replace `import Aeneas` with the explicit pieces it needs.
-    # `Aeneas.StdAliases` provides std-name-map shims (e.g.
-    # `core.slice.index.Slice.index`) that the alloc extraction's
-    # generic `Vec::index` body delegates to.
     text = re.sub(
         r"^import Aeneas$",
-        "import Aeneas.Primitives\nimport Aeneas.Types\n"
-        "import Aeneas.TypesExternal\nimport Aeneas.FunsExternal\n"
-        "import Aeneas.Funs\nimport Aeneas.StdAliases",
+        "import CoreModels.TypesPrologue\nimport CoreModels.Types\n"
+        "import CoreModels.TypesExternal\nimport CoreModels.FunsExternal\n"
+        "import CoreModels.Funs",
         text,
         flags=re.MULTILINE,
     )
@@ -272,7 +269,7 @@ def rewrite_alloc_imports(text: str) -> str:
     # in the parent's `lean/Aeneas/FunsExternal.lean`, so the modules
     # `Aeneas.Alloc.{Funs,Types}External` don't exist anymore.
     text = re.sub(
-        r"^import Aeneas\.Alloc\.(?:Funs|Types)External$",
+        r"^import CoreModels\.Alloc\.(?:Funs|Types)External$",
         "-- (alloc-side externals live in parent Aeneas.FunsExternal)",
         text, flags=re.MULTILINE,
     )
@@ -331,7 +328,7 @@ def make_vec_pure_methods_pure(text: str) -> str:
         (
             "def vec.Vec.len {T : Type} (self : vec.Vec T) : Std.Usize :=\n"
             "  let (s, _) := self\n"
-            "  USize64.ofNat s.size"
+            "  .mk s.size"
         ),
         text,
     )
@@ -566,48 +563,12 @@ def fix_flatten_signature(text: str) -> str:
     return re.sub(pattern, replacement, text)
 
 
-def add_instances_import(text: str) -> str:
-    """Funs.lean needs CoreModels.Instances for the scalar PartialOrd instances."""
+def add_funs_prologue_import(text: str) -> str:
+    """Funs.lean needs CoreModels.FunsPrologue."""
     return text.replace(
-        "import CoreModels.Primitives\nimport CoreModels.Types\nimport CoreModels.FunsExternal\n",
-        "import CoreModels.Primitives\nimport CoreModels.Types\n"
-        "import CoreModels.Instances\nimport CoreModels.FunsExternal\n",
-    )
-
-def add_core_opens(text: str) -> str:
-    return text.replace(
-        "open Aeneas\n",
-        "open Aeneas\n"
-        "open Aeneas.Std (core.num.U8.MIN core.num.U8.MAX)\n"
-        "open Aeneas.Std (core.num.U16.MIN core.num.U16.MAX)\n"
-        "open Aeneas.Std (core.num.U32.MIN core.num.U32.MAX)\n"
-        "open Aeneas.Std (core.num.U64.MIN core.num.U64.MAX)\n"
-        "open Aeneas.Std (core.num.U128.MIN core.num.U128.MAX)\n"
-        "open Aeneas.Std (core.num.Usize.MIN core.num.Usize.MAX)\n"
-        "open Aeneas.Std (core.num.U8.MIN core.num.U8.MAX)\n"
-        "open Aeneas.Std (core.num.U16.MIN core.num.U16.MAX)\n"
-        "open Aeneas.Std (core.num.U32.MIN core.num.U32.MAX)\n"
-        "open Aeneas.Std (core.num.U64.MIN core.num.U64.MAX)\n"
-        "open Aeneas.Std (core.num.U128.MIN core.num.U128.MAX)\n"
-        "open Aeneas.Std (core.num.Usize.MIN core.num.Usize.MAX)\n"
-        "open Aeneas.Std (core.num.I8.MIN core.num.I8.MAX)\n"
-        "open Aeneas.Std (core.num.I16.MIN core.num.I16.MAX)\n"
-        "open Aeneas.Std (core.num.I32.MIN core.num.I32.MAX)\n"
-        "open Aeneas.Std (core.num.I64.MIN core.num.I64.MAX)\n"
-        "open Aeneas.Std (core.num.I128.MIN core.num.I128.MAX)\n"
-        "open Aeneas.Std (core.num.Isize.MIN core.num.Isize.MAX)\n"
-        "open Aeneas.Std.core (num.U8.MIN num.U8.MAX)\n"
-        "open Aeneas.Std.core (num.U16.MIN num.U16.MAX)\n"
-        "open Aeneas.Std.core (num.U32.MIN num.U32.MAX)\n"
-        "open Aeneas.Std.core (num.U64.MIN num.U64.MAX)\n"
-        "open Aeneas.Std.core (num.U128.MIN num.U128.MAX)\n"
-        "open Aeneas.Std.core (num.Usize.MIN num.Usize.MAX)\n"
-        "open Aeneas.Std.core (num.I8.MIN num.I8.MAX)\n"
-        "open Aeneas.Std.core (num.I16.MIN num.I16.MAX)\n"
-        "open Aeneas.Std.core (num.I32.MIN num.I32.MAX)\n"
-        "open Aeneas.Std.core (num.I64.MIN num.I64.MAX)\n"
-        "open Aeneas.Std.core (num.I128.MIN num.I128.MAX)\n"
-        "open Aeneas.Std.core (num.Isize.MIN num.Isize.MAX)\n"
+        "import Aeneas\n",
+        "import Aeneas\n"
+        "import CoreModels.FunsPrologue\n",
     )
 
 # Identifies the start of a top-level "block" (a doc comment, an attribute,
@@ -761,8 +722,7 @@ def main() -> int:
         text = rename_clone_clone_inst(text)
         if path == funs_path:
             text = fix_fail_panic(text)
-            text = add_instances_import(text)
-            text = add_core_opens(text)
+            text = add_funs_prologue_import(text)
             text = comment_out_num_bounds(text)
             text = desugar_pure_num_bound_binds(text)
         if path == types_path:
