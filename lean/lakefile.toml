@@ -6,5 +6,6 @@ defaultTargets = ["CoreModels"]
 name = "CoreModels"
 
 [[require]]
-name = "Aeneas"
-path = "/home/alex/Projects/aeneas/step-mvcgen/backends/lean"
+name = "aeneas"
+git = { url = "https://github.com/AeneasVerif/aeneas", subDir = "backends/lean" }
+rev = "a2fcf19"
