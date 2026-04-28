@@ -580,96 +580,158 @@ DOC_HEADER_TRAIT_RE = re.compile(
 )
 
 
-def comment_out_blocks(text: str, name_substrings: list[str]) -> str:
-    """Find each top-level block whose doc-comment header contains one of the
-    given substrings, and wrap that block in `/- -/`.
+DEF_KEYWORDS = (
+    "def ", "structure ", "inductive ", "abbrev ",
+    "instance ", "theorem ", "noncomputable def ",
+)
 
-    A block starts at a `/-- ... -/` doc comment (the start line) and runs
-    until the next blank line followed by another block start, or to a clearly
-    new block start (`/--`, `@[`, `def`, etc.).
+
+def _parse_doc_header(line: str) -> str | None:
+    """Return the identifier inside a `/-- [path::to::name]` (or trait-decl /
+    trait-impl) doc-comment header, or `None` if the line is not a header."""
+    m = DOC_HEADER_RE.match(line)
+    if m is None:
+        m = DOC_HEADER_TRAIT_RE.match(line)
+    return m.group(1) if m else None
+
+
+def _find_block_end(lines: list[str], i: int, n: int) -> tuple[int, int]:
+    """Given that `lines[i]` starts a `/--` doc-comment, locate the end of
+    the logical block that follows.
+
+    Returns `(end, j)` where:
+      - `lines[i:end]` covers doc + `@[...]` attrs + one `DEF_KEYWORDS` line
+        + body, with any trailing blank lines trimmed.
+      - `j` is the cursor just past those trimmed blanks, so callers can
+        re-emit `lines[end:j]` to preserve spacing.
+    """
+    # 1. Consume the doc-comment (until line ending with `-/`).
+    j = i
+    while j < n and not lines[j].rstrip().endswith("-/"):
+        j += 1
+    j += 1  # past the `-/`
+    # 2. Consume any attributes (`@[...]`) and the def/structure/... keyword
+    #    line — these belong to the same logical block.
+    while j < n and lines[j].startswith("@["):
+        j += 1
+    if j < n and any(lines[j].startswith(k) for k in DEF_KEYWORDS):
+        j += 1
+    # 3. Consume the body: every line until the next top-level construct
+    #    (`/--`, `@[`, or a fresh def-keyword line).
+    while j < n:
+        cur = lines[j]
+        if cur.startswith("/--") or cur.startswith("@["):
+            break
+        if any(cur.startswith(k) for k in DEF_KEYWORDS):
+            break
+        j += 1
+    # Trim trailing blank lines from the block (they belong outside).
+    end = j
+    while end > i and lines[end - 1].strip() == "":
+        end -= 1
+    return end, j
+
+
+def _ident_matches(ident: str, sub: str) -> bool:
+    """Substring match modes used by both `comment_out_blocks` and
+    `replace_blocks`:
+
+      * `"foo::"`  — prefix match (entry ends with `::`)
+      * exact equality
+      * word-bounded suffix match (so `is_some` doesn't match `is_some_and`)
+      * containment, when the entry contains `<` or `{` (used to drop
+        everything matching a prefix anywhere in the path)
+    """
+    if sub.endswith("::"):
+        return ident.startswith(sub)
+    if ident == sub:
+        return True
+    if ident.endswith(sub):
+        prev_char = ident[-len(sub) - 1]
+        if not (prev_char.isalnum() or prev_char == "_"):
+            return True
+    if "<" in sub or "{" in sub:
+        if sub in ident:
+            return True
+    return False
+
+
+def transform_blocks(text: str, transform_fn) -> str:
+    """Walk every top-level doc-headed block in `text`. For each block,
+    `transform_fn(ident, block_lines)` is called with the bracketed identifier
+    and the list of lines that make up the block. It must return either:
+
+      * `None` to leave the block unchanged, or
+      * a string to splice in place of the block. The string is split on
+        `\\n` and emitted as line entries; trailing blank lines that followed
+        the block in the original are preserved.
+
+    Replacement strings should NOT include a trailing newline — line spacing
+    is reconstructed by the final `"\\n".join(...)` plus the re-emitted
+    trailing blanks.
     """
     lines = text.split("\n")
     out: list[str] = []
     i = 0
     n = len(lines)
-
-    def block_matches(doc_line: str) -> bool:
-        m = DOC_HEADER_RE.match(doc_line)
-        ident = m.group(1) if m else None
-        if ident is None:
-            m = DOC_HEADER_TRAIT_RE.match(doc_line)
-            ident = m.group(1) if m else None
-        if ident is None:
-            return False
-        for sub in name_substrings:
-            # Three matching modes:
-            #   "foo::"   prefix match (the entry ends with `::`)
-            #   exact equality
-            #   word-bounded suffix match (avoid `is_some` matching `is_some_and`)
-            if sub.endswith("::"):
-                if ident.startswith(sub):
-                    return True
-                continue
-            if ident == sub:
-                return True
-            if ident.endswith(sub):
-                prev_char = ident[-len(sub) - 1]
-                if not (prev_char.isalnum() or prev_char == "_"):
-                    return True
-            # Substring containment with start anchored to a `::` boundary —
-            # used for "drop everything matching this prefix anywhere".
-            if "<" in sub or "{" in sub:
-                if sub in ident:
-                    return True
-        return False
-
-    DEF_KEYWORDS = (
-        "def ", "structure ", "inductive ", "abbrev ",
-        "instance ", "theorem ", "noncomputable def ",
-    )
-
     while i < n:
         line = lines[i]
-        # Detect a doc-comment block start
-        if line.startswith("/--") and block_matches(line):
-            # 1. Consume the doc-comment (until line ending with `-/`).
-            j = i
-            while j < n and not lines[j].rstrip().endswith("-/"):
-                j += 1
-            j += 1  # past the `-/`
-            # 2. Consume any attributes (`@[...]`) and the def/structure/...
-            #    keyword line — these belong to the same logical block.
-            while j < n and lines[j].startswith("@["):
-                j += 1
-            # The definition keyword line itself.
-            if j < n and any(lines[j].startswith(k) for k in DEF_KEYWORDS):
-                j += 1
-            # 3. Consume the body: all subsequent lines that are indented
-            #    or that continue the current declaration. Stop at the next
-            #    top-level construct (blank line followed by `/--`/`@[`/def,
-            #    or a fresh `/--`/`@[` with no leading blank).
-            while j < n:
-                cur = lines[j]
-                if cur.startswith("/--") or cur.startswith("@["):
-                    break
-                if any(cur.startswith(k) for k in DEF_KEYWORDS):
-                    # New top-level def starts here.
-                    break
-                j += 1
-            # Trim trailing blank lines from the block (they belong outside).
-            end = j
-            while end > i and lines[end - 1].strip() == "":
-                end -= 1
-            out.append("/-")
-            out.extend(lines[i:end])
-            out.append("-/")
-            # Re-emit the trimmed blank lines so spacing is preserved.
-            out.extend(lines[end:j])
-            i = j
-            continue
+        if line.startswith("/--"):
+            ident = _parse_doc_header(line)
+            if ident is not None:
+                end, j = _find_block_end(lines, i, n)
+                replacement = transform_fn(ident, lines[i:end])
+                if replacement is not None:
+                    out.extend(replacement.split("\n"))
+                    out.extend(lines[end:j])
+                    i = j
+                    continue
         out.append(line)
         i += 1
     return "\n".join(out)
+
+
+def comment_out_blocks(
+    text: str,
+    name_substrings: list[str],
+    *,
+    trailer: str | None = None,
+) -> str:
+    """Find each top-level block whose doc-comment header contains one of the
+    given substrings, and wrap that block in `/- -/`. If `trailer` is given,
+    a `  -- <trailer>` suffix is appended after the closing `-/`.
+
+    A block starts at a `/-- ... -/` doc comment (the start line) and runs
+    until the next blank line followed by another block start, or to a clearly
+    new block start (`/--`, `@[`, `def`, etc.).
+    """
+    suffix = "-/" if trailer is None else f"-/  -- {trailer}"
+
+    def fn(ident: str, block_lines: list[str]) -> str | None:
+        if any(_ident_matches(ident, s) for s in name_substrings):
+            return "/-\n" + "\n".join(block_lines) + "\n" + suffix
+        return None
+
+    return transform_blocks(text, fn)
+
+
+def replace_blocks(text: str, replacements: list[tuple[str, str]]) -> str:
+    """Replace each top-level doc-headed block whose identifier contains a
+    matching substring with the paired replacement text.
+
+    `replacements` is a list of `(substring, replacement_text)` pairs;
+    matching uses the same modes as `comment_out_blocks`. First match wins,
+    so order entries from most-specific to least-specific if any could
+    overlap. The original doc-comment header is NOT preserved — the entire
+    block (doc + attrs + def + body) is swapped for `replacement_text`.
+    """
+    def fn(ident: str, _block_lines: list[str]) -> str | None:
+        for sub, repl in replacements:
+            if _ident_matches(ident, sub):
+                return repl
+        return None
+
+    return transform_blocks(text, fn)
 
 
 # ---------------------------------------------------------------------------
