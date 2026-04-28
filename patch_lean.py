@@ -277,51 +277,27 @@ def make_vec_pure_methods_pure(text: str) -> str:
     directly, not `Result …`.
 
     Our extraction of the local `alloc/` crate emits these as monadic
-    `Result T` defs. Rewrite each one to a pure version. We also rename
-    `vec.VecTGlobal.new`/`with_capacity` to `vec.Vec.new`/`with_capacity`
-    so the names line up with Aeneas's builtin map (which always uses
-    `vec.Vec.*`).
+    `Result T` defs. Identify each one by its doc-comment header and swap
+    in a pure version. We also rename `vec.VecTGlobal.new`/`with_capacity`
+    to `vec.Vec.new`/`with_capacity` so the names line up with Aeneas's
+    builtin map (which always uses `vec.Vec.*`).
 
     The bodies use the fact that `rust_primitives.sequence.Seq T := Array T`
     in the parent's `TypesExternal.lean`, so we can build an empty `Seq`
-    via `Array.empty` and read the length via the underlying list size. -/
+    via `Array.empty` and read the length via the underlying list size.
     """
-    # vec.VecTGlobal.new -> vec.Vec.new (pure)
-    text = re.sub(
-        r"def vec\.VecTGlobal\.new \(T : Type\) : Result \(vec\.Vec T\) := do\n"
-        r"  let s ← rust_primitives\.sequence\.seq_empty T\n"
-        r"  ok \(s, core\.Phantom\.mk\)",
-        (
-            "def vec.Vec.new (T : Type) : vec.Vec T :=\n"
-            "  (.new T, core.Phantom.mk)"
-        ),
-        text,
-    )
-    # vec.VecTGlobal.with_capacity -> vec.Vec.with_capacity (pure)
-    text = re.sub(
-        r"def vec\.VecTGlobal\.with_capacity\n"
-        r"  \(T : Type\) \(_c : Std\.Usize\) : Result \(vec\.Vec T\) := do\n"
-        r"  vec\.VecTGlobal\.new T",
-        (
-            "def vec.Vec.with_capacity (T : Type) (_c : Std.Usize) : vec.Vec T :=\n"
-            "  vec.Vec.new T"
-        ),
-        text,
-    )
-    # vec.Vec.len: drop the monadic wrapper.
-    text = re.sub(
-        r"def vec\.Vec\.len\n"
-        r"  \{T : Type\} \(self : vec\.Vec T\) : Result Std\.Usize := do\n"
-        r"  let \(s, _\) := self\n"
-        r"  rust_primitives\.sequence\.seq_len s",
-        (
-            "def vec.Vec.len {T : Type} (self : vec.Vec T) : Std.Usize :=\n"
-            "  let (s, _) := self\n"
-            "  .mk (Std.Slice.len s)"
-        ),
-        text,
-    )
-    return text
+    return replace_blocks(text, [
+        ("alloc::vec::{alloc::vec::Vec<T, alloc::alloc::Global>}::new",
+         "def vec.Vec.new (T : Type) : vec.Vec T :=\n"
+         "  (.new T, core.Phantom.mk)"),
+        ("alloc::vec::{alloc::vec::Vec<T, alloc::alloc::Global>}::with_capacity",
+         "def vec.Vec.with_capacity (T : Type) (_c : Std.Usize) : vec.Vec T :=\n"
+         "  vec.Vec.new T"),
+        ("alloc::vec::{alloc::vec::Vec<T, A>}::len",
+         "def vec.Vec.len {T : Type} (self : vec.Vec T) : Std.Usize :=\n"
+         "  let (s, _) := self\n"
+         "  .mk (Std.Slice.len s)"),
+    ])
 
 
 def drop_vec_allocator_param(text: str) -> str:
@@ -716,19 +692,27 @@ def comment_out_blocks(
 
 
 def replace_blocks(text: str, replacements: list[tuple[str, str]]) -> str:
-    """Replace each top-level doc-headed block whose identifier contains a
-    matching substring with the paired replacement text.
+    """Replace the def body of each top-level doc-headed block whose
+    identifier contains a matching substring.
 
     `replacements` is a list of `(substring, replacement_text)` pairs;
     matching uses the same modes as `comment_out_blocks`. First match wins,
     so order entries from most-specific to least-specific if any could
-    overlap. The original doc-comment header is NOT preserved — the entire
-    block (doc + attrs + def + body) is swapped for `replacement_text`.
+    overlap. The original `/-- ... -/` doc-comment header is preserved;
+    only the attributes / def / body that follow it are swapped for
+    `replacement_text`.
     """
-    def fn(ident: str, _block_lines: list[str]) -> str | None:
+    def fn(ident: str, block_lines: list[str]) -> str | None:
         for sub, repl in replacements:
             if _ident_matches(ident, sub):
-                return repl
+                # Preserve the doc-comment lines (up to and including the
+                # one ending in `-/`); replace everything after.
+                doc_end = 0
+                while doc_end < len(block_lines) and \
+                        not block_lines[doc_end].rstrip().endswith("-/"):
+                    doc_end += 1
+                doc_end += 1
+                return "\n".join(block_lines[:doc_end]) + "\n" + repl
         return None
 
     return transform_blocks(text, fn)
