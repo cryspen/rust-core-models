@@ -105,7 +105,7 @@ def array.Dummy.each_ref
     N) s
 
 /-- [core_models::array::from_fn]:
-    Source: 'core-models/src/core/array.rs', lines 53:0-55:1
+    Source: 'core-models/src/core/array.rs', lines 54:0-56:1
     Visibility: public -/
 def array.from_fn
   {T : Type} {F : Type} (N : Std.Usize) (coreopsfunctionFnMutFTupleUsizeTInst :
@@ -115,7 +115,7 @@ def array.from_fn
   rust_primitives.slice.array_from_fn N coreopsfunctionFnMutFTupleUsizeTInst f
 
 /-- [core_models::array::{core_models::iter::traits::collect::IntoIterator<T, core_models::array::iter::IntoIter<T, N>> for [T; N]}::into_iter]:
-    Source: 'core-models/src/core/array.rs', lines 61:4-63:5
+    Source: 'core-models/src/core/array.rs', lines 62:4-64:5
     Visibility: public -/
 def Array.Insts.Core_modelsIterTraitsCollectIntoIteratorTIntoIter.into_iter
   {T : Type} {N : Std.Usize} (self : Array T N) :
@@ -125,7 +125,7 @@ def Array.Insts.Core_modelsIterTraitsCollectIntoIteratorTIntoIter.into_iter
   ok s
 
 /-- Trait implementation: [core_models::array::{core_models::iter::traits::collect::IntoIterator<T, core_models::array::iter::IntoIter<T, N>> for [T; N]}]
-    Source: 'core-models/src/core/array.rs', lines 58:0-64:1 -/
+    Source: 'core-models/src/core/array.rs', lines 59:0-65:1 -/
 @[reducible]
 def Array.Insts.Core_modelsIterTraitsCollectIntoIteratorTIntoIter (T : Type) (N
   : Std.Usize) : iter.traits.collect.IntoIterator (Array T N) T
@@ -135,7 +135,7 @@ def Array.Insts.Core_modelsIterTraitsCollectIntoIteratorTIntoIter (T : Type) (N
 }
 
 /-- [core_models::array::{core_models::ops::index::Index<usize, T> for [T; N]}::index]:
-    Source: 'core-models/src/core/array.rs', lines 76:4-78:5
+    Source: 'core-models/src/core/array.rs', lines 77:4-79:5
     Visibility: public -/
 def Array.Insts.Core_modelsOpsIndexIndexUsizeT.index
   {T : Type} {N : Std.Usize} (self : Array T N) (i : Std.Usize) :
@@ -144,7 +144,7 @@ def Array.Insts.Core_modelsOpsIndexIndexUsizeT.index
   rust_primitives.slice.array_index self i
 
 /-- Trait implementation: [core_models::array::{core_models::ops::index::Index<usize, T> for [T; N]}]
-    Source: 'core-models/src/core/array.rs', lines 73:0-79:1 -/
+    Source: 'core-models/src/core/array.rs', lines 74:0-80:1 -/
 @[reducible]
 def Array.Insts.Core_modelsOpsIndexIndexUsizeT (T : Type) (N : Std.Usize) :
   ops.index.Index (Array T N) Std.Usize T := {
@@ -152,7 +152,7 @@ def Array.Insts.Core_modelsOpsIndexIndexUsizeT (T : Type) (N : Std.Usize) :
 }
 
 /-- [core_models::array::{core_models::ops::index::Index<core_models::ops::range::Range<usize>, [T]> for [T; N]}::index]:
-    Source: 'core-models/src/core/array.rs', lines 86:4-88:5
+    Source: 'core-models/src/core/array.rs', lines 87:4-89:5
     Visibility: public -/
 def Array.Insts.Core_modelsOpsIndexIndexRangeUsizeSlice.index
   {T : Type} {N : Std.Usize} (self : Array T N) (i : ops.range.Range Std.Usize)
@@ -162,7 +162,7 @@ def Array.Insts.Core_modelsOpsIndexIndexRangeUsizeSlice.index
   rust_primitives.slice.array_slice self i.start i.«end»
 
 /-- Trait implementation: [core_models::array::{core_models::ops::index::Index<core_models::ops::range::Range<usize>, [T]> for [T; N]}]
-    Source: 'core-models/src/core/array.rs', lines 83:0-89:1 -/
+    Source: 'core-models/src/core/array.rs', lines 84:0-90:1 -/
 @[reducible]
 def Array.Insts.Core_modelsOpsIndexIndexRangeUsizeSlice (T : Type) (N :
   Std.Usize) : ops.index.Index (Array T N) (ops.range.Range Std.Usize) (Slice
@@ -171,7 +171,7 @@ def Array.Insts.Core_modelsOpsIndexIndexRangeUsizeSlice (T : Type) (N :
 }
 
 /-- [core_models::array::{core_models::ops::index::Index<core_models::ops::range::RangeTo<usize>, [T]> for [T; N]}::index]:
-    Source: 'core-models/src/core/array.rs', lines 95:4-97:5
+    Source: 'core-models/src/core/array.rs', lines 96:4-98:5
     Visibility: public -/
 def Array.Insts.Core_modelsOpsIndexIndexRangeToUsizeSlice.index
   {T : Type} {N : Std.Usize} (self : Array T N)
@@ -181,7 +181,7 @@ def Array.Insts.Core_modelsOpsIndexIndexRangeToUsizeSlice.index
   rust_primitives.slice.array_slice self 0#usize i.«end»
 
 /-- Trait implementation: [core_models::array::{core_models::ops::index::Index<core_models::ops::range::RangeTo<usize>, [T]> for [T; N]}]
-    Source: 'core-models/src/core/array.rs', lines 92:0-98:1 -/
+    Source: 'core-models/src/core/array.rs', lines 93:0-99:1 -/
 @[reducible]
 def Array.Insts.Core_modelsOpsIndexIndexRangeToUsizeSlice (T : Type) (N :
   Std.Usize) : ops.index.Index (Array T N) (ops.range.RangeTo Std.Usize) (Slice
@@ -190,7 +190,7 @@ def Array.Insts.Core_modelsOpsIndexIndexRangeToUsizeSlice (T : Type) (N :
 }
 
 /-- [core_models::array::{core_models::ops::index::Index<core_models::ops::range::RangeFrom<usize>, [T]> for [T; N]}::index]:
-    Source: 'core-models/src/core/array.rs', lines 104:4-106:5
+    Source: 'core-models/src/core/array.rs', lines 105:4-107:5
     Visibility: public -/
 def Array.Insts.Core_modelsOpsIndexIndexRangeFromUsizeSlice.index
   {T : Type} {N : Std.Usize} (self : Array T N)
@@ -200,7 +200,7 @@ def Array.Insts.Core_modelsOpsIndexIndexRangeFromUsizeSlice.index
   rust_primitives.slice.array_slice self i.start N
 
 /-- Trait implementation: [core_models::array::{core_models::ops::index::Index<core_models::ops::range::RangeFrom<usize>, [T]> for [T; N]}]
-    Source: 'core-models/src/core/array.rs', lines 101:0-107:1 -/
+    Source: 'core-models/src/core/array.rs', lines 102:0-108:1 -/
 @[reducible]
 def Array.Insts.Core_modelsOpsIndexIndexRangeFromUsizeSlice (T : Type) (N :
   Std.Usize) : ops.index.Index (Array T N) (ops.range.RangeFrom Std.Usize)
@@ -209,7 +209,7 @@ def Array.Insts.Core_modelsOpsIndexIndexRangeFromUsizeSlice (T : Type) (N :
 }
 
 /-- [core_models::array::{core_models::ops::index::Index<core_models::ops::range::RangeFull, [T]> for [T; N]}::index]:
-    Source: 'core-models/src/core/array.rs', lines 112:4-114:5
+    Source: 'core-models/src/core/array.rs', lines 113:4-115:5
     Visibility: public -/
 def Array.Insts.Core_modelsOpsIndexIndexRangeFullSlice.index
   {T : Type} {N : Std.Usize} (self : Array T N) (i : ops.range.RangeFull) :
@@ -218,7 +218,7 @@ def Array.Insts.Core_modelsOpsIndexIndexRangeFullSlice.index
   rust_primitives.slice.array_slice self 0#usize N
 
 /-- Trait implementation: [core_models::array::{core_models::ops::index::Index<core_models::ops::range::RangeFull, [T]> for [T; N]}]
-    Source: 'core-models/src/core/array.rs', lines 110:0-115:1 -/
+    Source: 'core-models/src/core/array.rs', lines 111:0-116:1 -/
 @[reducible]
 def Array.Insts.Core_modelsOpsIndexIndexRangeFullSlice (T : Type) (N :
   Std.Usize) : ops.index.Index (Array T N) ops.range.RangeFull (Slice T) := {
@@ -226,7 +226,7 @@ def Array.Insts.Core_modelsOpsIndexIndexRangeFullSlice (T : Type) (N :
 }
 
 /-- [core_models::array::iter::{core_models::iter::traits::iterator::Iterator<T> for core_models::array::iter::IntoIter<T, N>}::next]:
-    Source: 'core-models/src/core/array.rs', lines 124:8-131:9
+    Source: 'core-models/src/core/array.rs', lines 125:8-132:9
     Visibility: public -/
 def array.iter.IntoIter.Insts.Core_modelsIterTraitsIteratorIterator.next
   {T : Type} {N : Std.Usize} (self : array.iter.IntoIter T N) :
@@ -240,7 +240,7 @@ def array.iter.IntoIter.Insts.Core_modelsIterTraitsIteratorIterator.next
     ok (option.Option.Some res, s)
 
 /-- Trait implementation: [core_models::array::iter::{core_models::iter::traits::iterator::Iterator<T> for core_models::array::iter::IntoIter<T, N>}]
-    Source: 'core-models/src/core/array.rs', lines 122:4-132:5 -/
+    Source: 'core-models/src/core/array.rs', lines 123:4-133:5 -/
 @[reducible]
 def array.iter.IntoIter.Insts.Core_modelsIterTraitsIteratorIterator (T : Type)
   (N : Std.Usize) : iter.traits.iterator.Iterator (array.iter.IntoIter T N) T
@@ -7186,14 +7186,14 @@ def U64.Insts.Core_modelsOpsArithSubAssignU64 : ops.arith.SubAssign Std.U64
 }
 
 /-- [core_models::ops::deref::{core_models::ops::deref::Deref<T> for &0 (T)}::deref]:
-    Source: 'core-models/src/core/ops.rs', lines 288:8-290:9
+    Source: 'core-models/src/core/ops.rs', lines 270:8-272:9
     Visibility: public -/
 def Shared0T.Insts.Core_modelsOpsDerefDeref.deref
   {T : Type} (self : T) : Result T := do
   ok self
 
 /-- Trait implementation: [core_models::ops::deref::{core_models::ops::deref::Deref<T> for &0 (T)}]
-    Source: 'core-models/src/core/ops.rs', lines 286:4-291:5 -/
+    Source: 'core-models/src/core/ops.rs', lines 268:4-273:5 -/
 @[reducible]
 def Shared0T.Insts.Core_modelsOpsDerefDeref (T : Type) : ops.deref.Deref T T
   := {
@@ -7201,7 +7201,7 @@ def Shared0T.Insts.Core_modelsOpsDerefDeref (T : Type) : ops.deref.Deref T T
 }
 
 /-- [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<u8> for core_models::ops::range::Range<u8>}::next]:
-    Source: 'core-models/src/core/ops.rs', lines 330:20-338:21
+    Source: 'core-models/src/core/ops.rs', lines 312:20-320:21
     Visibility: public -/
 def ops.range.RangeU8.Insts.Core_modelsIterTraitsIteratorIteratorU8.next
   (self : ops.range.Range Std.U8) :
@@ -7214,7 +7214,7 @@ def ops.range.RangeU8.Insts.Core_modelsIterTraitsIteratorIteratorU8.next
     ok (option.Option.Some self.start, { self with start := i })
 
 /-- Trait implementation: [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<u8> for core_models::ops::range::Range<u8>}]
-    Source: 'core-models/src/core/ops.rs', lines 328:16-339:17 -/
+    Source: 'core-models/src/core/ops.rs', lines 310:16-321:17 -/
 @[reducible]
 def ops.range.RangeU8.Insts.Core_modelsIterTraitsIteratorIteratorU8 :
   iter.traits.iterator.Iterator (ops.range.Range Std.U8) Std.U8 := {
@@ -7222,7 +7222,7 @@ def ops.range.RangeU8.Insts.Core_modelsIterTraitsIteratorIteratorU8 :
 }
 
 /-- [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<u16> for core_models::ops::range::Range<u16>}::next]:
-    Source: 'core-models/src/core/ops.rs', lines 330:20-338:21
+    Source: 'core-models/src/core/ops.rs', lines 312:20-320:21
     Visibility: public -/
 def ops.range.RangeU16.Insts.Core_modelsIterTraitsIteratorIteratorU16.next
   (self : ops.range.Range Std.U16) :
@@ -7235,7 +7235,7 @@ def ops.range.RangeU16.Insts.Core_modelsIterTraitsIteratorIteratorU16.next
     ok (option.Option.Some self.start, { self with start := i })
 
 /-- Trait implementation: [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<u16> for core_models::ops::range::Range<u16>}]
-    Source: 'core-models/src/core/ops.rs', lines 328:16-339:17 -/
+    Source: 'core-models/src/core/ops.rs', lines 310:16-321:17 -/
 @[reducible]
 def ops.range.RangeU16.Insts.Core_modelsIterTraitsIteratorIteratorU16 :
   iter.traits.iterator.Iterator (ops.range.Range Std.U16) Std.U16 := {
@@ -7244,7 +7244,7 @@ def ops.range.RangeU16.Insts.Core_modelsIterTraitsIteratorIteratorU16 :
 }
 
 /-- [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<u32> for core_models::ops::range::Range<u32>}::next]:
-    Source: 'core-models/src/core/ops.rs', lines 330:20-338:21
+    Source: 'core-models/src/core/ops.rs', lines 312:20-320:21
     Visibility: public -/
 def ops.range.RangeU32.Insts.Core_modelsIterTraitsIteratorIteratorU32.next
   (self : ops.range.Range Std.U32) :
@@ -7257,7 +7257,7 @@ def ops.range.RangeU32.Insts.Core_modelsIterTraitsIteratorIteratorU32.next
     ok (option.Option.Some self.start, { self with start := i })
 
 /-- Trait implementation: [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<u32> for core_models::ops::range::Range<u32>}]
-    Source: 'core-models/src/core/ops.rs', lines 328:16-339:17 -/
+    Source: 'core-models/src/core/ops.rs', lines 310:16-321:17 -/
 @[reducible]
 def ops.range.RangeU32.Insts.Core_modelsIterTraitsIteratorIteratorU32 :
   iter.traits.iterator.Iterator (ops.range.Range Std.U32) Std.U32 := {
@@ -7266,7 +7266,7 @@ def ops.range.RangeU32.Insts.Core_modelsIterTraitsIteratorIteratorU32 :
 }
 
 /-- [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<u64> for core_models::ops::range::Range<u64>}::next]:
-    Source: 'core-models/src/core/ops.rs', lines 330:20-338:21
+    Source: 'core-models/src/core/ops.rs', lines 312:20-320:21
     Visibility: public -/
 def ops.range.RangeU64.Insts.Core_modelsIterTraitsIteratorIteratorU64.next
   (self : ops.range.Range Std.U64) :
@@ -7279,7 +7279,7 @@ def ops.range.RangeU64.Insts.Core_modelsIterTraitsIteratorIteratorU64.next
     ok (option.Option.Some self.start, { self with start := i })
 
 /-- Trait implementation: [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<u64> for core_models::ops::range::Range<u64>}]
-    Source: 'core-models/src/core/ops.rs', lines 328:16-339:17 -/
+    Source: 'core-models/src/core/ops.rs', lines 310:16-321:17 -/
 @[reducible]
 def ops.range.RangeU64.Insts.Core_modelsIterTraitsIteratorIteratorU64 :
   iter.traits.iterator.Iterator (ops.range.Range Std.U64) Std.U64 := {
@@ -7288,7 +7288,7 @@ def ops.range.RangeU64.Insts.Core_modelsIterTraitsIteratorIteratorU64 :
 }
 
 /-- [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<u128> for core_models::ops::range::Range<u128>}::next]:
-    Source: 'core-models/src/core/ops.rs', lines 330:20-338:21
+    Source: 'core-models/src/core/ops.rs', lines 312:20-320:21
     Visibility: public -/
 def ops.range.RangeU128.Insts.Core_modelsIterTraitsIteratorIteratorU128.next
   (self : ops.range.Range Std.U128) :
@@ -7301,7 +7301,7 @@ def ops.range.RangeU128.Insts.Core_modelsIterTraitsIteratorIteratorU128.next
     ok (option.Option.Some self.start, { self with start := i })
 
 /-- Trait implementation: [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<u128> for core_models::ops::range::Range<u128>}]
-    Source: 'core-models/src/core/ops.rs', lines 328:16-339:17 -/
+    Source: 'core-models/src/core/ops.rs', lines 310:16-321:17 -/
 @[reducible]
 def ops.range.RangeU128.Insts.Core_modelsIterTraitsIteratorIteratorU128 :
   iter.traits.iterator.Iterator (ops.range.Range Std.U128) Std.U128 := {
@@ -7310,7 +7310,7 @@ def ops.range.RangeU128.Insts.Core_modelsIterTraitsIteratorIteratorU128 :
 }
 
 /-- [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<usize> for core_models::ops::range::Range<usize>}::next]:
-    Source: 'core-models/src/core/ops.rs', lines 330:20-338:21
+    Source: 'core-models/src/core/ops.rs', lines 312:20-320:21
     Visibility: public -/
 def ops.range.RangeUsize.Insts.Core_modelsIterTraitsIteratorIteratorUsize.next
   (self : ops.range.Range Std.Usize) :
@@ -7323,7 +7323,7 @@ def ops.range.RangeUsize.Insts.Core_modelsIterTraitsIteratorIteratorUsize.next
     ok (option.Option.Some self.start, { self with start := i })
 
 /-- Trait implementation: [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<usize> for core_models::ops::range::Range<usize>}]
-    Source: 'core-models/src/core/ops.rs', lines 328:16-339:17 -/
+    Source: 'core-models/src/core/ops.rs', lines 310:16-321:17 -/
 @[reducible]
 def ops.range.RangeUsize.Insts.Core_modelsIterTraitsIteratorIteratorUsize :
   iter.traits.iterator.Iterator (ops.range.Range Std.Usize) Std.Usize := {
@@ -7332,7 +7332,7 @@ def ops.range.RangeUsize.Insts.Core_modelsIterTraitsIteratorIteratorUsize :
 }
 
 /-- [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<i8> for core_models::ops::range::Range<i8>}::next]:
-    Source: 'core-models/src/core/ops.rs', lines 330:20-338:21
+    Source: 'core-models/src/core/ops.rs', lines 312:20-320:21
     Visibility: public -/
 def ops.range.RangeI8.Insts.Core_modelsIterTraitsIteratorIteratorI8.next
   (self : ops.range.Range Std.I8) :
@@ -7345,7 +7345,7 @@ def ops.range.RangeI8.Insts.Core_modelsIterTraitsIteratorIteratorI8.next
     ok (option.Option.Some self.start, { self with start := i })
 
 /-- Trait implementation: [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<i8> for core_models::ops::range::Range<i8>}]
-    Source: 'core-models/src/core/ops.rs', lines 328:16-339:17 -/
+    Source: 'core-models/src/core/ops.rs', lines 310:16-321:17 -/
 @[reducible]
 def ops.range.RangeI8.Insts.Core_modelsIterTraitsIteratorIteratorI8 :
   iter.traits.iterator.Iterator (ops.range.Range Std.I8) Std.I8 := {
@@ -7353,7 +7353,7 @@ def ops.range.RangeI8.Insts.Core_modelsIterTraitsIteratorIteratorI8 :
 }
 
 /-- [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<i16> for core_models::ops::range::Range<i16>}::next]:
-    Source: 'core-models/src/core/ops.rs', lines 330:20-338:21
+    Source: 'core-models/src/core/ops.rs', lines 312:20-320:21
     Visibility: public -/
 def ops.range.RangeI16.Insts.Core_modelsIterTraitsIteratorIteratorI16.next
   (self : ops.range.Range Std.I16) :
@@ -7366,7 +7366,7 @@ def ops.range.RangeI16.Insts.Core_modelsIterTraitsIteratorIteratorI16.next
     ok (option.Option.Some self.start, { self with start := i })
 
 /-- Trait implementation: [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<i16> for core_models::ops::range::Range<i16>}]
-    Source: 'core-models/src/core/ops.rs', lines 328:16-339:17 -/
+    Source: 'core-models/src/core/ops.rs', lines 310:16-321:17 -/
 @[reducible]
 def ops.range.RangeI16.Insts.Core_modelsIterTraitsIteratorIteratorI16 :
   iter.traits.iterator.Iterator (ops.range.Range Std.I16) Std.I16 := {
@@ -7375,7 +7375,7 @@ def ops.range.RangeI16.Insts.Core_modelsIterTraitsIteratorIteratorI16 :
 }
 
 /-- [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<i32> for core_models::ops::range::Range<i32>}::next]:
-    Source: 'core-models/src/core/ops.rs', lines 330:20-338:21
+    Source: 'core-models/src/core/ops.rs', lines 312:20-320:21
     Visibility: public -/
 def ops.range.RangeI32.Insts.Core_modelsIterTraitsIteratorIteratorI32.next
   (self : ops.range.Range Std.I32) :
@@ -7388,7 +7388,7 @@ def ops.range.RangeI32.Insts.Core_modelsIterTraitsIteratorIteratorI32.next
     ok (option.Option.Some self.start, { self with start := i })
 
 /-- Trait implementation: [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<i32> for core_models::ops::range::Range<i32>}]
-    Source: 'core-models/src/core/ops.rs', lines 328:16-339:17 -/
+    Source: 'core-models/src/core/ops.rs', lines 310:16-321:17 -/
 @[reducible]
 def ops.range.RangeI32.Insts.Core_modelsIterTraitsIteratorIteratorI32 :
   iter.traits.iterator.Iterator (ops.range.Range Std.I32) Std.I32 := {
@@ -7397,7 +7397,7 @@ def ops.range.RangeI32.Insts.Core_modelsIterTraitsIteratorIteratorI32 :
 }
 
 /-- [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<i64> for core_models::ops::range::Range<i64>}::next]:
-    Source: 'core-models/src/core/ops.rs', lines 330:20-338:21
+    Source: 'core-models/src/core/ops.rs', lines 312:20-320:21
     Visibility: public -/
 def ops.range.RangeI64.Insts.Core_modelsIterTraitsIteratorIteratorI64.next
   (self : ops.range.Range Std.I64) :
@@ -7410,7 +7410,7 @@ def ops.range.RangeI64.Insts.Core_modelsIterTraitsIteratorIteratorI64.next
     ok (option.Option.Some self.start, { self with start := i })
 
 /-- Trait implementation: [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<i64> for core_models::ops::range::Range<i64>}]
-    Source: 'core-models/src/core/ops.rs', lines 328:16-339:17 -/
+    Source: 'core-models/src/core/ops.rs', lines 310:16-321:17 -/
 @[reducible]
 def ops.range.RangeI64.Insts.Core_modelsIterTraitsIteratorIteratorI64 :
   iter.traits.iterator.Iterator (ops.range.Range Std.I64) Std.I64 := {
@@ -7419,7 +7419,7 @@ def ops.range.RangeI64.Insts.Core_modelsIterTraitsIteratorIteratorI64 :
 }
 
 /-- [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<i128> for core_models::ops::range::Range<i128>}::next]:
-    Source: 'core-models/src/core/ops.rs', lines 330:20-338:21
+    Source: 'core-models/src/core/ops.rs', lines 312:20-320:21
     Visibility: public -/
 def ops.range.RangeI128.Insts.Core_modelsIterTraitsIteratorIteratorI128.next
   (self : ops.range.Range Std.I128) :
@@ -7432,7 +7432,7 @@ def ops.range.RangeI128.Insts.Core_modelsIterTraitsIteratorIteratorI128.next
     ok (option.Option.Some self.start, { self with start := i })
 
 /-- Trait implementation: [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<i128> for core_models::ops::range::Range<i128>}]
-    Source: 'core-models/src/core/ops.rs', lines 328:16-339:17 -/
+    Source: 'core-models/src/core/ops.rs', lines 310:16-321:17 -/
 @[reducible]
 def ops.range.RangeI128.Insts.Core_modelsIterTraitsIteratorIteratorI128 :
   iter.traits.iterator.Iterator (ops.range.Range Std.I128) Std.I128 := {
@@ -7441,7 +7441,7 @@ def ops.range.RangeI128.Insts.Core_modelsIterTraitsIteratorIteratorI128 :
 }
 
 /-- [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<isize> for core_models::ops::range::Range<isize>}::next]:
-    Source: 'core-models/src/core/ops.rs', lines 330:20-338:21
+    Source: 'core-models/src/core/ops.rs', lines 312:20-320:21
     Visibility: public -/
 def ops.range.RangeIsize.Insts.Core_modelsIterTraitsIteratorIteratorIsize.next
   (self : ops.range.Range Std.Isize) :
@@ -7454,7 +7454,7 @@ def ops.range.RangeIsize.Insts.Core_modelsIterTraitsIteratorIteratorIsize.next
     ok (option.Option.Some self.start, { self with start := i })
 
 /-- Trait implementation: [core_models::ops::range::{core_models::iter::traits::iterator::Iterator<isize> for core_models::ops::range::Range<isize>}]
-    Source: 'core-models/src/core/ops.rs', lines 328:16-339:17 -/
+    Source: 'core-models/src/core/ops.rs', lines 310:16-321:17 -/
 @[reducible]
 def ops.range.RangeIsize.Insts.Core_modelsIterTraitsIteratorIteratorIsize :
   iter.traits.iterator.Iterator (ops.range.Range Std.Isize) Std.Isize := {
@@ -8562,7 +8562,7 @@ def SharedASlice.Insts.Core_modelsIterTraitsCollectIntoIteratorSharedATIter (T
 -/
 
 /-- [core_models::slice::{core_models::ops::index::Index<core_models::ops::range::Range<usize>, [T]> for &0 ([T])}::index]:
-    Source: 'core-models/src/core/slice.rs', lines 395:4-397:5
+    Source: 'core-models/src/core/slice.rs', lines 399:4-401:5
     Visibility: public -/
 def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeUsizeSlice.index
   {T : Type} (self : Slice T) (i : ops.range.Range Std.Usize) :
@@ -8571,7 +8571,7 @@ def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeUsizeSlice.index
   rust_primitives.slice.slice_slice self i.start i.«end»
 
 /-- Trait implementation: [core_models::slice::{core_models::ops::index::Index<core_models::ops::range::Range<usize>, [T]> for &0 ([T])}]
-    Source: 'core-models/src/core/slice.rs', lines 392:0-398:1 -/
+    Source: 'core-models/src/core/slice.rs', lines 396:0-402:1 -/
 @[reducible]
 def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeUsizeSlice (T : Type) :
   ops.index.Index (Slice T) (ops.range.Range Std.Usize) (Slice T) := {
@@ -8579,7 +8579,7 @@ def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeUsizeSlice (T : Type) :
 }
 
 /-- [core_models::slice::{core_models::ops::index::Index<core_models::ops::range::RangeTo<usize>, [T]> for &0 ([T])}::index]:
-    Source: 'core-models/src/core/slice.rs', lines 404:4-406:5
+    Source: 'core-models/src/core/slice.rs', lines 408:4-410:5
     Visibility: public -/
 def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeToUsizeSlice.index
   {T : Type} (self : Slice T) (i : ops.range.RangeTo Std.Usize) :
@@ -8588,7 +8588,7 @@ def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeToUsizeSlice.index
   rust_primitives.slice.slice_slice self 0#usize i.«end»
 
 /-- Trait implementation: [core_models::slice::{core_models::ops::index::Index<core_models::ops::range::RangeTo<usize>, [T]> for &0 ([T])}]
-    Source: 'core-models/src/core/slice.rs', lines 401:0-407:1 -/
+    Source: 'core-models/src/core/slice.rs', lines 405:0-411:1 -/
 @[reducible]
 def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeToUsizeSlice (T : Type) :
   ops.index.Index (Slice T) (ops.range.RangeTo Std.Usize) (Slice T) := {
@@ -8596,7 +8596,7 @@ def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeToUsizeSlice (T : Type) :
 }
 
 /-- [core_models::slice::{core_models::ops::index::Index<core_models::ops::range::RangeFrom<usize>, [T]> for &0 ([T])}::index]:
-    Source: 'core-models/src/core/slice.rs', lines 413:4-415:5
+    Source: 'core-models/src/core/slice.rs', lines 417:4-419:5
     Visibility: public -/
 def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeFromUsizeSlice.index
   {T : Type} (self : Slice T) (i : ops.range.RangeFrom Std.Usize) :
@@ -8606,7 +8606,7 @@ def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeFromUsizeSlice.index
   rust_primitives.slice.slice_slice self i.start i1
 
 /-- Trait implementation: [core_models::slice::{core_models::ops::index::Index<core_models::ops::range::RangeFrom<usize>, [T]> for &0 ([T])}]
-    Source: 'core-models/src/core/slice.rs', lines 410:0-416:1 -/
+    Source: 'core-models/src/core/slice.rs', lines 414:0-420:1 -/
 @[reducible]
 def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeFromUsizeSlice (T : Type) :
   ops.index.Index (Slice T) (ops.range.RangeFrom Std.Usize) (Slice T) := {
@@ -8614,7 +8614,7 @@ def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeFromUsizeSlice (T : Type) :
 }
 
 /-- [core_models::slice::{core_models::ops::index::Index<core_models::ops::range::RangeFull, [T]> for &0 ([T])}::index]:
-    Source: 'core-models/src/core/slice.rs', lines 421:4-423:5
+    Source: 'core-models/src/core/slice.rs', lines 425:4-427:5
     Visibility: public -/
 def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeFullSlice.index
   {T : Type} (self : Slice T) (i : ops.range.RangeFull) :
@@ -8624,7 +8624,7 @@ def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeFullSlice.index
   rust_primitives.slice.slice_slice self 0#usize i1
 
 /-- Trait implementation: [core_models::slice::{core_models::ops::index::Index<core_models::ops::range::RangeFull, [T]> for &0 ([T])}]
-    Source: 'core-models/src/core/slice.rs', lines 419:0-424:1 -/
+    Source: 'core-models/src/core/slice.rs', lines 423:0-428:1 -/
 @[reducible]
 def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeFullSlice (T : Type) :
   ops.index.Index (Slice T) ops.range.RangeFull (Slice T) := {
@@ -8632,14 +8632,14 @@ def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeFullSlice (T : Type) :
 }
 
 /-- [core_models::slice::{core_models::ops::index::Index<usize, T> for &0 ([T])}::index]:
-    Source: 'core-models/src/core/slice.rs', lines 431:4-433:5
+    Source: 'core-models/src/core/slice.rs', lines 435:4-437:5
     Visibility: public -/
 def Shared0Slice.Insts.Core_modelsOpsIndexIndexUsizeT.index
   {T : Type} (self : Slice T) (i : Std.Usize) : Result T := do
   rust_primitives.slice.slice_index self i
 
 /-- Trait implementation: [core_models::slice::{core_models::ops::index::Index<usize, T> for &0 ([T])}]
-    Source: 'core-models/src/core/slice.rs', lines 428:0-434:1 -/
+    Source: 'core-models/src/core/slice.rs', lines 432:0-438:1 -/
 @[reducible]
 def Shared0Slice.Insts.Core_modelsOpsIndexIndexUsizeT (T : Type) :
   ops.index.Index (Slice T) Std.Usize T := {

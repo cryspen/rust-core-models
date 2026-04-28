@@ -58,12 +58,6 @@ GENERATED_FILES = [
 # Definitions to comment out, by their `[core_models::...]` doc-comment header.
 # A definition is "everything from its doc-comment up to the line before the
 # next doc-comment / `@[...]` attribute / blank-line+def".
-#
-# These are the items the generated code references but cannot elaborate
-# under our minimal Primitives library:
-#   - iterator helpers that use field projection on a generic type variable
-#   - iterator adapter `*::new` constructors that depend on the above
-#   - slice / iterator instances that propagate the failures
 # ---------------------------------------------------------------------------
 
 # Definitions in Funs.lean that should be replaced by stub comments.
@@ -155,7 +149,7 @@ FUNS_TO_REMOVE = [
     # need to be commented out here.
 ]
 
-# Type declarations in Types.lean to comment out (provided by Primitives.lean)
+# Type declarations in Types.lean to comment out (provided by TypesPrologue.lean)
 TYPES_TO_REMOVE = [
     "core_models::clone::Clone",
     "core_models::marker::Copy",
@@ -164,14 +158,6 @@ TYPES_TO_REMOVE = [
     "core_models::ops::function::Fn",
     "core_models::cmp::Ordering",
     "core_models::option::Option",
-    # `core_models::result::Result` is provided by Primitives.lean as a
-    # reducible alias of an inductive declared inside a guard namespace.
-    # If we let the extracted inductive land at `core.result.Result` it
-    # auto-creates a same-named namespace whose enclosing-namespace lookup
-    # shadows the monadic `Result`, breaking signatures of the form
-    # `... → Result (Option T)` inside any `def`/`axiom core.result.Result.*`.
-    # See the long comment around the alias in Primitives.lean for the full
-    # story (and the recommended upstream fix: rename Aeneas's monad).
     "core_models::result::Result",
 ]
 
@@ -196,7 +182,9 @@ def rewrite_imports_and_opens(text: str) -> str:
         "import Aeneas\nimport CoreModels.Command\nimport CoreModels.TypesPrologue",
         text, flags=re.MULTILINE,
     )
-    # open
+    
+    # Fix the `open`s: We want to open the Aeneas library definitions, except for
+    # `core` and `alloc`.
     text = re.sub(
         r"^open Aeneas Aeneas\.Std Result ControlFlow Error$",
         "open Aeneas\nopen Aeneas.Std hiding namespace core alloc\nopen Result ControlFlow Error",
@@ -222,22 +210,18 @@ def fix_fail_panic(text: str) -> str:
     return text.replace("  fail panic\n", "  fail Error.panic\n")
 
 
-# ---------------------------------------------------------------------------
-# alloc/ extraction
-# ---------------------------------------------------------------------------
-#
-# `core-models/alloc/` is a Rust crate named `alloc`. Aeneas's builtin path
-# map already has entries for `alloc::vec::Vec`, `alloc::boxed::Box`, etc.,
-# so extracting the crate as-is collides on those names and crashes the type
-# analyser. The Makefile works around this by staging a copy under
-# `.alloc-extract/` whose Cargo.toml is rewritten to `name = "alloc_models"`.
-# Aeneas then writes its output into `lean/Aeneas/Alloc/` with everything in
-# the `alloc_models` namespace; the helpers below put the namespace back to
-# `alloc` (where downstream Aeneas-extracted code expects to find it).
-
-
 def rename_alloc_models(text: str) -> str:
-    """Rewrite every occurrence of the staged crate name back to `alloc`."""
+    """Rewrite every occurrence of the staged crate name back to `alloc`.
+    
+    `core-models/alloc/` is a Rust crate named `alloc`. Aeneas's builtin path
+    map already has entries for `alloc::vec::Vec`, `alloc::boxed::Box`, etc.,
+    so extracting the crate as-is collides on those names and crashes the type
+    analyser. The Makefile works around this by staging a copy under
+    `.alloc-extract/` whose Cargo.toml is rewritten to `name = "alloc_models"`.
+    Aeneas then writes its output into `lean/Aeneas/Alloc/` with everything in
+    the `alloc_models` namespace; the helpers below put the namespace back to
+    `alloc` (where downstream Aeneas-extracted code expects to find it).
+    """
     text = text.replace("namespace alloc_models", "namespace CoreModels.alloc")
     text = text.replace("end alloc_models", "end CoreModels.alloc")
     text = text.replace("alloc_models", "alloc")
@@ -258,7 +242,7 @@ def rewrite_alloc_imports(text: str) -> str:
         text,
         flags=re.MULTILINE,
     )
-    # Replace `import Aeneas` with the explicit pieces it needs.
+    # Additional imports just for `Funs.lean`
     text = re.sub(
         r"^import CoreModels.Alloc.Types$",
         "import CoreModels.Alloc.Types\nimport CoreModels.FunsExternal\n"
@@ -274,11 +258,9 @@ def rewrite_alloc_imports(text: str) -> str:
         "-- (alloc-side externals live in parent Aeneas.FunsExternal)",
         text, flags=re.MULTILINE,
     )
-    # `open core_models` is dropped from the FunsExternal template.
-    text = re.sub(r"^open core_models$",
-                  "-- open core_models removed",
-                  text, flags=re.MULTILINE)
-    # open
+    
+    # Fix the `open`s: We want to open the Aeneas library definitions, except for
+    # `core` and `alloc`.
     text = re.sub(
         r"^open Aeneas Aeneas\.Std Result ControlFlow Error$",
         "open Aeneas\nopen Aeneas.Std hiding namespace core alloc\nopen Result ControlFlow Error",

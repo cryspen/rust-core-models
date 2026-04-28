@@ -54,30 +54,30 @@ def collections.btree.set.BTreeSet (T : Type) (U : Type) :=
   Option T × Option U
 
 /-- [alloc::collections::vec_deque::VecDeque]
-    Source: 'src/lib.rs', lines 187:8-187:75
+    Source: 'src/lib.rs', lines 188:8-188:75
     Visibility: public -/
 def collections.vec_deque.VecDeque (T : Type) (A : Type) :=
   rust_primitives.sequence.Seq T × core.Phantom A
 
 /-- [alloc::slice::Dummy]
-    Source: 'src/lib.rs', lines 228:4-228:23 -/
+    Source: 'src/lib.rs', lines 231:4-231:23 -/
 @[reducible]
 def slice.Dummy (T : Type) := T
 
 /-- [alloc::vec::Vec]
-    Source: 'src/lib.rs', lines 334:4-334:70
+    Source: 'src/lib.rs', lines 338:4-338:70
     Visibility: public -/
 def vec.Vec (T : Type) :=
   rust_primitives.sequence.Seq T × core.Phantom Unit
 
 /-- [alloc::vec::into_iter::IntoIter]
-    Source: 'src/lib.rs', lines 342:8-342:79
+    Source: 'src/lib.rs', lines 346:8-346:79
     Visibility: public -/
 def vec.into_iter.IntoIter (T : Type) :=
   rust_primitives.sequence.Seq T × core.Phantom Unit
 
 /-- [alloc::vec::drain::Drain]
-    Source: 'src/lib.rs', lines 424:8-424:76
+    Source: 'src/lib.rs', lines 428:8-428:76
     Visibility: public -/
 def vec.drain.Drain (T : Type) :=
   rust_primitives.sequence.Seq T × core.Phantom Unit

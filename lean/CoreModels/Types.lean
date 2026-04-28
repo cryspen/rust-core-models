@@ -54,7 +54,7 @@ structure iter.traits.collect.IntoIterator (Self : Type) (Self_Item : Type)
   into_iter : Self → Result Self_IntoIter
 
 /-- [core_models::array::iter::IntoIter]
-    Source: 'core-models/src/core/array.rs', lines 120:4-120:55
+    Source: 'core-models/src/core/array.rs', lines 121:4-121:55
     Visibility: public -/
 @[reducible]
 def array.iter.IntoIter (T : Type) (N : Std.Usize) :=
@@ -67,26 +67,26 @@ structure ops.index.Index (Self : Type) (Idx : Type) (Self_Output : Type) where
   index : Self → Idx → Result Self_Output
 
 /-- [core_models::ops::range::Range]
-    Source: 'core-models/src/core/ops.rs', lines 311:4-314:5
+    Source: 'core-models/src/core/ops.rs', lines 293:4-296:5
     Visibility: public -/
 structure ops.range.Range (T : Type) where
   start : T
   «end» : T
 
 /-- [core_models::ops::range::RangeTo]
-    Source: 'core-models/src/core/ops.rs', lines 303:4-305:5
+    Source: 'core-models/src/core/ops.rs', lines 285:4-287:5
     Visibility: public -/
 structure ops.range.RangeTo (T : Type) where
   «end» : T
 
 /-- [core_models::ops::range::RangeFrom]
-    Source: 'core-models/src/core/ops.rs', lines 307:4-309:5
+    Source: 'core-models/src/core/ops.rs', lines 289:4-291:5
     Visibility: public -/
 structure ops.range.RangeFrom (T : Type) where
   start : T
 
 /-- [core_models::ops::range::RangeFull]
-    Source: 'core-models/src/core/ops.rs', lines 316:4-316:25
+    Source: 'core-models/src/core/ops.rs', lines 298:4-298:25
     Visibility: public -/
 @[reducible]
 def ops.range.RangeFull := Unit
@@ -762,12 +762,12 @@ structure ops.function.Fn (Self : Type) (Args : Type)
 -/
 
 /-- Trait declaration: [core_models::ops::try_trait::FromResidual]
-    Source: 'core-models/src/core/ops.rs', lines 265:4-267:5 -/
+    Source: 'core-models/src/core/ops.rs', lines 247:4-249:5 -/
 structure ops.try_trait.FromResidual (Self : Type) (R : Type) where
   from_residual : R → Result Self
 
 /-- Trait declaration: [core_models::ops::try_trait::Try]
-    Source: 'core-models/src/core/ops.rs', lines 270:4-275:5 -/
+    Source: 'core-models/src/core/ops.rs', lines 252:4-257:5 -/
 structure ops.try_trait.Try (Self : Type) (Self_Output : Type) (Self_Residual :
   Type) where
   from_output : Self_Output → Result Self
@@ -775,18 +775,18 @@ structure ops.try_trait.Try (Self : Type) (Self_Output : Type) (Self_Residual :
     Self_Output)
 
 /-- Trait declaration: [core_models::ops::deref::Deref]
-    Source: 'core-models/src/core/ops.rs', lines 280:4-284:5
+    Source: 'core-models/src/core/ops.rs', lines 262:4-266:5
     Visibility: public -/
 structure ops.deref.Deref (Self : Type) (Self_Target : Type) where
   deref : Self → Result Self_Target
 
 /-- Trait declaration: [core_models::ops::drop::Drop]
-    Source: 'core-models/src/core/ops.rs', lines 296:4-298:5 -/
+    Source: 'core-models/src/core/ops.rs', lines 278:4-280:5 -/
 structure ops.drop.Drop (Self : Type) where
   drop : Self → Result Self
 
 /-- [core_models::ops::range::RangeInclusive]
-    Source: 'core-models/src/core/ops.rs', lines 318:4-321:5
+    Source: 'core-models/src/core/ops.rs', lines 300:4-303:5
     Visibility: public -/
 structure ops.range.RangeInclusive (T : Type) where
   start : T
