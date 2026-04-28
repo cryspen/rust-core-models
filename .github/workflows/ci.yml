@@ -20,7 +20,7 @@ jobs:
     name: cargo fmt
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@master
@@ -35,7 +35,7 @@ jobs:
     name: cargo test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@master
@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [rust-fmt]   # don't waste cycles on a formatting-broken PR
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # ---- Rust toolchain (needed to compile the workspace; charon's
       # nix-built binary brings its own pinned rustc but `cargo` itself
