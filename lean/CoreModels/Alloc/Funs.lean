@@ -321,31 +321,6 @@ def vec.Vec.Insts.CoreOpsDerefDerefSlice.deref
   {T : Type} (self : vec.Vec T) : Result (Slice T) := do
   vec.Vec.as_slice self
 
-/-- [alloc::vec::{core::ops::index::Index<I, Clause0_Output> for alloc::vec::Vec<T, A>}::index]:
-    Source: 'src/lib.rs', lines 469:8-471:9
-    Visibility: public -/
-def vec.Vec.Insts.CoreOpsIndexIndex.index
-  {T : Type} {I : Type} {Clause0_Output : Type}
-  (coresliceindexSliceIndexISliceClause0_OutputInst :
-  core.slice.index.SliceIndex I (Slice T) Clause0_Output) (self : vec.Vec T)
-  (i : I) :
-  Result Clause0_Output
-  := do
-  let s ← vec.Vec.Insts.CoreOpsDerefDerefSlice.deref self
-  core.slice.index.Slice.index coresliceindexSliceIndexISliceClause0_OutputInst
-    s i
-
-/-- Trait implementation: [alloc::vec::{core::ops::index::Index<I, Clause0_Output> for alloc::vec::Vec<T, A>}]
-    Source: 'src/lib.rs', lines 463:4-472:5 -/
-@[reducible]
-def vec.Vec.Insts.CoreOpsIndexIndex {T : Type} {I : Type} (A : Type)
-  {Clause0_Output : Type} (coresliceindexSliceIndexISliceClause0_OutputInst :
-  core.slice.index.SliceIndex I (Slice T) Clause0_Output) :
-  core.ops.index.Index (vec.Vec T) I Clause0_Output := {
-  index := vec.Vec.Insts.CoreOpsIndexIndex.index
-    coresliceindexSliceIndexISliceClause0_OutputInst
-}
-
 /-- Trait implementation: [alloc::vec::{core::ops::deref::Deref<[T]> for alloc::vec::Vec<T, A>}]
     Source: 'src/lib.rs', lines 475:4-481:5 -/
 @[reducible]

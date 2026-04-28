@@ -179,11 +179,8 @@ jobs:
           key: cargo-lean-${{ runner.os }}-${{ hashFiles('**/Cargo.lock', '**/Cargo.toml') }}
 
       # ---- The actual pipeline ------------------------------------------
-      - name: Extract + build parent Lean library
-        run: make CHARON=$AENEAS_DIR/charon/bin/charon AENEAS=$AENEAS_DIR/bin/aeneas lean
-
-      - name: Run regression tests
-        run: make CHARON=$AENEAS_DIR/charon/bin/charon AENEAS=$AENEAS_DIR/bin/aeneas tests
+      - name: Extract Lean library, build Lean library, run regression tests
+        run: make CHARON=$AENEAS_DIR/charon/bin/charon AENEAS=$AENEAS_DIR/bin/aeneas lean tests
 
       # ---- Enforce that committed extraction matches re-extraction ------
       # If this fails: someone changed Rust source / patcher without
@@ -191,9 +188,9 @@ jobs:
       - name: Committed extraction must match a fresh re-extraction
         run: |
           git diff --exit-code -- \
-            lean/Aeneas/Funs.lean \
-            lean/Aeneas/Types.lean \
-            lean/Aeneas/FunsExternal_Template.lean \
-            lean/Aeneas/TypesExternal_Template.lean \
-            lean/Aeneas/Alloc/Funs.lean \
-            lean/Aeneas/Alloc/Types.lean
+            lean/CoreModels/Funs.lean \
+            lean/CoreModels/Types.lean \
+            lean/CoreModels/FunsExternal_Template.lean \
+            lean/CoreModels/TypesExternal_Template.lean \
+            lean/CoreModels/Alloc/Funs.lean \
+            lean/CoreModels/Alloc/Types.lean
