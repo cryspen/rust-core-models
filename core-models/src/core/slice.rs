@@ -280,7 +280,6 @@ pub mod index {
         #[hax_lib::requires(true)]
         fn get(self, slice: &T) -> Option<&Self::Output>;
 
-        #[hax_lib::requires(true)]
         fn index(self, slice: &T) -> &Self::Output;
     }
 
@@ -289,12 +288,13 @@ pub mod index {
     impl<T> SliceIndex<[T]> for usize {
         type Output = T;
         fn get(self, slice: &[T]) -> Option<&T> {
-            if self < slice.len() {
+            if self < slice_length(slice) {
                 Option::Some(slice_index(slice, self))
             } else {
                 Option::None
             }
         }
+        #[hax_lib::requires(self < slice_length(slice))]
         fn index(self, slice: &[T]) -> &T {
             slice_index(slice, self)
         }
@@ -317,14 +317,15 @@ pub mod index {
     impl<T> SliceIndex<[T]> for crate::ops::range::RangeFrom<usize> {
         type Output = [T];
         fn get(self, slice: &[T]) -> Option<&[T]> {
-            if self.start <= slice.len() {
-                Option::Some(slice_slice(slice, self.start, slice.len()))
+            if self.start <= slice_length(slice) {
+                Option::Some(slice_slice(slice, self.start, slice_length(slice)))
             } else {
                 Option::None
             }
         }
+        #[hax_lib::requires(self.start <= slice_length(slice))]
         fn index(self, slice: &[T]) -> &[T] {
-            slice_slice(slice, self.start, slice.len())
+            slice_slice(slice, self.start, slice_length(slice))
         }
     }
     #[hax_lib::attributes]
@@ -332,12 +333,13 @@ pub mod index {
     impl<T> SliceIndex<[T]> for crate::ops::range::RangeTo<usize> {
         type Output = [T];
         fn get(self, slice: &[T]) -> Option<&[T]> {
-            if self.end <= slice.len() {
+            if self.end <= slice_length(slice) {
                 Option::Some(slice_slice(slice, 0, self.end))
             } else {
                 Option::None
             }
         }
+        #[hax_lib::requires(self.end <= slice_length(slice))]
         fn index(self, slice: &[T]) -> &[T] {
             slice_slice(slice, 0, self.end)
         }
@@ -347,12 +349,13 @@ pub mod index {
     impl<T> SliceIndex<[T]> for crate::ops::range::Range<usize> {
         type Output = [T];
         fn get(self, slice: &[T]) -> Option<&[T]> {
-            if self.start <= self.end && self.end <= slice.len() {
+            if self.start <= self.end && self.end <= slice_length(slice) {
                 Option::Some(slice_slice(slice, self.start, self.end))
             } else {
                 Option::None
             }
         }
+        #[hax_lib::requires(self.start <= self.end && self.end <= slice_length(slice))]
         fn index(self, slice: &[T]) -> &[T] {
             slice_slice(slice, self.start, self.end)
         }
@@ -371,10 +374,11 @@ pub mod index {
         I: SliceIndex<[T]>,
     {
         type Output = I::Output;
+        #[hax_lib::requires(i.get(self).is_some())]
         fn index(&self, i: I) -> &I::Output {
             match i.get(self) {
                 Option::Some(r) => r,
-                Option::None => panic!("slice index out of bounds"),
+                Option::None => crate::panicking::internal::panic(),
             }
         }
     }
@@ -442,7 +446,7 @@ mod tests {
     proptest! {
         #[test]
         fn test_len(slice in prop::collection::vec(any::<u8>(), 0..=20)) {
-            prop_assert_eq!(Slice::len(&slice[..]), slice.len());
+            prop_assert_eq!(Slice::len(&slice[..]), slice_length(slice));
         }
 
         #[test]
@@ -457,7 +461,7 @@ mod tests {
 
         #[test]
         fn test_split_at(slice in prop::collection::vec(any::<u8>(), 1..=10)) {
-            let mid = slice.len() / 2;
+            let mid = slice_length(slice) / 2;
             prop_assert_eq!(Slice::split_at(&slice[..], mid), slice.split_at(mid));
         }
 
@@ -542,7 +546,7 @@ mod tests {
         #[test]
         fn test_swap(slice in prop::collection::vec(any::<u8>(), 2..=10)) {
             let a = 0;
-            let b = slice.len() - 1;
+            let b = slice_length(slice) - 1;
             let mut model = slice.clone();
             let mut std_slice = slice.clone();
             Slice::swap(&mut model[..], a, b);
@@ -561,7 +565,7 @@ mod tests {
 
         #[test]
         fn test_starts_with(slice in prop::collection::vec(any::<u8>(), 0..=10), n in 0usize..=10) {
-            let n = n.min(slice.len());
+            let n = n.min(slice_length(slice));
             let needle = &slice[..n];
             prop_assert_eq!(Slice::starts_with(&slice[..], needle), slice.starts_with(needle));
         }
@@ -573,8 +577,8 @@ mod tests {
 
         #[test]
         fn test_ends_with(slice in prop::collection::vec(any::<u8>(), 0..=10), n in 0usize..=10) {
-            let n = n.min(slice.len());
-            let needle = &slice[slice.len() - n..];
+            let n = n.min(slice_length(slice));
+            let needle = &slice[slice_length(slice) - n..];
             prop_assert_eq!(Slice::ends_with(&slice[..], needle), slice.ends_with(needle));
         }
 

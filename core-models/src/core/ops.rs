@@ -203,16 +203,7 @@ pub mod function {
         }
     }
 
-    #[cfg(all(not(test), hax_backend_fstar))]
-    #[hax_lib::fstar::after(
-        "unfold instance fnmut_arrow_binder t u
-  : t_FnMut (_:t -> u) t = {
-    f_Output = u;
-    f_call_mut_pre = (fun _ _ -> true);
-    f_call_mut_post = (fun (x0: (_:t -> u)) (x1: t) (res: u) -> res == x0 x1);
-    f_call_mut = (fun (x0: (_:t -> u)) (x1: t) -> x0 x1);
-  }"
-    )]
+    /* #[cfg(all(not(test), hax_backend_fstar))]
     impl<Arg, Out> FnMut<Arg> for fn(Arg) -> Out {
         fn call_mut(&self, arg: Arg) -> Out {
             self(arg)
@@ -232,15 +223,6 @@ pub mod function {
     }
 
     #[cfg(all(not(test), hax_backend_fstar))]
-    #[hax_lib::fstar::after(
-        "unfold instance fn_arrow_binder t u
-  : t_Fn (_:t -> u) t = {
-    f_Output = u;
-    f_call_pre = (fun _ _ -> true);
-    f_call_post = (fun (x0: (_:t -> u)) (x1: t) (res: u) -> res == x0 x1);
-    f_call = (fun (x0: (_:t -> u)) (x1: t) -> x0 x1);
-  }"
-    )]
     impl<Arg, Out> Fn<Arg> for fn(Arg) -> Out {
         fn call(&self, arg: Arg) -> Out {
             self(arg)
@@ -257,7 +239,7 @@ pub mod function {
         fn call(&self, arg: (Arg1, Arg2, Arg3)) -> Out {
             self(arg.0, arg.1, arg.2)
         }
-    }
+    } */
 }
 
 mod try_trait {

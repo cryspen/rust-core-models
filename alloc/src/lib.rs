@@ -176,6 +176,7 @@ assume val lemma_peek_pop: #t:Type -> (#a: Type) -> (#i: Core_models.Cmp.t_Ord t
             impl BTreeSet<(), ()> {}
 
             impl<T, U> BTreeSet<T, U> {
+                #[hax_lib::opaque]
                 fn new() -> BTreeSet<T, U> {
                     BTreeSet(None, None)
                 }
@@ -207,8 +208,10 @@ assume val lemma_peek_pop: #t:Type -> (#a: Type) -> (#i: Core_models.Cmp.t_Ord t
             }
         }
 
+        #[hax_lib::attributes]
         impl<T, A> std::ops::Index<usize> for VecDeque<T, A> {
             type Output = T;
+            #[hax_lib::requires(i < self.len())]
             fn index(&self, i: usize) -> &T {
                 seq_index(&self.0, i)
             }
@@ -331,6 +334,7 @@ pub mod vec {
     use rust_primitives::sequence::*;
 
     #[cfg_attr(test, derive(Debug))]
+    #[hax_lib::fstar::before("open Rust_primitives.Notations")]
     pub struct Vec<T, A>(pub Seq<T>, pub std::marker::PhantomData<A>);
 
     /// Opaque model of `std::vec::IntoIter<T, A>`. Downstream Aeneas
@@ -461,6 +465,7 @@ pub mod vec {
         I: std::slice::SliceIndex<[T]>,
     {
         type Output = I::Output;
+        #[hax_lib::requires(self.get(i).is_some())]
         fn index(&self, i: I) -> &I::Output {
             std::ops::Index::index(&**self, i)
         }
