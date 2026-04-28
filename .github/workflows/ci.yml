@@ -146,8 +146,17 @@ jobs:
 
       # ---- Lean toolchain ------------------------------------------------
       - name: Install elan
+        # Bypass elan-init.sh: it does its own curl with no retries, so a
+        # transient 502 from github.com/.../releases/latest/download/...
+        # fails the whole job. Download the tarball ourselves with curl
+        # retries, then run the bundled elan-init binary directly.
         run: |
-          curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+          set -euo pipefail
+          curl -sSfL --retry 5 --retry-delay 5 --retry-all-errors \
+            -o /tmp/elan.tar.gz \
+            https://github.com/leanprover/elan/releases/latest/download/elan-x86_64-unknown-linux-gnu.tar.gz
+          tar -xzf /tmp/elan.tar.gz -C /tmp
+          /tmp/elan-init -y --default-toolchain none
           echo "$HOME/.elan/bin" >> $GITHUB_PATH
 
       - name: Cache Lean / mathlib build
