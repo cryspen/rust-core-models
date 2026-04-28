@@ -3,10 +3,10 @@
 import CoreModels.TypesPrologue
 import CoreModels.Types
 import CoreModels.TypesExternal
-import CoreModels.FunsExternal
-import CoreModels.Funs
 -- (alloc-side externals live in parent Aeneas.FunsExternal)
-open Aeneas Aeneas.Std Result ControlFlow Error
+open Aeneas
+open Aeneas.Std hiding namespace core alloc
+open Result ControlFlow Error
 set_option linter.dupNamespace false
 set_option linter.hashCommand false
 set_option linter.unusedVariables false

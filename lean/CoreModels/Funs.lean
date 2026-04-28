@@ -7,7 +7,7 @@ import CoreModels.TypesPrologue
 import CoreModels.Types
 import CoreModels.FunsExternal
 open Aeneas
-open Aeneas.Std hiding namespace core
+open Aeneas.Std hiding namespace core alloc
 open Result ControlFlow Error
 set_option linter.dupNamespace false
 set_option linter.hashCommand false

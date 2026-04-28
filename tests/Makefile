@@ -8,7 +8,7 @@ LEAN_DIR = lean
 # emit `import Tests.<X>` rather than the auto-derived module prefix.
 SUBDIR = Tests
 
-.PHONY: all llbc extract build clean
+.PHONY: all llbc extract fix build clean
 
 all: build
 
@@ -18,10 +18,7 @@ $(LLBC_FILE): src/lib.rs Cargo.toml
 
 llbc: $(LLBC_FILE)
 
-# 2. Run Aeneas to extract Lean files into $(LEAN_DIR)/$(SUBDIR)/. The
-# parent's `Aeneas` library (loaded via `import Aeneas` from the
-# auto-generated `Funs.lean`) provides every shim the extracted code
-# needs — no post-processing is required here.
+# 2. Run Aeneas to extract Lean files into $(LEAN_DIR)/$(SUBDIR)/.
 extract: $(LLBC_FILE)
 	$(AENEAS) -backend lean $(LLBC_FILE) -split-files \
 		-dest $(LEAN_DIR) -subdir $(SUBDIR)
@@ -32,8 +29,17 @@ extract: $(LLBC_FILE)
 	rm -f $(LEAN_DIR)/$(SUBDIR)/FunsExternal_Template.lean
 	rm -f $(LEAN_DIR)/$(SUBDIR)/TypesExternal_Template.lean
 
-# 3. Build the Lean library — this is the actual test.
-build: extract
+# 3. Fix the `import`s and `open`s in the generated file:
+fix: extract
+	sed -i \
+		'/^open Aeneas /c\open CoreModels Aeneas\nopen Aeneas.Std hiding namespace core alloc\nopen Result ControlFlow Error' \
+		$(LEAN_DIR)/$(SUBDIR)/Funs.lean
+	sed -i \
+		's/import Aeneas/import CoreModels/' \
+		$(LEAN_DIR)/$(SUBDIR)/Funs.lean
+
+# 4. Build the Lean library — this is the actual test.
+build: fix
 	cd $(LEAN_DIR) && lake build
 
 # Only remove files Aeneas re-generates; keep the hand-written

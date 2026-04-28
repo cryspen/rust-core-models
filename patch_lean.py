@@ -1,41 +1,38 @@
 #!/usr/bin/env python3
 """
 Post-process Aeneas-generated Lean files into the layout expected by our
-hand-written Aeneas.lean drop-in replacement library.
+Aeneas core replacement library.
 
-Aeneas writes the following files into ./lean/ :
+For `core_models`, Aeneas writes the following files into ./lean/ :
+    Funs.lean
+    Types.lean
+    FunsExternal_Template.lean
+    TypesExternal_Template.lean
+    
+For `alloc`, Aeneas writes the following files into ./lean/CoreModels/Alloc :
     Funs.lean
     Types.lean
     FunsExternal_Template.lean
     TypesExternal_Template.lean
 
 This script:
-  1. Moves them into ./lean/Aeneas/ as
-        Funs.lean, Types.lean, FunsExternal_Template.lean, TypesExternal_Template.lean
-  2. Rewrites imports & opens to match our package layout.
-  3. Renames `namespace core_models` -> `namespace core`.
-  4. Replaces `fail panic` -> `fail Error.panic`.
-  5. Comments out the *type-level* duplicates of items that we forward-declare
-     in `Primitives.lean` (`clone::Clone`, `marker::Copy`, `option::Option`,
-     `ops::function::{Fn, FnMut, FnOnce}`).
-  6. Comments out the `core::num::*::{MIN, MAX}` constants in `Funs.lean`
-     (those cannot be removed at the LLBC level via `--exclude` because
-     other parts of the crate reference them, e.g. `try_from` impls), and
-     rewrites their monadic call sites (`let i ← num.X.MIN`) to use `:=`
-     so they line up with the pure versions in `Primitives.lean`.
-  7. Comments out a small number of generated function definitions that have
-     known elaboration issues (forward refs, generic field projection on
-     trait method parameters, slice/result/iterator wrappers that hit
-     namespace shadowing under `def slice.Slice.foo` / `def result.Result.foo`).
+  * Moves the files generated from `core_model` into ./lean/CoreModels/.
+  * Rewrites imports & opens to match our package layout.
+  * Renames `namespace core_models` -> `namespace CoreModels.core`.
+    and `namespace alloc` -> `namespace CoreModels.alloc`.
+  * Comments out the type-level items that we forward-declare
+    in `TypesPrologue.lean`.
+  * Comments out some function-level items that we forward-declare in
+    `FunsPrologue.lean`.
+  * Comments out a small number of generated function definitions that have
+    known elaboration issues.
+  * Fixes some other elaboration issues via search and replace.
 
 Pure-fn duplicates of `core::option::Option::{is_some, is_none, unwrap_or,
 take}`, `core::mem::{swap, replace}` and the `core::num::*::{wrapping_*,
 saturating_*, rotate_*, overflowing_*}` arithmetic helpers are stripped at
 the LLBC level by charon's `--exclude` flag (see `CHARON_EXCLUDES` in the
 parent `Makefile`), not by this script.
-
-Hand-written files (Aeneas.lean, Aeneas/Primitives.lean, Aeneas/Instances.lean,
-Aeneas/PureFuns.lean, lakefile.toml, lean-toolchain) are NOT touched.
 """
 
 from __future__ import annotations
@@ -49,7 +46,7 @@ LEAN_DIR = Path(__file__).parent / "lean"
 CORE_DIR = LEAN_DIR / "CoreModels"
 ALLOC_DIR = CORE_DIR / "Alloc"
 
-# files to move from `lean/` into `lean/Aeneas/`
+# files to move from `lean/` into `lean/CoreModels/`
 GENERATED_FILES = [
     "Funs.lean",
     "Types.lean",
@@ -167,15 +164,15 @@ TYPES_TO_REMOVE = [
     "core_models::ops::function::Fn",
     "core_models::cmp::Ordering",
     "core_models::option::Option",
-    # # `core_models::result::Result` is provided by Primitives.lean as a
-    # # reducible alias of an inductive declared inside a guard namespace.
-    # # If we let the extracted inductive land at `core.result.Result` it
-    # # auto-creates a same-named namespace whose enclosing-namespace lookup
-    # # shadows the monadic `Result`, breaking signatures of the form
-    # # `... → Result (Option T)` inside any `def`/`axiom core.result.Result.*`.
-    # # See the long comment around the alias in Primitives.lean for the full
-    # # story (and the recommended upstream fix: rename Aeneas's monad).
-    # "core_models::result::Result",
+    # `core_models::result::Result` is provided by Primitives.lean as a
+    # reducible alias of an inductive declared inside a guard namespace.
+    # If we let the extracted inductive land at `core.result.Result` it
+    # auto-creates a same-named namespace whose enclosing-namespace lookup
+    # shadows the monadic `Result`, breaking signatures of the form
+    # `... → Result (Option T)` inside any `def`/`axiom core.result.Result.*`.
+    # See the long comment around the alias in Primitives.lean for the full
+    # story (and the recommended upstream fix: rename Aeneas's monad).
+    "core_models::result::Result",
 ]
 
 
@@ -202,7 +199,7 @@ def rewrite_imports_and_opens(text: str) -> str:
     # open
     text = re.sub(
         r"^open Aeneas Aeneas\.Std Result ControlFlow Error$",
-        "open Aeneas\nopen Aeneas.Std hiding namespace core\nopen Result ControlFlow Error",
+        "open Aeneas\nopen Aeneas.Std hiding namespace core alloc\nopen Result ControlFlow Error",
         text, flags=re.MULTILINE,
     )
     return text
@@ -220,6 +217,8 @@ def rename_namespace(text: str) -> str:
 
 
 def fix_fail_panic(text: str) -> str:
+    """In the definition of a Lean `item` called `panic`, the name `panic`
+    does not resolve to `Error.panic` as it should."""
     return text.replace("  fail panic\n", "  fail Error.panic\n")
 
 
@@ -248,22 +247,21 @@ def rename_alloc_models(text: str) -> str:
 def rewrite_alloc_imports(text: str) -> str:
     """Adjust the imports / opens emitted by Aeneas for the staged alloc
     crate. The `alloc_models` rename has already happened by the time this
-    runs, so the import paths still look like `import Aeneas.Alloc.<X>`
-    (good — Aeneas emits those because of `-subdir Aeneas/Alloc`). What we
-    need to fix here:
-
-      - `import Aeneas` would create a cycle (Aeneas.lean imports the alloc
-        files), so rewrite it to `import Aeneas.Primitives` and add
-        `import Aeneas.Types` / `Aeneas.Funs` so the items the alloc code
-        references stay in scope.
-      - `open Aeneas Aeneas.Std Result ControlFlow Error` keeps working
-        unchanged (those namespaces are introduced by `Primitives.lean`).
+    runs, so the import paths still look like `import CoreModels.Alloc.<X>`
+    (good — Aeneas emits those because of `-subdir CoreModels/Alloc`).
     """
     # Replace `import Aeneas` with the explicit pieces it needs.
     text = re.sub(
         r"^import Aeneas$",
         "import CoreModels.TypesPrologue\nimport CoreModels.Types\n"
-        "import CoreModels.TypesExternal\nimport CoreModels.FunsExternal\n"
+        "import CoreModels.TypesExternal",
+        text,
+        flags=re.MULTILINE,
+    )
+    # Replace `import Aeneas` with the explicit pieces it needs.
+    text = re.sub(
+        r"^import CoreModels.Alloc.Types$",
+        "import CoreModels.Alloc.Types\nimport CoreModels.FunsExternal\n"
         "import CoreModels.Funs",
         text,
         flags=re.MULTILINE,
@@ -280,6 +278,12 @@ def rewrite_alloc_imports(text: str) -> str:
     text = re.sub(r"^open core_models$",
                   "-- open core_models removed",
                   text, flags=re.MULTILINE)
+    # open
+    text = re.sub(
+        r"^open Aeneas Aeneas\.Std Result ControlFlow Error$",
+        "open Aeneas\nopen Aeneas.Std hiding namespace core alloc\nopen Result ControlFlow Error",
+        text, flags=re.MULTILINE,
+    )
     return text
 
 
@@ -307,7 +311,7 @@ def make_vec_pure_methods_pure(text: str) -> str:
         r"  ok \(s, core\.Phantom\.mk\)",
         (
             "def vec.Vec.new (T : Type) : vec.Vec T :=\n"
-            "  (Array.empty, core.Phantom.mk)"
+            "  (.new T, core.Phantom.mk)"
         ),
         text,
     )
@@ -331,7 +335,7 @@ def make_vec_pure_methods_pure(text: str) -> str:
         (
             "def vec.Vec.len {T : Type} (self : vec.Vec T) : Std.Usize :=\n"
             "  let (s, _) := self\n"
-            "  .mk s.size"
+            "  .mk (Std.Slice.len s)"
         ),
         text,
     )

@@ -128,7 +128,7 @@ alloc-extract: $(ALLOC_LLBC_FILE)
 	-$(AENEAS) -backend lean $(ALLOC_LLBC_FILE) -split-files \
 	    -dest $(LEAN_DIR) -subdir CoreModels/Alloc
 
-# 3. Move generated files into $(LEAN_DIR)/Aeneas/ and apply our patches
+# 3. Move generated files into $(LEAN_DIR)/CoreModels/ and apply our patches
 #    (imports, opens, namespace rename, comment-outs of broken defs, etc.).
 patch:
 	python3 patch_lean.py
@@ -146,11 +146,11 @@ clean-generated:
 	rm -f $(LEAN_DIR)/Types.lean
 	rm -f $(LEAN_DIR)/FunsExternal_Template.lean
 	rm -f $(LEAN_DIR)/TypesExternal_Template.lean
-	rm -f $(LEAN_DIR)/Aeneas/Funs.lean
-	rm -f $(LEAN_DIR)/Aeneas/Types.lean
-	rm -f $(LEAN_DIR)/Aeneas/FunsExternal_Template.lean
-	rm -f $(LEAN_DIR)/Aeneas/TypesExternal_Template.lean
-	rm -rf $(LEAN_DIR)/Aeneas/Alloc
+	rm -f $(LEAN_DIR)/CoreModels/Funs.lean
+	rm -f $(LEAN_DIR)/CoreModels/Types.lean
+	rm -f $(LEAN_DIR)/CoreModels/FunsExternal_Template.lean
+	rm -f $(LEAN_DIR)/CoreModels/TypesExternal_Template.lean
+	rm -rf $(LEAN_DIR)/CoreModels/Alloc
 
 # Drop the staged alloc copy and its llbc.
 alloc-clean:
@@ -163,11 +163,8 @@ clean: clean-generated alloc-clean
 	rm -rf $(LEAN_DIR)/.lake
 
 # -----------------------------------------------------------------------------
-# Tests: a small Rust crate (./tests) that exercises items from `core::*`,
-# `std::*`, and `core_models::*` together. It is extracted with vanilla
-# Aeneas and built against the local `Aeneas` drop-in library — this is
-# how we verify that unpatched Aeneas output stays compatible with our
-# package.
+# Tests: a small Rust crate (./tests) that exercises items from `core::*` and
+# `std::*`
 # -----------------------------------------------------------------------------
 
 tests: lean

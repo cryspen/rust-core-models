@@ -21,6 +21,6 @@ set_option maxHeartbeats 1000000
     Name pattern: [rust_primitives::sequence::Seq]
     Visibility: public -/
 @[rust_type "rust_primitives::sequence::Seq"]
-def rust_primitives.sequence.Seq (T : Type) := _root_.Array T
+def rust_primitives.sequence.Seq (T : Type) := Aeneas.Std.Slice T
 
 end CoreModels

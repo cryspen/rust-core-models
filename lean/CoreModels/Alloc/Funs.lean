@@ -3,11 +3,13 @@
 import CoreModels.TypesPrologue
 import CoreModels.Types
 import CoreModels.TypesExternal
+import CoreModels.Alloc.Types
 import CoreModels.FunsExternal
 import CoreModels.Funs
-import CoreModels.Alloc.Types
 -- (alloc-side externals live in parent Aeneas.FunsExternal)
-open Aeneas Aeneas.Std Result ControlFlow Error
+open Aeneas
+open Aeneas.Std hiding namespace core alloc
+open Result ControlFlow Error
 set_option linter.dupNamespace false
 set_option linter.hashCommand false
 set_option linter.unusedVariables false
@@ -131,7 +133,7 @@ def vec.from_elem
     Source: 'src/lib.rs', lines 354:8-359:9
     Visibility: public -/
 def vec.Vec.new (T : Type) : vec.Vec T :=
-  (Array.empty, core.Phantom.mk)
+  (.new T, core.Phantom.mk)
 
 /-- [alloc::vec::{alloc::vec::Vec<T, alloc::alloc::Global>}::with_capacity]:
     Source: 'src/lib.rs', lines 360:8-362:9
@@ -144,7 +146,7 @@ def vec.Vec.with_capacity (T : Type) (_c : Std.Usize) : vec.Vec T :=
     Visibility: public -/
 def vec.Vec.len {T : Type} (self : vec.Vec T) : Std.Usize :=
   let (s, _) := self
-  .mk s.size
+  .mk (Std.Slice.len s)
 
 /-- [alloc::vec::{alloc::vec::Vec<T, A>}::push]:
     Source: 'src/lib.rs', lines 371:8-373:9

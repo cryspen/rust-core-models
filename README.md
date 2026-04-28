@@ -93,7 +93,7 @@ open Aeneas Aeneas.Std Result ControlFlow Error
 by
 ```
 open CoreModels Aeneas
-open Aeneas.Std hiding namespace core
+open Aeneas.Std hiding namespace core alloc
 open Result ControlFlow Error
 ```
 Then the Aeneas-extracted code that uses `std::*` types will resolve through this library's

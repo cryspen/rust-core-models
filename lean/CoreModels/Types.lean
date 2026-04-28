@@ -5,7 +5,7 @@ import CoreModels.Command
 import CoreModels.TypesPrologue
 import CoreModels.TypesExternal
 open Aeneas
-open Aeneas.Std hiding namespace core
+open Aeneas.Std hiding namespace core alloc
 open Result ControlFlow Error
 set_option linter.dupNamespace false
 set_option linter.hashCommand false
@@ -181,6 +181,7 @@ structure cmp.Ord (Self : Type) where
 @[reducible]
 def cmp.Reverse (T : Type) := T
 
+/-
 /-- [core_models::result::Result]
     Source: 'core-models/src/core/result.rs', lines 3:0-8:1
     Visibility: public -/
@@ -188,6 +189,7 @@ def cmp.Reverse (T : Type) := T
 inductive result.Result (T : Type) (E : Type) where
 | Ok : T → result.Result T E
 | Err : E → result.Result T E
+-/
 
 /-- Trait declaration: [core_models::convert::TryInto]
     Source: 'core-models/src/core/convert.rs', lines 5:0-10:1 -/
