@@ -82,6 +82,7 @@ pub mod traits {
 
         // opaque: while-let loop is not supported by hax FunctionalizeLoops
         #[hax_lib::opaque]
+        #[cfg_attr(charon, aeneas::exclude)]
         fn iter_fold<I: Iterator, B, F: Fn(B, I::Item) -> B>(mut iter: I, init: B, f: F) -> B {
             let mut accum = init;
             while let Option::Some(x) = iter.next() {
@@ -92,6 +93,7 @@ pub mod traits {
 
         // opaque: while-let loop is not supported by hax FunctionalizeLoops
         #[hax_lib::opaque]
+        #[cfg_attr(charon, aeneas::exclude)]
         fn iter_all<I: Iterator, F: Fn(I::Item) -> bool>(mut iter: I, f: F) -> bool {
             while let Option::Some(x) = iter.next() {
                 if !f(x) {
@@ -103,6 +105,7 @@ pub mod traits {
 
         // opaque: while-let loop is not supported by hax FunctionalizeLoops
         #[hax_lib::opaque]
+        #[cfg_attr(charon, aeneas::exclude)]
         fn iter_any<I: Iterator, F: Fn(I::Item) -> bool>(mut iter: I, f: F) -> bool {
             while let Option::Some(x) = iter.next() {
                 if f(x) {
@@ -128,6 +131,7 @@ pub mod traits {
 
         // opaque: while-let loop is not supported by hax FunctionalizeLoops
         #[hax_lib::opaque]
+        #[cfg_attr(charon, aeneas::exclude)]
         fn iter_find_map<I: Iterator, B, F: Fn(I::Item) -> Option<B>>(
             mut iter: I,
             f: F,
@@ -142,6 +146,7 @@ pub mod traits {
 
         // opaque: while-let loop is not supported by hax FunctionalizeLoops
         #[hax_lib::opaque]
+        #[cfg_attr(charon, aeneas::exclude)]
         fn iter_position<I: Iterator, P: Fn(I::Item) -> bool>(
             mut iter: I,
             predicate: P,
@@ -158,6 +163,7 @@ pub mod traits {
 
         // opaque: while-let loop is not supported by hax FunctionalizeLoops
         #[hax_lib::opaque]
+        #[cfg_attr(charon, aeneas::exclude)]
         fn iter_count<I: Iterator>(mut iter: I) -> usize {
             let mut n: usize = 0;
             while let Option::Some(_) = iter.next() {
@@ -168,6 +174,7 @@ pub mod traits {
 
         // opaque: for-loop generates Rust_primitives.Hax.Folds, causing F* dependency cycle
         #[hax_lib::opaque]
+        #[cfg_attr(charon, aeneas::exclude)]
         fn iter_nth<I: Iterator>(mut iter: I, n: usize) -> Option<I::Item> {
             for _ in 0..n {
                 if let Option::None = iter.next() {
@@ -179,6 +186,7 @@ pub mod traits {
 
         // opaque: while-let loop is not supported by hax FunctionalizeLoops
         #[hax_lib::opaque]
+        #[cfg_attr(charon, aeneas::exclude)]
         fn iter_last<I: Iterator>(mut iter: I) -> Option<I::Item> {
             let mut last = Option::None;
             while let Option::Some(x) = iter.next() {
@@ -189,6 +197,7 @@ pub mod traits {
 
         // opaque: while-let loop is not supported by hax FunctionalizeLoops
         #[hax_lib::opaque]
+        #[cfg_attr(charon, aeneas::exclude)]
         fn iter_for_each<I: Iterator, F: Fn(I::Item)>(mut iter: I, f: F) {
             while let Option::Some(x) = iter.next() {
                 f(x);
@@ -197,6 +206,7 @@ pub mod traits {
 
         // opaque: while-let loop is not supported by hax FunctionalizeLoops
         #[hax_lib::opaque]
+        #[cfg_attr(charon, aeneas::exclude)]
         fn iter_reduce<I: Iterator, F: Fn(I::Item, I::Item) -> I::Item>(
             mut iter: I,
             f: F,
@@ -213,6 +223,7 @@ pub mod traits {
 
         // opaque: while-let loop is not supported by hax FunctionalizeLoops
         #[hax_lib::opaque]
+        #[cfg_attr(charon, aeneas::exclude)]
         fn iter_min<I: Iterator>(mut iter: I) -> Option<I::Item>
         where
             I::Item: crate::cmp::Ord,
@@ -231,6 +242,7 @@ pub mod traits {
 
         // opaque: while-let loop is not supported by hax FunctionalizeLoops
         #[hax_lib::opaque]
+        #[cfg_attr(charon, aeneas::exclude)]
         fn iter_max<I: Iterator>(mut iter: I) -> Option<I::Item>
         where
             I::Item: crate::cmp::Ord,
@@ -247,6 +259,7 @@ pub mod traits {
             Option::Some(max)
         }
 
+        #[cfg_attr(charon, aeneas::exclude)]
         impl<I: Iterator> IteratorMethods for I {
             fn fold<B, F: Fn(B, I::Item) -> B>(self, init: B, f: F) -> B {
                 iter_fold(self, init, f)
@@ -397,6 +410,7 @@ pub mod adapters {
             iter: I,
             count: usize,
         }
+        #[cfg_attr(charon, aeneas::exclude)]
         impl<I> Enumerate<I> {
             pub fn new(iter: I) -> Enumerate<I> {
                 Enumerate { iter, count: 0 }
@@ -428,6 +442,7 @@ pub mod adapters {
             iter: I,
             step: usize,
         }
+        #[cfg_attr(charon, aeneas::exclude)]
         impl<I> StepBy<I> {
             pub fn new(iter: I, step: usize) -> Self {
                 StepBy { iter, step }
@@ -435,6 +450,7 @@ pub mod adapters {
         }
 
         #[hax_lib::opaque]
+        #[cfg_attr(charon, aeneas::exclude)]
         impl<I: Iterator> Iterator for StepBy<I> {
             type Item = <I as Iterator>::Item;
 
@@ -454,6 +470,7 @@ pub mod adapters {
             iter: I,
             f: F,
         }
+        #[cfg_attr(charon, aeneas::exclude)]
         impl<I, F> Map<I, F> {
             pub fn new(iter: I, f: F) -> Self {
                 Self { iter, f }
@@ -480,6 +497,7 @@ pub mod adapters {
             iter: I,
             n: usize,
         }
+        #[cfg_attr(charon, aeneas::exclude)]
         impl<I> Take<I> {
             pub fn new(iter: I, n: usize) -> Take<I> {
                 Take { iter, n }
@@ -615,6 +633,7 @@ pub mod adapters {
             iter: I,
             predicate: P,
         }
+        #[cfg_attr(charon, aeneas::exclude)]
         impl<I, P> Filter<I, P> {
             pub fn new(iter: I, predicate: P) -> Self {
                 Self { iter, predicate }
@@ -622,6 +641,7 @@ pub mod adapters {
         }
         // opaque: loop + Fn output projection not provably bool in F*
         #[hax_lib::opaque]
+        #[cfg_attr(charon, aeneas::exclude)]
         impl<I: Iterator, P: Fn(&I::Item) -> bool> Iterator for Filter<I, P> {
             type Item = I::Item;
             fn next(&mut self) -> Option<I::Item> {
@@ -677,6 +697,7 @@ pub mod adapters {
             iter: I,
             n: usize,
         }
+        #[cfg_attr(charon, aeneas::exclude)]
         impl<I> Skip<I> {
             pub fn new(iter: I, n: usize) -> Self {
                 Self { iter, n }

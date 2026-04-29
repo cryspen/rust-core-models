@@ -64,89 +64,19 @@ GENERATED_FILES = [
 # Each entry is the substring of the `[core_models::...]` doc header
 # that uniquely identifies the def.
 FUNS_TO_REMOVE = [
-    # iter::traits::iterator helpers (use generic field projection)
-    "core_models::iter::traits::iterator::iter_fold",
-    "core_models::iter::traits::iterator::iter_all",
-    "core_models::iter::traits::iterator::iter_any",
-    "core_models::iter::traits::iterator::iter_find_map",
-    "core_models::iter::traits::iterator::iter_position",
-    "core_models::iter::traits::iterator::iter_count",
-    "core_models::iter::traits::iterator::iter_last",
-    "core_models::iter::traits::iterator::iter_for_each",
-    "core_models::iter::traits::iterator::iter_reduce",
-    "core_models::iter::traits::iterator::iter_min",
-    "core_models::iter::traits::iterator::iter_max",
-    "core_models::iter::traits::iterator::iter_nth",
-    # IteratorMethods.<x> blanket implementations
-    "IteratorMethods<Clause0_Item> for I}::max",
-    "IteratorMethods<Clause0_Item> for I}::min",
-    "IteratorMethods<Clause0_Item> for I}::skip",
-    "IteratorMethods<Clause0_Item> for I}::take",
-    "IteratorMethods<Clause0_Item> for I}::map",
-    "IteratorMethods<Clause0_Item> for I}::step_by",
-    "IteratorMethods<Clause0_Item> for I}::enumerate",
-    "IteratorMethods<Clause0_Item> for I}::fold",
-    "IteratorMethods<Clause0_Item> for I}::all",
-    "IteratorMethods<Clause0_Item> for I}::any",
-    "IteratorMethods<Clause0_Item> for I}::count",
-    "IteratorMethods<Clause0_Item> for I}::last",
-    "IteratorMethods<Clause0_Item> for I}::nth",
-    "IteratorMethods<Clause0_Item> for I}::for_each",
-    "IteratorMethods<Clause0_Item> for I}::reduce",
-    "IteratorMethods<Clause0_Item> for I}::find_map",
-    "IteratorMethods<Clause0_Item> for I}::position",
-    # The IteratorMethods blanket instance itself
-    "core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}",
-    # Adapter `*::new` constructors that the above depend on
-    "core_models::iter::adapters::skip::{core_models::iter::adapters::skip::Skip<I>}::new",
-    "core_models::iter::adapters::filter::{core_models::iter::adapters::filter::Filter<I, P>}::new",
-    "core_models::iter::adapters::take::{core_models::iter::adapters::take::Take<I>}::new",
-    "core_models::iter::adapters::map::{core_models::iter::adapters::map::Map<I, F>}::new",
-    "core_models::iter::adapters::step_by::{core_models::iter::adapters::step_by::StepBy<I>}::new",
-    "core_models::iter::adapters::enumerate::{core_models::iter::adapters::enumerate::Enumerate<I>}::new",
-    # StepBy / Filter Iterator instances (depend on commented-out adapter ::new)
-    # The ident captured by the regex stops at the first `]`, so we need the
-    # `::next` form (which catches the loop body, the loop, and the wrapper).
-    "core_models::iter::adapters::step_by::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::step_by::StepBy<I>}::next",
-    "core_models::iter::adapters::step_by::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::step_by::StepBy<I>}",
-    "core_models::iter::adapters::filter::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::filter::Filter<I, P>}",
-    # iter::range::IteratorRange.next references core.iter.range.IteratorRange.next which is not provided
-    "core_models::iter::range::iter_range_next",
-    # Slice iterator implementations referencing missing helpers
-    "core_models::slice::iter::{core_models::iter::traits::iterator::Iterator<&'a ([T])> for core_models::slice::iter::Chunks<'a, T>}::next",
-    "core_models::slice::iter::{core_models::iter::traits::iterator::Iterator<&'a ([T])> for core_models::slice::iter::Chunks<'a, T>}",
-    "core_models::slice::iter::{core_models::iter::traits::iterator::Iterator<&'a ([T])> for core_models::slice::iter::ChunksExact<'a, T>}::next",
-    "core_models::slice::iter::{core_models::iter::traits::iterator::Iterator<&'a ([T])> for core_models::slice::iter::ChunksExact<'a, T>}",
-    "core_models::slice::iter::{core_models::iter::traits::iterator::Iterator<&'a ([T])> for core_models::slice::iter::Windows<'a, T>}::next",
-    "core_models::slice::iter::{core_models::iter::traits::iterator::Iterator<&'a ([T])> for core_models::slice::iter::Windows<'a, T>}",
-    # All slice::Slice<T>::* methods. The implicit namespace `slice.Slice`
-    # opened by `def slice.Slice.foo` makes bare `Slice T` resolve to
-    # `slice.Slice T = T` (a no-op alias from Types.lean) instead of the
-    # `core.Slice T` from Primitives, so the bodies don't elaborate.
-    "core_models::slice::{core_models::slice::Slice<T>",
-    # IntoIterator instances that depend on commented-out helpers.
-    # The `IntoIterator` trait now carries three type parameters
-    # (`Self`, `Item`, `IntoIter`), so the impl name patterns reflect
-    # two generic args inside the angle brackets.
-    "core_models::slice::{core_models::iter::traits::collect::IntoIterator<&'a ([T]), core_models::slice::iter::Iter<'a, T>> for &'b ([T])}",
-    "core_models::slice::{core_models::iter::traits::collect::IntoIterator<&'a (T), core_models::slice::iter::Iter<'a, T>> for &'a ([T])}",
-    "core_models::slice::{core_models::iter::traits::collect::IntoIterator<core_models::slice::iter::Iter<'a, T>> for &'a ([T])}",
-    # fill_loop body referencing commented-out helpers
-    "core_models::slice::{core_models::slice::Slice<T>}::fill",
-    # All result.Result.* methods. The implicit `result.Result` namespace
-    # opened by `def result.Result.foo` clashes with our monadic `Result`
-    # type and `ok`/`err` constructors, so the bodies don't elaborate
-    # correctly. Drop them all — downstream code that needs `result::Result`
-    # operations should use the inductive type's constructors directly.
-    "core_models::result::{core_models::result::Result<T, E>",
-    "core_models::result::{core_models::result::Result<core_models::option::Option<T>, E>",
-    "core_models::result::{core_models::result::Result<core_models::result::Result<T, E>, E>",
     # NOTE: pure-fn duplicates of `core::option::Option::{is_some, is_none,
     # unwrap_or, take}`, `core::mem::{swap, replace}`, and the
     # `core::num::*::{wrapping_*, saturating_*, rotate_*, overflowing_*}`
     # arithmetic helpers are now stripped at the LLBC level by charon's
     # `--exclude` flag (see CHARON_EXCLUDES in the Makefile). They no longer
     # need to be commented out here.
+    #
+    # The iter helpers, IteratorMethods blanket impl, adapter `::new`
+    # constructors, StepBy/Filter Iterator impls, slice::iter Iterator impls,
+    # the inherent `Slice<T>` impl, the `&[T]: IntoIterator` impl, and the
+    # `Result<...>` inherent impls are excluded at the source level via
+    # `#[cfg_attr(charon, aeneas::exclude)]` (see core-models/src/core/{iter,
+    # slice,result}.rs and the `register_tool(aeneas)` setup in lib.rs).
 ]
 
 # Type declarations in Types.lean to comment out (provided by TypesPrologue.lean)
