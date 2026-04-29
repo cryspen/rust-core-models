@@ -22,8 +22,6 @@ This script:
     and `namespace alloc` -> `namespace CoreModels.alloc`.
   * Comments out the type-level items that we forward-declare
     in `TypesPrologue.lean`.
-  * Comments out some function-level items that we forward-declare in
-    `FunsPrologue.lean`.
   * Comments out a small number of generated function definitions that have
     known elaboration issues.
   * Fixes some other elaboration issues via search and replace.
@@ -52,31 +50,6 @@ GENERATED_FILES = [
     "Types.lean",
     "FunsExternal_Template.lean",
     "TypesExternal_Template.lean",
-]
-
-# ---------------------------------------------------------------------------
-# Definitions to comment out, by their `[core_models::...]` doc-comment header.
-# A definition is "everything from its doc-comment up to the line before the
-# next doc-comment / `@[...]` attribute / blank-line+def".
-# ---------------------------------------------------------------------------
-
-# Definitions in Funs.lean that should be replaced by stub comments.
-# Each entry is the substring of the `[core_models::...]` doc header
-# that uniquely identifies the def.
-FUNS_TO_REMOVE = [
-    # NOTE: pure-fn duplicates of `core::option::Option::{is_some, is_none,
-    # unwrap_or, take}`, `core::mem::{swap, replace}`, and the
-    # `core::num::*::{wrapping_*, saturating_*, rotate_*, overflowing_*}`
-    # arithmetic helpers are now stripped at the LLBC level by charon's
-    # `--exclude` flag (see CHARON_EXCLUDES in the Makefile). They no longer
-    # need to be commented out here.
-    #
-    # The iter helpers, IteratorMethods blanket impl, adapter `::new`
-    # constructors, StepBy/Filter Iterator impls, slice::iter Iterator impls,
-    # the inherent `Slice<T>` impl, the `&[T]: IntoIterator` impl, and the
-    # `Result<...>` inherent impls are excluded at the source level via
-    # `#[cfg_attr(charon, aeneas::exclude)]` (see core-models/src/core/{iter,
-    # slice,result}.rs and the `register_tool(aeneas)` setup in lib.rs).
 ]
 
 # Type declarations in Types.lean to comment out (provided by TypesPrologue.lean)
@@ -651,7 +624,6 @@ def main() -> int:
 
     if funs_path.exists():
         text = read(funs_path)
-        text = comment_out_blocks(text, FUNS_TO_REMOVE)
         write(funs_path, text)
         print(f"commented out broken/duplicate function defs in Aeneas/Funs.lean")
 
