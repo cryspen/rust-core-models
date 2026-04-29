@@ -49,7 +49,7 @@ def collections.btree.set.BTreeSet.new
 /-- [alloc::collections::vec_deque::{alloc::collections::vec_deque::VecDeque<T, A>}::push_back]:
     Source: 'src/lib.rs', lines 198:12-198:44 -/
 def collections.vec_deque.VecDeque.push_back
-  {T : Type} (self : collections.vec_deque.VecDeque T A) (x : T) :
+  {T : Type} {A : Type} (self : collections.vec_deque.VecDeque T A) (x : T) :
   Result (collections.vec_deque.VecDeque T A)
   := do
   ok self
@@ -57,7 +57,7 @@ def collections.vec_deque.VecDeque.push_back
 /-- [alloc::collections::vec_deque::{alloc::collections::vec_deque::VecDeque<T, A>}::len]:
     Source: 'src/lib.rs', lines 199:12-201:13 -/
 def collections.vec_deque.VecDeque.len
-  {T : Type} (self : collections.vec_deque.VecDeque T A) :
+  {T : Type} {A : Type} (self : collections.vec_deque.VecDeque T A) :
   Result Std.Usize
   := do
   let (s, _) := self
@@ -66,7 +66,7 @@ def collections.vec_deque.VecDeque.len
 /-- [alloc::collections::vec_deque::{alloc::collections::vec_deque::VecDeque<T, A>}::pop_front]:
     Source: 'src/lib.rs', lines 202:12-208:13 -/
 def collections.vec_deque.VecDeque.pop_front
-  {T : Type} (self : collections.vec_deque.VecDeque T A) :
+  {T : Type} {A : Type} (self : collections.vec_deque.VecDeque T A) :
   Result ((Option T) × (collections.vec_deque.VecDeque T A))
   := do
   let i ← collections.vec_deque.VecDeque.len self
@@ -81,7 +81,7 @@ def collections.vec_deque.VecDeque.pop_front
     Source: 'src/lib.rs', lines 215:12-217:13
     Visibility: public -/
 def collections.vec_deque.VecDeque.Insts.CoreOpsIndexIndexUsizeT.index
-  {T : Type} (self : collections.vec_deque.VecDeque T A)
+  {T : Type} {A : Type} (self : collections.vec_deque.VecDeque T A)
   (i : Std.Usize) :
   Result T
   := do
@@ -298,7 +298,7 @@ def vec.drain.Drain.Insts.CoreIterTraitsIteratorIterator.next
 /-- Trait implementation: [alloc::vec::drain::{core::iter::traits::iterator::Iterator<T> for alloc::vec::drain::Drain<T, A>}]
     Source: 'src/lib.rs', lines 429:8-439:9 -/
 @[reducible]
-def vec.drain.Drain.Insts.CoreIterTraitsIteratorIterator (T : Type) (A : Type)
+def vec.drain.Drain.Insts.CoreIterTraitsIteratorIterator (T : Type)
   : core.iter.traits.iterator.Iterator (vec.drain.Drain T) T := {
   next := vec.drain.Drain.Insts.CoreIterTraitsIteratorIterator.next
 }
@@ -324,7 +324,7 @@ def vec.Vec.Insts.CoreOpsDerefDerefSlice.deref
 /-- Trait implementation: [alloc::vec::{core::ops::deref::Deref<[T]> for alloc::vec::Vec<T, A>}]
     Source: 'src/lib.rs', lines 475:4-481:5 -/
 @[reducible]
-def vec.Vec.Insts.CoreOpsDerefDerefSlice (T : Type) (A : Type) :
+def vec.Vec.Insts.CoreOpsDerefDerefSlice (T : Type) :
   core.ops.deref.Deref (vec.Vec T) (Slice T) := {
   deref := vec.Vec.Insts.CoreOpsDerefDerefSlice.deref
 }

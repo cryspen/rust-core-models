@@ -355,15 +355,12 @@ def drop_vec_allocator_param(text: str) -> str:
             text,
         )
 
-    # Drop the now-unused `{A : Type}` binder. The Vec-allocator parameter
-    # `A` is always introduced as an implicit `{A : Type}` somewhere in the
-    # binder list — sometimes adjacent to `{T : Type}` (e.g. impl methods
-    # `{T : Type} {A : Type}`), sometimes interleaved with extra implicits
-    # like `{T : Type} {I : Type} {A : Type} {Clause0_Output : Type}` for
-    # the generic `Vec::index<I: SliceIndex<[T]>>` impl. Just remove every
-    # `{A : Type}` binder unconditionally — `A` is exclusively the allocator
-    # name in our extraction, never a user-chosen identifier.
-    text = re.sub(r"\s*\{A : Type\}", "", text)
+    # Drop the now-unused `{A : Type}` binder.
+    text = re.sub(
+        r"(def vec\.(?:Vec|drain)[A-Za-z0-9._]+\s+[({]T : Type[)}])\s+[({]A : Type[)}]",
+        r"\1",
+        text,
+    )
 
     return text
 
@@ -416,7 +413,7 @@ def rewrite_alloc_phantom_data(text: str) -> str:
 def rename_clone_clone_inst(text: str) -> str:
     """Aeneas's standard library names `marker.Copy`'s clone-instance field
     `cloneInst`, but `core_models::marker::Copy` uses the macro-generated
-    `cloneCloneInst`. We forward-declare `marker.Copy` in `Primitives.lean`
+    `cloneCloneInst`. We forward-declare `marker.Copy` in `TypesPrologue.lean`
     with the Aeneas-compatible name `cloneInst`, so we have to rewrite the
     field accessor in the generated code accordingly.
 
@@ -476,25 +473,7 @@ def comment_out_num_bounds(text: str) -> str:
              "i8", "i16", "i32", "i64", "i128", "isize")
     subs = [f"{{core_models::num::{t}}}::{b}"
             for t in types for b in ("MIN", "MAX")]
-    return comment_out_blocks(text, subs, trailer="provided by Aeneas.Primitives")
-
-
-def fix_flatten_signature(text: str) -> str:
-    """Aeneas generates `Flatten IteratorInst IteratorInst` which doesn't
-    typecheck because the two arguments need different iterator instances."""
-    pattern = (
-        r"  flatten : forall \{Clause0_Item : Type\} \(IteratorInst :\n"
-        r"    iter\.traits\.iterator\.Iterator Self_Clause0_Item Clause0_Item\), Self →\n"
-        r"    Result \(iter\.adapters\.flatten\.Flatten IteratorInst IteratorInst\)"
-    )
-    replacement = (
-        "  flatten : forall {Clause0_Item : Type} (IteratorInst :\n"
-        "    iter.traits.iterator.Iterator Self_Clause0_Item Clause0_Item)\n"
-        "    (SelfIteratorInst : iter.traits.iterator.Iterator Self Self_Clause0_Item),\n"
-        "    Self →\n"
-        "    Result (iter.adapters.flatten.Flatten SelfIteratorInst IteratorInst)"
-    )
-    return re.sub(pattern, replacement, text)
+    return comment_out_blocks(text, subs, trailer="provided by CoreModels.FunsPrologue")
 
 
 def add_funs_prologue_import(text: str) -> str:
@@ -731,8 +710,6 @@ def main() -> int:
             text = add_funs_prologue_import(text)
             text = comment_out_num_bounds(text)
             text = desugar_pure_num_bound_binds(text)
-        if path == types_path:
-            text = fix_flatten_signature(text)
         write(path, text)
         print(f"rewrote imports/opens/namespace in Aeneas/{path.name}")
 

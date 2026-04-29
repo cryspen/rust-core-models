@@ -4631,63 +4631,63 @@ def mem.transmute {Src : Type} (Dst : Type) (src : Src) : Result Dst := do
     Source: 'core-models/src/core/num/mod.rs', lines 21:12-21:37
     Visibility: public -/
 @[global_simps, irreducible] def num.U8.MIN : Std.U8 := 0#u8
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::u16}::MIN]
     Source: 'core-models/src/core/num/mod.rs', lines 21:12-21:37
     Visibility: public -/
 @[global_simps, irreducible] def num.U16.MIN : Std.U16 := 0#u16
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::u32}::MIN]
     Source: 'core-models/src/core/num/mod.rs', lines 21:12-21:37
     Visibility: public -/
 @[global_simps, irreducible] def num.U32.MIN : Std.U32 := 0#u32
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::u64}::MIN]
     Source: 'core-models/src/core/num/mod.rs', lines 21:12-21:37
     Visibility: public -/
 @[global_simps, irreducible] def num.U64.MIN : Std.U64 := 0#u64
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::u128}::MIN]
     Source: 'core-models/src/core/num/mod.rs', lines 21:12-21:37
     Visibility: public -/
 @[global_simps, irreducible] def num.U128.MIN : Std.U128 := 0#u128
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::usize}::MIN]
     Source: 'core-models/src/core/num/mod.rs', lines 21:12-21:37
     Visibility: public -/
 @[global_simps, irreducible] def num.Usize.MIN : Std.Usize := 0#usize
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::u8}::MAX]
     Source: 'core-models/src/core/num/mod.rs', lines 23:12-23:40
     Visibility: public -/
 @[global_simps, irreducible] def num.U8.MAX : Std.U8 := 255#u8
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::u16}::MAX]
     Source: 'core-models/src/core/num/mod.rs', lines 23:12-23:40
     Visibility: public -/
 @[global_simps, irreducible] def num.U16.MAX : Std.U16 := 65535#u16
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::u32}::MAX]
     Source: 'core-models/src/core/num/mod.rs', lines 23:12-23:40
     Visibility: public -/
 @[global_simps, irreducible] def num.U32.MAX : Std.U32 := 4294967295#u32
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::u64}::MAX]
@@ -4695,7 +4695,7 @@ def mem.transmute {Src : Type} (Dst : Type) (src : Src) : Result Dst := do
     Visibility: public -/
 @[global_simps, irreducible]
 def num.U64.MAX : Std.U64 := 18446744073709551615#u64
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::u128}::MAX]
@@ -4703,7 +4703,7 @@ def num.U64.MAX : Std.U64 := 18446744073709551615#u64
     Visibility: public -/
 @[global_simps, irreducible]
 def num.U128.MAX : Std.U128 := 340282366920938463463374607431768211455#u128
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::usize}::MAX]
@@ -4711,7 +4711,7 @@ def num.U128.MAX : Std.U128 := 340282366920938463463374607431768211455#u128
     Visibility: public -/
 @[global_simps, irreducible]
 def num.Usize.MAX : Result Std.Usize := rust_primitives.arithmetic.USIZE_MAX
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-- [core_models::num::{core_models::num::u8}::BITS]
     Source: 'core-models/src/core/num/mod.rs', lines 25:12-25:57
@@ -5705,21 +5705,21 @@ def num.Usize.is_power_of_two (x : Std.Usize) : Result Bool := do
     Source: 'core-models/src/core/num/mod.rs', lines 207:12-207:40
     Visibility: public -/
 @[global_simps, irreducible] def num.I8.MIN : Std.I8 := (-128)#i8
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::i16}::MIN]
     Source: 'core-models/src/core/num/mod.rs', lines 207:12-207:40
     Visibility: public -/
 @[global_simps, irreducible] def num.I16.MIN : Std.I16 := (-32768)#i16
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::i32}::MIN]
     Source: 'core-models/src/core/num/mod.rs', lines 207:12-207:40
     Visibility: public -/
 @[global_simps, irreducible] def num.I32.MIN : Std.I32 := (-2147483648)#i32
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::i64}::MIN]
@@ -5727,7 +5727,7 @@ def num.Usize.is_power_of_two (x : Std.Usize) : Result Bool := do
     Visibility: public -/
 @[global_simps, irreducible]
 def num.I64.MIN : Std.I64 := (-9223372036854775808)#i64
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::i128}::MIN]
@@ -5735,7 +5735,7 @@ def num.I64.MIN : Std.I64 := (-9223372036854775808)#i64
     Visibility: public -/
 @[global_simps, irreducible]
 def num.I128.MIN : Std.I128 := (-170141183460469231731687303715884105728)#i128
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::isize}::MIN]
@@ -5743,28 +5743,28 @@ def num.I128.MIN : Std.I128 := (-170141183460469231731687303715884105728)#i128
     Visibility: public -/
 @[global_simps, irreducible]
 def num.Isize.MIN : Result Std.Isize := rust_primitives.arithmetic.ISIZE_MIN
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::i8}::MAX]
     Source: 'core-models/src/core/num/mod.rs', lines 209:12-209:40
     Visibility: public -/
 @[global_simps, irreducible] def num.I8.MAX : Std.I8 := 127#i8
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::i16}::MAX]
     Source: 'core-models/src/core/num/mod.rs', lines 209:12-209:40
     Visibility: public -/
 @[global_simps, irreducible] def num.I16.MAX : Std.I16 := 32767#i16
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::i32}::MAX]
     Source: 'core-models/src/core/num/mod.rs', lines 209:12-209:40
     Visibility: public -/
 @[global_simps, irreducible] def num.I32.MAX : Std.I32 := 2147483647#i32
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::i64}::MAX]
@@ -5772,7 +5772,7 @@ def num.Isize.MIN : Result Std.Isize := rust_primitives.arithmetic.ISIZE_MIN
     Visibility: public -/
 @[global_simps, irreducible]
 def num.I64.MAX : Std.I64 := 9223372036854775807#i64
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::i128}::MAX]
@@ -5780,7 +5780,7 @@ def num.I64.MAX : Std.I64 := 9223372036854775807#i64
     Visibility: public -/
 @[global_simps, irreducible]
 def num.I128.MAX : Std.I128 := 170141183460469231731687303715884105727#i128
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::isize}::MAX]
@@ -5788,7 +5788,7 @@ def num.I128.MAX : Std.I128 := 170141183460469231731687303715884105727#i128
     Visibility: public -/
 @[global_simps, irreducible]
 def num.Isize.MAX : Result Std.Isize := rust_primitives.arithmetic.ISIZE_MAX
--/  -- provided by Aeneas.Primitives
+-/  -- provided by CoreModels.FunsPrologue
 
 /-- [core_models::num::{core_models::num::i8}::BITS]
     Source: 'core-models/src/core/num/mod.rs', lines 211:12-211:57
