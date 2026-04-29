@@ -31,6 +31,7 @@ pub mod iter {
     /// See [`std::slice::Iter`]
     pub struct Iter<'a, T>(pub Seq<&'a T>);
 
+    #[cfg_attr(charon, aeneas::exclude)]
     impl<'a, T> crate::iter::traits::iterator::Iterator for Iter<'a, T> {
         type Item = &'a T;
         fn next(&mut self) -> Option<Self::Item> {

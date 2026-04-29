@@ -1,4 +1,4 @@
-CHARON ?= charon
+CHARON ?= RUSTFLAGS="--cfg charon" charon
 AENEAS ?= aeneas
 
 # `hax-lib` git revision, derived from the workspace Cargo.toml so the
