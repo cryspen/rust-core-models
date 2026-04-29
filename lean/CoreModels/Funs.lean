@@ -21,15 +21,6 @@ noncomputable section
 
 namespace CoreModels.core
 
-/-- Trait implementation: [core::slice::cmp::{core::cmp::PartialEq<[U]> for [T]}]
-    Source: '/rustc/library/core/src/slice/cmp.rs', lines 13:0-15:28
-    Name pattern: [core::cmp::PartialEq<[@T], [@U]>] -/
-@[reducible, rust_trait_impl "core::cmp::PartialEq<[@T], [@U]>"]
-def Slice.Insts.CoreCmpPartialEqSlice {T : Type} {U : Type} (cmpPartialEqInst :
-  core.cmp.PartialEq T U) : core.cmp.PartialEq (Slice T) (Slice U) := {
-  eq := Slice.Insts.CoreCmpPartialEqSlice.eq cmpPartialEqInst
-}
-
 /-- [core_models::array::{core_models::array::Dummy<T, N>}::map]:
     Source: 'core-models/src/core/array.rs', lines 37:4-39:5
     Visibility: public -/
@@ -2894,632 +2885,8 @@ def hint.black_box {T : Type} (dummy : T) : Result T := do
 def hint.must_use {T : Type} (value : T) : Result T := do
   ok value
 
-/-
-/-- [core_models::iter::traits::iterator::iter_fold]: loop body 0:
-    Source: 'core-models/src/core/iter.rs', lines 87:12-89:13 -/
-@[rust_loop_body]
-def iter.traits.iterator.iter_fold_loop.body
-  {I : Type} {B : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (coreopsfunctionFnFPairBInst :
-  core.ops.function.Fn F (B × Clause0_Item) B) (f : F) (iter : I) (accum : B)
-  :
-  Result (ControlFlow (I × B) B)
-  := do
-  let (o, iter1) ← IteratorInst.next iter
-  match o with
-  | option.Option.Some x =>
-    let accum1 ← coreopsfunctionFnFPairBInst.call f (accum, x)
-    ok (cont (iter1, accum1))
-  | option.Option.None => ok (done accum)
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_fold]: loop 0:
-    Source: 'core-models/src/core/iter.rs', lines 87:12-89:13 -/
-@[rust_loop]
-def iter.traits.iterator.iter_fold_loop
-  {I : Type} {B : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (coreopsfunctionFnFPairBInst :
-  core.ops.function.Fn F (B × Clause0_Item) B) (iter : I) (f : F) (accum : B)
-  :
-  Result B
-  := do
-  loop
-    (fun (iter1, accum1) => iter.traits.iterator.iter_fold_loop.body
-      IteratorInst coreopsfunctionFnFPairBInst f iter1 accum1)
-    (iter, accum)
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_fold]:
-    Source: 'core-models/src/core/iter.rs', lines 85:8-91:9 -/
-@[reducible]
-def iter.traits.iterator.iter_fold
-  {I : Type} {B : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (coreopsfunctionFnFPairBInst :
-  core.ops.function.Fn F (B × Clause0_Item) B) (iter : I) (init : B) 
-  (f : F) :
-  Result B
-  := do
-  iter.traits.iterator.iter_fold_loop IteratorInst coreopsfunctionFnFPairBInst
-    iter f init
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_all]: loop body 0:
-    Source: 'core-models/src/core/iter.rs', lines 96:12-102:9 -/
-@[rust_loop_body]
-def iter.traits.iterator.iter_all_loop.body
-  {I : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFTupleClause0_ItemBoolInst : core.ops.function.Fn F
-  Clause0_Item Bool) (f : F) (iter : I) :
-  Result (ControlFlow I Bool)
-  := do
-  let (o, iter1) ← IteratorInst.next iter
-  match o with
-  | option.Option.Some x =>
-    let b ← coreopsfunctionFnFTupleClause0_ItemBoolInst.call f x
-    if b
-    then ok (cont iter1)
-    else ok (done false)
-  | option.Option.None => ok (done true)
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_all]: loop 0:
-    Source: 'core-models/src/core/iter.rs', lines 96:12-102:9 -/
-@[rust_loop]
-def iter.traits.iterator.iter_all_loop
-  {I : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFTupleClause0_ItemBoolInst : core.ops.function.Fn F
-  Clause0_Item Bool) (iter : I) (f : F) :
-  Result Bool
-  := do
-  loop
-    (fun iter1 => iter.traits.iterator.iter_all_loop.body IteratorInst
-      coreopsfunctionFnFTupleClause0_ItemBoolInst f iter1)
-    iter
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_all]:
-    Source: 'core-models/src/core/iter.rs', lines 95:8-102:9 -/
-@[reducible]
-def iter.traits.iterator.iter_all
-  {I : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFTupleClause0_ItemBoolInst : core.ops.function.Fn F
-  Clause0_Item Bool) (iter : I) (f : F) :
-  Result Bool
-  := do
-  iter.traits.iterator.iter_all_loop IteratorInst
-    coreopsfunctionFnFTupleClause0_ItemBoolInst iter f
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_any]: loop body 0:
-    Source: 'core-models/src/core/iter.rs', lines 107:12-113:9 -/
-@[rust_loop_body]
-def iter.traits.iterator.iter_any_loop.body
-  {I : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFTupleClause0_ItemBoolInst : core.ops.function.Fn F
-  Clause0_Item Bool) (f : F) (iter : I) :
-  Result (ControlFlow I Bool)
-  := do
-  let (o, iter1) ← IteratorInst.next iter
-  match o with
-  | option.Option.Some x =>
-    let b ← coreopsfunctionFnFTupleClause0_ItemBoolInst.call f x
-    if b
-    then ok (done true)
-    else ok (cont iter1)
-  | option.Option.None => ok (done false)
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_any]: loop 0:
-    Source: 'core-models/src/core/iter.rs', lines 107:12-113:9 -/
-@[rust_loop]
-def iter.traits.iterator.iter_any_loop
-  {I : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFTupleClause0_ItemBoolInst : core.ops.function.Fn F
-  Clause0_Item Bool) (iter : I) (f : F) :
-  Result Bool
-  := do
-  loop
-    (fun iter1 => iter.traits.iterator.iter_any_loop.body IteratorInst
-      coreopsfunctionFnFTupleClause0_ItemBoolInst f iter1)
-    iter
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_any]:
-    Source: 'core-models/src/core/iter.rs', lines 106:8-113:9 -/
-@[reducible]
-def iter.traits.iterator.iter_any
-  {I : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFTupleClause0_ItemBoolInst : core.ops.function.Fn F
-  Clause0_Item Bool) (iter : I) (f : F) :
-  Result Bool
-  := do
-  iter.traits.iterator.iter_any_loop IteratorInst
-    coreopsfunctionFnFTupleClause0_ItemBoolInst iter f
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_find_map]: loop body 0:
-    Source: 'core-models/src/core/iter.rs', lines 135:12-141:9 -/
-@[rust_loop_body]
-def iter.traits.iterator.iter_find_map_loop.body
-  {I : Type} {B : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFTupleClause0_ItemOptionInst : core.ops.function.Fn F
-  Clause0_Item (option.Option B)) (f : F) (iter : I) :
-  Result (ControlFlow I (option.Option B))
-  := do
-  let (o, iter1) ← IteratorInst.next iter
-  match o with
-  | option.Option.Some x =>
-    let o1 ← coreopsfunctionFnFTupleClause0_ItemOptionInst.call f x
-    match o1 with
-    | option.Option.Some _ => ok (done o1)
-    | option.Option.None => ok (cont iter1)
-  | option.Option.None => ok (done option.Option.None)
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_find_map]: loop 0:
-    Source: 'core-models/src/core/iter.rs', lines 135:12-141:9 -/
-@[rust_loop]
-def iter.traits.iterator.iter_find_map_loop
-  {I : Type} {B : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFTupleClause0_ItemOptionInst : core.ops.function.Fn F
-  Clause0_Item (option.Option B)) (iter : I) (f : F) :
-  Result (option.Option B)
-  := do
-  loop
-    (fun iter1 => iter.traits.iterator.iter_find_map_loop.body IteratorInst
-      coreopsfunctionFnFTupleClause0_ItemOptionInst f iter1)
-    iter
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_find_map]:
-    Source: 'core-models/src/core/iter.rs', lines 131:8-141:9 -/
-@[reducible]
-def iter.traits.iterator.iter_find_map
-  {I : Type} {B : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFTupleClause0_ItemOptionInst : core.ops.function.Fn F
-  Clause0_Item (option.Option B)) (iter : I) (f : F) :
-  Result (option.Option B)
-  := do
-  iter.traits.iterator.iter_find_map_loop IteratorInst
-    coreopsfunctionFnFTupleClause0_ItemOptionInst iter f
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_position]: loop body 0:
-    Source: 'core-models/src/core/iter.rs', lines 150:12-157:9 -/
-@[rust_loop_body]
-def iter.traits.iterator.iter_position_loop.body
-  {I : Type} {P : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnPTupleClause0_ItemBoolInst : core.ops.function.Fn P
-  Clause0_Item Bool) (predicate : P) (iter : I) (i : Std.Usize) :
-  Result (ControlFlow (I × Std.Usize) (option.Option Std.Usize))
-  := do
-  let (o, iter1) ← IteratorInst.next iter
-  match o with
-  | option.Option.Some x =>
-    let b ← coreopsfunctionFnPTupleClause0_ItemBoolInst.call predicate x
-    if b
-    then ok (done (option.Option.Some i))
-    else let i1 ← i + 1#usize
-         ok (cont (iter1, i1))
-  | option.Option.None => ok (done option.Option.None)
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_position]: loop 0:
-    Source: 'core-models/src/core/iter.rs', lines 150:12-157:9 -/
-@[rust_loop]
-def iter.traits.iterator.iter_position_loop
-  {I : Type} {P : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnPTupleClause0_ItemBoolInst : core.ops.function.Fn P
-  Clause0_Item Bool) (iter : I) (predicate : P) (i : Std.Usize) :
-  Result (option.Option Std.Usize)
-  := do
-  loop
-    (fun (iter1, i1) => iter.traits.iterator.iter_position_loop.body
-      IteratorInst coreopsfunctionFnPTupleClause0_ItemBoolInst predicate iter1
-      i1)
-    (iter, i)
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_position]:
-    Source: 'core-models/src/core/iter.rs', lines 145:8-157:9 -/
-@[reducible]
-def iter.traits.iterator.iter_position
-  {I : Type} {P : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnPTupleClause0_ItemBoolInst : core.ops.function.Fn P
-  Clause0_Item Bool) (iter : I) (predicate : P) :
-  Result (option.Option Std.Usize)
-  := do
-  iter.traits.iterator.iter_position_loop IteratorInst
-    coreopsfunctionFnPTupleClause0_ItemBoolInst iter predicate 0#usize
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_count]: loop body 0:
-    Source: 'core-models/src/core/iter.rs', lines 163:12-165:13 -/
-@[rust_loop_body]
-def iter.traits.iterator.iter_count_loop.body
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (iter : I) (n : Std.Usize) :
-  Result (ControlFlow (I × Std.Usize) Std.Usize)
-  := do
-  let (o, iter1) ← IteratorInst.next iter
-  match o with
-  | option.Option.Some _ => let n1 ← n + 1#usize
-                            ok (cont (iter1, n1))
-  | option.Option.None => ok (done n)
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_count]: loop 0:
-    Source: 'core-models/src/core/iter.rs', lines 163:12-165:13 -/
-@[rust_loop]
-def iter.traits.iterator.iter_count_loop
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (iter : I) (n : Std.Usize) :
-  Result Std.Usize
-  := do
-  loop
-    (fun (iter1, n1) => iter.traits.iterator.iter_count_loop.body IteratorInst
-      iter1 n1)
-    (iter, n)
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_count]:
-    Source: 'core-models/src/core/iter.rs', lines 161:8-167:9 -/
-@[reducible]
-def iter.traits.iterator.iter_count
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (iter : I) :
-  Result Std.Usize
-  := do
-  iter.traits.iterator.iter_count_loop IteratorInst iter 0#usize
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_nth]: loop body 0:
-    Source: 'core-models/src/core/iter.rs', lines 172:12-178:9 -/
-@[rust_loop_body]
-def iter.traits.iterator.iter_nth_loop.body
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (iter : core.ops.range.Range Std.Usize) (iter1 : I) :
-  Result (ControlFlow ((core.ops.range.Range Std.Usize) × I) (option.Option
-    Clause0_Item))
-  := do
-  let (o, iter2) ←
-    core.iter.range.IteratorRange.next core.iter.range.StepUsize iter
-  match o with
-  | none => let (o1, _) ← IteratorInst.next iter1
-            ok (done o1)
-  | some _ =>
-    let (o1, iter3) ← IteratorInst.next iter1
-    match o1 with
-    | option.Option.Some _ => ok (cont (iter2, iter3))
-    | option.Option.None => ok (done option.Option.None)
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_nth]: loop 0:
-    Source: 'core-models/src/core/iter.rs', lines 172:12-178:9 -/
-@[rust_loop]
-def iter.traits.iterator.iter_nth_loop
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (iter : core.ops.range.Range Std.Usize) (iter1 : I) :
-  Result (option.Option Clause0_Item)
-  := do
-  loop
-    (fun (iter2, iter3) => iter.traits.iterator.iter_nth_loop.body IteratorInst
-      iter2 iter3)
-    (iter, iter1)
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_nth]:
-    Source: 'core-models/src/core/iter.rs', lines 171:8-178:9 -/
-@[reducible]
-def iter.traits.iterator.iter_nth
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (iter : I) (n : Std.Usize) :
-  Result (option.Option Clause0_Item)
-  := do
-  iter.traits.iterator.iter_nth_loop IteratorInst
-    { start := 0#usize, «end» := n } iter
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_last]: loop body 0:
-    Source: 'core-models/src/core/iter.rs', lines 184:12-186:13 -/
-@[rust_loop_body]
-def iter.traits.iterator.iter_last_loop.body
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (iter : I)
-  (last : option.Option Clause0_Item) :
-  Result (ControlFlow (I × (option.Option Clause0_Item)) (option.Option
-    Clause0_Item))
-  := do
-  let (o, iter1) ← IteratorInst.next iter
-  match o with
-  | option.Option.Some _ => ok (cont (iter1, o))
-  | option.Option.None => ok (done last)
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_last]: loop 0:
-    Source: 'core-models/src/core/iter.rs', lines 184:12-186:13 -/
-@[rust_loop]
-def iter.traits.iterator.iter_last_loop
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (iter : I)
-  (last : option.Option Clause0_Item) :
-  Result (option.Option Clause0_Item)
-  := do
-  loop
-    (fun (iter1, last1) => iter.traits.iterator.iter_last_loop.body
-      IteratorInst iter1 last1)
-    (iter, last)
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_last]:
-    Source: 'core-models/src/core/iter.rs', lines 182:8-188:9 -/
-@[reducible]
-def iter.traits.iterator.iter_last
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (iter : I) :
-  Result (option.Option Clause0_Item)
-  := do
-  iter.traits.iterator.iter_last_loop IteratorInst iter option.Option.None
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_for_each]: loop body 0:
-    Source: 'core-models/src/core/iter.rs', lines 193:12-195:13 -/
-@[rust_loop_body]
-def iter.traits.iterator.iter_for_each_loop.body
-  {I : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFTupleClause0_ItemTupleInst : core.ops.function.Fn F
-  Clause0_Item Unit) (f : F) (iter : I) :
-  Result (ControlFlow I Unit)
-  := do
-  let (o, iter1) ← IteratorInst.next iter
-  match o with
-  | option.Option.Some x =>
-    coreopsfunctionFnFTupleClause0_ItemTupleInst.call f x
-    ok (cont iter1)
-  | option.Option.None => ok (done ())
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_for_each]: loop 0:
-    Source: 'core-models/src/core/iter.rs', lines 193:12-195:13 -/
-@[rust_loop]
-def iter.traits.iterator.iter_for_each_loop
-  {I : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFTupleClause0_ItemTupleInst : core.ops.function.Fn F
-  Clause0_Item Unit) (iter : I) (f : F) :
-  Result Unit
-  := do
-  loop
-    (fun iter1 => iter.traits.iterator.iter_for_each_loop.body IteratorInst
-      coreopsfunctionFnFTupleClause0_ItemTupleInst f iter1)
-    iter
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_for_each]:
-    Source: 'core-models/src/core/iter.rs', lines 192:8-196:9 -/
-@[reducible]
-def iter.traits.iterator.iter_for_each
-  {I : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFTupleClause0_ItemTupleInst : core.ops.function.Fn F
-  Clause0_Item Unit) (iter : I) (f : F) :
-  Result Unit
-  := do
-  iter.traits.iterator.iter_for_each_loop IteratorInst
-    coreopsfunctionFnFTupleClause0_ItemTupleInst iter f
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_reduce]: loop body 0:
-    Source: 'core-models/src/core/iter.rs', lines 208:12-210:13 -/
-@[rust_loop_body]
-def iter.traits.iterator.iter_reduce_loop.body
-  {I : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFPairClause0_ItemInst : core.ops.function.Fn F
-  (Clause0_Item × Clause0_Item) Clause0_Item) (f : F) (iter : I)
-  (accum : Clause0_Item) :
-  Result (ControlFlow (I × Clause0_Item) Clause0_Item)
-  := do
-  let (o, iter1) ← IteratorInst.next iter
-  match o with
-  | option.Option.Some x =>
-    let accum1 ← coreopsfunctionFnFPairClause0_ItemInst.call f (accum, x)
-    ok (cont (iter1, accum1))
-  | option.Option.None => ok (done accum)
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_reduce]: loop 0:
-    Source: 'core-models/src/core/iter.rs', lines 208:12-210:13 -/
-@[rust_loop]
-def iter.traits.iterator.iter_reduce_loop
-  {I : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFPairClause0_ItemInst : core.ops.function.Fn F
-  (Clause0_Item × Clause0_Item) Clause0_Item) (iter : I) (f : F)
-  (accum : Clause0_Item) :
-  Result Clause0_Item
-  := do
-  loop
-    (fun (iter1, accum1) => iter.traits.iterator.iter_reduce_loop.body
-      IteratorInst coreopsfunctionFnFPairClause0_ItemInst f iter1 accum1)
-    (iter, accum)
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_reduce]:
-    Source: 'core-models/src/core/iter.rs', lines 200:8-212:9 -/
-def iter.traits.iterator.iter_reduce
-  {I : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFPairClause0_ItemInst : core.ops.function.Fn F
-  (Clause0_Item × Clause0_Item) Clause0_Item) (iter : I) (f : F) :
-  Result (option.Option Clause0_Item)
-  := do
-  let (o, iter1) ← IteratorInst.next iter
-  match o with
-  | option.Option.Some x =>
-    let accum ←
-      iter.traits.iterator.iter_reduce_loop IteratorInst
-        coreopsfunctionFnFPairClause0_ItemInst iter1 f x
-    ok (option.Option.Some accum)
-  | option.Option.None => ok option.Option.None
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_min]: loop body 0:
-    Source: 'core-models/src/core/iter.rs', lines 224:12-228:13 -/
-@[rust_loop_body]
-def iter.traits.iterator.iter_min_loop.body
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (cmpOrdInst : cmp.Ord
-  Clause0_Item) (iter : I) (min : Clause0_Item) :
-  Result (ControlFlow (I × Clause0_Item) Clause0_Item)
-  := do
-  let (o, iter1) ← IteratorInst.next iter
-  match o with
-  | option.Option.Some x =>
-    let o1 ← cmpOrdInst.cmp x min
-    match o1 with
-    | cmp.Ordering.Less => ok (cont (iter1, x))
-    | cmp.Ordering.Equal => ok (cont (iter1, min))
-    | cmp.Ordering.Greater => ok (cont (iter1, min))
-  | option.Option.None => ok (done min)
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_min]: loop 0:
-    Source: 'core-models/src/core/iter.rs', lines 224:12-228:13 -/
-@[rust_loop]
-def iter.traits.iterator.iter_min_loop
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (cmpOrdInst : cmp.Ord
-  Clause0_Item) (iter : I) (min : Clause0_Item) :
-  Result Clause0_Item
-  := do
-  loop
-    (fun (iter1, min1) => iter.traits.iterator.iter_min_loop.body IteratorInst
-      cmpOrdInst iter1 min1)
-    (iter, min)
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_min]:
-    Source: 'core-models/src/core/iter.rs', lines 216:8-230:9 -/
-def iter.traits.iterator.iter_min
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (cmpOrdInst : cmp.Ord
-  Clause0_Item) (iter : I) :
-  Result (option.Option Clause0_Item)
-  := do
-  let (o, iter1) ← IteratorInst.next iter
-  match o with
-  | option.Option.Some x =>
-    let min ←
-      iter.traits.iterator.iter_min_loop IteratorInst cmpOrdInst iter1 x
-    ok (option.Option.Some min)
-  | option.Option.None => ok option.Option.None
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_max]: loop body 0:
-    Source: 'core-models/src/core/iter.rs', lines 242:12-246:13 -/
-@[rust_loop_body]
-def iter.traits.iterator.iter_max_loop.body
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (cmpOrdInst : cmp.Ord
-  Clause0_Item) (iter : I) (max : Clause0_Item) :
-  Result (ControlFlow (I × Clause0_Item) Clause0_Item)
-  := do
-  let (o, iter1) ← IteratorInst.next iter
-  match o with
-  | option.Option.Some x =>
-    let o1 ← cmpOrdInst.cmp x max
-    match o1 with
-    | cmp.Ordering.Less => ok (cont (iter1, max))
-    | cmp.Ordering.Equal => ok (cont (iter1, max))
-    | cmp.Ordering.Greater => ok (cont (iter1, x))
-  | option.Option.None => ok (done max)
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_max]: loop 0:
-    Source: 'core-models/src/core/iter.rs', lines 242:12-246:13 -/
-@[rust_loop]
-def iter.traits.iterator.iter_max_loop
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (cmpOrdInst : cmp.Ord
-  Clause0_Item) (iter : I) (max : Clause0_Item) :
-  Result Clause0_Item
-  := do
-  loop
-    (fun (iter1, max1) => iter.traits.iterator.iter_max_loop.body IteratorInst
-      cmpOrdInst iter1 max1)
-    (iter, max)
--/
-
-/-
-/-- [core_models::iter::traits::iterator::iter_max]:
-    Source: 'core-models/src/core/iter.rs', lines 234:8-248:9 -/
-def iter.traits.iterator.iter_max
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (cmpOrdInst : cmp.Ord
-  Clause0_Item) (iter : I) :
-  Result (option.Option Clause0_Item)
-  := do
-  let (o, iter1) ← IteratorInst.next iter
-  match o with
-  | option.Option.Some x =>
-    let max ←
-      iter.traits.iterator.iter_max_loop IteratorInst cmpOrdInst iter1 x
-    ok (option.Option.Some max)
-  | option.Option.None => ok option.Option.None
--/
-
 /-- [core_models::iter::traits::iterator::{core_models::iter::traits::collect::IntoIterator<Clause0_Item, I> for I}::into_iter]:
-    Source: 'core-models/src/core/iter.rs', lines 363:12-365:13
+    Source: 'core-models/src/core/iter.rs', lines 376:12-378:13
     Visibility: public -/
 def iter.traits.collect.IntoIterator.Blanket.into_iter
   {I : Type} {Clause0_Item : Type} (IteratorInst :
@@ -3529,7 +2896,7 @@ def iter.traits.collect.IntoIterator.Blanket.into_iter
   ok self
 
 /-- Trait implementation: [core_models::iter::traits::iterator::{core_models::iter::traits::collect::IntoIterator<Clause0_Item, I> for I}]
-    Source: 'core-models/src/core/iter.rs', lines 360:8-366:9 -/
+    Source: 'core-models/src/core/iter.rs', lines 373:8-379:9 -/
 @[reducible]
 def iter.traits.collect.IntoIterator.Blanket {I : Type} {Clause0_Item : Type}
   (IteratorInst : iter.traits.iterator.Iterator I Clause0_Item) :
@@ -3537,473 +2904,8 @@ def iter.traits.collect.IntoIterator.Blanket {I : Type} {Clause0_Item : Type}
   into_iter := iter.traits.collect.IntoIterator.Blanket.into_iter IteratorInst
 }
 
-/-
-/-- [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}::collect]:
-    Source: 'core-models/src/core/iter.rs', lines 355:12-357:13 -/
-def iter.traits.iterator.IteratorMethods.Blanket.collect
-  {I : Type} {B : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (collectFromIteratorInst :
-  iter.traits.collect.FromIterator B Clause0_Item) (self : I) :
-  Result B
-  := do
-  collectFromIteratorInst.from_iter (iter.traits.collect.IntoIterator.Blanket
-    IteratorInst) self
--/
-
-/-
-/-- [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}::max]:
-    Source: 'core-models/src/core/iter.rs', lines 348:12-353:13 -/
-def iter.traits.iterator.IteratorMethods.Blanket.max
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (cmpOrdInst : cmp.Ord
-  Clause0_Item) (self : I) :
-  Result (option.Option Clause0_Item)
-  := do
-  iter.traits.iterator.iter_max IteratorInst cmpOrdInst self
--/
-
-/-
-/-- [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}::min]:
-    Source: 'core-models/src/core/iter.rs', lines 341:12-346:13 -/
-def iter.traits.iterator.IteratorMethods.Blanket.min
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (cmpOrdInst : cmp.Ord
-  Clause0_Item) (self : I) :
-  Result (option.Option Clause0_Item)
-  := do
-  iter.traits.iterator.iter_min IteratorInst cmpOrdInst self
--/
-
-/-
-/-- [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}::reduce]:
-    Source: 'core-models/src/core/iter.rs', lines 334:12-339:13 -/
-def iter.traits.iterator.IteratorMethods.Blanket.reduce
-  {I : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFPairClause0_ItemInst : core.ops.function.Fn F
-  (Clause0_Item × Clause0_Item) Clause0_Item) (self : I) (f : F) :
-  Result (option.Option Clause0_Item)
-  := do
-  iter.traits.iterator.iter_reduce IteratorInst
-    coreopsfunctionFnFPairClause0_ItemInst self f
--/
-
-/-
-/-- [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}::for_each]:
-    Source: 'core-models/src/core/iter.rs', lines 330:12-332:13 -/
-def iter.traits.iterator.IteratorMethods.Blanket.for_each
-  {I : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFTupleClause0_ItemTupleInst : core.ops.function.Fn F
-  Clause0_Item Unit) (self : I) (f : F) :
-  Result Unit
-  := do
-  iter.traits.iterator.iter_for_each IteratorInst
-    coreopsfunctionFnFTupleClause0_ItemTupleInst self f
--/
-
-/-
-/-- [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}::last]:
-    Source: 'core-models/src/core/iter.rs', lines 326:12-328:13 -/
-def iter.traits.iterator.IteratorMethods.Blanket.last
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (self : I) :
-  Result (option.Option Clause0_Item)
-  := do
-  iter.traits.iterator.iter_last IteratorInst self
--/
-
-/-
-/-- [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}::nth]:
-    Source: 'core-models/src/core/iter.rs', lines 322:12-324:13 -/
-def iter.traits.iterator.IteratorMethods.Blanket.nth
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (self : I) (n : Std.Usize) :
-  Result (option.Option Clause0_Item)
-  := do
-  iter.traits.iterator.iter_nth IteratorInst self n
--/
-
-/-
-/-- [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}::count]:
-    Source: 'core-models/src/core/iter.rs', lines 318:12-320:13 -/
-def iter.traits.iterator.IteratorMethods.Blanket.count
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (self : I) :
-  Result Std.Usize
-  := do
-  iter.traits.iterator.iter_count IteratorInst self
--/
-
-/-
-/-- [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}::position]:
-    Source: 'core-models/src/core/iter.rs', lines 314:12-316:13 -/
-def iter.traits.iterator.IteratorMethods.Blanket.position
-  {I : Type} {P : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnPTupleClause0_ItemBoolInst : core.ops.function.Fn P
-  Clause0_Item Bool) (self : I) (predicate : P) :
-  Result (option.Option Std.Usize)
-  := do
-  iter.traits.iterator.iter_position IteratorInst
-    coreopsfunctionFnPTupleClause0_ItemBoolInst self predicate
--/
-
-/-
-/-- [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}::find_map]:
-    Source: 'core-models/src/core/iter.rs', lines 310:12-312:13 -/
-def iter.traits.iterator.IteratorMethods.Blanket.find_map
-  {I : Type} {B : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFTupleClause0_ItemOptionInst : core.ops.function.Fn F
-  Clause0_Item (option.Option B)) (self : I) (f : F) :
-  Result (option.Option B)
-  := do
-  iter.traits.iterator.iter_find_map IteratorInst
-    coreopsfunctionFnFTupleClause0_ItemOptionInst self f
--/
-
-/-
-/-- [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}::any]:
-    Source: 'core-models/src/core/iter.rs', lines 302:12-304:13 -/
-def iter.traits.iterator.IteratorMethods.Blanket.any
-  {I : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFTupleClause0_ItemBoolInst : core.ops.function.Fn F
-  Clause0_Item Bool) (self : I) (f : F) :
-  Result Bool
-  := do
-  iter.traits.iterator.iter_any IteratorInst
-    coreopsfunctionFnFTupleClause0_ItemBoolInst self f
--/
-
-/-
-/-- [core_models::iter::adapters::skip::{core_models::iter::adapters::skip::Skip<I>}::new]:
-    Source: 'core-models/src/core/iter.rs', lines 681:12-683:13
-    Visibility: public -/
-def iter.adapters.skip.Skip.new
-  {I : Type} (iter : I) (n : Std.Usize) :
-  Result (iter.adapters.skip.Skip I)
-  := do
-  ok { iter, n }
--/
-
-/-
-/-- [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}::skip]:
-    Source: 'core-models/src/core/iter.rs', lines 298:12-300:13 -/
-def iter.traits.iterator.IteratorMethods.Blanket.skip
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (self : I) (n : Std.Usize) :
-  Result (iter.adapters.skip.Skip I)
-  := do
-  iter.adapters.skip.Skip.new self n
--/
-
-/-- [core_models::iter::adapters::chain::{core_models::iter::adapters::chain::Chain<A, B>}::new]:
-    Source: 'core-models/src/core/iter.rs', lines 650:12-655:13
-    Visibility: public -/
-def iter.adapters.chain.Chain.new
-  {A : Type} {B : Type} {Clause0_Item : Type} (traitsiteratorIteratorInst :
-  iter.traits.iterator.Iterator A Clause0_Item) (traitsiteratorIteratorInst1 :
-  iter.traits.iterator.Iterator B Clause0_Item) (a : A) (b : B) :
-  Result (iter.adapters.chain.Chain A B)
-  := do
-  ok { a := (option.Option.Some a), b }
-
-/-
-/-- [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}::chain]:
-    Source: 'core-models/src/core/iter.rs', lines 294:12-296:13 -/
-def iter.traits.iterator.IteratorMethods.Blanket.chain
-  {I : Type} {U : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (IteratorInst1 :
-  iter.traits.iterator.Iterator U Clause0_Item) (self : I) (other : U) :
-  Result (iter.adapters.chain.Chain I U)
-  := do
-  iter.adapters.chain.Chain.new IteratorInst IteratorInst1 self other
--/
-
-/-
-/-- [core_models::iter::adapters::filter::{core_models::iter::adapters::filter::Filter<I, P>}::new]:
-    Source: 'core-models/src/core/iter.rs', lines 619:12-621:13
-    Visibility: public -/
-def iter.adapters.filter.Filter.new
-  {I : Type} {P : Type} (iter : I) (predicate : P) :
-  Result (iter.adapters.filter.Filter I P)
-  := do
-  ok { iter, predicate }
--/
-
-/-- [core_models::iter::adapters::zip::{core_models::iter::adapters::zip::Zip<I1, I2>}::new]:
-    Source: 'core-models/src/core/iter.rs', lines 592:12-594:13
-    Visibility: public -/
-def iter.adapters.zip.Zip.new
-  {I1 : Type} {I2 : Type} {Clause0_Item : Type} {Clause1_Item : Type}
-  (traitsiteratorIteratorInst : iter.traits.iterator.Iterator I1 Clause0_Item)
-  (traitsiteratorIteratorInst1 : iter.traits.iterator.Iterator I2 Clause1_Item)
-  (it1 : I1) (it2 : I2) :
-  Result (iter.adapters.zip.Zip I1 I2)
-  := do
-  ok { it1, it2 }
-
-/-
-/-- [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}::zip]:
-    Source: 'core-models/src/core/iter.rs', lines 286:12-288:13 -/
-def iter.traits.iterator.IteratorMethods.Blanket.zip
-  {I : Type} {I2 : Type} {Clause0_Item : Type} {Clause1_Item : Type}
-  (IteratorInst : iter.traits.iterator.Iterator I Clause0_Item) (IteratorInst1
-  : iter.traits.iterator.Iterator I2 Clause1_Item) (self : I) (it2 : I2) :
-  Result (iter.adapters.zip.Zip I I2)
-  := do
-  iter.adapters.zip.Zip.new IteratorInst IteratorInst1 self it2
--/
-
-/-- [core_models::iter::adapters::flatten::{core_models::iter::adapters::flatten::Flatten<I, Clause0_Item, Clause1_Item>}::new]:
-    Source: 'core-models/src/core/iter.rs', lines 554:12-559:13
-    Visibility: public -/
-def iter.adapters.flatten.Flatten.new
-  {I : Type} {Clause0_Item : Type} {Clause1_Item : Type}
-  (traitsiteratorIteratorInst : iter.traits.iterator.Iterator I Clause0_Item)
-  (traitsiteratorIteratorInst1 : iter.traits.iterator.Iterator Clause0_Item
-  Clause1_Item) (it : I) :
-  Result (iter.adapters.flatten.Flatten I Clause0_Item Clause1_Item)
-  := do
-  ok { it, current := option.Option.None }
-
-/-
-/-- [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}::flatten]:
-    Source: 'core-models/src/core/iter.rs', lines 279:12-284:13 -/
-def iter.traits.iterator.IteratorMethods.Blanket.flatten
-  {I : Type} {Clause0_Item : Type} {Clause1_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (IteratorInst1 :
-  iter.traits.iterator.Iterator Clause0_Item Clause1_Item) (self : I) :
-  Result (iter.adapters.flatten.Flatten I Clause0_Item Clause1_Item)
-  := do
-  iter.adapters.flatten.Flatten.new IteratorInst IteratorInst1 self
--/
-
-/-- [core_models::iter::adapters::flat_map::{core_models::iter::adapters::flat_map::FlatMap<I, U, F>}::new]:
-    Source: 'core-models/src/core/iter.rs', lines 511:12-517:13
-    Visibility: public -/
-def iter.adapters.flat_map.FlatMap.new
-  {I : Type} {U : Type} {F : Type} {Clause0_Item : Type} {Clause1_Item : Type}
-  (traitsiteratorIteratorInst : iter.traits.iterator.Iterator I Clause0_Item)
-  (traitsiteratorIteratorInst1 : iter.traits.iterator.Iterator U Clause1_Item)
-  (coreopsfunctionFnFTupleClause0_ItemUInst : core.ops.function.Fn F
-  Clause0_Item U) (it : I) (f : F) :
-  Result (iter.adapters.flat_map.FlatMap I U F)
-  := do
-  ok { it, f, current := option.Option.None }
-
-/-
-/-- [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}::flat_map]:
-    Source: 'core-models/src/core/iter.rs', lines 275:12-277:13 -/
-def iter.traits.iterator.IteratorMethods.Blanket.flat_map
-  {I : Type} {U : Type} {F : Type} {Clause0_Item : Type} {Clause1_Item : Type}
-  (IteratorInst : iter.traits.iterator.Iterator I Clause0_Item) (IteratorInst1
-  : iter.traits.iterator.Iterator U Clause1_Item)
-  (coreopsfunctionFnFTupleClause0_ItemUInst : core.ops.function.Fn F
-  Clause0_Item U) (self : I) (f : F) :
-  Result (iter.adapters.flat_map.FlatMap I U F)
-  := do
-  iter.adapters.flat_map.FlatMap.new IteratorInst IteratorInst1
-    coreopsfunctionFnFTupleClause0_ItemUInst self f
--/
-
-/-
-/-- [core_models::iter::adapters::take::{core_models::iter::adapters::take::Take<I>}::new]:
-    Source: 'core-models/src/core/iter.rs', lines 484:12-486:13
-    Visibility: public -/
-def iter.adapters.take.Take.new
-  {I : Type} (iter : I) (n : Std.Usize) :
-  Result (iter.adapters.take.Take I)
-  := do
-  ok { iter, n }
--/
-
-/-
-/-- [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}::take]:
-    Source: 'core-models/src/core/iter.rs', lines 271:12-273:13 -/
-def iter.traits.iterator.IteratorMethods.Blanket.take
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (self : I) (n : Std.Usize) :
-  Result (iter.adapters.take.Take I)
-  := do
-  iter.adapters.take.Take.new self n
--/
-
-/-
-/-- [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}::all]:
-    Source: 'core-models/src/core/iter.rs', lines 267:12-269:13 -/
-def iter.traits.iterator.IteratorMethods.Blanket.all
-  {I : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFTupleClause0_ItemBoolInst : core.ops.function.Fn F
-  Clause0_Item Bool) (self : I) (f : F) :
-  Result Bool
-  := do
-  iter.traits.iterator.iter_all IteratorInst
-    coreopsfunctionFnFTupleClause0_ItemBoolInst self f
--/
-
-/-
-/-- [core_models::iter::adapters::map::{core_models::iter::adapters::map::Map<I, F>}::new]:
-    Source: 'core-models/src/core/iter.rs', lines 458:12-460:13
-    Visibility: public -/
-def iter.adapters.map.Map.new
-  {I : Type} {F : Type} (iter : I) (f : F) :
-  Result (iter.adapters.map.Map I F)
-  := do
-  ok { iter, f }
--/
-
-/-
-/-- [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}::map]:
-    Source: 'core-models/src/core/iter.rs', lines 263:12-265:13 -/
-def iter.traits.iterator.IteratorMethods.Blanket.map
-  {I : Type} {O : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFTupleClause0_ItemOInst : core.ops.function.Fn F
-  Clause0_Item O) (self : I) (f : F) :
-  Result (iter.adapters.map.Map I F)
-  := do
-  iter.adapters.map.Map.new self f
--/
-
-/-
-/-- [core_models::iter::adapters::step_by::{core_models::iter::adapters::step_by::StepBy<I>}::new]:
-    Source: 'core-models/src/core/iter.rs', lines 432:12-434:13
-    Visibility: public -/
-def iter.adapters.step_by.StepBy.new
-  {I : Type} (iter : I) (step : Std.Usize) :
-  Result (iter.adapters.step_by.StepBy I)
-  := do
-  ok { iter, step }
--/
-
-/-
-/-- [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}::step_by]:
-    Source: 'core-models/src/core/iter.rs', lines 259:12-261:13 -/
-def iter.traits.iterator.IteratorMethods.Blanket.step_by
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (self : I) (step : Std.Usize) :
-  Result (iter.adapters.step_by.StepBy I)
-  := do
-  iter.adapters.step_by.StepBy.new self step
--/
-
-/-
-/-- [core_models::iter::adapters::enumerate::{core_models::iter::adapters::enumerate::Enumerate<I>}::new]:
-    Source: 'core-models/src/core/iter.rs', lines 401:12-403:13
-    Visibility: public -/
-def iter.adapters.enumerate.Enumerate.new
-  {I : Type} (iter : I) : Result (iter.adapters.enumerate.Enumerate I) := do
-  ok { iter, count := 0#usize }
--/
-
-/-
-/-- [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}::enumerate]:
-    Source: 'core-models/src/core/iter.rs', lines 255:12-257:13 -/
-def iter.traits.iterator.IteratorMethods.Blanket.enumerate
-  {I : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (self : I) :
-  Result (iter.adapters.enumerate.Enumerate I)
-  := do
-  iter.adapters.enumerate.Enumerate.new self
--/
-
-/-
-/-- [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}::fold]:
-    Source: 'core-models/src/core/iter.rs', lines 251:12-253:13 -/
-def iter.traits.iterator.IteratorMethods.Blanket.fold
-  {I : Type} {B : Type} {F : Type} {Clause0_Item : Type} (IteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) (coreopsfunctionFnFPairBInst :
-  core.ops.function.Fn F (B × Clause0_Item) B) (self : I) (init : B) 
-  (f : F) :
-  Result B
-  := do
-  iter.traits.iterator.iter_fold IteratorInst coreopsfunctionFnFPairBInst self
-    init f
--/
-
-/-
-/-- Trait implementation: [core_models::iter::traits::iterator::{core_models::iter::traits::iterator::IteratorMethods<Clause0_Item> for I}]
-    Source: 'core-models/src/core/iter.rs', lines 250:8-358:9 -/
-@[reducible]
-def iter.traits.iterator.IteratorMethods.Blanket {I : Type} {Clause0_Item :
-  Type} (IteratorInst1 : iter.traits.iterator.Iterator I Clause0_Item) :
-  iter.traits.iterator.IteratorMethods I Clause0_Item := {
-  IteratorInst := IteratorInst1
-  fold := fun {B : Type} {F : Type} (coreopsfunctionFnPPairPInst :
-    core.ops.function.Fn F (B × Clause0_Item) B) =>
-    iter.traits.iterator.IteratorMethods.Blanket.fold IteratorInst1
-    coreopsfunctionFnPPairPInst
-  enumerate := iter.traits.iterator.IteratorMethods.Blanket.enumerate
-    IteratorInst1
-  step_by := iter.traits.iterator.IteratorMethods.Blanket.step_by IteratorInst1
-  map := fun {O : Type} {F : Type} (coreopsfunctionFnPTupleFPInst :
-    core.ops.function.Fn F Clause0_Item O) =>
-    iter.traits.iterator.IteratorMethods.Blanket.map IteratorInst1
-    coreopsfunctionFnPTupleFPInst
-  all := fun {F : Type} (coreopsfunctionFnPTuplePBoolInst :
-    core.ops.function.Fn F Clause0_Item Bool) =>
-    iter.traits.iterator.IteratorMethods.Blanket.all IteratorInst1
-    coreopsfunctionFnPTuplePBoolInst
-  take := iter.traits.iterator.IteratorMethods.Blanket.take IteratorInst1
-  flat_map := fun {U : Type} {F : Type} {Clause0_Item1 : Type} (IteratorInst2 :
-    iter.traits.iterator.Iterator U Clause0_Item1)
-    (coreopsfunctionFnPTupleFPInst : core.ops.function.Fn F Clause0_Item U) =>
-    iter.traits.iterator.IteratorMethods.Blanket.flat_map IteratorInst1
-    IteratorInst2 coreopsfunctionFnPTupleFPInst
-  flatten := fun {Clause0_Item1 : Type} (IteratorInst2 :
-    iter.traits.iterator.Iterator Clause0_Item Clause0_Item1) =>
-    iter.traits.iterator.IteratorMethods.Blanket.flatten IteratorInst1
-    IteratorInst2
-  zip := fun {I2 : Type} {Clause0_Item1 : Type} (IteratorInst2 :
-    iter.traits.iterator.Iterator I2 Clause0_Item1) =>
-    iter.traits.iterator.IteratorMethods.Blanket.zip IteratorInst1
-    IteratorInst2
-  sorry
-  chain := fun {U : Type} (IteratorInst2 : iter.traits.iterator.Iterator U
-    Clause0_Item) => iter.traits.iterator.IteratorMethods.Blanket.chain
-    IteratorInst1 IteratorInst2
-  skip := iter.traits.iterator.IteratorMethods.Blanket.skip IteratorInst1
-  any := fun {F : Type} (coreopsfunctionFnPTuplePBoolInst :
-    core.ops.function.Fn F Clause0_Item Bool) =>
-    iter.traits.iterator.IteratorMethods.Blanket.any IteratorInst1
-    coreopsfunctionFnPTuplePBoolInst
-  sorry
-  find_map := fun {B : Type} {F : Type} (coreopsfunctionFnPTupleFOptionInst :
-    core.ops.function.Fn F Clause0_Item (option.Option B)) =>
-    iter.traits.iterator.IteratorMethods.Blanket.find_map IteratorInst1
-    coreopsfunctionFnPTupleFOptionInst
-  position := fun {P : Type} (coreopsfunctionFnPTuplePBoolInst :
-    core.ops.function.Fn P Clause0_Item Bool) =>
-    iter.traits.iterator.IteratorMethods.Blanket.position IteratorInst1
-    coreopsfunctionFnPTuplePBoolInst
-  count := iter.traits.iterator.IteratorMethods.Blanket.count IteratorInst1
-  nth := iter.traits.iterator.IteratorMethods.Blanket.nth IteratorInst1
-  last := iter.traits.iterator.IteratorMethods.Blanket.last IteratorInst1
-  for_each := fun {F : Type} (coreopsfunctionFnPTuplePTupleInst :
-    core.ops.function.Fn F Clause0_Item Unit) =>
-    iter.traits.iterator.IteratorMethods.Blanket.for_each IteratorInst1
-    coreopsfunctionFnPTuplePTupleInst
-  «reduce» := fun {F : Type} (coreopsfunctionFnPPairPInst :
-    core.ops.function.Fn F (Clause0_Item × Clause0_Item) Clause0_Item) =>
-    iter.traits.iterator.IteratorMethods.Blanket.reduce IteratorInst1
-    coreopsfunctionFnPPairPInst
-  min := fun (cmpOrdInst : cmp.Ord Clause0_Item) =>
-    iter.traits.iterator.IteratorMethods.Blanket.min IteratorInst1 cmpOrdInst
-  max := fun (cmpOrdInst : cmp.Ord Clause0_Item) =>
-    iter.traits.iterator.IteratorMethods.Blanket.max IteratorInst1 cmpOrdInst
-  collect := fun {B : Type} (collectFromIteratorInst :
-    iter.traits.collect.FromIterator B Clause0_Item) =>
-    iter.traits.iterator.IteratorMethods.Blanket.collect IteratorInst1
-    collectFromIteratorInst
-}
--/
-
 /-- [core_models::iter::adapters::enumerate::{core_models::iter::traits::iterator::Iterator<(usize, Clause0_Item)> for core_models::iter::adapters::enumerate::Enumerate<I>}::next]:
-    Source: 'core-models/src/core/iter.rs', lines 408:12-420:13
+    Source: 'core-models/src/core/iter.rs', lines 422:12-434:13
     Visibility: public -/
 def
   iter.adapters.enumerate.Enumerate.Insts.Core_modelsIterTraitsIteratorIteratorPairUsizeClause0_Item.next
@@ -4021,7 +2923,7 @@ def
   | option.Option.None => ok (option.Option.None, { self with iter := t })
 
 /-- Trait implementation: [core_models::iter::adapters::enumerate::{core_models::iter::traits::iterator::Iterator<(usize, Clause0_Item)> for core_models::iter::adapters::enumerate::Enumerate<I>}]
-    Source: 'core-models/src/core/iter.rs', lines 405:8-421:9 -/
+    Source: 'core-models/src/core/iter.rs', lines 419:8-435:9 -/
 @[reducible]
 def
   iter.adapters.enumerate.Enumerate.Insts.Core_modelsIterTraitsIteratorIteratorPairUsizeClause0_Item
@@ -4033,85 +2935,8 @@ def
     traitsiteratorIteratorInst
 }
 
-/-
-/-- [core_models::iter::adapters::step_by::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::step_by::StepBy<I>}::next]: loop body 0:
-    Source: 'core-models/src/core/iter.rs', lines 442:16-448:13
-    Visibility: public -/
-@[rust_loop_body]
-def
-  iter.adapters.step_by.StepBy.Insts.Core_modelsIterTraitsIteratorIterator.next_loop.body
-  {I : Type} {Clause0_Item : Type} (traitsiteratorIteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (iter : core.ops.range.Range Std.Usize) (t : I) :
-  Result (ControlFlow ((core.ops.range.Range Std.Usize) × I) ((option.Option
-    Clause0_Item) × I))
-  := do
-  let (o, iter1) ←
-    core.iter.range.IteratorRange.next core.iter.range.StepUsize iter
-  match o with
-  | none =>
-    let (o1, t1) ← traitsiteratorIteratorInst.next t
-    ok (done (o1, t1))
-  | some _ =>
-    let (o1, t1) ← traitsiteratorIteratorInst.next t
-    match o1 with
-    | option.Option.Some _ => ok (cont (iter1, t1))
-    | option.Option.None => ok (done (option.Option.None, t1))
--/
-
-/-
-/-- [core_models::iter::adapters::step_by::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::step_by::StepBy<I>}::next]: loop 0:
-    Source: 'core-models/src/core/iter.rs', lines 442:16-448:13
-    Visibility: public -/
-@[rust_loop]
-def
-  iter.adapters.step_by.StepBy.Insts.Core_modelsIterTraitsIteratorIterator.next_loop
-  {I : Type} {Clause0_Item : Type} (traitsiteratorIteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (iter : core.ops.range.Range Std.Usize) (t : I) :
-  Result ((option.Option Clause0_Item) × I)
-  := do
-  loop
-    (fun (iter1, t1) =>
-      iter.adapters.step_by.StepBy.Insts.Core_modelsIterTraitsIteratorIterator.next_loop.body
-      traitsiteratorIteratorInst iter1 t1)
-    (iter, t)
--/
-
-/-
-/-- [core_models::iter::adapters::step_by::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::step_by::StepBy<I>}::next]:
-    Source: 'core-models/src/core/iter.rs', lines 441:12-448:13
-    Visibility: public -/
-def
-  iter.adapters.step_by.StepBy.Insts.Core_modelsIterTraitsIteratorIterator.next
-  {I : Type} {Clause0_Item : Type} (traitsiteratorIteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (self : iter.adapters.step_by.StepBy I) :
-  Result ((option.Option Clause0_Item) × (iter.adapters.step_by.StepBy I))
-  := do
-  let (o, t) ←
-    iter.adapters.step_by.StepBy.Insts.Core_modelsIterTraitsIteratorIterator.next_loop
-      traitsiteratorIteratorInst { start := 1#usize, «end» := self.step }
-      self.iter
-  ok (o, { self with iter := t })
--/
-
-/-
-/-- Trait implementation: [core_models::iter::adapters::step_by::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::step_by::StepBy<I>}]
-    Source: 'core-models/src/core/iter.rs', lines 438:8-449:9 -/
-@[reducible]
-def iter.adapters.step_by.StepBy.Insts.Core_modelsIterTraitsIteratorIterator {I
-  : Type} {Clause0_Item : Type} (traitsiteratorIteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item) : iter.traits.iterator.Iterator
-  (iter.adapters.step_by.StepBy I) Clause0_Item := {
-  next :=
-    iter.adapters.step_by.StepBy.Insts.Core_modelsIterTraitsIteratorIterator.next
-    traitsiteratorIteratorInst
-}
--/
-
 /-- [core_models::iter::adapters::map::{core_models::iter::traits::iterator::Iterator<O> for core_models::iter::adapters::map::Map<I, F>}::next]:
-    Source: 'core-models/src/core/iter.rs', lines 467:12-472:13
+    Source: 'core-models/src/core/iter.rs', lines 484:12-489:13
     Visibility: public -/
 def iter.adapters.map.Map.Insts.Core_modelsIterTraitsIteratorIterator.next
   {I : Type} {O : Type} {F : Type} {Clause0_Item : Type}
@@ -4128,7 +2953,7 @@ def iter.adapters.map.Map.Insts.Core_modelsIterTraitsIteratorIterator.next
   | option.Option.None => ok (option.Option.None, { self with iter := t })
 
 /-- Trait implementation: [core_models::iter::adapters::map::{core_models::iter::traits::iterator::Iterator<O> for core_models::iter::adapters::map::Map<I, F>}]
-    Source: 'core-models/src/core/iter.rs', lines 464:8-473:9 -/
+    Source: 'core-models/src/core/iter.rs', lines 481:8-490:9 -/
 @[reducible]
 def iter.adapters.map.Map.Insts.Core_modelsIterTraitsIteratorIterator {I :
   Type} {O : Type} {F : Type} {Clause0_Item : Type} (traitsiteratorIteratorInst
@@ -4142,7 +2967,7 @@ def iter.adapters.map.Map.Insts.Core_modelsIterTraitsIteratorIterator {I :
 }
 
 /-- [core_models::iter::adapters::take::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::take::Take<I>}::next]:
-    Source: 'core-models/src/core/iter.rs', lines 491:12-498:13
+    Source: 'core-models/src/core/iter.rs', lines 509:12-516:13
     Visibility: public -/
 def iter.adapters.take.Take.Insts.Core_modelsIterTraitsIteratorIterator.next
   {I : Type} {Clause0_Item : Type} (traitsiteratorIteratorInst :
@@ -4158,7 +2983,7 @@ def iter.adapters.take.Take.Insts.Core_modelsIterTraitsIteratorIterator.next
   else ok (option.Option.None, self)
 
 /-- Trait implementation: [core_models::iter::adapters::take::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::take::Take<I>}]
-    Source: 'core-models/src/core/iter.rs', lines 488:8-499:9 -/
+    Source: 'core-models/src/core/iter.rs', lines 506:8-517:9 -/
 @[reducible]
 def iter.adapters.take.Take.Insts.Core_modelsIterTraitsIteratorIterator {I :
   Type} {Clause0_Item : Type} (traitsiteratorIteratorInst :
@@ -4169,8 +2994,21 @@ def iter.adapters.take.Take.Insts.Core_modelsIterTraitsIteratorIterator {I :
     traitsiteratorIteratorInst
 }
 
+/-- [core_models::iter::adapters::flat_map::{core_models::iter::adapters::flat_map::FlatMap<I, U, F>}::new]:
+    Source: 'core-models/src/core/iter.rs', lines 529:12-535:13
+    Visibility: public -/
+def iter.adapters.flat_map.FlatMap.new
+  {I : Type} {U : Type} {F : Type} {Clause0_Item : Type} {Clause1_Item : Type}
+  (traitsiteratorIteratorInst : iter.traits.iterator.Iterator I Clause0_Item)
+  (traitsiteratorIteratorInst1 : iter.traits.iterator.Iterator U Clause1_Item)
+  (coreopsfunctionFnFTupleClause0_ItemUInst : core.ops.function.Fn F
+  Clause0_Item U) (it : I) (f : F) :
+  Result (iter.adapters.flat_map.FlatMap I U F)
+  := do
+  ok { it, f, current := option.Option.None }
+
 /-- [core_models::iter::adapters::flat_map::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flat_map::FlatMap<I, U, F>}::next]: loop body 0:
-    Source: 'core-models/src/core/iter.rs', lines 524:20-533:21
+    Source: 'core-models/src/core/iter.rs', lines 542:20-551:21
     Visibility: public -/
 @[rust_loop_body]
 def
@@ -4208,7 +3046,7 @@ def
       ok (done (option.Option.None, t, self.f, option.Option.None))
 
 /-- [core_models::iter::adapters::flat_map::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flat_map::FlatMap<I, U, F>}::next]: loop 0:
-    Source: 'core-models/src/core/iter.rs', lines 524:20-533:21
+    Source: 'core-models/src/core/iter.rs', lines 542:20-551:21
     Visibility: public -/
 @[rust_loop]
 def
@@ -4228,7 +3066,7 @@ def
     self
 
 /-- [core_models::iter::adapters::flat_map::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flat_map::FlatMap<I, U, F>}::next]:
-    Source: 'core-models/src/core/iter.rs', lines 522:12-535:13
+    Source: 'core-models/src/core/iter.rs', lines 540:12-553:13
     Visibility: public -/
 def
   iter.adapters.flat_map.FlatMap.Insts.Core_modelsIterTraitsIteratorIterator.next
@@ -4247,7 +3085,7 @@ def
   ok (o, { it := t, f := t1, current := o1 })
 
 /-- Trait implementation: [core_models::iter::adapters::flat_map::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flat_map::FlatMap<I, U, F>}]
-    Source: 'core-models/src/core/iter.rs', lines 520:8-536:9 -/
+    Source: 'core-models/src/core/iter.rs', lines 538:8-554:9 -/
 @[reducible]
 def iter.adapters.flat_map.FlatMap.Insts.Core_modelsIterTraitsIteratorIterator
   {I : Type} {U : Type} {F : Type} {Clause0_Item : Type} {Clause1_Item : Type}
@@ -4262,8 +3100,20 @@ def iter.adapters.flat_map.FlatMap.Insts.Core_modelsIterTraitsIteratorIterator
     coreopsfunctionFnFTupleClause0_ItemUInst
 }
 
+/-- [core_models::iter::adapters::flatten::{core_models::iter::adapters::flatten::Flatten<I, Clause0_Item, Clause1_Item>}::new]:
+    Source: 'core-models/src/core/iter.rs', lines 572:12-577:13
+    Visibility: public -/
+def iter.adapters.flatten.Flatten.new
+  {I : Type} {Clause0_Item : Type} {Clause1_Item : Type}
+  (traitsiteratorIteratorInst : iter.traits.iterator.Iterator I Clause0_Item)
+  (traitsiteratorIteratorInst1 : iter.traits.iterator.Iterator Clause0_Item
+  Clause1_Item) (it : I) :
+  Result (iter.adapters.flatten.Flatten I Clause0_Item Clause1_Item)
+  := do
+  ok { it, current := option.Option.None }
+
 /-- [core_models::iter::adapters::flatten::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flatten::Flatten<I, Clause0_Item, Clause1_Item>}::next]: loop body 0:
-    Source: 'core-models/src/core/iter.rs', lines 569:20-578:21
+    Source: 'core-models/src/core/iter.rs', lines 587:20-596:21
     Visibility: public -/
 @[rust_loop_body]
 def
@@ -4297,7 +3147,7 @@ def
       ok (done (option.Option.None, t, option.Option.None))
 
 /-- [core_models::iter::adapters::flatten::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flatten::Flatten<I, Clause0_Item, Clause1_Item>}::next]: loop 0:
-    Source: 'core-models/src/core/iter.rs', lines 569:20-578:21
+    Source: 'core-models/src/core/iter.rs', lines 587:20-596:21
     Visibility: public -/
 @[rust_loop]
 def
@@ -4316,7 +3166,7 @@ def
     self
 
 /-- [core_models::iter::adapters::flatten::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flatten::Flatten<I, Clause0_Item, Clause1_Item>}::next]:
-    Source: 'core-models/src/core/iter.rs', lines 567:12-580:13
+    Source: 'core-models/src/core/iter.rs', lines 585:12-598:13
     Visibility: public -/
 def
   iter.adapters.flatten.Flatten.Insts.Core_modelsIterTraitsIteratorIterator.next
@@ -4334,7 +3184,7 @@ def
   ok (o, { it := t, current := o1 })
 
 /-- Trait implementation: [core_models::iter::adapters::flatten::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flatten::Flatten<I, Clause0_Item, Clause1_Item>}]
-    Source: 'core-models/src/core/iter.rs', lines 562:8-581:9 -/
+    Source: 'core-models/src/core/iter.rs', lines 580:8-599:9 -/
 @[reducible]
 def iter.adapters.flatten.Flatten.Insts.Core_modelsIterTraitsIteratorIterator
   {I : Type} {Clause0_Item : Type} {Clause1_Item : Type}
@@ -4347,8 +3197,20 @@ def iter.adapters.flatten.Flatten.Insts.Core_modelsIterTraitsIteratorIterator
     traitsiteratorIteratorInst traitsiteratorIteratorInst1
 }
 
+/-- [core_models::iter::adapters::zip::{core_models::iter::adapters::zip::Zip<I1, I2>}::new]:
+    Source: 'core-models/src/core/iter.rs', lines 610:12-612:13
+    Visibility: public -/
+def iter.adapters.zip.Zip.new
+  {I1 : Type} {I2 : Type} {Clause0_Item : Type} {Clause1_Item : Type}
+  (traitsiteratorIteratorInst : iter.traits.iterator.Iterator I1 Clause0_Item)
+  (traitsiteratorIteratorInst1 : iter.traits.iterator.Iterator I2 Clause1_Item)
+  (it1 : I1) (it2 : I2) :
+  Result (iter.adapters.zip.Zip I1 I2)
+  := do
+  ok { it1, it2 }
+
 /-- [core_models::iter::adapters::zip::{core_models::iter::traits::iterator::Iterator<(Clause0_Item, Clause1_Item)> for core_models::iter::adapters::zip::Zip<I1, I2>}::next]:
-    Source: 'core-models/src/core/iter.rs', lines 599:12-607:13
+    Source: 'core-models/src/core/iter.rs', lines 617:12-625:13
     Visibility: public -/
 def iter.adapters.zip.Zip.Insts.Core_modelsIterTraitsIteratorIteratorPair.next
   {I1 : Type} {I2 : Type} {Clause0_Item : Type} {Clause1_Item : Type}
@@ -4369,7 +3231,7 @@ def iter.adapters.zip.Zip.Insts.Core_modelsIterTraitsIteratorIteratorPair.next
   | option.Option.None => ok (option.Option.None, { self with it1 := t })
 
 /-- Trait implementation: [core_models::iter::adapters::zip::{core_models::iter::traits::iterator::Iterator<(Clause0_Item, Clause1_Item)> for core_models::iter::adapters::zip::Zip<I1, I2>}]
-    Source: 'core-models/src/core/iter.rs', lines 597:8-608:9 -/
+    Source: 'core-models/src/core/iter.rs', lines 615:8-626:9 -/
 @[reducible]
 def iter.adapters.zip.Zip.Insts.Core_modelsIterTraitsIteratorIteratorPair {I1 :
   Type} {I2 : Type} {Clause0_Item : Type} {Clause1_Item : Type}
@@ -4382,22 +3244,19 @@ def iter.adapters.zip.Zip.Insts.Core_modelsIterTraitsIteratorIteratorPair {I1 :
     traitsiteratorIteratorInst traitsiteratorIteratorInst1
 }
 
-/-
-/-- Trait implementation: [core_models::iter::adapters::filter::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::filter::Filter<I, P>}]
-    Source: 'core-models/src/core/iter.rs', lines 625:8-639:9 -/
-@[reducible]
-def iter.adapters.filter.Filter.Insts.Core_modelsIterTraitsIteratorIterator {I
-  : Type} {P : Type} {Clause0_Item : Type} (traitsiteratorIteratorInst :
-  iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnPTupleSharedClause0_ItemBoolInst : core.ops.function.Fn P
-  Clause0_Item Bool) : iter.traits.iterator.Iterator
-  (iter.adapters.filter.Filter I P) Clause0_Item := {
-  sorry
-}
--/
+/-- [core_models::iter::adapters::chain::{core_models::iter::adapters::chain::Chain<A, B>}::new]:
+    Source: 'core-models/src/core/iter.rs', lines 670:12-675:13
+    Visibility: public -/
+def iter.adapters.chain.Chain.new
+  {A : Type} {B : Type} {Clause0_Item : Type} (traitsiteratorIteratorInst :
+  iter.traits.iterator.Iterator A Clause0_Item) (traitsiteratorIteratorInst1 :
+  iter.traits.iterator.Iterator B Clause0_Item) (a : A) (b : B) :
+  Result (iter.adapters.chain.Chain A B)
+  := do
+  ok { a := (option.Option.Some a), b }
 
 /-- [core_models::iter::adapters::chain::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::chain::Chain<A, B>}::next]:
-    Source: 'core-models/src/core/iter.rs', lines 661:12-669:13
+    Source: 'core-models/src/core/iter.rs', lines 681:12-689:13
     Visibility: public -/
 def iter.adapters.chain.Chain.Insts.Core_modelsIterTraitsIteratorIterator.next
   {A : Type} {B : Type} {Clause0_Item : Type} (traitsiteratorIteratorInst :
@@ -4420,7 +3279,7 @@ def iter.adapters.chain.Chain.Insts.Core_modelsIterTraitsIteratorIterator.next
     ok (o, { a := option.Option.None, b := t })
 
 /-- Trait implementation: [core_models::iter::adapters::chain::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::chain::Chain<A, B>}]
-    Source: 'core-models/src/core/iter.rs', lines 659:8-670:9 -/
+    Source: 'core-models/src/core/iter.rs', lines 679:8-690:9 -/
 @[reducible]
 def iter.adapters.chain.Chain.Insts.Core_modelsIterTraitsIteratorIterator {A :
   Type} {B : Type} {Clause0_Item : Type} (traitsiteratorIteratorInst :
@@ -4433,7 +3292,7 @@ def iter.adapters.chain.Chain.Insts.Core_modelsIterTraitsIteratorIterator {A :
 }
 
 /-- [core_models::iter::adapters::skip::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::skip::Skip<I>}::next]: loop body 0:
-    Source: 'core-models/src/core/iter.rs', lines 690:16-697:13
+    Source: 'core-models/src/core/iter.rs', lines 711:16-718:13
     Visibility: public -/
 @[rust_loop_body]
 def
@@ -4456,7 +3315,7 @@ def
     ok (done (o, t, self.n))
 
 /-- [core_models::iter::adapters::skip::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::skip::Skip<I>}::next]: loop 0:
-    Source: 'core-models/src/core/iter.rs', lines 690:16-697:13
+    Source: 'core-models/src/core/iter.rs', lines 711:16-718:13
     Visibility: public -/
 @[rust_loop]
 def
@@ -4473,7 +3332,7 @@ def
     self
 
 /-- [core_models::iter::adapters::skip::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::skip::Skip<I>}::next]:
-    Source: 'core-models/src/core/iter.rs', lines 689:12-697:13
+    Source: 'core-models/src/core/iter.rs', lines 710:12-718:13
     Visibility: public -/
 def iter.adapters.skip.Skip.Insts.Core_modelsIterTraitsIteratorIterator.next
   {I : Type} {Clause0_Item : Type} (traitsiteratorIteratorInst :
@@ -4487,7 +3346,7 @@ def iter.adapters.skip.Skip.Insts.Core_modelsIterTraitsIteratorIterator.next
   ok (o, { iter := t, n := i })
 
 /-- Trait implementation: [core_models::iter::adapters::skip::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::skip::Skip<I>}]
-    Source: 'core-models/src/core/iter.rs', lines 687:8-698:9 -/
+    Source: 'core-models/src/core/iter.rs', lines 708:8-719:9 -/
 @[reducible]
 def iter.adapters.skip.Skip.Insts.Core_modelsIterTraitsIteratorIterator {I :
   Type} {Clause0_Item : Type} (traitsiteratorIteratorInst :
@@ -7728,396 +6587,6 @@ def panicking.panic (_msg : Str) : Result Never := do
 def panicking.panic_fmt (_fmt : fmt.Arguments) : Result Never := do
   fail Error.panic
 
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::is_ok]:
-    Source: 'core-models/src/core/result.rs', lines 18:4-20:5
-    Visibility: public -/
-def result.Result.is_ok
-  {T : Type} {E : Type} (self : result.Result T E) : Result Bool := do
-  match self with
-  | result.Result.Ok _ => ok true
-  | result.Result.Err _ => ok false
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::is_ok_and]:
-    Source: 'core-models/src/core/result.rs', lines 23:4-28:5
-    Visibility: public -/
-def result.Result.is_ok_and
-  {T : Type} {E : Type} {F : Type} (coreopsfunctionFnOnceFTupleTBoolInst :
-  core.ops.function.FnOnce F T Bool) (self : result.Result T E) (f : F) :
-  Result Bool
-  := do
-  match self with
-  | result.Result.Ok t => coreopsfunctionFnOnceFTupleTBoolInst.call_once f t
-  | result.Result.Err _ => ok false
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::is_err]:
-    Source: 'core-models/src/core/result.rs', lines 31:4-33:5
-    Visibility: public -/
-def result.Result.is_err
-  {T : Type} {E : Type} (self : result.Result T E) : Result Bool := do
-  let b ← result.Result.is_ok self
-  ok (¬ b)
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::is_err_and]:
-    Source: 'core-models/src/core/result.rs', lines 36:4-41:5
-    Visibility: public -/
-def result.Result.is_err_and
-  {T : Type} {E : Type} {F : Type} (coreopsfunctionFnOnceFTupleEBoolInst :
-  core.ops.function.FnOnce F E Bool) (self : result.Result T E) (f : F) :
-  Result Bool
-  := do
-  match self with
-  | result.Result.Ok _ => ok false
-  | result.Result.Err e => coreopsfunctionFnOnceFTupleEBoolInst.call_once f e
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::as_ref]:
-    Source: 'core-models/src/core/result.rs', lines 44:4-49:5
-    Visibility: public -/
-def result.Result.as_ref
-  {T : Type} {E : Type} (self : result.Result T E) :
-  Result (result.Result T E)
-  := do
-  match self with
-  | result.Result.Ok _ => ok self
-  | result.Result.Err _ => ok self
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::as_mut]:
-    Source: 'core-models/src/core/result.rs', lines 53:4-58:5
-    Visibility: public -/
-def result.Result.as_mut
-  {T : Type} {E : Type} (self : result.Result T E) :
-  Result ((result.Result T E) × (result.Result T E → result.Result T E))
-  := do
-  match self with
-  | result.Result.Ok t =>
-    let back :=
-      fun r =>
-        let t1 := match r with
-                  | result.Result.Ok t2 => t2
-                  | _ => t
-        result.Result.Ok t1
-    ok (self, back)
-  | result.Result.Err e =>
-    let back :=
-      fun r =>
-        let t := match r with
-                 | result.Result.Err t1 => t1
-                 | _ => e
-        result.Result.Err t
-    ok (self, back)
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::expect]:
-    Source: 'core-models/src/core/result.rs', lines 62:4-67:5
-    Visibility: public -/
-def result.Result.expect
-  {T : Type} {E : Type} (self : result.Result T E) (_msg : Str) :
-  Result T
-  := do
-  match self with
-  | result.Result.Ok t => ok t
-  | result.Result.Err _ => panicking.internal.panic T
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::unwrap]:
-    Source: 'core-models/src/core/result.rs', lines 71:4-76:5
-    Visibility: public -/
-def result.Result.unwrap
-  {T : Type} {E : Type} (self : result.Result T E) : Result T := do
-  match self with
-  | result.Result.Ok t => ok t
-  | result.Result.Err _ => panicking.internal.panic T
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::expect_err]:
-    Source: 'core-models/src/core/result.rs', lines 80:4-85:5
-    Visibility: public -/
-def result.Result.expect_err
-  {T : Type} {E : Type} (self : result.Result T E) (_msg : Str) :
-  Result E
-  := do
-  match self with
-  | result.Result.Ok _ => panicking.internal.panic E
-  | result.Result.Err e => ok e
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::unwrap_err]:
-    Source: 'core-models/src/core/result.rs', lines 89:4-94:5
-    Visibility: public -/
-def result.Result.unwrap_err
-  {T : Type} {E : Type} (self : result.Result T E) : Result E := do
-  match self with
-  | result.Result.Ok _ => panicking.internal.panic E
-  | result.Result.Err e => ok e
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::unwrap_or]:
-    Source: 'core-models/src/core/result.rs', lines 97:4-102:5
-    Visibility: public -/
-def result.Result.unwrap_or
-  {T : Type} {E : Type} (self : result.Result T E) (default : T) :
-  Result T
-  := do
-  match self with
-  | result.Result.Ok t => ok t
-  | result.Result.Err _ => ok default
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::unwrap_or_else]:
-    Source: 'core-models/src/core/result.rs', lines 105:4-110:5
-    Visibility: public -/
-def result.Result.unwrap_or_else
-  {T : Type} {E : Type} {F : Type} (coreopsfunctionFnOnceFTupleETInst :
-  core.ops.function.FnOnce F E T) (self : result.Result T E) (op : F) :
-  Result T
-  := do
-  match self with
-  | result.Result.Ok t => ok t
-  | result.Result.Err e => coreopsfunctionFnOnceFTupleETInst.call_once op e
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::unwrap_or_default]:
-    Source: 'core-models/src/core/result.rs', lines 113:4-121:5
-    Visibility: public -/
-def result.Result.unwrap_or_default
-  {T : Type} {E : Type} (defaultDefaultInst : default.Default T)
-  (self : result.Result T E) :
-  Result T
-  := do
-  match self with
-  | result.Result.Ok t => ok t
-  | result.Result.Err _ => defaultDefaultInst.default
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::map]:
-    Source: 'core-models/src/core/result.rs', lines 124:4-132:5
-    Visibility: public -/
-def result.Result.map
-  {T : Type} {E : Type} {U : Type} {F : Type}
-  (coreopsfunctionFnOnceFTupleTUInst : core.ops.function.FnOnce F T U)
-  (self : result.Result T E) (op : F) :
-  Result (result.Result U E)
-  := do
-  match self with
-  | result.Result.Ok t =>
-    let t1 ← coreopsfunctionFnOnceFTupleTUInst.call_once op t
-    ok (result.Result.Ok t1)
-  | result.Result.Err e => ok (result.Result.Err e)
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::map_or]:
-    Source: 'core-models/src/core/result.rs', lines 135:4-143:5
-    Visibility: public -/
-def result.Result.map_or
-  {T : Type} {E : Type} {U : Type} {F : Type}
-  (coreopsfunctionFnOnceFTupleTUInst : core.ops.function.FnOnce F T U)
-  (self : result.Result T E) (default : U) (f : F) :
-  Result U
-  := do
-  match self with
-  | result.Result.Ok t => coreopsfunctionFnOnceFTupleTUInst.call_once f t
-  | result.Result.Err _ => ok default
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::map_or_else]:
-    Source: 'core-models/src/core/result.rs', lines 146:4-155:5
-    Visibility: public -/
-def result.Result.map_or_else
-  {T : Type} {E : Type} {U : Type} {D : Type} {F : Type}
-  (coreopsfunctionFnOnceFTupleTUInst : core.ops.function.FnOnce F T U)
-  (coreopsfunctionFnOnceDTupleEUInst : core.ops.function.FnOnce D E U)
-  (self : result.Result T E) (default : D) (f : F) :
-  Result U
-  := do
-  match self with
-  | result.Result.Ok t => coreopsfunctionFnOnceFTupleTUInst.call_once f t
-  | result.Result.Err e =>
-    coreopsfunctionFnOnceDTupleEUInst.call_once default e
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::map_or_default]:
-    Source: 'core-models/src/core/result.rs', lines 158:4-167:5
-    Visibility: public -/
-def result.Result.map_or_default
-  {T : Type} {E : Type} {U : Type} {F : Type}
-  (coreopsfunctionFnOnceFTupleTUInst : core.ops.function.FnOnce F T U)
-  (defaultDefaultInst : default.Default U) (self : result.Result T E) 
-  (f : F) :
-  Result U
-  := do
-  match self with
-  | result.Result.Ok t => coreopsfunctionFnOnceFTupleTUInst.call_once f t
-  | result.Result.Err _ => defaultDefaultInst.default
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::map_err]:
-    Source: 'core-models/src/core/result.rs', lines 170:4-178:5
-    Visibility: public -/
-def result.Result.map_err
-  {T : Type} {E : Type} {F : Type} {O : Type}
-  (coreopsfunctionFnOnceOTupleEFInst : core.ops.function.FnOnce O E F)
-  (self : result.Result T E) (op : O) :
-  Result (result.Result T F)
-  := do
-  match self with
-  | result.Result.Ok t => ok (result.Result.Ok t)
-  | result.Result.Err e =>
-    let t ← coreopsfunctionFnOnceOTupleEFInst.call_once op e
-    ok (result.Result.Err t)
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::ok]:
-    Source: 'core-models/src/core/result.rs', lines 197:4-202:5
-    Visibility: public -/
-def result.Result.ok
-  {T : Type} {E : Type} (self : result.Result T E) :
-  Result (option.Option T)
-  := do
-  match self with
-  | result.Result.Ok x => ok (option.Option.Some x)
-  | result.Result.Err _ => ok option.Option.None
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::err]:
-    Source: 'core-models/src/core/result.rs', lines 205:4-210:5
-    Visibility: public -/
-def result.Result.err
-  {T : Type} {E : Type} (self : result.Result T E) :
-  Result (option.Option E)
-  := do
-  match self with
-  | result.Result.Ok _ => ok option.Option.None
-  | result.Result.Err e => ok (option.Option.Some e)
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::and]:
-    Source: 'core-models/src/core/result.rs', lines 213:4-218:5
-    Visibility: public -/
-def result.Result.and
-  {T : Type} {E : Type} {U : Type} (self : result.Result T E)
-  (res : result.Result U E) :
-  Result (result.Result U E)
-  := do
-  match self with
-  | result.Result.Ok _ => ok res
-  | result.Result.Err e => ok (result.Result.Err e)
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::and_then]:
-    Source: 'core-models/src/core/result.rs', lines 221:4-229:5
-    Visibility: public -/
-def result.Result.and_then
-  {T : Type} {E : Type} {U : Type} {F : Type}
-  (coreopsfunctionFnOnceFTupleTResultInst : core.ops.function.FnOnce F T
-  (result.Result U E)) (self : result.Result T E) (op : F) :
-  Result (result.Result U E)
-  := do
-  match self with
-  | result.Result.Ok t => coreopsfunctionFnOnceFTupleTResultInst.call_once op t
-  | result.Result.Err e => ok (result.Result.Err e)
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::or]:
-    Source: 'core-models/src/core/result.rs', lines 232:4-237:5
-    Visibility: public -/
-def result.Result.or
-  {T : Type} {E : Type} {F : Type} (self : result.Result T E)
-  (res : result.Result T F) :
-  Result (result.Result T F)
-  := do
-  match self with
-  | result.Result.Ok t => ok (result.Result.Ok t)
-  | result.Result.Err _ => ok res
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::or_else]:
-    Source: 'core-models/src/core/result.rs', lines 240:4-245:5
-    Visibility: public -/
-def result.Result.or_else
-  {T : Type} {E : Type} {F : Type} {O : Type}
-  (coreopsfunctionFnOnceOTupleEResultInst : core.ops.function.FnOnce O E
-  (result.Result T F)) (self : result.Result T E) (op : O) :
-  Result (result.Result T F)
-  := do
-  match self with
-  | result.Result.Ok t => ok (result.Result.Ok t)
-  | result.Result.Err e =>
-    coreopsfunctionFnOnceOTupleEResultInst.call_once op e
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<T, E>}::cloned]:
-    Source: 'core-models/src/core/result.rs', lines 251:4-256:5
-    Visibility: public -/
-def result.Result.cloned
-  {T : Type} {E : Type} (cloneCloneInst : clone.Clone T)
-  (self : result.Result T E) :
-  Result (result.Result T E)
-  := do
-  match self with
-  | result.Result.Ok t =>
-    let t1 ← cloneCloneInst.clone t
-    ok (result.Result.Ok t1)
-  | result.Result.Err _ => ok self
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<core_models::option::Option<T>, E>}::transpose]:
-    Source: 'core-models/src/core/result.rs', lines 262:4-268:5
-    Visibility: public -/
-def result.ResultOptionE.transpose
-  {T : Type} {E : Type} (self : result.Result (option.Option T) E) :
-  Result (option.Option (result.Result T E))
-  := do
-  match self with
-  | result.Result.Ok o =>
-    match o with
-    | option.Option.Some t => ok (option.Option.Some (result.Result.Ok t))
-    | option.Option.None => ok option.Option.None
-  | result.Result.Err e => ok (option.Option.Some (result.Result.Err e))
--/
-
-/-
-/-- [core_models::result::{core_models::result::Result<core_models::result::Result<T, E>, E>}::flatten]:
-    Source: 'core-models/src/core/result.rs', lines 274:4-279:5
-    Visibility: public -/
-def result.ResultResultE.flatten
-  {T : Type} {E : Type} (self : result.Result (result.Result T E) E) :
-  Result (result.Result T E)
-  := do
-  match self with
-  | result.Result.Ok inner => ok inner
-  | result.Result.Err e => ok (result.Result.Err e)
--/
-
 /-- [core_models::slice::iter::{core_models::slice::iter::Chunks<'a, T>}::new]:
     Source: 'core-models/src/core/slice.rs', lines 17:8-19:9
     Visibility: public -/
@@ -8136,74 +6605,8 @@ def slice.iter.ChunksExact.new
   := do
   ok { cs, elements }
 
-/-
-/-- [core_models::slice::iter::{core_models::iter::traits::iterator::Iterator<&'a ([T])> for core_models::slice::iter::Chunks<'a, T>}::next]:
-    Source: 'core-models/src/core/slice.rs', lines 49:8-61:9
-    Visibility: public -/
-def
-  slice.iter.Chunks.Insts.Core_modelsIterTraitsIteratorIteratorSharedASlice.next
-  {T : Type} (self : slice.iter.Chunks T) :
-  Result ((option.Option (Slice T)) × (slice.iter.Chunks T))
-  := do
-  let i ← rust_primitives.slice.slice_length self.elements
-  if i = 0#usize
-  then ok (option.Option.None, self)
-  else
-    if i < self.cs
-    then
-      let s ← rust_primitives.slice.slice_slice self.elements 0#usize 0#usize
-      ok (option.Option.Some self.elements, { self with elements := s })
-    else
-      let (res, new_elements) ←
-        rust_primitives.slice.slice_split_at self.elements self.cs
-      ok (option.Option.Some res, { self with elements := new_elements })
--/
-
-/-
-/-- Trait implementation: [core_models::slice::iter::{core_models::iter::traits::iterator::Iterator<&'a ([T])> for core_models::slice::iter::Chunks<'a, T>}]
-    Source: 'core-models/src/core/slice.rs', lines 47:4-62:5 -/
-@[reducible]
-def slice.iter.Chunks.Insts.Core_modelsIterTraitsIteratorIteratorSharedASlice
-  (T : Type) : iter.traits.iterator.Iterator (slice.iter.Chunks T) (Slice T)
-  := {
-  next :=
-    slice.iter.Chunks.Insts.Core_modelsIterTraitsIteratorIteratorSharedASlice.next
-}
--/
-
-/-
-/-- [core_models::slice::iter::{core_models::iter::traits::iterator::Iterator<&'a ([T])> for core_models::slice::iter::ChunksExact<'a, T>}::next]:
-    Source: 'core-models/src/core/slice.rs', lines 66:8-74:9
-    Visibility: public -/
-def
-  slice.iter.ChunksExact.Insts.Core_modelsIterTraitsIteratorIteratorSharedASlice.next
-  {T : Type} (self : slice.iter.ChunksExact T) :
-  Result ((option.Option (Slice T)) × (slice.iter.ChunksExact T))
-  := do
-  let i ← rust_primitives.slice.slice_length self.elements
-  if i < self.cs
-  then ok (option.Option.None, self)
-  else
-    let (res, new_elements) ←
-      rust_primitives.slice.slice_split_at self.elements self.cs
-    ok (option.Option.Some res, { self with elements := new_elements })
--/
-
-/-
-/-- Trait implementation: [core_models::slice::iter::{core_models::iter::traits::iterator::Iterator<&'a ([T])> for core_models::slice::iter::ChunksExact<'a, T>}]
-    Source: 'core-models/src/core/slice.rs', lines 64:4-75:5 -/
-@[reducible]
-def
-  slice.iter.ChunksExact.Insts.Core_modelsIterTraitsIteratorIteratorSharedASlice
-  (T : Type) : iter.traits.iterator.Iterator (slice.iter.ChunksExact T) (Slice
-  T) := {
-  next :=
-    slice.iter.ChunksExact.Insts.Core_modelsIterTraitsIteratorIteratorSharedASlice.next
-}
--/
-
 /-- [core_models::slice::iter::{core_models::slice::iter::Windows<'a, T>}::new]:
-    Source: 'core-models/src/core/slice.rs', lines 83:8-85:9
+    Source: 'core-models/src/core/slice.rs', lines 85:8-87:9
     Visibility: public -/
 def slice.iter.Windows.new
   {T : Type} (size : Std.Usize) (elements : Slice T) :
@@ -8211,340 +6614,8 @@ def slice.iter.Windows.new
   := do
   ok { size, elements }
 
-/-
-/-- [core_models::slice::iter::{core_models::iter::traits::iterator::Iterator<&'a ([T])> for core_models::slice::iter::Windows<'a, T>}::next]:
-    Source: 'core-models/src/core/slice.rs', lines 92:8-100:9
-    Visibility: public -/
-def
-  slice.iter.Windows.Insts.Core_modelsIterTraitsIteratorIteratorSharedASlice.next
-  {T : Type} (self : slice.iter.Windows T) :
-  Result ((option.Option (Slice T)) × (slice.iter.Windows T))
-  := do
-  let i ← rust_primitives.slice.slice_length self.elements
-  if i < self.size
-  then ok (option.Option.None, self)
-  else
-    let res ←
-      rust_primitives.slice.slice_slice self.elements 0#usize self.size
-    let s ← rust_primitives.slice.slice_slice self.elements 1#usize i
-    ok (option.Option.Some res, { self with elements := s })
--/
-
-/-
-/-- Trait implementation: [core_models::slice::iter::{core_models::iter::traits::iterator::Iterator<&'a ([T])> for core_models::slice::iter::Windows<'a, T>}]
-    Source: 'core-models/src/core/slice.rs', lines 90:4-101:5 -/
-@[reducible]
-def slice.iter.Windows.Insts.Core_modelsIterTraitsIteratorIteratorSharedASlice
-  (T : Type) : iter.traits.iterator.Iterator (slice.iter.Windows T) (Slice T)
-  := {
-  next :=
-    slice.iter.Windows.Insts.Core_modelsIterTraitsIteratorIteratorSharedASlice.next
-}
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::len]:
-    Source: 'core-models/src/core/slice.rs', lines 107:4-109:5 -/
-def slice.Slice.len {T : Type} (s : Slice T) : Result Std.Usize := do
-  rust_primitives.slice.slice_length s
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::chunks]:
-    Source: 'core-models/src/core/slice.rs', lines 111:4-113:5 -/
-def slice.Slice.chunks
-  {T : Type} (s : Slice T) (cs : Std.Usize) :
-  Result (slice.iter.Chunks T)
-  := do
-  slice.iter.Chunks.new cs s
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::iter]:
-    Source: 'core-models/src/core/slice.rs', lines 115:4-117:5 -/
-def slice.Slice.iter
-  {T : Type} (s : Slice T) : Result (slice.iter.Iter T) := do
-  let s1 ← rust_primitives.sequence.seq_from_slice s
-  ok s1
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::chunks_exact]:
-    Source: 'core-models/src/core/slice.rs', lines 119:4-121:5 -/
-def slice.Slice.chunks_exact
-  {T : Type} (s : Slice T) (cs : Std.Usize) :
-  Result (slice.iter.ChunksExact T)
-  := do
-  slice.iter.ChunksExact.new cs s
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::copy_from_slice]:
-    Source: 'core-models/src/core/slice.rs', lines 124:4-129:5 -/
-def slice.Slice.copy_from_slice
-  {T : Type} (coremarkerCopyInst : core.marker.Copy T) (s : Slice T)
-  (src : Slice T) :
-  Result (Slice T)
-  := do
-  rust_primitives.slice.slice_clone_from_slice coremarkerCopyInst.cloneInst s
-    src
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::clone_from_slice]:
-    Source: 'core-models/src/core/slice.rs', lines 132:4-137:5 -/
-def slice.Slice.clone_from_slice
-  {T : Type} (corecloneCloneInst : core.clone.Clone T) (s : Slice T)
-  (src : Slice T) :
-  Result (Slice T)
-  := do
-  rust_primitives.slice.slice_clone_from_slice corecloneCloneInst s src
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::split_at]:
-    Source: 'core-models/src/core/slice.rs', lines 140:4-142:5 -/
-def slice.Slice.split_at
-  {T : Type} (s : Slice T) (mid : Std.Usize) :
-  Result ((Slice T) × (Slice T))
-  := do
-  rust_primitives.slice.slice_split_at s mid
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::split_at_checked]:
-    Source: 'core-models/src/core/slice.rs', lines 144:4-150:5 -/
-def slice.Slice.split_at_checked
-  {T : Type} (s : Slice T) (mid : Std.Usize) :
-  Result (option.Option ((Slice T) × (Slice T)))
-  := do
-  let i ← slice.Slice.len s
-  if mid <= i
-  then
-    let (s1, s2) ← slice.Slice.split_at s mid
-    ok (option.Option.Some (s1, s2))
-  else ok option.Option.None
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::is_empty]:
-    Source: 'core-models/src/core/slice.rs', lines 152:4-154:5 -/
-def slice.Slice.is_empty {T : Type} (s : Slice T) : Result Bool := do
-  let i ← slice.Slice.len s
-  ok (i = 0#usize)
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::contains]:
-    Source: 'core-models/src/core/slice.rs', lines 157:4-162:5 -/
-def slice.Slice.contains
-  {T : Type} (corecmpPartialEqInst : core.cmp.PartialEq T T) (s : Slice T)
-  (v : T) :
-  Result Bool
-  := do
-  rust_primitives.slice.slice_contains corecmpPartialEqInst s v
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::copy_within]:
-    Source: 'core-models/src/core/slice.rs', lines 165:4-170:5 -/
-def slice.Slice.copy_within
-  {T : Type} {R : Type} (coremarkerCopyInst : core.marker.Copy T) (s : Slice T)
-  (src : R) (dest : Std.Usize) :
-  Result (Slice T)
-  := do
-  fail Error.panic
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::binary_search]:
-    Source: 'core-models/src/core/slice.rs', lines 173:4-175:5 -/
-def slice.Slice.binary_search
-  {T : Type} (s : Slice T) (x : T) :
-  Result (result.Result Std.Usize Std.Usize)
-  := do
-  fail Error.panic
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::get]:
-    Source: 'core-models/src/core/slice.rs', lines 177:4-179:5 -/
-def slice.Slice.get
-  {T : Type} {I : Type} (clauseInst :
-  sorry /- Could not find: trait_decl_id: 59-/ I (Slice T)) (s : Slice T)
-  (index : I) :
-  Result (option.Option
-    clauseInst.sorry /- ERROR: unknown identifier": trait_item_id: trait_decl: TraitDecl@59 (id: 59), type name: Output-/))
-  := do
-  sorry
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::first]:
-    Source: 'core-models/src/core/slice.rs', lines 181:4-187:5 -/
-def slice.Slice.first {T : Type} (s : Slice T) : Result (option.Option T) := do
-  let b ← slice.Slice.is_empty s
-  if b
-  then ok option.Option.None
-  else
-    let t ← rust_primitives.slice.slice_index s 0#usize
-    ok (option.Option.Some t)
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::last]:
-    Source: 'core-models/src/core/slice.rs', lines 189:4-195:5 -/
-def slice.Slice.last {T : Type} (s : Slice T) : Result (option.Option T) := do
-  let b ← slice.Slice.is_empty s
-  if b
-  then ok option.Option.None
-  else
-    let i ← slice.Slice.len s
-    let i1 ← i - 1#usize
-    let t ← rust_primitives.slice.slice_index s i1
-    ok (option.Option.Some t)
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::swap]:
-    Source: 'core-models/src/core/slice.rs', lines 200:4-202:5 -/
-def slice.Slice.swap
-  {T : Type} (s : Slice T) (a : Std.Usize) (b : Std.Usize) :
-  Result (Slice T)
-  := do
-  core.slice.Slice.swap s a b
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::reverse]:
-    Source: 'core-models/src/core/slice.rs', lines 206:4-208:5 -/
-def slice.Slice.reverse {T : Type} (s : Slice T) : Result (Slice T) := do
-  ok (core.slice.Slice.reverse s)
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::windows]:
-    Source: 'core-models/src/core/slice.rs', lines 211:4-216:5 -/
-def slice.Slice.windows
-  {T : Type} (s : Slice T) (size : Std.Usize) :
-  Result (slice.iter.Windows T)
-  := do
-  if size = 0#usize
-  then panicking.internal.panic Unit
-  else ok ()
-  slice.iter.Windows.new size s
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::starts_with]:
-    Source: 'core-models/src/core/slice.rs', lines 220:4-226:5 -/
-def slice.Slice.starts_with
-  {T : Type} (corecmpPartialEqInst : core.cmp.PartialEq T T) (s : Slice T)
-  (needle : Slice T) :
-  Result Bool
-  := do
-  let n ← slice.Slice.len needle
-  let i ← slice.Slice.len s
-  if i >= n
-  then
-    let s1 ← rust_primitives.slice.slice_slice s 0#usize n
-    Slice.Insts.CoreCmpPartialEqSlice.eq corecmpPartialEqInst s1 needle
-  else ok false
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::ends_with]:
-    Source: 'core-models/src/core/slice.rs', lines 230:4-237:5 -/
-def slice.Slice.ends_with
-  {T : Type} (corecmpPartialEqInst : core.cmp.PartialEq T T) (s : Slice T)
-  (needle : Slice T) :
-  Result Bool
-  := do
-  let n ← slice.Slice.len needle
-  let l ← slice.Slice.len s
-  if l >= n
-  then
-    let i ← l - n
-    let s1 ← rust_primitives.slice.slice_slice s i l
-    Slice.Insts.CoreCmpPartialEqSlice.eq corecmpPartialEqInst s1 needle
-  else ok false
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::fill]: loop body 0:
-    Source: 'core-models/src/core/slice.rs', lines 245:8-247:9 -/
-@[rust_loop_body]
-def slice.Slice.fill_loop.body
-  {T : Type} (corecloneCloneInst : core.clone.Clone T) (value : T)
-  (iter : core.ops.range.Range Std.Usize) (s : Slice T) :
-  Result (ControlFlow ((core.ops.range.Range Std.Usize) × (Slice T)) (Slice
-    T))
-  := do
-  let (o, iter1) ←
-    core.iter.range.IteratorRange.next core.iter.range.StepUsize iter
-  match o with
-  | none => ok (done s)
-  | some i =>
-    let t ← corecloneCloneInst.clone value
-    let (t1, index_mut_back) ← Slice.index_mut_usize s i
-    let s1 := index_mut_back t1
-    let s2 ← Slice.update s1 i t
-    ok (cont (iter1, s2))
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::fill]: loop 0:
-    Source: 'core-models/src/core/slice.rs', lines 245:8-247:9 -/
-@[rust_loop]
-def slice.Slice.fill_loop
-  {T : Type} (corecloneCloneInst : core.clone.Clone T)
-  (iter : core.ops.range.Range Std.Usize) (s : Slice T) (value : T) :
-  Result (Slice T)
-  := do
-  loop
-    (fun (iter1, s1) => slice.Slice.fill_loop.body corecloneCloneInst value
-      iter1 s1)
-    (iter, s)
--/
-
-/-
-/-- [core_models::slice::{core_models::slice::Slice<T>}::fill]:
-    Source: 'core-models/src/core/slice.rs', lines 241:4-248:5 -/
-def slice.Slice.fill
-  {T : Type} (corecloneCloneInst : core.clone.Clone T) (s : Slice T)
-  (value : T) :
-  Result (Slice T)
-  := do
-  let i := Slice.len s
-  slice.Slice.fill_loop corecloneCloneInst { start := 0#usize, «end» := i } s
-    value
--/
-
-/-
-/-- [core_models::slice::{core_models::iter::traits::collect::IntoIterator<&'a (T), core_models::slice::iter::Iter<'a, T>> for &'a ([T])}::into_iter]:
-    Source: 'core-models/src/core/slice.rs', lines 256:4-258:5
-    Visibility: public -/
-def
-  SharedASlice.Insts.Core_modelsIterTraitsCollectIntoIteratorSharedATIter.into_iter
-  {T : Type} (self : Slice T) : Result (slice.iter.Iter T) := do
-  let i ← slice.Slice.iter self
-  ok i
--/
-
-/-
-/-- Trait implementation: [core_models::slice::{core_models::iter::traits::collect::IntoIterator<&'a (T), core_models::slice::iter::Iter<'a, T>> for &'a ([T])}]
-    Source: 'core-models/src/core/slice.rs', lines 253:0-259:1 -/
-@[reducible]
-def SharedASlice.Insts.Core_modelsIterTraitsCollectIntoIteratorSharedATIter (T
-  : Type) : iter.traits.collect.IntoIterator (Slice T) T (slice.iter.Iter T)
-  := {
-  into_iter :=
-    SharedASlice.Insts.Core_modelsIterTraitsCollectIntoIteratorSharedATIter.into_iter
-}
--/
-
 /-- [core_models::slice::{core_models::ops::index::Index<core_models::ops::range::Range<usize>, [T]> for &0 ([T])}::index]:
-    Source: 'core-models/src/core/slice.rs', lines 400:4-402:5
+    Source: 'core-models/src/core/slice.rs', lines 405:4-407:5
     Visibility: public -/
 def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeUsizeSlice.index
   {T : Type} (self : Slice T) (i : ops.range.Range Std.Usize) :
@@ -8553,7 +6624,7 @@ def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeUsizeSlice.index
   rust_primitives.slice.slice_slice self i.start i.«end»
 
 /-- Trait implementation: [core_models::slice::{core_models::ops::index::Index<core_models::ops::range::Range<usize>, [T]> for &0 ([T])}]
-    Source: 'core-models/src/core/slice.rs', lines 397:0-403:1 -/
+    Source: 'core-models/src/core/slice.rs', lines 402:0-408:1 -/
 @[reducible]
 def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeUsizeSlice (T : Type) :
   ops.index.Index (Slice T) (ops.range.Range Std.Usize) (Slice T) := {
@@ -8561,7 +6632,7 @@ def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeUsizeSlice (T : Type) :
 }
 
 /-- [core_models::slice::{core_models::ops::index::Index<core_models::ops::range::RangeTo<usize>, [T]> for &0 ([T])}::index]:
-    Source: 'core-models/src/core/slice.rs', lines 409:4-411:5
+    Source: 'core-models/src/core/slice.rs', lines 414:4-416:5
     Visibility: public -/
 def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeToUsizeSlice.index
   {T : Type} (self : Slice T) (i : ops.range.RangeTo Std.Usize) :
@@ -8570,7 +6641,7 @@ def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeToUsizeSlice.index
   rust_primitives.slice.slice_slice self 0#usize i.«end»
 
 /-- Trait implementation: [core_models::slice::{core_models::ops::index::Index<core_models::ops::range::RangeTo<usize>, [T]> for &0 ([T])}]
-    Source: 'core-models/src/core/slice.rs', lines 406:0-412:1 -/
+    Source: 'core-models/src/core/slice.rs', lines 411:0-417:1 -/
 @[reducible]
 def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeToUsizeSlice (T : Type) :
   ops.index.Index (Slice T) (ops.range.RangeTo Std.Usize) (Slice T) := {
@@ -8578,7 +6649,7 @@ def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeToUsizeSlice (T : Type) :
 }
 
 /-- [core_models::slice::{core_models::ops::index::Index<core_models::ops::range::RangeFrom<usize>, [T]> for &0 ([T])}::index]:
-    Source: 'core-models/src/core/slice.rs', lines 418:4-420:5
+    Source: 'core-models/src/core/slice.rs', lines 423:4-425:5
     Visibility: public -/
 def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeFromUsizeSlice.index
   {T : Type} (self : Slice T) (i : ops.range.RangeFrom Std.Usize) :
@@ -8588,7 +6659,7 @@ def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeFromUsizeSlice.index
   rust_primitives.slice.slice_slice self i.start i1
 
 /-- Trait implementation: [core_models::slice::{core_models::ops::index::Index<core_models::ops::range::RangeFrom<usize>, [T]> for &0 ([T])}]
-    Source: 'core-models/src/core/slice.rs', lines 415:0-421:1 -/
+    Source: 'core-models/src/core/slice.rs', lines 420:0-426:1 -/
 @[reducible]
 def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeFromUsizeSlice (T : Type) :
   ops.index.Index (Slice T) (ops.range.RangeFrom Std.Usize) (Slice T) := {
@@ -8596,7 +6667,7 @@ def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeFromUsizeSlice (T : Type) :
 }
 
 /-- [core_models::slice::{core_models::ops::index::Index<core_models::ops::range::RangeFull, [T]> for &0 ([T])}::index]:
-    Source: 'core-models/src/core/slice.rs', lines 426:4-428:5
+    Source: 'core-models/src/core/slice.rs', lines 431:4-433:5
     Visibility: public -/
 def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeFullSlice.index
   {T : Type} (self : Slice T) (i : ops.range.RangeFull) :
@@ -8606,7 +6677,7 @@ def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeFullSlice.index
   rust_primitives.slice.slice_slice self 0#usize i1
 
 /-- Trait implementation: [core_models::slice::{core_models::ops::index::Index<core_models::ops::range::RangeFull, [T]> for &0 ([T])}]
-    Source: 'core-models/src/core/slice.rs', lines 424:0-429:1 -/
+    Source: 'core-models/src/core/slice.rs', lines 429:0-434:1 -/
 @[reducible]
 def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeFullSlice (T : Type) :
   ops.index.Index (Slice T) ops.range.RangeFull (Slice T) := {
@@ -8614,14 +6685,14 @@ def Shared0Slice.Insts.Core_modelsOpsIndexIndexRangeFullSlice (T : Type) :
 }
 
 /-- [core_models::slice::{core_models::ops::index::Index<usize, T> for &0 ([T])}::index]:
-    Source: 'core-models/src/core/slice.rs', lines 436:4-438:5
+    Source: 'core-models/src/core/slice.rs', lines 441:4-443:5
     Visibility: public -/
 def Shared0Slice.Insts.Core_modelsOpsIndexIndexUsizeT.index
   {T : Type} (self : Slice T) (i : Std.Usize) : Result T := do
   rust_primitives.slice.slice_index self i
 
 /-- Trait implementation: [core_models::slice::{core_models::ops::index::Index<usize, T> for &0 ([T])}]
-    Source: 'core-models/src/core/slice.rs', lines 433:0-439:1 -/
+    Source: 'core-models/src/core/slice.rs', lines 438:0-444:1 -/
 @[reducible]
 def Shared0Slice.Insts.Core_modelsOpsIndexIndexUsizeT (T : Type) :
   ops.index.Index (Slice T) Std.Usize T := {
