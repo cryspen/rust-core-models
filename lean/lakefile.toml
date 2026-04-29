@@ -7,5 +7,5 @@ name = "CoreModels"
 
 [[require]]
 name = "aeneas"
-git = { url = "https://github.com/AeneasVerif/aeneas", subDir = "backends/lean" }
-rev = "a2fcf19"
+git = { url = "https://github.com/abentkamp/aeneas", subDir = "backends/lean" }
+rev = "4e02d6d8e1421562e6ab4a9737fae159ba602d8b"
