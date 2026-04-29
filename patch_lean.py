@@ -119,6 +119,8 @@ FUNS_TO_REMOVE = [
     "core_models::slice::iter::{core_models::iter::traits::iterator::Iterator<&'a ([T])> for core_models::slice::iter::ChunksExact<'a, T>}",
     "core_models::slice::iter::{core_models::iter::traits::iterator::Iterator<&'a ([T])> for core_models::slice::iter::Windows<'a, T>}::next",
     "core_models::slice::iter::{core_models::iter::traits::iterator::Iterator<&'a ([T])> for core_models::slice::iter::Windows<'a, T>}",
+    "core_models::slice::iter::{core_models::iter::traits::iterator::Iterator<&'a (T)> for core_models::slice::iter::Iter<'a, T>}::next",
+    "core_models::slice::iter::{core_models::iter::traits::iterator::Iterator<&'a (T)> for core_models::slice::iter::Iter<'a, T>}",
     # All slice::Slice<T>::* methods. The implicit namespace `slice.Slice`
     # opened by `def slice.Slice.foo` makes bare `Slice T` resolve to
     # `slice.Slice T = T` (a no-op alias from Types.lean) instead of the

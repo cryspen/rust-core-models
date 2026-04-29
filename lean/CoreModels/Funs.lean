@@ -8136,6 +8136,7 @@ def slice.iter.ChunksExact.new
   := do
   ok { cs, elements }
 
+/-
 /-- [core_models::slice::iter::{core_models::iter::traits::iterator::Iterator<&'a (T)> for core_models::slice::iter::Iter<'a, T>}::next]:
     Source: 'core-models/src/core/slice.rs', lines 36:8-43:9
     Visibility: public -/
@@ -8144,7 +8145,9 @@ def slice.iter.Iter.Insts.Core_modelsIterTraitsIteratorIteratorSharedAT.next
   Result ((option.Option T) × (slice.iter.Iter T))
   := do
   sorry
+-/
 
+/-
 /-- Trait implementation: [core_models::slice::iter::{core_models::iter::traits::iterator::Iterator<&'a (T)> for core_models::slice::iter::Iter<'a, T>}]
     Source: 'core-models/src/core/slice.rs', lines 34:4-44:5 -/
 @[reducible]
@@ -8153,6 +8156,7 @@ def slice.iter.Iter.Insts.Core_modelsIterTraitsIteratorIteratorSharedAT (T :
   next :=
     slice.iter.Iter.Insts.Core_modelsIterTraitsIteratorIteratorSharedAT.next
 }
+-/
 
 /-
 /-- [core_models::slice::iter::{core_models::iter::traits::iterator::Iterator<&'a ([T])> for core_models::slice::iter::Chunks<'a, T>}::next]:
