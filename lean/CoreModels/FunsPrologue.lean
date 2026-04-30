@@ -220,6 +220,30 @@ export Aeneas.Std (
   core.option.Option.is_none
   core.option.Option.take
   core.mem.swap core.mem.replace
+  core.convert.num.FromU16U8.from
+  core.convert.num.FromU32U8.from
+  core.convert.num.FromU32U16.from
+  core.convert.num.FromU64U8.from
+  core.convert.num.FromU64U16.from
+  core.convert.num.FromU64U32.from
+  core.convert.num.FromU128U8.from
+  core.convert.num.FromU128U16.from
+  core.convert.num.FromU128U32.from
+  core.convert.num.FromU128U64.from
+  core.convert.num.FromUsizeU8.from
+  core.convert.num.FromUsizeU16.from
+  core.convert.num.FromI16I8.from
+  core.convert.num.FromI32I8.from
+  core.convert.num.FromI32I16.from
+  core.convert.num.FromI64I8.from
+  core.convert.num.FromI64I16.from
+  core.convert.num.FromI64I32.from
+  core.convert.num.FromI128I8.from
+  core.convert.num.FromI128I16.from
+  core.convert.num.FromI128I32.from
+  core.convert.num.FromI128I64.from
+  core.convert.num.FromIsizeI8.from
+  core.convert.num.FromIsizeI16.from
 )
 
 end CoreModels
