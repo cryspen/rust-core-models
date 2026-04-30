@@ -1,7 +1,7 @@
 import Lean
 open Lean Elab Command
 
-namespace CoreModels
+namespace core_models
 
 syntax (name := openHidingNs) "open" ident "hiding" "namespace" ident+ : command
 
@@ -24,4 +24,4 @@ def elabOpenHidingNs : CommandElab := fun stx => do
   modifyScope fun s =>
     { s with openDecls := OpenDecl.simple ns exceptNames :: s.openDecls }
 
-end CoreModels
+end core_models

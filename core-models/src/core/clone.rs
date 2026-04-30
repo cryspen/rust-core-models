@@ -23,6 +23,34 @@ impl<T> Clone for T {
     }
 }
 
+macro_rules! clone_impl_for_int {
+    ($($t:ty),*) => {
+        $(
+            impl crate::clone::Clone for $t {
+                fn clone(self) -> Self {
+                    self
+                }
+            }
+        )*
+    };
+}
+
+#[cfg(not(hax))]
+clone_impl_for_int!(
+    core::primitive::u8,
+    core::primitive::u16,
+    core::primitive::u32,
+    core::primitive::u64,
+    core::primitive::u128,
+    core::primitive::usize,
+    core::primitive::i8,
+    core::primitive::i16,
+    core::primitive::i32,
+    core::primitive::i64,
+    core::primitive::i128,
+    core::primitive::isize
+);
+
 #[cfg(test)]
 mod tests {
     use crate::testing::Inject;

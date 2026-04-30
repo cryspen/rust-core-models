@@ -19,18 +19,18 @@ set_option maxHeartbeats 1000000
 /- You can remove the following line by using the CLI option `-all-computable`: -/
 noncomputable section
 
-namespace CoreModels.core
+namespace core_models
 
 /-- [core_models::array::{core_models::array::Dummy<T, N>}::map]:
     Source: 'core-models/src/core/array.rs', lines 37:4-39:5
     Visibility: public -/
 def array.Dummy.map
   {T : Type} {F : Type} {U : Type} {N : Std.Usize}
-  (coreopsfunctionFnFTupleTUInst : core.ops.function.Fn F T U) (s : Array T N)
-  (f : F) :
+  (core_modelsopsfunctionFnFTupleTUInst : core_models.ops.function.Fn F T U)
+  (s : Array T N) (f : F) :
   Result (Array U N)
   := do
-  rust_primitives.slice.array_map coreopsfunctionFnFTupleTUInst s f
+  rust_primitives.slice.array_map core_modelsopsfunctionFnFTupleTUInst s f
 
 /-- [core_models::array::{core_models::array::Dummy<T, N>}::as_slice]:
     Source: 'core-models/src/core/array.rs', lines 41:4-43:5
@@ -42,7 +42,7 @@ def array.Dummy.as_slice
 /-- [core_models::array::{core_models::array::Dummy<T, N>}::each_ref::{core::ops::function::FnMut<(usize), &'_ (T)> for core_models::array::{core_models::array::Dummy<T, N>}::each_ref::closure<0, T, N>}::call_mut]:
     Source: 'core-models/src/core/array.rs', lines 46:22-46:43 -/
 def
-  array.Dummy.each_ref.closure.Insts.CoreOpsFunctionFnMutTupleUsizeSharedT.call_mut
+  array.Dummy.each_ref.closure.Insts.Core_modelsOpsFunctionFnMutTupleUsizeSharedT.call_mut
   {T : Type} {N : Std.Usize} (c : array.Dummy.each_ref.closure T N)
   (tupled_args : Std.Usize) :
   Result (T × (array.Dummy.each_ref.closure T N))
@@ -53,37 +53,39 @@ def
 /-- [core_models::array::{core_models::array::Dummy<T, N>}::each_ref::{core::ops::function::FnOnce<(usize), &'_ (T)> for core_models::array::{core_models::array::Dummy<T, N>}::each_ref::closure<0, T, N>}::call_once]:
     Source: 'core-models/src/core/array.rs', lines 46:22-46:43 -/
 def
-  array.Dummy.each_ref.closure.Insts.CoreOpsFunctionFnOnceTupleUsizeSharedT.call_once
+  array.Dummy.each_ref.closure.Insts.Core_modelsOpsFunctionFnOnceTupleUsizeSharedT.call_once
   {T : Type} {N : Std.Usize} (c : array.Dummy.each_ref.closure T N)
   (i : Std.Usize) :
   Result T
   := do
   let (t, _) ←
-    array.Dummy.each_ref.closure.Insts.CoreOpsFunctionFnMutTupleUsizeSharedT.call_mut
+    array.Dummy.each_ref.closure.Insts.Core_modelsOpsFunctionFnMutTupleUsizeSharedT.call_mut
       c i
   ok t
 
 /-- Trait implementation: [core_models::array::{core_models::array::Dummy<T, N>}::each_ref::{core::ops::function::FnOnce<(usize), &'_ (T)> for core_models::array::{core_models::array::Dummy<T, N>}::each_ref::closure<0, T, N>}]
     Source: 'core-models/src/core/array.rs', lines 46:22-46:43 -/
 @[reducible]
-def array.Dummy.each_ref.closure.Insts.CoreOpsFunctionFnOnceTupleUsizeSharedT
-  (T : Type) (N : Std.Usize) : core.ops.function.FnOnce
+def
+  array.Dummy.each_ref.closure.Insts.Core_modelsOpsFunctionFnOnceTupleUsizeSharedT
+  (T : Type) (N : Std.Usize) : core_models.ops.function.FnOnce
   (array.Dummy.each_ref.closure T N) Std.Usize T := {
   call_once :=
-    array.Dummy.each_ref.closure.Insts.CoreOpsFunctionFnOnceTupleUsizeSharedT.call_once
+    array.Dummy.each_ref.closure.Insts.Core_modelsOpsFunctionFnOnceTupleUsizeSharedT.call_once
 }
 
 /-- Trait implementation: [core_models::array::{core_models::array::Dummy<T, N>}::each_ref::{core::ops::function::FnMut<(usize), &'_ (T)> for core_models::array::{core_models::array::Dummy<T, N>}::each_ref::closure<0, T, N>}]
     Source: 'core-models/src/core/array.rs', lines 46:22-46:43 -/
 @[reducible]
-def array.Dummy.each_ref.closure.Insts.CoreOpsFunctionFnMutTupleUsizeSharedT (T
-  : Type) (N : Std.Usize) : core.ops.function.FnMut
+def
+  array.Dummy.each_ref.closure.Insts.Core_modelsOpsFunctionFnMutTupleUsizeSharedT
+  (T : Type) (N : Std.Usize) : core_models.ops.function.FnMut
   (array.Dummy.each_ref.closure T N) Std.Usize T := {
   FnOnceInst :=
-    array.Dummy.each_ref.closure.Insts.CoreOpsFunctionFnOnceTupleUsizeSharedT T
-    N
+    array.Dummy.each_ref.closure.Insts.Core_modelsOpsFunctionFnOnceTupleUsizeSharedT
+    T N
   call_mut :=
-    array.Dummy.each_ref.closure.Insts.CoreOpsFunctionFnMutTupleUsizeSharedT.call_mut
+    array.Dummy.each_ref.closure.Insts.Core_modelsOpsFunctionFnMutTupleUsizeSharedT.call_mut
 }
 
 /-- [core_models::array::{core_models::array::Dummy<T, N>}::each_ref]:
@@ -92,18 +94,20 @@ def array.Dummy.each_ref.closure.Insts.CoreOpsFunctionFnMutTupleUsizeSharedT (T
 def array.Dummy.each_ref
   {T : Type} {N : Std.Usize} (s : Array T N) : Result (Array T N) := do
   rust_primitives.slice.array_from_fn N
-    (array.Dummy.each_ref.closure.Insts.CoreOpsFunctionFnMutTupleUsizeSharedT T
-    N) s
+    (array.Dummy.each_ref.closure.Insts.Core_modelsOpsFunctionFnMutTupleUsizeSharedT
+    T N) s
 
 /-- [core_models::array::from_fn]:
     Source: 'core-models/src/core/array.rs', lines 54:0-56:1
     Visibility: public -/
 def array.from_fn
-  {T : Type} {F : Type} (N : Std.Usize) (coreopsfunctionFnMutFTupleUsizeTInst :
-  core.ops.function.FnMut F Std.Usize T) (f : F) :
+  {T : Type} {F : Type} (N : Std.Usize)
+  (core_modelsopsfunctionFnMutFTupleUsizeTInst : core_models.ops.function.FnMut
+  F Std.Usize T) (f : F) :
   Result (Array T N)
   := do
-  rust_primitives.slice.array_from_fn N coreopsfunctionFnMutFTupleUsizeTInst f
+  rust_primitives.slice.array_from_fn N
+    core_modelsopsfunctionFnMutFTupleUsizeTInst f
 
 /-- [core_models::array::{core_models::iter::traits::collect::IntoIterator<T, core_models::array::iter::IntoIter<T, N>> for [T; N]}::into_iter]:
     Source: 'core-models/src/core/array.rs', lines 62:4-64:5
@@ -312,6 +316,172 @@ def array.iter.IntoIter.Insts.Core_modelsIterTraitsIteratorIterator (T : Type)
   next := array.iter.IntoIter.Insts.Core_modelsIterTraitsIteratorIterator.next
 }
 
+/-- [core_models::clone::{core_models::clone::Clone for u8}::clone]:
+    Source: 'core-models/src/core/clone.rs', lines 30:16-32:17
+    Visibility: public -/
+def U8.Insts.Core_modelsCloneClone.clone (self : Std.U8) : Result Std.U8 := do
+  ok self
+
+/-- Trait implementation: [core_models::clone::{core_models::clone::Clone for u8}]
+    Source: 'core-models/src/core/clone.rs', lines 29:12-33:13 -/
+@[reducible]
+def U8.Insts.Core_modelsCloneClone : clone.Clone Std.U8 := {
+  clone := U8.Insts.Core_modelsCloneClone.clone
+}
+
+/-- [core_models::clone::{core_models::clone::Clone for u16}::clone]:
+    Source: 'core-models/src/core/clone.rs', lines 30:16-32:17
+    Visibility: public -/
+def U16.Insts.Core_modelsCloneClone.clone
+  (self : Std.U16) : Result Std.U16 := do
+  ok self
+
+/-- Trait implementation: [core_models::clone::{core_models::clone::Clone for u16}]
+    Source: 'core-models/src/core/clone.rs', lines 29:12-33:13 -/
+@[reducible]
+def U16.Insts.Core_modelsCloneClone : clone.Clone Std.U16 := {
+  clone := U16.Insts.Core_modelsCloneClone.clone
+}
+
+/-- [core_models::clone::{core_models::clone::Clone for u32}::clone]:
+    Source: 'core-models/src/core/clone.rs', lines 30:16-32:17
+    Visibility: public -/
+def U32.Insts.Core_modelsCloneClone.clone
+  (self : Std.U32) : Result Std.U32 := do
+  ok self
+
+/-- Trait implementation: [core_models::clone::{core_models::clone::Clone for u32}]
+    Source: 'core-models/src/core/clone.rs', lines 29:12-33:13 -/
+@[reducible]
+def U32.Insts.Core_modelsCloneClone : clone.Clone Std.U32 := {
+  clone := U32.Insts.Core_modelsCloneClone.clone
+}
+
+/-- [core_models::clone::{core_models::clone::Clone for u64}::clone]:
+    Source: 'core-models/src/core/clone.rs', lines 30:16-32:17
+    Visibility: public -/
+def U64.Insts.Core_modelsCloneClone.clone
+  (self : Std.U64) : Result Std.U64 := do
+  ok self
+
+/-- Trait implementation: [core_models::clone::{core_models::clone::Clone for u64}]
+    Source: 'core-models/src/core/clone.rs', lines 29:12-33:13 -/
+@[reducible]
+def U64.Insts.Core_modelsCloneClone : clone.Clone Std.U64 := {
+  clone := U64.Insts.Core_modelsCloneClone.clone
+}
+
+/-- [core_models::clone::{core_models::clone::Clone for u128}::clone]:
+    Source: 'core-models/src/core/clone.rs', lines 30:16-32:17
+    Visibility: public -/
+def U128.Insts.Core_modelsCloneClone.clone
+  (self : Std.U128) : Result Std.U128 := do
+  ok self
+
+/-- Trait implementation: [core_models::clone::{core_models::clone::Clone for u128}]
+    Source: 'core-models/src/core/clone.rs', lines 29:12-33:13 -/
+@[reducible]
+def U128.Insts.Core_modelsCloneClone : clone.Clone Std.U128 := {
+  clone := U128.Insts.Core_modelsCloneClone.clone
+}
+
+/-- [core_models::clone::{core_models::clone::Clone for usize}::clone]:
+    Source: 'core-models/src/core/clone.rs', lines 30:16-32:17
+    Visibility: public -/
+def Usize.Insts.Core_modelsCloneClone.clone
+  (self : Std.Usize) : Result Std.Usize := do
+  ok self
+
+/-- Trait implementation: [core_models::clone::{core_models::clone::Clone for usize}]
+    Source: 'core-models/src/core/clone.rs', lines 29:12-33:13 -/
+@[reducible]
+def Usize.Insts.Core_modelsCloneClone : clone.Clone Std.Usize := {
+  clone := Usize.Insts.Core_modelsCloneClone.clone
+}
+
+/-- [core_models::clone::{core_models::clone::Clone for i8}::clone]:
+    Source: 'core-models/src/core/clone.rs', lines 30:16-32:17
+    Visibility: public -/
+def I8.Insts.Core_modelsCloneClone.clone (self : Std.I8) : Result Std.I8 := do
+  ok self
+
+/-- Trait implementation: [core_models::clone::{core_models::clone::Clone for i8}]
+    Source: 'core-models/src/core/clone.rs', lines 29:12-33:13 -/
+@[reducible]
+def I8.Insts.Core_modelsCloneClone : clone.Clone Std.I8 := {
+  clone := I8.Insts.Core_modelsCloneClone.clone
+}
+
+/-- [core_models::clone::{core_models::clone::Clone for i16}::clone]:
+    Source: 'core-models/src/core/clone.rs', lines 30:16-32:17
+    Visibility: public -/
+def I16.Insts.Core_modelsCloneClone.clone
+  (self : Std.I16) : Result Std.I16 := do
+  ok self
+
+/-- Trait implementation: [core_models::clone::{core_models::clone::Clone for i16}]
+    Source: 'core-models/src/core/clone.rs', lines 29:12-33:13 -/
+@[reducible]
+def I16.Insts.Core_modelsCloneClone : clone.Clone Std.I16 := {
+  clone := I16.Insts.Core_modelsCloneClone.clone
+}
+
+/-- [core_models::clone::{core_models::clone::Clone for i32}::clone]:
+    Source: 'core-models/src/core/clone.rs', lines 30:16-32:17
+    Visibility: public -/
+def I32.Insts.Core_modelsCloneClone.clone
+  (self : Std.I32) : Result Std.I32 := do
+  ok self
+
+/-- Trait implementation: [core_models::clone::{core_models::clone::Clone for i32}]
+    Source: 'core-models/src/core/clone.rs', lines 29:12-33:13 -/
+@[reducible]
+def I32.Insts.Core_modelsCloneClone : clone.Clone Std.I32 := {
+  clone := I32.Insts.Core_modelsCloneClone.clone
+}
+
+/-- [core_models::clone::{core_models::clone::Clone for i64}::clone]:
+    Source: 'core-models/src/core/clone.rs', lines 30:16-32:17
+    Visibility: public -/
+def I64.Insts.Core_modelsCloneClone.clone
+  (self : Std.I64) : Result Std.I64 := do
+  ok self
+
+/-- Trait implementation: [core_models::clone::{core_models::clone::Clone for i64}]
+    Source: 'core-models/src/core/clone.rs', lines 29:12-33:13 -/
+@[reducible]
+def I64.Insts.Core_modelsCloneClone : clone.Clone Std.I64 := {
+  clone := I64.Insts.Core_modelsCloneClone.clone
+}
+
+/-- [core_models::clone::{core_models::clone::Clone for i128}::clone]:
+    Source: 'core-models/src/core/clone.rs', lines 30:16-32:17
+    Visibility: public -/
+def I128.Insts.Core_modelsCloneClone.clone
+  (self : Std.I128) : Result Std.I128 := do
+  ok self
+
+/-- Trait implementation: [core_models::clone::{core_models::clone::Clone for i128}]
+    Source: 'core-models/src/core/clone.rs', lines 29:12-33:13 -/
+@[reducible]
+def I128.Insts.Core_modelsCloneClone : clone.Clone Std.I128 := {
+  clone := I128.Insts.Core_modelsCloneClone.clone
+}
+
+/-- [core_models::clone::{core_models::clone::Clone for isize}::clone]:
+    Source: 'core-models/src/core/clone.rs', lines 30:16-32:17
+    Visibility: public -/
+def Isize.Insts.Core_modelsCloneClone.clone
+  (self : Std.Isize) : Result Std.Isize := do
+  ok self
+
+/-- Trait implementation: [core_models::clone::{core_models::clone::Clone for isize}]
+    Source: 'core-models/src/core/clone.rs', lines 29:12-33:13 -/
+@[reducible]
+def Isize.Insts.Core_modelsCloneClone : clone.Clone Std.Isize := {
+  clone := Isize.Insts.Core_modelsCloneClone.clone
+}
+
 /-- [core_models::cmp::{core_models::cmp::Neq<T> for T}::neq]:
     Source: 'core-models/src/core/cmp.rs', lines 48:4-51:5 -/
 def cmp.Neq.Blanket.neq
@@ -498,924 +668,8 @@ def cmp.Reverse.Insts.Core_modelsCmpOrd {T : Type} (OrdInst : cmp.Ord T) :
   cmp := cmp.Reverse.Insts.Core_modelsCmpOrd.cmp OrdInst
 }
 
-/-- [core_models::cmp::{core_models::cmp::PartialEq<u8> for u8}::eq]:
-    Source: 'core-models/src/core/cmp.rs', lines 191:12-193:13
-    Visibility: public -/
-def U8.Insts.Core_modelsCmpPartialEqU8.eq
-  (self : Std.U8) (other : Std.U8) : Result Bool := do
-  lift (core.cmp.impls.PartialEqU8.eq self other)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialEq<u8> for u8}]
-    Source: 'core-models/src/core/cmp.rs', lines 190:8-194:9 -/
-@[reducible]
-def U8.Insts.Core_modelsCmpPartialEqU8 : cmp.PartialEq Std.U8 Std.U8 := {
-  eq := U8.Insts.Core_modelsCmpPartialEqU8.eq
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialOrd<u8> for u8}::partial_cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 167:12-171:13
-    Visibility: public -/
-def U8.Insts.Core_modelsCmpPartialOrdU8.partial_cmp
-  (self : Std.U8) (other : Std.U8) : Result (option.Option cmp.Ordering) := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdU8 self
-      other
-  if b
-  then ok (option.Option.Some cmp.Ordering.Less)
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdU8 self
-        other
-    if b1
-    then ok (option.Option.Some cmp.Ordering.Greater)
-    else ok (option.Option.Some cmp.Ordering.Equal)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialOrd<u8> for u8}]
-    Source: 'core-models/src/core/cmp.rs', lines 158:8-172:9 -/
-@[reducible]
-def U8.Insts.Core_modelsCmpPartialOrdU8 : cmp.PartialOrd Std.U8 Std.U8 := {
-  PartialEqInst := U8.Insts.Core_modelsCmpPartialEqU8
-  partial_cmp := U8.Insts.Core_modelsCmpPartialOrdU8.partial_cmp
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialEq<i8> for i8}::eq]:
-    Source: 'core-models/src/core/cmp.rs', lines 191:12-193:13
-    Visibility: public -/
-def I8.Insts.Core_modelsCmpPartialEqI8.eq
-  (self : Std.I8) (other : Std.I8) : Result Bool := do
-  lift (core.cmp.impls.PartialEqI8.eq self other)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialEq<i8> for i8}]
-    Source: 'core-models/src/core/cmp.rs', lines 190:8-194:9 -/
-@[reducible]
-def I8.Insts.Core_modelsCmpPartialEqI8 : cmp.PartialEq Std.I8 Std.I8 := {
-  eq := I8.Insts.Core_modelsCmpPartialEqI8.eq
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialOrd<i8> for i8}::partial_cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 167:12-171:13
-    Visibility: public -/
-def I8.Insts.Core_modelsCmpPartialOrdI8.partial_cmp
-  (self : Std.I8) (other : Std.I8) : Result (option.Option cmp.Ordering) := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdI8 self
-      other
-  if b
-  then ok (option.Option.Some cmp.Ordering.Less)
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdI8 self
-        other
-    if b1
-    then ok (option.Option.Some cmp.Ordering.Greater)
-    else ok (option.Option.Some cmp.Ordering.Equal)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialOrd<i8> for i8}]
-    Source: 'core-models/src/core/cmp.rs', lines 158:8-172:9 -/
-@[reducible]
-def I8.Insts.Core_modelsCmpPartialOrdI8 : cmp.PartialOrd Std.I8 Std.I8 := {
-  PartialEqInst := I8.Insts.Core_modelsCmpPartialEqI8
-  partial_cmp := I8.Insts.Core_modelsCmpPartialOrdI8.partial_cmp
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialEq<u16> for u16}::eq]:
-    Source: 'core-models/src/core/cmp.rs', lines 191:12-193:13
-    Visibility: public -/
-def U16.Insts.Core_modelsCmpPartialEqU16.eq
-  (self : Std.U16) (other : Std.U16) : Result Bool := do
-  lift (core.cmp.impls.PartialEqU16.eq self other)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialEq<u16> for u16}]
-    Source: 'core-models/src/core/cmp.rs', lines 190:8-194:9 -/
-@[reducible]
-def U16.Insts.Core_modelsCmpPartialEqU16 : cmp.PartialEq Std.U16 Std.U16 := {
-  eq := U16.Insts.Core_modelsCmpPartialEqU16.eq
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialOrd<u16> for u16}::partial_cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 167:12-171:13
-    Visibility: public -/
-def U16.Insts.Core_modelsCmpPartialOrdU16.partial_cmp
-  (self : Std.U16) (other : Std.U16) :
-  Result (option.Option cmp.Ordering)
-  := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdU16 self
-      other
-  if b
-  then ok (option.Option.Some cmp.Ordering.Less)
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdU16 self
-        other
-    if b1
-    then ok (option.Option.Some cmp.Ordering.Greater)
-    else ok (option.Option.Some cmp.Ordering.Equal)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialOrd<u16> for u16}]
-    Source: 'core-models/src/core/cmp.rs', lines 158:8-172:9 -/
-@[reducible]
-def U16.Insts.Core_modelsCmpPartialOrdU16 : cmp.PartialOrd Std.U16 Std.U16 := {
-  PartialEqInst := U16.Insts.Core_modelsCmpPartialEqU16
-  partial_cmp := U16.Insts.Core_modelsCmpPartialOrdU16.partial_cmp
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialEq<i16> for i16}::eq]:
-    Source: 'core-models/src/core/cmp.rs', lines 191:12-193:13
-    Visibility: public -/
-def I16.Insts.Core_modelsCmpPartialEqI16.eq
-  (self : Std.I16) (other : Std.I16) : Result Bool := do
-  lift (core.cmp.impls.PartialEqI16.eq self other)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialEq<i16> for i16}]
-    Source: 'core-models/src/core/cmp.rs', lines 190:8-194:9 -/
-@[reducible]
-def I16.Insts.Core_modelsCmpPartialEqI16 : cmp.PartialEq Std.I16 Std.I16 := {
-  eq := I16.Insts.Core_modelsCmpPartialEqI16.eq
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialOrd<i16> for i16}::partial_cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 167:12-171:13
-    Visibility: public -/
-def I16.Insts.Core_modelsCmpPartialOrdI16.partial_cmp
-  (self : Std.I16) (other : Std.I16) :
-  Result (option.Option cmp.Ordering)
-  := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdI16 self
-      other
-  if b
-  then ok (option.Option.Some cmp.Ordering.Less)
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdI16 self
-        other
-    if b1
-    then ok (option.Option.Some cmp.Ordering.Greater)
-    else ok (option.Option.Some cmp.Ordering.Equal)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialOrd<i16> for i16}]
-    Source: 'core-models/src/core/cmp.rs', lines 158:8-172:9 -/
-@[reducible]
-def I16.Insts.Core_modelsCmpPartialOrdI16 : cmp.PartialOrd Std.I16 Std.I16 := {
-  PartialEqInst := I16.Insts.Core_modelsCmpPartialEqI16
-  partial_cmp := I16.Insts.Core_modelsCmpPartialOrdI16.partial_cmp
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialEq<u32> for u32}::eq]:
-    Source: 'core-models/src/core/cmp.rs', lines 191:12-193:13
-    Visibility: public -/
-def U32.Insts.Core_modelsCmpPartialEqU32.eq
-  (self : Std.U32) (other : Std.U32) : Result Bool := do
-  lift (core.cmp.impls.PartialEqU32.eq self other)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialEq<u32> for u32}]
-    Source: 'core-models/src/core/cmp.rs', lines 190:8-194:9 -/
-@[reducible]
-def U32.Insts.Core_modelsCmpPartialEqU32 : cmp.PartialEq Std.U32 Std.U32 := {
-  eq := U32.Insts.Core_modelsCmpPartialEqU32.eq
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialOrd<u32> for u32}::partial_cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 167:12-171:13
-    Visibility: public -/
-def U32.Insts.Core_modelsCmpPartialOrdU32.partial_cmp
-  (self : Std.U32) (other : Std.U32) :
-  Result (option.Option cmp.Ordering)
-  := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdU32 self
-      other
-  if b
-  then ok (option.Option.Some cmp.Ordering.Less)
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdU32 self
-        other
-    if b1
-    then ok (option.Option.Some cmp.Ordering.Greater)
-    else ok (option.Option.Some cmp.Ordering.Equal)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialOrd<u32> for u32}]
-    Source: 'core-models/src/core/cmp.rs', lines 158:8-172:9 -/
-@[reducible]
-def U32.Insts.Core_modelsCmpPartialOrdU32 : cmp.PartialOrd Std.U32 Std.U32 := {
-  PartialEqInst := U32.Insts.Core_modelsCmpPartialEqU32
-  partial_cmp := U32.Insts.Core_modelsCmpPartialOrdU32.partial_cmp
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialEq<i32> for i32}::eq]:
-    Source: 'core-models/src/core/cmp.rs', lines 191:12-193:13
-    Visibility: public -/
-def I32.Insts.Core_modelsCmpPartialEqI32.eq
-  (self : Std.I32) (other : Std.I32) : Result Bool := do
-  lift (core.cmp.impls.PartialEqI32.eq self other)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialEq<i32> for i32}]
-    Source: 'core-models/src/core/cmp.rs', lines 190:8-194:9 -/
-@[reducible]
-def I32.Insts.Core_modelsCmpPartialEqI32 : cmp.PartialEq Std.I32 Std.I32 := {
-  eq := I32.Insts.Core_modelsCmpPartialEqI32.eq
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialOrd<i32> for i32}::partial_cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 167:12-171:13
-    Visibility: public -/
-def I32.Insts.Core_modelsCmpPartialOrdI32.partial_cmp
-  (self : Std.I32) (other : Std.I32) :
-  Result (option.Option cmp.Ordering)
-  := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdI32 self
-      other
-  if b
-  then ok (option.Option.Some cmp.Ordering.Less)
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdI32 self
-        other
-    if b1
-    then ok (option.Option.Some cmp.Ordering.Greater)
-    else ok (option.Option.Some cmp.Ordering.Equal)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialOrd<i32> for i32}]
-    Source: 'core-models/src/core/cmp.rs', lines 158:8-172:9 -/
-@[reducible]
-def I32.Insts.Core_modelsCmpPartialOrdI32 : cmp.PartialOrd Std.I32 Std.I32 := {
-  PartialEqInst := I32.Insts.Core_modelsCmpPartialEqI32
-  partial_cmp := I32.Insts.Core_modelsCmpPartialOrdI32.partial_cmp
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialEq<u64> for u64}::eq]:
-    Source: 'core-models/src/core/cmp.rs', lines 191:12-193:13
-    Visibility: public -/
-def U64.Insts.Core_modelsCmpPartialEqU64.eq
-  (self : Std.U64) (other : Std.U64) : Result Bool := do
-  lift (core.cmp.impls.PartialEqU64.eq self other)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialEq<u64> for u64}]
-    Source: 'core-models/src/core/cmp.rs', lines 190:8-194:9 -/
-@[reducible]
-def U64.Insts.Core_modelsCmpPartialEqU64 : cmp.PartialEq Std.U64 Std.U64 := {
-  eq := U64.Insts.Core_modelsCmpPartialEqU64.eq
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialOrd<u64> for u64}::partial_cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 167:12-171:13
-    Visibility: public -/
-def U64.Insts.Core_modelsCmpPartialOrdU64.partial_cmp
-  (self : Std.U64) (other : Std.U64) :
-  Result (option.Option cmp.Ordering)
-  := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdU64 self
-      other
-  if b
-  then ok (option.Option.Some cmp.Ordering.Less)
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdU64 self
-        other
-    if b1
-    then ok (option.Option.Some cmp.Ordering.Greater)
-    else ok (option.Option.Some cmp.Ordering.Equal)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialOrd<u64> for u64}]
-    Source: 'core-models/src/core/cmp.rs', lines 158:8-172:9 -/
-@[reducible]
-def U64.Insts.Core_modelsCmpPartialOrdU64 : cmp.PartialOrd Std.U64 Std.U64 := {
-  PartialEqInst := U64.Insts.Core_modelsCmpPartialEqU64
-  partial_cmp := U64.Insts.Core_modelsCmpPartialOrdU64.partial_cmp
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialEq<i64> for i64}::eq]:
-    Source: 'core-models/src/core/cmp.rs', lines 191:12-193:13
-    Visibility: public -/
-def I64.Insts.Core_modelsCmpPartialEqI64.eq
-  (self : Std.I64) (other : Std.I64) : Result Bool := do
-  lift (core.cmp.impls.PartialEqI64.eq self other)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialEq<i64> for i64}]
-    Source: 'core-models/src/core/cmp.rs', lines 190:8-194:9 -/
-@[reducible]
-def I64.Insts.Core_modelsCmpPartialEqI64 : cmp.PartialEq Std.I64 Std.I64 := {
-  eq := I64.Insts.Core_modelsCmpPartialEqI64.eq
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialOrd<i64> for i64}::partial_cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 167:12-171:13
-    Visibility: public -/
-def I64.Insts.Core_modelsCmpPartialOrdI64.partial_cmp
-  (self : Std.I64) (other : Std.I64) :
-  Result (option.Option cmp.Ordering)
-  := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdI64 self
-      other
-  if b
-  then ok (option.Option.Some cmp.Ordering.Less)
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdI64 self
-        other
-    if b1
-    then ok (option.Option.Some cmp.Ordering.Greater)
-    else ok (option.Option.Some cmp.Ordering.Equal)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialOrd<i64> for i64}]
-    Source: 'core-models/src/core/cmp.rs', lines 158:8-172:9 -/
-@[reducible]
-def I64.Insts.Core_modelsCmpPartialOrdI64 : cmp.PartialOrd Std.I64 Std.I64 := {
-  PartialEqInst := I64.Insts.Core_modelsCmpPartialEqI64
-  partial_cmp := I64.Insts.Core_modelsCmpPartialOrdI64.partial_cmp
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialEq<u128> for u128}::eq]:
-    Source: 'core-models/src/core/cmp.rs', lines 191:12-193:13
-    Visibility: public -/
-def U128.Insts.Core_modelsCmpPartialEqU128.eq
-  (self : Std.U128) (other : Std.U128) : Result Bool := do
-  lift (core.cmp.impls.PartialEqU128.eq self other)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialEq<u128> for u128}]
-    Source: 'core-models/src/core/cmp.rs', lines 190:8-194:9 -/
-@[reducible]
-def U128.Insts.Core_modelsCmpPartialEqU128 : cmp.PartialEq Std.U128 Std.U128
-  := {
-  eq := U128.Insts.Core_modelsCmpPartialEqU128.eq
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialOrd<u128> for u128}::partial_cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 167:12-171:13
-    Visibility: public -/
-def U128.Insts.Core_modelsCmpPartialOrdU128.partial_cmp
-  (self : Std.U128) (other : Std.U128) :
-  Result (option.Option cmp.Ordering)
-  := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdU128 self
-      other
-  if b
-  then ok (option.Option.Some cmp.Ordering.Less)
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdU128 self
-        other
-    if b1
-    then ok (option.Option.Some cmp.Ordering.Greater)
-    else ok (option.Option.Some cmp.Ordering.Equal)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialOrd<u128> for u128}]
-    Source: 'core-models/src/core/cmp.rs', lines 158:8-172:9 -/
-@[reducible]
-def U128.Insts.Core_modelsCmpPartialOrdU128 : cmp.PartialOrd Std.U128 Std.U128
-  := {
-  PartialEqInst := U128.Insts.Core_modelsCmpPartialEqU128
-  partial_cmp := U128.Insts.Core_modelsCmpPartialOrdU128.partial_cmp
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialEq<i128> for i128}::eq]:
-    Source: 'core-models/src/core/cmp.rs', lines 191:12-193:13
-    Visibility: public -/
-def I128.Insts.Core_modelsCmpPartialEqI128.eq
-  (self : Std.I128) (other : Std.I128) : Result Bool := do
-  lift (core.cmp.impls.PartialEqI128.eq self other)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialEq<i128> for i128}]
-    Source: 'core-models/src/core/cmp.rs', lines 190:8-194:9 -/
-@[reducible]
-def I128.Insts.Core_modelsCmpPartialEqI128 : cmp.PartialEq Std.I128 Std.I128
-  := {
-  eq := I128.Insts.Core_modelsCmpPartialEqI128.eq
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialOrd<i128> for i128}::partial_cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 167:12-171:13
-    Visibility: public -/
-def I128.Insts.Core_modelsCmpPartialOrdI128.partial_cmp
-  (self : Std.I128) (other : Std.I128) :
-  Result (option.Option cmp.Ordering)
-  := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdI128 self
-      other
-  if b
-  then ok (option.Option.Some cmp.Ordering.Less)
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdI128 self
-        other
-    if b1
-    then ok (option.Option.Some cmp.Ordering.Greater)
-    else ok (option.Option.Some cmp.Ordering.Equal)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialOrd<i128> for i128}]
-    Source: 'core-models/src/core/cmp.rs', lines 158:8-172:9 -/
-@[reducible]
-def I128.Insts.Core_modelsCmpPartialOrdI128 : cmp.PartialOrd Std.I128 Std.I128
-  := {
-  PartialEqInst := I128.Insts.Core_modelsCmpPartialEqI128
-  partial_cmp := I128.Insts.Core_modelsCmpPartialOrdI128.partial_cmp
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialEq<usize> for usize}::eq]:
-    Source: 'core-models/src/core/cmp.rs', lines 191:12-193:13
-    Visibility: public -/
-def Usize.Insts.Core_modelsCmpPartialEqUsize.eq
-  (self : Std.Usize) (other : Std.Usize) : Result Bool := do
-  lift (core.cmp.impls.PartialEqUsize.eq self other)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialEq<usize> for usize}]
-    Source: 'core-models/src/core/cmp.rs', lines 190:8-194:9 -/
-@[reducible]
-def Usize.Insts.Core_modelsCmpPartialEqUsize : cmp.PartialEq Std.Usize
-  Std.Usize := {
-  eq := Usize.Insts.Core_modelsCmpPartialEqUsize.eq
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialOrd<usize> for usize}::partial_cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 167:12-171:13
-    Visibility: public -/
-def Usize.Insts.Core_modelsCmpPartialOrdUsize.partial_cmp
-  (self : Std.Usize) (other : Std.Usize) :
-  Result (option.Option cmp.Ordering)
-  := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdUsize self
-      other
-  if b
-  then ok (option.Option.Some cmp.Ordering.Less)
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdUsize self
-        other
-    if b1
-    then ok (option.Option.Some cmp.Ordering.Greater)
-    else ok (option.Option.Some cmp.Ordering.Equal)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialOrd<usize> for usize}]
-    Source: 'core-models/src/core/cmp.rs', lines 158:8-172:9 -/
-@[reducible]
-def Usize.Insts.Core_modelsCmpPartialOrdUsize : cmp.PartialOrd Std.Usize
-  Std.Usize := {
-  PartialEqInst := Usize.Insts.Core_modelsCmpPartialEqUsize
-  partial_cmp := Usize.Insts.Core_modelsCmpPartialOrdUsize.partial_cmp
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialEq<isize> for isize}::eq]:
-    Source: 'core-models/src/core/cmp.rs', lines 191:12-193:13
-    Visibility: public -/
-def Isize.Insts.Core_modelsCmpPartialEqIsize.eq
-  (self : Std.Isize) (other : Std.Isize) : Result Bool := do
-  lift (core.cmp.impls.PartialEqIsize.eq self other)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialEq<isize> for isize}]
-    Source: 'core-models/src/core/cmp.rs', lines 190:8-194:9 -/
-@[reducible]
-def Isize.Insts.Core_modelsCmpPartialEqIsize : cmp.PartialEq Std.Isize
-  Std.Isize := {
-  eq := Isize.Insts.Core_modelsCmpPartialEqIsize.eq
-}
-
-/-- [core_models::cmp::{core_models::cmp::PartialOrd<isize> for isize}::partial_cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 167:12-171:13
-    Visibility: public -/
-def Isize.Insts.Core_modelsCmpPartialOrdIsize.partial_cmp
-  (self : Std.Isize) (other : Std.Isize) :
-  Result (option.Option cmp.Ordering)
-  := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdIsize self
-      other
-  if b
-  then ok (option.Option.Some cmp.Ordering.Less)
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdIsize self
-        other
-    if b1
-    then ok (option.Option.Some cmp.Ordering.Greater)
-    else ok (option.Option.Some cmp.Ordering.Equal)
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::PartialOrd<isize> for isize}]
-    Source: 'core-models/src/core/cmp.rs', lines 158:8-172:9 -/
-@[reducible]
-def Isize.Insts.Core_modelsCmpPartialOrdIsize : cmp.PartialOrd Std.Isize
-  Std.Isize := {
-  PartialEqInst := Isize.Insts.Core_modelsCmpPartialEqIsize
-  partial_cmp := Isize.Insts.Core_modelsCmpPartialOrdIsize.partial_cmp
-}
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Eq for u8}]
-    Source: 'core-models/src/core/cmp.rs', lines 196:8-196:25 -/
-@[reducible]
-def U8.Insts.Core_modelsCmpEq : cmp.Eq Std.U8 := {
-  PartialEqInst := U8.Insts.Core_modelsCmpPartialEqU8
-}
-
-/-- [core_models::cmp::{core_models::cmp::Ord for u8}::cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 183:12-187:13
-    Visibility: public -/
-def U8.Insts.Core_modelsCmpOrd.cmp
-  (self : Std.U8) (other : Std.U8) : Result cmp.Ordering := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdU8 self
-      other
-  if b
-  then ok cmp.Ordering.Less
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdU8 self
-        other
-    if b1
-    then ok cmp.Ordering.Greater
-    else ok cmp.Ordering.Equal
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Ord for u8}]
-    Source: 'core-models/src/core/cmp.rs', lines 175:8-188:9 -/
-@[reducible]
-def U8.Insts.Core_modelsCmpOrd : cmp.Ord Std.U8 := {
-  EqInst := U8.Insts.Core_modelsCmpEq
-  PartialOrdInst := U8.Insts.Core_modelsCmpPartialOrdU8
-  cmp := U8.Insts.Core_modelsCmpOrd.cmp
-}
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Eq for i8}]
-    Source: 'core-models/src/core/cmp.rs', lines 196:8-196:25 -/
-@[reducible]
-def I8.Insts.Core_modelsCmpEq : cmp.Eq Std.I8 := {
-  PartialEqInst := I8.Insts.Core_modelsCmpPartialEqI8
-}
-
-/-- [core_models::cmp::{core_models::cmp::Ord for i8}::cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 183:12-187:13
-    Visibility: public -/
-def I8.Insts.Core_modelsCmpOrd.cmp
-  (self : Std.I8) (other : Std.I8) : Result cmp.Ordering := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdI8 self
-      other
-  if b
-  then ok cmp.Ordering.Less
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdI8 self
-        other
-    if b1
-    then ok cmp.Ordering.Greater
-    else ok cmp.Ordering.Equal
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Ord for i8}]
-    Source: 'core-models/src/core/cmp.rs', lines 175:8-188:9 -/
-@[reducible]
-def I8.Insts.Core_modelsCmpOrd : cmp.Ord Std.I8 := {
-  EqInst := I8.Insts.Core_modelsCmpEq
-  PartialOrdInst := I8.Insts.Core_modelsCmpPartialOrdI8
-  cmp := I8.Insts.Core_modelsCmpOrd.cmp
-}
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Eq for u16}]
-    Source: 'core-models/src/core/cmp.rs', lines 196:8-196:25 -/
-@[reducible]
-def U16.Insts.Core_modelsCmpEq : cmp.Eq Std.U16 := {
-  PartialEqInst := U16.Insts.Core_modelsCmpPartialEqU16
-}
-
-/-- [core_models::cmp::{core_models::cmp::Ord for u16}::cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 183:12-187:13
-    Visibility: public -/
-def U16.Insts.Core_modelsCmpOrd.cmp
-  (self : Std.U16) (other : Std.U16) : Result cmp.Ordering := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdU16 self
-      other
-  if b
-  then ok cmp.Ordering.Less
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdU16 self
-        other
-    if b1
-    then ok cmp.Ordering.Greater
-    else ok cmp.Ordering.Equal
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Ord for u16}]
-    Source: 'core-models/src/core/cmp.rs', lines 175:8-188:9 -/
-@[reducible]
-def U16.Insts.Core_modelsCmpOrd : cmp.Ord Std.U16 := {
-  EqInst := U16.Insts.Core_modelsCmpEq
-  PartialOrdInst := U16.Insts.Core_modelsCmpPartialOrdU16
-  cmp := U16.Insts.Core_modelsCmpOrd.cmp
-}
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Eq for i16}]
-    Source: 'core-models/src/core/cmp.rs', lines 196:8-196:25 -/
-@[reducible]
-def I16.Insts.Core_modelsCmpEq : cmp.Eq Std.I16 := {
-  PartialEqInst := I16.Insts.Core_modelsCmpPartialEqI16
-}
-
-/-- [core_models::cmp::{core_models::cmp::Ord for i16}::cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 183:12-187:13
-    Visibility: public -/
-def I16.Insts.Core_modelsCmpOrd.cmp
-  (self : Std.I16) (other : Std.I16) : Result cmp.Ordering := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdI16 self
-      other
-  if b
-  then ok cmp.Ordering.Less
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdI16 self
-        other
-    if b1
-    then ok cmp.Ordering.Greater
-    else ok cmp.Ordering.Equal
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Ord for i16}]
-    Source: 'core-models/src/core/cmp.rs', lines 175:8-188:9 -/
-@[reducible]
-def I16.Insts.Core_modelsCmpOrd : cmp.Ord Std.I16 := {
-  EqInst := I16.Insts.Core_modelsCmpEq
-  PartialOrdInst := I16.Insts.Core_modelsCmpPartialOrdI16
-  cmp := I16.Insts.Core_modelsCmpOrd.cmp
-}
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Eq for u32}]
-    Source: 'core-models/src/core/cmp.rs', lines 196:8-196:25 -/
-@[reducible]
-def U32.Insts.Core_modelsCmpEq : cmp.Eq Std.U32 := {
-  PartialEqInst := U32.Insts.Core_modelsCmpPartialEqU32
-}
-
-/-- [core_models::cmp::{core_models::cmp::Ord for u32}::cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 183:12-187:13
-    Visibility: public -/
-def U32.Insts.Core_modelsCmpOrd.cmp
-  (self : Std.U32) (other : Std.U32) : Result cmp.Ordering := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdU32 self
-      other
-  if b
-  then ok cmp.Ordering.Less
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdU32 self
-        other
-    if b1
-    then ok cmp.Ordering.Greater
-    else ok cmp.Ordering.Equal
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Ord for u32}]
-    Source: 'core-models/src/core/cmp.rs', lines 175:8-188:9 -/
-@[reducible]
-def U32.Insts.Core_modelsCmpOrd : cmp.Ord Std.U32 := {
-  EqInst := U32.Insts.Core_modelsCmpEq
-  PartialOrdInst := U32.Insts.Core_modelsCmpPartialOrdU32
-  cmp := U32.Insts.Core_modelsCmpOrd.cmp
-}
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Eq for i32}]
-    Source: 'core-models/src/core/cmp.rs', lines 196:8-196:25 -/
-@[reducible]
-def I32.Insts.Core_modelsCmpEq : cmp.Eq Std.I32 := {
-  PartialEqInst := I32.Insts.Core_modelsCmpPartialEqI32
-}
-
-/-- [core_models::cmp::{core_models::cmp::Ord for i32}::cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 183:12-187:13
-    Visibility: public -/
-def I32.Insts.Core_modelsCmpOrd.cmp
-  (self : Std.I32) (other : Std.I32) : Result cmp.Ordering := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdI32 self
-      other
-  if b
-  then ok cmp.Ordering.Less
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdI32 self
-        other
-    if b1
-    then ok cmp.Ordering.Greater
-    else ok cmp.Ordering.Equal
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Ord for i32}]
-    Source: 'core-models/src/core/cmp.rs', lines 175:8-188:9 -/
-@[reducible]
-def I32.Insts.Core_modelsCmpOrd : cmp.Ord Std.I32 := {
-  EqInst := I32.Insts.Core_modelsCmpEq
-  PartialOrdInst := I32.Insts.Core_modelsCmpPartialOrdI32
-  cmp := I32.Insts.Core_modelsCmpOrd.cmp
-}
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Eq for u64}]
-    Source: 'core-models/src/core/cmp.rs', lines 196:8-196:25 -/
-@[reducible]
-def U64.Insts.Core_modelsCmpEq : cmp.Eq Std.U64 := {
-  PartialEqInst := U64.Insts.Core_modelsCmpPartialEqU64
-}
-
-/-- [core_models::cmp::{core_models::cmp::Ord for u64}::cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 183:12-187:13
-    Visibility: public -/
-def U64.Insts.Core_modelsCmpOrd.cmp
-  (self : Std.U64) (other : Std.U64) : Result cmp.Ordering := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdU64 self
-      other
-  if b
-  then ok cmp.Ordering.Less
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdU64 self
-        other
-    if b1
-    then ok cmp.Ordering.Greater
-    else ok cmp.Ordering.Equal
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Ord for u64}]
-    Source: 'core-models/src/core/cmp.rs', lines 175:8-188:9 -/
-@[reducible]
-def U64.Insts.Core_modelsCmpOrd : cmp.Ord Std.U64 := {
-  EqInst := U64.Insts.Core_modelsCmpEq
-  PartialOrdInst := U64.Insts.Core_modelsCmpPartialOrdU64
-  cmp := U64.Insts.Core_modelsCmpOrd.cmp
-}
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Eq for i64}]
-    Source: 'core-models/src/core/cmp.rs', lines 196:8-196:25 -/
-@[reducible]
-def I64.Insts.Core_modelsCmpEq : cmp.Eq Std.I64 := {
-  PartialEqInst := I64.Insts.Core_modelsCmpPartialEqI64
-}
-
-/-- [core_models::cmp::{core_models::cmp::Ord for i64}::cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 183:12-187:13
-    Visibility: public -/
-def I64.Insts.Core_modelsCmpOrd.cmp
-  (self : Std.I64) (other : Std.I64) : Result cmp.Ordering := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdI64 self
-      other
-  if b
-  then ok cmp.Ordering.Less
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdI64 self
-        other
-    if b1
-    then ok cmp.Ordering.Greater
-    else ok cmp.Ordering.Equal
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Ord for i64}]
-    Source: 'core-models/src/core/cmp.rs', lines 175:8-188:9 -/
-@[reducible]
-def I64.Insts.Core_modelsCmpOrd : cmp.Ord Std.I64 := {
-  EqInst := I64.Insts.Core_modelsCmpEq
-  PartialOrdInst := I64.Insts.Core_modelsCmpPartialOrdI64
-  cmp := I64.Insts.Core_modelsCmpOrd.cmp
-}
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Eq for u128}]
-    Source: 'core-models/src/core/cmp.rs', lines 196:8-196:25 -/
-@[reducible]
-def U128.Insts.Core_modelsCmpEq : cmp.Eq Std.U128 := {
-  PartialEqInst := U128.Insts.Core_modelsCmpPartialEqU128
-}
-
-/-- [core_models::cmp::{core_models::cmp::Ord for u128}::cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 183:12-187:13
-    Visibility: public -/
-def U128.Insts.Core_modelsCmpOrd.cmp
-  (self : Std.U128) (other : Std.U128) : Result cmp.Ordering := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdU128 self
-      other
-  if b
-  then ok cmp.Ordering.Less
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdU128 self
-        other
-    if b1
-    then ok cmp.Ordering.Greater
-    else ok cmp.Ordering.Equal
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Ord for u128}]
-    Source: 'core-models/src/core/cmp.rs', lines 175:8-188:9 -/
-@[reducible]
-def U128.Insts.Core_modelsCmpOrd : cmp.Ord Std.U128 := {
-  EqInst := U128.Insts.Core_modelsCmpEq
-  PartialOrdInst := U128.Insts.Core_modelsCmpPartialOrdU128
-  cmp := U128.Insts.Core_modelsCmpOrd.cmp
-}
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Eq for i128}]
-    Source: 'core-models/src/core/cmp.rs', lines 196:8-196:25 -/
-@[reducible]
-def I128.Insts.Core_modelsCmpEq : cmp.Eq Std.I128 := {
-  PartialEqInst := I128.Insts.Core_modelsCmpPartialEqI128
-}
-
-/-- [core_models::cmp::{core_models::cmp::Ord for i128}::cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 183:12-187:13
-    Visibility: public -/
-def I128.Insts.Core_modelsCmpOrd.cmp
-  (self : Std.I128) (other : Std.I128) : Result cmp.Ordering := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdI128 self
-      other
-  if b
-  then ok cmp.Ordering.Less
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdI128 self
-        other
-    if b1
-    then ok cmp.Ordering.Greater
-    else ok cmp.Ordering.Equal
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Ord for i128}]
-    Source: 'core-models/src/core/cmp.rs', lines 175:8-188:9 -/
-@[reducible]
-def I128.Insts.Core_modelsCmpOrd : cmp.Ord Std.I128 := {
-  EqInst := I128.Insts.Core_modelsCmpEq
-  PartialOrdInst := I128.Insts.Core_modelsCmpPartialOrdI128
-  cmp := I128.Insts.Core_modelsCmpOrd.cmp
-}
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Eq for usize}]
-    Source: 'core-models/src/core/cmp.rs', lines 196:8-196:25 -/
-@[reducible]
-def Usize.Insts.Core_modelsCmpEq : cmp.Eq Std.Usize := {
-  PartialEqInst := Usize.Insts.Core_modelsCmpPartialEqUsize
-}
-
-/-- [core_models::cmp::{core_models::cmp::Ord for usize}::cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 183:12-187:13
-    Visibility: public -/
-def Usize.Insts.Core_modelsCmpOrd.cmp
-  (self : Std.Usize) (other : Std.Usize) : Result cmp.Ordering := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdUsize self
-      other
-  if b
-  then ok cmp.Ordering.Less
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdUsize self
-        other
-    if b1
-    then ok cmp.Ordering.Greater
-    else ok cmp.Ordering.Equal
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Ord for usize}]
-    Source: 'core-models/src/core/cmp.rs', lines 175:8-188:9 -/
-@[reducible]
-def Usize.Insts.Core_modelsCmpOrd : cmp.Ord Std.Usize := {
-  EqInst := Usize.Insts.Core_modelsCmpEq
-  PartialOrdInst := Usize.Insts.Core_modelsCmpPartialOrdUsize
-  cmp := Usize.Insts.Core_modelsCmpOrd.cmp
-}
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Eq for isize}]
-    Source: 'core-models/src/core/cmp.rs', lines 196:8-196:25 -/
-@[reducible]
-def Isize.Insts.Core_modelsCmpEq : cmp.Eq Std.Isize := {
-  PartialEqInst := Isize.Insts.Core_modelsCmpPartialEqIsize
-}
-
-/-- [core_models::cmp::{core_models::cmp::Ord for isize}::cmp]:
-    Source: 'core-models/src/core/cmp.rs', lines 183:12-187:13
-    Visibility: public -/
-def Isize.Insts.Core_modelsCmpOrd.cmp
-  (self : Std.Isize) (other : Std.Isize) : Result cmp.Ordering := do
-  let b ←
-    Shared1A.Insts.CoreCmpPartialOrdShared0B.lt core.cmp.PartialOrdIsize self
-      other
-  if b
-  then ok cmp.Ordering.Less
-  else
-    let b1 ←
-      Shared1A.Insts.CoreCmpPartialOrdShared0B.gt core.cmp.PartialOrdIsize self
-        other
-    if b1
-    then ok cmp.Ordering.Greater
-    else ok cmp.Ordering.Equal
-
-/-- Trait implementation: [core_models::cmp::{core_models::cmp::Ord for isize}]
-    Source: 'core-models/src/core/cmp.rs', lines 175:8-188:9 -/
-@[reducible]
-def Isize.Insts.Core_modelsCmpOrd : cmp.Ord Std.Isize := {
-  EqInst := Isize.Insts.Core_modelsCmpEq
-  PartialOrdInst := Isize.Insts.Core_modelsCmpPartialOrdIsize
-  cmp := Isize.Insts.Core_modelsCmpOrd.cmp
-}
-
 /-- [core_models::cmp::{core_models::cmp::Ordering}::is_eq]:
-    Source: 'core-models/src/core/cmp.rs', lines 205:4-207:5
+    Source: 'core-models/src/core/cmp.rs', lines 209:4-211:5
     Visibility: public -/
 def cmp.Ordering.is_eq (self : cmp.Ordering) : Result Bool := do
   match self with
@@ -1424,7 +678,7 @@ def cmp.Ordering.is_eq (self : cmp.Ordering) : Result Bool := do
   | cmp.Ordering.Greater => ok false
 
 /-- [core_models::cmp::{core_models::cmp::Ordering}::is_ne]:
-    Source: 'core-models/src/core/cmp.rs', lines 209:4-211:5
+    Source: 'core-models/src/core/cmp.rs', lines 213:4-215:5
     Visibility: public -/
 def cmp.Ordering.is_ne (self : cmp.Ordering) : Result Bool := do
   match self with
@@ -1433,7 +687,7 @@ def cmp.Ordering.is_ne (self : cmp.Ordering) : Result Bool := do
   | cmp.Ordering.Greater => ok true
 
 /-- [core_models::cmp::{core_models::cmp::Ordering}::is_lt]:
-    Source: 'core-models/src/core/cmp.rs', lines 213:4-215:5
+    Source: 'core-models/src/core/cmp.rs', lines 217:4-219:5
     Visibility: public -/
 def cmp.Ordering.is_lt (self : cmp.Ordering) : Result Bool := do
   match self with
@@ -1442,7 +696,7 @@ def cmp.Ordering.is_lt (self : cmp.Ordering) : Result Bool := do
   | cmp.Ordering.Greater => ok false
 
 /-- [core_models::cmp::{core_models::cmp::Ordering}::is_gt]:
-    Source: 'core-models/src/core/cmp.rs', lines 217:4-219:5
+    Source: 'core-models/src/core/cmp.rs', lines 221:4-223:5
     Visibility: public -/
 def cmp.Ordering.is_gt (self : cmp.Ordering) : Result Bool := do
   match self with
@@ -1451,7 +705,7 @@ def cmp.Ordering.is_gt (self : cmp.Ordering) : Result Bool := do
   | cmp.Ordering.Greater => ok true
 
 /-- [core_models::cmp::{core_models::cmp::Ordering}::is_le]:
-    Source: 'core-models/src/core/cmp.rs', lines 221:4-223:5
+    Source: 'core-models/src/core/cmp.rs', lines 225:4-227:5
     Visibility: public -/
 def cmp.Ordering.is_le (self : cmp.Ordering) : Result Bool := do
   match self with
@@ -1460,7 +714,7 @@ def cmp.Ordering.is_le (self : cmp.Ordering) : Result Bool := do
   | cmp.Ordering.Greater => ok false
 
 /-- [core_models::cmp::{core_models::cmp::Ordering}::is_ge]:
-    Source: 'core-models/src/core/cmp.rs', lines 225:4-227:5
+    Source: 'core-models/src/core/cmp.rs', lines 229:4-231:5
     Visibility: public -/
 def cmp.Ordering.is_ge (self : cmp.Ordering) : Result Bool := do
   match self with
@@ -1469,7 +723,7 @@ def cmp.Ordering.is_ge (self : cmp.Ordering) : Result Bool := do
   | cmp.Ordering.Greater => ok true
 
 /-- [core_models::cmp::{core_models::cmp::Ordering}::reverse]:
-    Source: 'core-models/src/core/cmp.rs', lines 229:4-235:5
+    Source: 'core-models/src/core/cmp.rs', lines 233:4-239:5
     Visibility: public -/
 def cmp.Ordering.reverse (self : cmp.Ordering) : Result cmp.Ordering := do
   match self with
@@ -1478,7 +732,7 @@ def cmp.Ordering.reverse (self : cmp.Ordering) : Result cmp.Ordering := do
   | cmp.Ordering.Greater => ok cmp.Ordering.Less
 
 /-- [core_models::cmp::{core_models::cmp::Ordering}::then]:
-    Source: 'core-models/src/core/cmp.rs', lines 237:4-242:5
+    Source: 'core-models/src/core/cmp.rs', lines 241:4-246:5
     Visibility: public -/
 def cmp.Ordering.then
   (self : cmp.Ordering) (other : cmp.Ordering) : Result cmp.Ordering := do
@@ -1488,18 +742,18 @@ def cmp.Ordering.then
   | cmp.Ordering.Greater => ok cmp.Ordering.Greater
 
 /-- [core_models::cmp::{core_models::cmp::Ordering}::then_with]:
-    Source: 'core-models/src/core/cmp.rs', lines 244:4-249:5
+    Source: 'core-models/src/core/cmp.rs', lines 248:4-253:5
     Visibility: public -/
 def cmp.Ordering.then_with
-  {F : Type} (coreopsfunctionFnOnceFTupleOrderingInst :
-  core.ops.function.FnOnce F Unit cmp.Ordering) (self : cmp.Ordering) 
+  {F : Type} (core_modelsopsfunctionFnOnceFTupleOrderingInst :
+  core_models.ops.function.FnOnce F Unit cmp.Ordering) (self : cmp.Ordering)
   (f : F) :
   Result cmp.Ordering
   := do
   match self with
   | cmp.Ordering.Less => ok cmp.Ordering.Less
   | cmp.Ordering.Equal =>
-    coreopsfunctionFnOnceFTupleOrderingInst.call_once f ()
+    core_modelsopsfunctionFnOnceFTupleOrderingInst.call_once f ()
   | cmp.Ordering.Greater => ok cmp.Ordering.Greater
 
 /-- [core_models::panicking::internal::panic]:
@@ -1509,7 +763,7 @@ def panicking.internal.panic (T : Type) : Result T := do
   fail Error.panic
 
 /-- [core_models::cmp::clamp]:
-    Source: 'core-models/src/core/cmp.rs', lines 254:0-266:1
+    Source: 'core-models/src/core/cmp.rs', lines 258:0-270:1
     Visibility: public -/
 def cmp.clamp
   {T : Type} (OrdInst : cmp.Ord T) (value : T) (min : T) (max : T) :
@@ -1567,8 +821,9 @@ def convert.TryFromUTInfallible.Blanket {T : Type} {U : Type} (FromInst :
 /-- [core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::{core::ops::function::FnMut<(usize), T> for core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::closure<0, 1, T, N>}::call_mut]:
     Source: 'core-models/src/core/convert.rs', lines 59:61-61:13 -/
 def
-  convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.CoreOpsFunctionFnMutTupleUsizeT.call_mut
-  {T : Type} {N : Std.Usize} (coremarkerCopyInst : core.marker.Copy T)
+  convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.Core_modelsOpsFunctionFnMutTupleUsizeT.call_mut
+  {T : Type} {N : Std.Usize} (core_modelsmarkerCopyInst :
+  core_models.marker.Copy T)
   (c : convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure T N)
   (tupled_args : Std.Usize) :
   Result (T ×
@@ -1580,62 +835,63 @@ def
 /-- [core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::{core::ops::function::FnOnce<(usize), T> for core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::closure<0, 1, T, N>}::call_once]:
     Source: 'core-models/src/core/convert.rs', lines 59:61-61:13 -/
 def
-  convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.CoreOpsFunctionFnOnceTupleUsizeT.call_once
-  {T : Type} {N : Std.Usize} (coremarkerCopyInst : core.marker.Copy T)
+  convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.Core_modelsOpsFunctionFnOnceTupleUsizeT.call_once
+  {T : Type} {N : Std.Usize} (core_modelsmarkerCopyInst :
+  core_models.marker.Copy T)
   (c : convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure T N)
   (i : Std.Usize) :
   Result T
   := do
   let (t, _) ←
-    convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.CoreOpsFunctionFnMutTupleUsizeT.call_mut
-      coremarkerCopyInst c i
+    convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.Core_modelsOpsFunctionFnMutTupleUsizeT.call_mut
+      core_modelsmarkerCopyInst c i
   ok t
 
 /-- Trait implementation: [core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::{core::ops::function::FnOnce<(usize), T> for core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::closure<0, 1, T, N>}]
     Source: 'core-models/src/core/convert.rs', lines 59:61-61:13 -/
 @[reducible]
 def
-  convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.CoreOpsFunctionFnOnceTupleUsizeT
-  {T : Type} (N : Std.Usize) (coremarkerCopyInst : core.marker.Copy T) :
-  core.ops.function.FnOnce
+  convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.Core_modelsOpsFunctionFnOnceTupleUsizeT
+  {T : Type} (N : Std.Usize) (core_modelsmarkerCopyInst :
+  core_models.marker.Copy T) : core_models.ops.function.FnOnce
   (convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure T N)
   Std.Usize T := {
   call_once :=
-    convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.CoreOpsFunctionFnOnceTupleUsizeT.call_once
-    coremarkerCopyInst
+    convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.Core_modelsOpsFunctionFnOnceTupleUsizeT.call_once
+    core_modelsmarkerCopyInst
 }
 
 /-- Trait implementation: [core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::{core::ops::function::FnMut<(usize), T> for core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::closure<0, 1, T, N>}]
     Source: 'core-models/src/core/convert.rs', lines 59:61-61:13 -/
 @[reducible]
 def
-  convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.CoreOpsFunctionFnMutTupleUsizeT
-  {T : Type} (N : Std.Usize) (coremarkerCopyInst : core.marker.Copy T) :
-  core.ops.function.FnMut
+  convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.Core_modelsOpsFunctionFnMutTupleUsizeT
+  {T : Type} (N : Std.Usize) (core_modelsmarkerCopyInst :
+  core_models.marker.Copy T) : core_models.ops.function.FnMut
   (convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure T N)
   Std.Usize T := {
   FnOnceInst :=
-    convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.CoreOpsFunctionFnOnceTupleUsizeT
-    N coremarkerCopyInst
+    convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.Core_modelsOpsFunctionFnOnceTupleUsizeT
+    N core_modelsmarkerCopyInst
   call_mut :=
-    convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.CoreOpsFunctionFnMutTupleUsizeT.call_mut
-    coremarkerCopyInst
+    convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.Core_modelsOpsFunctionFnMutTupleUsizeT.call_mut
+    core_modelsmarkerCopyInst
 }
 
 /-- [core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from]:
     Source: 'core-models/src/core/convert.rs', lines 57:4-65:5 -/
 def Array.Insts.Core_modelsConvertTryFromShared0SliceTryFromSliceError.try_from
-  {T : Type} (N : Std.Usize) (coremarkerCopyInst : core.marker.Copy T)
-  (x : Slice T) :
+  {T : Type} (N : Std.Usize) (core_modelsmarkerCopyInst :
+  core_models.marker.Copy T) (x : Slice T) :
   Result (result.Result (Array T N) array.TryFromSliceError)
   := do
-  let i := Slice.len x
+  let i ← core_models.slice.Slice.len x
   if i = N
   then
     let a ←
       rust_primitives.slice.array_from_fn N
-        (convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.CoreOpsFunctionFnMutTupleUsizeT
-        N coremarkerCopyInst) x
+        (convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure.Insts.Core_modelsOpsFunctionFnMutTupleUsizeT
+        N core_modelsmarkerCopyInst) x
     ok (result.Result.Ok a)
   else ok (result.Result.Err ())
 
@@ -1643,11 +899,11 @@ def Array.Insts.Core_modelsConvertTryFromShared0SliceTryFromSliceError.try_from
     Source: 'core-models/src/core/convert.rs', lines 55:0-66:1 -/
 @[reducible]
 def Array.Insts.Core_modelsConvertTryFromShared0SliceTryFromSliceError {T :
-  Type} (N : Std.Usize) (coremarkerCopyInst : core.marker.Copy T) :
-  convert.TryFrom (Array T N) (Slice T) array.TryFromSliceError := {
+  Type} (N : Std.Usize) (core_modelsmarkerCopyInst : core_models.marker.Copy T)
+  : convert.TryFrom (Array T N) (Slice T) array.TryFromSliceError := {
   try_from :=
     Array.Insts.Core_modelsConvertTryFromShared0SliceTryFromSliceError.try_from
-    N coremarkerCopyInst
+    N core_modelsmarkerCopyInst
 }
 
 /-- [core_models::convert::{core_models::convert::TryInto<U, Clause0_Error> for T}::try_into]:
@@ -2030,11 +1286,11 @@ def Isize.Insts.Core_modelsConvertFromI16 : convert.From Std.Isize Std.I16 := {
     Source: 'core-models/src/core/convert.rs', lines 122:16-128:17 -/
 def U8.Insts.Core_modelsConvertTryFromU16TryFromIntError.try_from
   (x : Std.U16) : Result (result.Result Std.U8 num.error.TryFromIntError) := do
-  let i ← lift (UScalar.cast .U16 core.num.U8.MAX)
+  let i ← lift (UScalar.cast .U16 core_models.num.U8.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (UScalar.cast .U16 core.num.U8.MIN)
+    let i1 ← lift (UScalar.cast .U16 core_models.num.U8.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (UScalar.cast .U8 x)
@@ -2052,11 +1308,11 @@ def U8.Insts.Core_modelsConvertTryFromU16TryFromIntError : convert.TryFrom
     Source: 'core-models/src/core/convert.rs', lines 122:16-128:17 -/
 def U8.Insts.Core_modelsConvertTryFromU32TryFromIntError.try_from
   (x : Std.U32) : Result (result.Result Std.U8 num.error.TryFromIntError) := do
-  let i ← lift (UScalar.cast .U32 core.num.U8.MAX)
+  let i ← lift (UScalar.cast .U32 core_models.num.U8.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (UScalar.cast .U32 core.num.U8.MIN)
+    let i1 ← lift (UScalar.cast .U32 core_models.num.U8.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (UScalar.cast .U8 x)
@@ -2076,11 +1332,11 @@ def U16.Insts.Core_modelsConvertTryFromU32TryFromIntError.try_from
   (x : Std.U32) :
   Result (result.Result Std.U16 num.error.TryFromIntError)
   := do
-  let i ← lift (UScalar.cast .U32 core.num.U16.MAX)
+  let i ← lift (UScalar.cast .U32 core_models.num.U16.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (UScalar.cast .U32 core.num.U16.MIN)
+    let i1 ← lift (UScalar.cast .U32 core_models.num.U16.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (UScalar.cast .U16 x)
@@ -2100,11 +1356,11 @@ def Usize.Insts.Core_modelsConvertTryFromU32TryFromIntError.try_from
   (x : Std.U32) :
   Result (result.Result Std.Usize num.error.TryFromIntError)
   := do
-  let i ← lift (UScalar.cast .U32 core.num.Usize.MAX)
+  let i ← lift (UScalar.cast .U32 core_models.num.Usize.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (UScalar.cast .U32 core.num.Usize.MIN)
+    let i1 ← lift (UScalar.cast .U32 core_models.num.Usize.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (UScalar.cast .Usize x)
@@ -2122,11 +1378,11 @@ def Usize.Insts.Core_modelsConvertTryFromU32TryFromIntError : convert.TryFrom
     Source: 'core-models/src/core/convert.rs', lines 122:16-128:17 -/
 def U8.Insts.Core_modelsConvertTryFromU64TryFromIntError.try_from
   (x : Std.U64) : Result (result.Result Std.U8 num.error.TryFromIntError) := do
-  let i ← lift (UScalar.cast .U64 core.num.U8.MAX)
+  let i ← lift (UScalar.cast .U64 core_models.num.U8.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (UScalar.cast .U64 core.num.U8.MIN)
+    let i1 ← lift (UScalar.cast .U64 core_models.num.U8.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (UScalar.cast .U8 x)
@@ -2146,11 +1402,11 @@ def U16.Insts.Core_modelsConvertTryFromU64TryFromIntError.try_from
   (x : Std.U64) :
   Result (result.Result Std.U16 num.error.TryFromIntError)
   := do
-  let i ← lift (UScalar.cast .U64 core.num.U16.MAX)
+  let i ← lift (UScalar.cast .U64 core_models.num.U16.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (UScalar.cast .U64 core.num.U16.MIN)
+    let i1 ← lift (UScalar.cast .U64 core_models.num.U16.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (UScalar.cast .U16 x)
@@ -2170,11 +1426,11 @@ def U32.Insts.Core_modelsConvertTryFromU64TryFromIntError.try_from
   (x : Std.U64) :
   Result (result.Result Std.U32 num.error.TryFromIntError)
   := do
-  let i ← lift (UScalar.cast .U64 core.num.U32.MAX)
+  let i ← lift (UScalar.cast .U64 core_models.num.U32.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (UScalar.cast .U64 core.num.U32.MIN)
+    let i1 ← lift (UScalar.cast .U64 core_models.num.U32.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (UScalar.cast .U32 x)
@@ -2194,11 +1450,11 @@ def Usize.Insts.Core_modelsConvertTryFromU64TryFromIntError.try_from
   (x : Std.U64) :
   Result (result.Result Std.Usize num.error.TryFromIntError)
   := do
-  let i ← lift (UScalar.cast .U64 core.num.Usize.MAX)
+  let i ← lift (UScalar.cast .U64 core_models.num.Usize.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (UScalar.cast .U64 core.num.Usize.MIN)
+    let i1 ← lift (UScalar.cast .U64 core_models.num.Usize.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (UScalar.cast .Usize x)
@@ -2218,11 +1474,11 @@ def U8.Insts.Core_modelsConvertTryFromU128TryFromIntError.try_from
   (x : Std.U128) :
   Result (result.Result Std.U8 num.error.TryFromIntError)
   := do
-  let i ← lift (UScalar.cast .U128 core.num.U8.MAX)
+  let i ← lift (UScalar.cast .U128 core_models.num.U8.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (UScalar.cast .U128 core.num.U8.MIN)
+    let i1 ← lift (UScalar.cast .U128 core_models.num.U8.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (UScalar.cast .U8 x)
@@ -2242,11 +1498,11 @@ def U16.Insts.Core_modelsConvertTryFromU128TryFromIntError.try_from
   (x : Std.U128) :
   Result (result.Result Std.U16 num.error.TryFromIntError)
   := do
-  let i ← lift (UScalar.cast .U128 core.num.U16.MAX)
+  let i ← lift (UScalar.cast .U128 core_models.num.U16.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (UScalar.cast .U128 core.num.U16.MIN)
+    let i1 ← lift (UScalar.cast .U128 core_models.num.U16.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (UScalar.cast .U16 x)
@@ -2266,11 +1522,11 @@ def U32.Insts.Core_modelsConvertTryFromU128TryFromIntError.try_from
   (x : Std.U128) :
   Result (result.Result Std.U32 num.error.TryFromIntError)
   := do
-  let i ← lift (UScalar.cast .U128 core.num.U32.MAX)
+  let i ← lift (UScalar.cast .U128 core_models.num.U32.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (UScalar.cast .U128 core.num.U32.MIN)
+    let i1 ← lift (UScalar.cast .U128 core_models.num.U32.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (UScalar.cast .U32 x)
@@ -2290,11 +1546,11 @@ def U64.Insts.Core_modelsConvertTryFromU128TryFromIntError.try_from
   (x : Std.U128) :
   Result (result.Result Std.U64 num.error.TryFromIntError)
   := do
-  let i ← lift (UScalar.cast .U128 core.num.U64.MAX)
+  let i ← lift (UScalar.cast .U128 core_models.num.U64.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (UScalar.cast .U128 core.num.U64.MIN)
+    let i1 ← lift (UScalar.cast .U128 core_models.num.U64.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (UScalar.cast .U64 x)
@@ -2314,11 +1570,11 @@ def Usize.Insts.Core_modelsConvertTryFromU128TryFromIntError.try_from
   (x : Std.U128) :
   Result (result.Result Std.Usize num.error.TryFromIntError)
   := do
-  let i ← lift (UScalar.cast .U128 core.num.Usize.MAX)
+  let i ← lift (UScalar.cast .U128 core_models.num.Usize.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (UScalar.cast .U128 core.num.Usize.MIN)
+    let i1 ← lift (UScalar.cast .U128 core_models.num.Usize.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (UScalar.cast .Usize x)
@@ -2338,11 +1594,11 @@ def U8.Insts.Core_modelsConvertTryFromUsizeTryFromIntError.try_from
   (x : Std.Usize) :
   Result (result.Result Std.U8 num.error.TryFromIntError)
   := do
-  let i ← lift (UScalar.cast .Usize core.num.U8.MAX)
+  let i ← lift (UScalar.cast .Usize core_models.num.U8.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (UScalar.cast .Usize core.num.U8.MIN)
+    let i1 ← lift (UScalar.cast .Usize core_models.num.U8.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (UScalar.cast .U8 x)
@@ -2362,11 +1618,11 @@ def U16.Insts.Core_modelsConvertTryFromUsizeTryFromIntError.try_from
   (x : Std.Usize) :
   Result (result.Result Std.U16 num.error.TryFromIntError)
   := do
-  let i ← lift (UScalar.cast .Usize core.num.U16.MAX)
+  let i ← lift (UScalar.cast .Usize core_models.num.U16.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (UScalar.cast .Usize core.num.U16.MIN)
+    let i1 ← lift (UScalar.cast .Usize core_models.num.U16.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (UScalar.cast .U16 x)
@@ -2386,11 +1642,11 @@ def U32.Insts.Core_modelsConvertTryFromUsizeTryFromIntError.try_from
   (x : Std.Usize) :
   Result (result.Result Std.U32 num.error.TryFromIntError)
   := do
-  let i ← lift (UScalar.cast .Usize core.num.U32.MAX)
+  let i ← lift (UScalar.cast .Usize core_models.num.U32.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (UScalar.cast .Usize core.num.U32.MIN)
+    let i1 ← lift (UScalar.cast .Usize core_models.num.U32.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (UScalar.cast .U32 x)
@@ -2410,11 +1666,11 @@ def U64.Insts.Core_modelsConvertTryFromUsizeTryFromIntError.try_from
   (x : Std.Usize) :
   Result (result.Result Std.U64 num.error.TryFromIntError)
   := do
-  let i ← lift (UScalar.cast .Usize core.num.U64.MAX)
+  let i ← lift (UScalar.cast .Usize core_models.num.U64.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (UScalar.cast .Usize core.num.U64.MIN)
+    let i1 ← lift (UScalar.cast .Usize core_models.num.U64.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (UScalar.cast .U64 x)
@@ -2432,11 +1688,11 @@ def U64.Insts.Core_modelsConvertTryFromUsizeTryFromIntError : convert.TryFrom
     Source: 'core-models/src/core/convert.rs', lines 122:16-128:17 -/
 def I8.Insts.Core_modelsConvertTryFromI16TryFromIntError.try_from
   (x : Std.I16) : Result (result.Result Std.I8 num.error.TryFromIntError) := do
-  let i ← lift (IScalar.cast .I16 core.num.I8.MAX)
+  let i ← lift (IScalar.cast .I16 core_models.num.I8.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (IScalar.cast .I16 core.num.I8.MIN)
+    let i1 ← lift (IScalar.cast .I16 core_models.num.I8.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (IScalar.cast .I8 x)
@@ -2454,11 +1710,11 @@ def I8.Insts.Core_modelsConvertTryFromI16TryFromIntError : convert.TryFrom
     Source: 'core-models/src/core/convert.rs', lines 122:16-128:17 -/
 def I8.Insts.Core_modelsConvertTryFromI32TryFromIntError.try_from
   (x : Std.I32) : Result (result.Result Std.I8 num.error.TryFromIntError) := do
-  let i ← lift (IScalar.cast .I32 core.num.I8.MAX)
+  let i ← lift (IScalar.cast .I32 core_models.num.I8.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (IScalar.cast .I32 core.num.I8.MIN)
+    let i1 ← lift (IScalar.cast .I32 core_models.num.I8.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (IScalar.cast .I8 x)
@@ -2478,11 +1734,11 @@ def I16.Insts.Core_modelsConvertTryFromI32TryFromIntError.try_from
   (x : Std.I32) :
   Result (result.Result Std.I16 num.error.TryFromIntError)
   := do
-  let i ← lift (IScalar.cast .I32 core.num.I16.MAX)
+  let i ← lift (IScalar.cast .I32 core_models.num.I16.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (IScalar.cast .I32 core.num.I16.MIN)
+    let i1 ← lift (IScalar.cast .I32 core_models.num.I16.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (IScalar.cast .I16 x)
@@ -2502,11 +1758,11 @@ def Isize.Insts.Core_modelsConvertTryFromI32TryFromIntError.try_from
   (x : Std.I32) :
   Result (result.Result Std.Isize num.error.TryFromIntError)
   := do
-  let i ← lift (IScalar.cast .I32 core.num.Isize.MAX)
+  let i ← lift (IScalar.cast .I32 core_models.num.Isize.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (IScalar.cast .I32 core.num.Isize.MIN)
+    let i1 ← lift (IScalar.cast .I32 core_models.num.Isize.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (IScalar.cast .Isize x)
@@ -2524,11 +1780,11 @@ def Isize.Insts.Core_modelsConvertTryFromI32TryFromIntError : convert.TryFrom
     Source: 'core-models/src/core/convert.rs', lines 122:16-128:17 -/
 def I8.Insts.Core_modelsConvertTryFromI64TryFromIntError.try_from
   (x : Std.I64) : Result (result.Result Std.I8 num.error.TryFromIntError) := do
-  let i ← lift (IScalar.cast .I64 core.num.I8.MAX)
+  let i ← lift (IScalar.cast .I64 core_models.num.I8.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (IScalar.cast .I64 core.num.I8.MIN)
+    let i1 ← lift (IScalar.cast .I64 core_models.num.I8.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (IScalar.cast .I8 x)
@@ -2548,11 +1804,11 @@ def I16.Insts.Core_modelsConvertTryFromI64TryFromIntError.try_from
   (x : Std.I64) :
   Result (result.Result Std.I16 num.error.TryFromIntError)
   := do
-  let i ← lift (IScalar.cast .I64 core.num.I16.MAX)
+  let i ← lift (IScalar.cast .I64 core_models.num.I16.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (IScalar.cast .I64 core.num.I16.MIN)
+    let i1 ← lift (IScalar.cast .I64 core_models.num.I16.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (IScalar.cast .I16 x)
@@ -2572,11 +1828,11 @@ def I32.Insts.Core_modelsConvertTryFromI64TryFromIntError.try_from
   (x : Std.I64) :
   Result (result.Result Std.I32 num.error.TryFromIntError)
   := do
-  let i ← lift (IScalar.cast .I64 core.num.I32.MAX)
+  let i ← lift (IScalar.cast .I64 core_models.num.I32.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (IScalar.cast .I64 core.num.I32.MIN)
+    let i1 ← lift (IScalar.cast .I64 core_models.num.I32.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (IScalar.cast .I32 x)
@@ -2596,11 +1852,11 @@ def Isize.Insts.Core_modelsConvertTryFromI64TryFromIntError.try_from
   (x : Std.I64) :
   Result (result.Result Std.Isize num.error.TryFromIntError)
   := do
-  let i ← lift (IScalar.cast .I64 core.num.Isize.MAX)
+  let i ← lift (IScalar.cast .I64 core_models.num.Isize.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (IScalar.cast .I64 core.num.Isize.MIN)
+    let i1 ← lift (IScalar.cast .I64 core_models.num.Isize.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (IScalar.cast .Isize x)
@@ -2620,11 +1876,11 @@ def I8.Insts.Core_modelsConvertTryFromI128TryFromIntError.try_from
   (x : Std.I128) :
   Result (result.Result Std.I8 num.error.TryFromIntError)
   := do
-  let i ← lift (IScalar.cast .I128 core.num.I8.MAX)
+  let i ← lift (IScalar.cast .I128 core_models.num.I8.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (IScalar.cast .I128 core.num.I8.MIN)
+    let i1 ← lift (IScalar.cast .I128 core_models.num.I8.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (IScalar.cast .I8 x)
@@ -2644,11 +1900,11 @@ def I16.Insts.Core_modelsConvertTryFromI128TryFromIntError.try_from
   (x : Std.I128) :
   Result (result.Result Std.I16 num.error.TryFromIntError)
   := do
-  let i ← lift (IScalar.cast .I128 core.num.I16.MAX)
+  let i ← lift (IScalar.cast .I128 core_models.num.I16.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (IScalar.cast .I128 core.num.I16.MIN)
+    let i1 ← lift (IScalar.cast .I128 core_models.num.I16.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (IScalar.cast .I16 x)
@@ -2668,11 +1924,11 @@ def I32.Insts.Core_modelsConvertTryFromI128TryFromIntError.try_from
   (x : Std.I128) :
   Result (result.Result Std.I32 num.error.TryFromIntError)
   := do
-  let i ← lift (IScalar.cast .I128 core.num.I32.MAX)
+  let i ← lift (IScalar.cast .I128 core_models.num.I32.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (IScalar.cast .I128 core.num.I32.MIN)
+    let i1 ← lift (IScalar.cast .I128 core_models.num.I32.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (IScalar.cast .I32 x)
@@ -2692,11 +1948,11 @@ def I64.Insts.Core_modelsConvertTryFromI128TryFromIntError.try_from
   (x : Std.I128) :
   Result (result.Result Std.I64 num.error.TryFromIntError)
   := do
-  let i ← lift (IScalar.cast .I128 core.num.I64.MAX)
+  let i ← lift (IScalar.cast .I128 core_models.num.I64.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (IScalar.cast .I128 core.num.I64.MIN)
+    let i1 ← lift (IScalar.cast .I128 core_models.num.I64.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (IScalar.cast .I64 x)
@@ -2716,11 +1972,11 @@ def Isize.Insts.Core_modelsConvertTryFromI128TryFromIntError.try_from
   (x : Std.I128) :
   Result (result.Result Std.Isize num.error.TryFromIntError)
   := do
-  let i ← lift (IScalar.cast .I128 core.num.Isize.MAX)
+  let i ← lift (IScalar.cast .I128 core_models.num.Isize.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (IScalar.cast .I128 core.num.Isize.MIN)
+    let i1 ← lift (IScalar.cast .I128 core_models.num.Isize.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (IScalar.cast .Isize x)
@@ -2740,11 +1996,11 @@ def I8.Insts.Core_modelsConvertTryFromIsizeTryFromIntError.try_from
   (x : Std.Isize) :
   Result (result.Result Std.I8 num.error.TryFromIntError)
   := do
-  let i ← lift (IScalar.cast .Isize core.num.I8.MAX)
+  let i ← lift (IScalar.cast .Isize core_models.num.I8.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (IScalar.cast .Isize core.num.I8.MIN)
+    let i1 ← lift (IScalar.cast .Isize core_models.num.I8.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (IScalar.cast .I8 x)
@@ -2764,11 +2020,11 @@ def I16.Insts.Core_modelsConvertTryFromIsizeTryFromIntError.try_from
   (x : Std.Isize) :
   Result (result.Result Std.I16 num.error.TryFromIntError)
   := do
-  let i ← lift (IScalar.cast .Isize core.num.I16.MAX)
+  let i ← lift (IScalar.cast .Isize core_models.num.I16.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (IScalar.cast .Isize core.num.I16.MIN)
+    let i1 ← lift (IScalar.cast .Isize core_models.num.I16.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (IScalar.cast .I16 x)
@@ -2788,11 +2044,11 @@ def I32.Insts.Core_modelsConvertTryFromIsizeTryFromIntError.try_from
   (x : Std.Isize) :
   Result (result.Result Std.I32 num.error.TryFromIntError)
   := do
-  let i ← lift (IScalar.cast .Isize core.num.I32.MAX)
+  let i ← lift (IScalar.cast .Isize core_models.num.I32.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (IScalar.cast .Isize core.num.I32.MIN)
+    let i1 ← lift (IScalar.cast .Isize core_models.num.I32.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (IScalar.cast .I32 x)
@@ -2812,11 +2068,11 @@ def I64.Insts.Core_modelsConvertTryFromIsizeTryFromIntError.try_from
   (x : Std.Isize) :
   Result (result.Result Std.I64 num.error.TryFromIntError)
   := do
-  let i ← lift (IScalar.cast .Isize core.num.I64.MAX)
+  let i ← lift (IScalar.cast .Isize core_models.num.I64.MAX)
   if x > i
   then ok (result.Result.Err ())
   else
-    let i1 ← lift (IScalar.cast .Isize core.num.I64.MIN)
+    let i1 ← lift (IScalar.cast .Isize core_models.num.I64.MIN)
     if x < i1
     then ok (result.Result.Err ())
     else let i2 ← lift (IScalar.cast .I64 x)
@@ -2864,27 +2120,27 @@ def fmt.Arguments.write_fmt
 def fmt.rt.Argument.new_display
   {T : Type} (x : T) : Result fmt.rt.Argument := do
   let _ ← panicking.internal.panic fmt.rt.Argument
-  ok { ty := (fmt.rt.ArgumentType.Placeholder ()) }
+  ok { ty := (fmt.rt.ArgumentType.Placeholder core_models.Phantom.mk) }
 
 /-- [core_models::fmt::rt::{core_models::fmt::rt::Argument<0>}::new_debug]:
     Source: 'core-models/src/core/fmt.rs', lines 71:8-73:9 -/
 def fmt.rt.Argument.new_debug {T : Type} (x : T) : Result fmt.rt.Argument := do
   let _ ← panicking.internal.panic fmt.rt.Argument
-  ok { ty := (fmt.rt.ArgumentType.Placeholder ()) }
+  ok { ty := (fmt.rt.ArgumentType.Placeholder core_models.Phantom.mk) }
 
 /-- [core_models::fmt::rt::{core_models::fmt::rt::Argument<0>}::new_lower_hex]:
     Source: 'core-models/src/core/fmt.rs', lines 75:8-77:9 -/
 def fmt.rt.Argument.new_lower_hex
   {T : Type} (x : T) : Result fmt.rt.Argument := do
   let _ ← panicking.internal.panic fmt.rt.Argument
-  ok { ty := (fmt.rt.ArgumentType.Placeholder ()) }
+  ok { ty := (fmt.rt.ArgumentType.Placeholder core_models.Phantom.mk) }
 
 /-- [core_models::fmt::rt::{core_models::fmt::rt::Argument<'a>}::new_binary]:
     Source: 'core-models/src/core/fmt.rs', lines 81:8-83:9 -/
 def fmt.rt.Argument.new_binary
   {T : Type} (x : T) : Result fmt.rt.Argument := do
   let _ ← panicking.internal.panic fmt.rt.Argument
-  ok { ty := (fmt.rt.ArgumentType.Placeholder ()) }
+  ok { ty := (fmt.rt.ArgumentType.Placeholder core_models.Phantom.mk) }
 
 /-- [core_models::fmt::rt::{core_models::fmt::rt::Argument<'a>}::new_const]:
     Source: 'core-models/src/core/fmt.rs', lines 85:8-87:9 -/
@@ -3001,14 +2257,15 @@ def
 def iter.adapters.map.Map.Insts.Core_modelsIterTraitsIteratorIterator.next
   {I : Type} {O : Type} {F : Type} {Clause0_Item : Type}
   (traitsiteratorIteratorInst : iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFTupleClause0_ItemOInst : core.ops.function.Fn F
-  Clause0_Item O) (self : iter.adapters.map.Map I F) :
+  (core_modelsopsfunctionFnFTupleClause0_ItemOInst :
+  core_models.ops.function.Fn F Clause0_Item O)
+  (self : iter.adapters.map.Map I F) :
   Result ((option.Option O) × (iter.adapters.map.Map I F))
   := do
   let (o, t) ← traitsiteratorIteratorInst.next self.iter
   match o with
   | option.Option.Some v =>
-    let t1 ← coreopsfunctionFnFTupleClause0_ItemOInst.call self.f v
+    let t1 ← core_modelsopsfunctionFnFTupleClause0_ItemOInst.call self.f v
     ok (option.Option.Some t1, { self with iter := t })
   | option.Option.None => ok (option.Option.None, { self with iter := t })
 
@@ -3018,12 +2275,12 @@ def iter.adapters.map.Map.Insts.Core_modelsIterTraitsIteratorIterator.next
 def iter.adapters.map.Map.Insts.Core_modelsIterTraitsIteratorIterator {I :
   Type} {O : Type} {F : Type} {Clause0_Item : Type} (traitsiteratorIteratorInst
   : iter.traits.iterator.Iterator I Clause0_Item)
-  (coreopsfunctionFnFTupleClause0_ItemOInst : core.ops.function.Fn F
-  Clause0_Item O) : iter.traits.iterator.Iterator (iter.adapters.map.Map I F) O
-  := {
+  (core_modelsopsfunctionFnFTupleClause0_ItemOInst :
+  core_models.ops.function.Fn F Clause0_Item O) : iter.traits.iterator.Iterator
+  (iter.adapters.map.Map I F) O := {
   next :=
     iter.adapters.map.Map.Insts.Core_modelsIterTraitsIteratorIterator.next
-    traitsiteratorIteratorInst coreopsfunctionFnFTupleClause0_ItemOInst
+    traitsiteratorIteratorInst core_modelsopsfunctionFnFTupleClause0_ItemOInst
 }
 
 /-- [core_models::iter::adapters::take::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::take::Take<I>}::next]:
@@ -3061,8 +2318,8 @@ def iter.adapters.flat_map.FlatMap.new
   {I : Type} {U : Type} {F : Type} {Clause0_Item : Type} {Clause1_Item : Type}
   (traitsiteratorIteratorInst : iter.traits.iterator.Iterator I Clause0_Item)
   (traitsiteratorIteratorInst1 : iter.traits.iterator.Iterator U Clause1_Item)
-  (coreopsfunctionFnFTupleClause0_ItemUInst : core.ops.function.Fn F
-  Clause0_Item U) (it : I) (f : F) :
+  (core_modelsopsfunctionFnFTupleClause0_ItemUInst :
+  core_models.ops.function.Fn F Clause0_Item U) (it : I) (f : F) :
   Result (iter.adapters.flat_map.FlatMap I U F)
   := do
   ok { it, f, current := option.Option.None }
@@ -3076,8 +2333,9 @@ def
   {I : Type} {U : Type} {F : Type} {Clause0_Item : Type} {Clause1_Item : Type}
   (traitsiteratorIteratorInst : iter.traits.iterator.Iterator I Clause0_Item)
   (traitsiteratorIteratorInst1 : iter.traits.iterator.Iterator U Clause1_Item)
-  (coreopsfunctionFnFTupleClause0_ItemUInst : core.ops.function.Fn F
-  Clause0_Item U) (self : iter.adapters.flat_map.FlatMap I U F) :
+  (core_modelsopsfunctionFnFTupleClause0_ItemUInst :
+  core_models.ops.function.Fn F Clause0_Item U)
+  (self : iter.adapters.flat_map.FlatMap I U F) :
   Result (ControlFlow (iter.adapters.flat_map.FlatMap I U F) ((option.Option
     Clause1_Item) × I × F × (option.Option U)))
   := do
@@ -3091,7 +2349,8 @@ def
       let (o1, t) ← traitsiteratorIteratorInst.next self.it
       match o1 with
       | option.Option.Some c =>
-        let t1 ← coreopsfunctionFnFTupleClause0_ItemUInst.call self.f c
+        let t1 ←
+          core_modelsopsfunctionFnFTupleClause0_ItemUInst.call self.f c
         ok (cont { self with it := t, current := (option.Option.Some t1) })
       | option.Option.None =>
         ok (done (option.Option.None, t, self.f, option.Option.Some
@@ -3100,7 +2359,7 @@ def
     let (o, t) ← traitsiteratorIteratorInst.next self.it
     match o with
     | option.Option.Some c =>
-      let t1 ← coreopsfunctionFnFTupleClause0_ItemUInst.call self.f c
+      let t1 ← core_modelsopsfunctionFnFTupleClause0_ItemUInst.call self.f c
       ok (cont { self with it := t, current := (option.Option.Some t1) })
     | option.Option.None =>
       ok (done (option.Option.None, t, self.f, option.Option.None))
@@ -3114,15 +2373,16 @@ def
   {I : Type} {U : Type} {F : Type} {Clause0_Item : Type} {Clause1_Item : Type}
   (traitsiteratorIteratorInst : iter.traits.iterator.Iterator I Clause0_Item)
   (traitsiteratorIteratorInst1 : iter.traits.iterator.Iterator U Clause1_Item)
-  (coreopsfunctionFnFTupleClause0_ItemUInst : core.ops.function.Fn F
-  Clause0_Item U) (self : iter.adapters.flat_map.FlatMap I U F) :
+  (core_modelsopsfunctionFnFTupleClause0_ItemUInst :
+  core_models.ops.function.Fn F Clause0_Item U)
+  (self : iter.adapters.flat_map.FlatMap I U F) :
   Result ((option.Option Clause1_Item) × I × F × (option.Option U))
   := do
   loop
     (fun self1 =>
       iter.adapters.flat_map.FlatMap.Insts.Core_modelsIterTraitsIteratorIterator.next_loop.body
       traitsiteratorIteratorInst traitsiteratorIteratorInst1
-      coreopsfunctionFnFTupleClause0_ItemUInst self1)
+      core_modelsopsfunctionFnFTupleClause0_ItemUInst self1)
     self
 
 /-- [core_models::iter::adapters::flat_map::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flat_map::FlatMap<I, U, F>}::next]:
@@ -3133,15 +2393,16 @@ def
   {I : Type} {U : Type} {F : Type} {Clause0_Item : Type} {Clause1_Item : Type}
   (traitsiteratorIteratorInst : iter.traits.iterator.Iterator I Clause0_Item)
   (traitsiteratorIteratorInst1 : iter.traits.iterator.Iterator U Clause1_Item)
-  (coreopsfunctionFnFTupleClause0_ItemUInst : core.ops.function.Fn F
-  Clause0_Item U) (self : iter.adapters.flat_map.FlatMap I U F) :
+  (core_modelsopsfunctionFnFTupleClause0_ItemUInst :
+  core_models.ops.function.Fn F Clause0_Item U)
+  (self : iter.adapters.flat_map.FlatMap I U F) :
   Result ((option.Option Clause1_Item) × (iter.adapters.flat_map.FlatMap I U
     F))
   := do
   let (o, t, t1, o1) ←
     iter.adapters.flat_map.FlatMap.Insts.Core_modelsIterTraitsIteratorIterator.next_loop
       traitsiteratorIteratorInst traitsiteratorIteratorInst1
-      coreopsfunctionFnFTupleClause0_ItemUInst self
+      core_modelsopsfunctionFnFTupleClause0_ItemUInst self
   ok (o, { it := t, f := t1, current := o1 })
 
 /-- Trait implementation: [core_models::iter::adapters::flat_map::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flat_map::FlatMap<I, U, F>}]
@@ -3151,13 +2412,13 @@ def iter.adapters.flat_map.FlatMap.Insts.Core_modelsIterTraitsIteratorIterator
   {I : Type} {U : Type} {F : Type} {Clause0_Item : Type} {Clause1_Item : Type}
   (traitsiteratorIteratorInst : iter.traits.iterator.Iterator I Clause0_Item)
   (traitsiteratorIteratorInst1 : iter.traits.iterator.Iterator U Clause1_Item)
-  (coreopsfunctionFnFTupleClause0_ItemUInst : core.ops.function.Fn F
-  Clause0_Item U) : iter.traits.iterator.Iterator
+  (core_modelsopsfunctionFnFTupleClause0_ItemUInst :
+  core_models.ops.function.Fn F Clause0_Item U) : iter.traits.iterator.Iterator
   (iter.adapters.flat_map.FlatMap I U F) Clause1_Item := {
   next :=
     iter.adapters.flat_map.FlatMap.Insts.Core_modelsIterTraitsIteratorIterator.next
     traitsiteratorIteratorInst traitsiteratorIteratorInst1
-    coreopsfunctionFnFTupleClause0_ItemUInst
+    core_modelsopsfunctionFnFTupleClause0_ItemUInst
 }
 
 /-- [core_models::iter::adapters::flatten::{core_models::iter::adapters::flatten::Flatten<I, Clause0_Item, Clause1_Item>}::new]:
@@ -3663,6 +2924,105 @@ def num.Usize.MAX : Result Std.Usize := rust_primitives.arithmetic.USIZE_MAX
 @[global_simps, irreducible]
 def num.Usize.BITS : Result Std.U32 := rust_primitives.arithmetic.SIZE_BITS
 
+/-- [core_models::num::{core_models::num::u8}::wrapping_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 27:12-29:13 -/
+def num.U8.wrapping_add (x : Std.U8) (y : Std.U8) : Result Std.U8 := do
+  rust_primitives.arithmetic.wrapping_add_u8 x y
+
+/-- [core_models::num::{core_models::num::u16}::wrapping_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 27:12-29:13 -/
+def num.U16.wrapping_add (x : Std.U16) (y : Std.U16) : Result Std.U16 := do
+  rust_primitives.arithmetic.wrapping_add_u16 x y
+
+/-- [core_models::num::{core_models::num::u32}::wrapping_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 27:12-29:13 -/
+def num.U32.wrapping_add (x : Std.U32) (y : Std.U32) : Result Std.U32 := do
+  rust_primitives.arithmetic.wrapping_add_u32 x y
+
+/-- [core_models::num::{core_models::num::u64}::wrapping_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 27:12-29:13 -/
+def num.U64.wrapping_add (x : Std.U64) (y : Std.U64) : Result Std.U64 := do
+  rust_primitives.arithmetic.wrapping_add_u64 x y
+
+/-- [core_models::num::{core_models::num::u128}::wrapping_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 27:12-29:13 -/
+def num.U128.wrapping_add (x : Std.U128) (y : Std.U128) : Result Std.U128 := do
+  rust_primitives.arithmetic.wrapping_add_u128 x y
+
+/-- [core_models::num::{core_models::num::usize}::wrapping_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 27:12-29:13 -/
+def num.Usize.wrapping_add
+  (x : Std.Usize) (y : Std.Usize) : Result Std.Usize := do
+  rust_primitives.arithmetic.wrapping_add_usize x y
+
+/-- [core_models::num::{core_models::num::u8}::saturating_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 31:12-33:13 -/
+def num.U8.saturating_add (x : Std.U8) (y : Std.U8) : Result Std.U8 := do
+  rust_primitives.arithmetic.saturating_add_u8 x y
+
+/-- [core_models::num::{core_models::num::u16}::saturating_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 31:12-33:13 -/
+def num.U16.saturating_add (x : Std.U16) (y : Std.U16) : Result Std.U16 := do
+  rust_primitives.arithmetic.saturating_add_u16 x y
+
+/-- [core_models::num::{core_models::num::u32}::saturating_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 31:12-33:13 -/
+def num.U32.saturating_add (x : Std.U32) (y : Std.U32) : Result Std.U32 := do
+  rust_primitives.arithmetic.saturating_add_u32 x y
+
+/-- [core_models::num::{core_models::num::u64}::saturating_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 31:12-33:13 -/
+def num.U64.saturating_add (x : Std.U64) (y : Std.U64) : Result Std.U64 := do
+  rust_primitives.arithmetic.saturating_add_u64 x y
+
+/-- [core_models::num::{core_models::num::u128}::saturating_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 31:12-33:13 -/
+def num.U128.saturating_add
+  (x : Std.U128) (y : Std.U128) : Result Std.U128 := do
+  rust_primitives.arithmetic.saturating_add_u128 x y
+
+/-- [core_models::num::{core_models::num::usize}::saturating_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 31:12-33:13 -/
+def num.Usize.saturating_add
+  (x : Std.Usize) (y : Std.Usize) : Result Std.Usize := do
+  rust_primitives.arithmetic.saturating_add_usize x y
+
+/-- [core_models::num::{core_models::num::u8}::overflowing_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 35:12-37:13 -/
+def num.U8.overflowing_add
+  (x : Std.U8) (y : Std.U8) : Result (Std.U8 × Bool) := do
+  rust_primitives.arithmetic.overflowing_add_u8 x y
+
+/-- [core_models::num::{core_models::num::u16}::overflowing_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 35:12-37:13 -/
+def num.U16.overflowing_add
+  (x : Std.U16) (y : Std.U16) : Result (Std.U16 × Bool) := do
+  rust_primitives.arithmetic.overflowing_add_u16 x y
+
+/-- [core_models::num::{core_models::num::u32}::overflowing_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 35:12-37:13 -/
+def num.U32.overflowing_add
+  (x : Std.U32) (y : Std.U32) : Result (Std.U32 × Bool) := do
+  rust_primitives.arithmetic.overflowing_add_u32 x y
+
+/-- [core_models::num::{core_models::num::u64}::overflowing_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 35:12-37:13 -/
+def num.U64.overflowing_add
+  (x : Std.U64) (y : Std.U64) : Result (Std.U64 × Bool) := do
+  rust_primitives.arithmetic.overflowing_add_u64 x y
+
+/-- [core_models::num::{core_models::num::u128}::overflowing_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 35:12-37:13 -/
+def num.U128.overflowing_add
+  (x : Std.U128) (y : Std.U128) : Result (Std.U128 × Bool) := do
+  rust_primitives.arithmetic.overflowing_add_u128 x y
+
+/-- [core_models::num::{core_models::num::usize}::overflowing_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 35:12-37:13 -/
+def num.Usize.overflowing_add
+  (x : Std.Usize) (y : Std.Usize) : Result (Std.Usize × Bool) := do
+  rust_primitives.arithmetic.overflowing_add_usize x y
+
 /-- [core_models::num::{core_models::num::u8}::checked_add]:
     Source: 'core-models/src/core/num/mod.rs', lines 39:12-47:13 -/
 def num.U8.checked_add
@@ -3670,13 +3030,13 @@ def num.U8.checked_add
   let i ← U8.Insts.Hax_libIntToInt.to_int num.U8.MIN
   let i1 ← U8.Insts.Hax_libIntToInt.to_int x
   let i2 ← U8.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
     let i5 ← U8.Insts.Hax_libIntToInt.to_int num.U8.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x + y
          ok (option.Option.Some i6)
@@ -3690,13 +3050,13 @@ def num.U16.checked_add
   let i ← U16.Insts.Hax_libIntToInt.to_int num.U16.MIN
   let i1 ← U16.Insts.Hax_libIntToInt.to_int x
   let i2 ← U16.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
     let i5 ← U16.Insts.Hax_libIntToInt.to_int num.U16.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x + y
          ok (option.Option.Some i6)
@@ -3710,13 +3070,13 @@ def num.U32.checked_add
   let i ← U32.Insts.Hax_libIntToInt.to_int num.U32.MIN
   let i1 ← U32.Insts.Hax_libIntToInt.to_int x
   let i2 ← U32.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
     let i5 ← U32.Insts.Hax_libIntToInt.to_int num.U32.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x + y
          ok (option.Option.Some i6)
@@ -3730,13 +3090,13 @@ def num.U64.checked_add
   let i ← U64.Insts.Hax_libIntToInt.to_int num.U64.MIN
   let i1 ← U64.Insts.Hax_libIntToInt.to_int x
   let i2 ← U64.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
     let i5 ← U64.Insts.Hax_libIntToInt.to_int num.U64.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x + y
          ok (option.Option.Some i6)
@@ -3750,13 +3110,13 @@ def num.U128.checked_add
   let i ← U128.Insts.Hax_libIntToInt.to_int num.U128.MIN
   let i1 ← U128.Insts.Hax_libIntToInt.to_int x
   let i2 ← U128.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
     let i5 ← U128.Insts.Hax_libIntToInt.to_int num.U128.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x + y
          ok (option.Option.Some i6)
@@ -3770,19 +3130,82 @@ def num.Usize.checked_add
   let i ← Usize.Insts.Hax_libIntToInt.to_int num.Usize.MIN
   let i1 ← Usize.Insts.Hax_libIntToInt.to_int x
   let i2 ← Usize.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
     let i5 := num.Usize.MAX
     let i6 ← Usize.Insts.Hax_libIntToInt.to_int i5
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i6
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i6
     if b1
     then let i7 ← x + y
          ok (option.Option.Some i7)
     else ok option.Option.None
   else ok option.Option.None
+
+/-- [core_models::num::{core_models::num::u8}::wrapping_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 49:12-51:13 -/
+def num.U8.wrapping_sub (x : Std.U8) (y : Std.U8) : Result Std.U8 := do
+  rust_primitives.arithmetic.wrapping_sub_u8 x y
+
+/-- [core_models::num::{core_models::num::u16}::wrapping_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 49:12-51:13 -/
+def num.U16.wrapping_sub (x : Std.U16) (y : Std.U16) : Result Std.U16 := do
+  rust_primitives.arithmetic.wrapping_sub_u16 x y
+
+/-- [core_models::num::{core_models::num::u32}::wrapping_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 49:12-51:13 -/
+def num.U32.wrapping_sub (x : Std.U32) (y : Std.U32) : Result Std.U32 := do
+  rust_primitives.arithmetic.wrapping_sub_u32 x y
+
+/-- [core_models::num::{core_models::num::u64}::wrapping_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 49:12-51:13 -/
+def num.U64.wrapping_sub (x : Std.U64) (y : Std.U64) : Result Std.U64 := do
+  rust_primitives.arithmetic.wrapping_sub_u64 x y
+
+/-- [core_models::num::{core_models::num::u128}::wrapping_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 49:12-51:13 -/
+def num.U128.wrapping_sub (x : Std.U128) (y : Std.U128) : Result Std.U128 := do
+  rust_primitives.arithmetic.wrapping_sub_u128 x y
+
+/-- [core_models::num::{core_models::num::usize}::wrapping_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 49:12-51:13 -/
+def num.Usize.wrapping_sub
+  (x : Std.Usize) (y : Std.Usize) : Result Std.Usize := do
+  rust_primitives.arithmetic.wrapping_sub_usize x y
+
+/-- [core_models::num::{core_models::num::u8}::saturating_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 53:12-55:13 -/
+def num.U8.saturating_sub (x : Std.U8) (y : Std.U8) : Result Std.U8 := do
+  rust_primitives.arithmetic.saturating_sub_u8 x y
+
+/-- [core_models::num::{core_models::num::u16}::saturating_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 53:12-55:13 -/
+def num.U16.saturating_sub (x : Std.U16) (y : Std.U16) : Result Std.U16 := do
+  rust_primitives.arithmetic.saturating_sub_u16 x y
+
+/-- [core_models::num::{core_models::num::u32}::saturating_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 53:12-55:13 -/
+def num.U32.saturating_sub (x : Std.U32) (y : Std.U32) : Result Std.U32 := do
+  rust_primitives.arithmetic.saturating_sub_u32 x y
+
+/-- [core_models::num::{core_models::num::u64}::saturating_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 53:12-55:13 -/
+def num.U64.saturating_sub (x : Std.U64) (y : Std.U64) : Result Std.U64 := do
+  rust_primitives.arithmetic.saturating_sub_u64 x y
+
+/-- [core_models::num::{core_models::num::u128}::saturating_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 53:12-55:13 -/
+def num.U128.saturating_sub
+  (x : Std.U128) (y : Std.U128) : Result Std.U128 := do
+  rust_primitives.arithmetic.saturating_sub_u128 x y
+
+/-- [core_models::num::{core_models::num::usize}::saturating_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 53:12-55:13 -/
+def num.Usize.saturating_sub
+  (x : Std.Usize) (y : Std.Usize) : Result Std.Usize := do
+  rust_primitives.arithmetic.saturating_sub_usize x y
 
 /-- [core_models::num::{core_models::num::u8}::overflowing_sub]:
     Source: 'core-models/src/core/num/mod.rs', lines 57:12-59:13 -/
@@ -3827,13 +3250,13 @@ def num.U8.checked_sub
   let i ← U8.Insts.Hax_libIntToInt.to_int num.U8.MIN
   let i1 ← U8.Insts.Hax_libIntToInt.to_int x
   let i2 ← U8.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
     let i5 ← U8.Insts.Hax_libIntToInt.to_int num.U8.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x - y
          ok (option.Option.Some i6)
@@ -3847,13 +3270,13 @@ def num.U16.checked_sub
   let i ← U16.Insts.Hax_libIntToInt.to_int num.U16.MIN
   let i1 ← U16.Insts.Hax_libIntToInt.to_int x
   let i2 ← U16.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
     let i5 ← U16.Insts.Hax_libIntToInt.to_int num.U16.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x - y
          ok (option.Option.Some i6)
@@ -3867,13 +3290,13 @@ def num.U32.checked_sub
   let i ← U32.Insts.Hax_libIntToInt.to_int num.U32.MIN
   let i1 ← U32.Insts.Hax_libIntToInt.to_int x
   let i2 ← U32.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
     let i5 ← U32.Insts.Hax_libIntToInt.to_int num.U32.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x - y
          ok (option.Option.Some i6)
@@ -3887,13 +3310,13 @@ def num.U64.checked_sub
   let i ← U64.Insts.Hax_libIntToInt.to_int num.U64.MIN
   let i1 ← U64.Insts.Hax_libIntToInt.to_int x
   let i2 ← U64.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
     let i5 ← U64.Insts.Hax_libIntToInt.to_int num.U64.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x - y
          ok (option.Option.Some i6)
@@ -3907,13 +3330,13 @@ def num.U128.checked_sub
   let i ← U128.Insts.Hax_libIntToInt.to_int num.U128.MIN
   let i1 ← U128.Insts.Hax_libIntToInt.to_int x
   let i2 ← U128.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
     let i5 ← U128.Insts.Hax_libIntToInt.to_int num.U128.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x - y
          ok (option.Option.Some i6)
@@ -3927,19 +3350,50 @@ def num.Usize.checked_sub
   let i ← Usize.Insts.Hax_libIntToInt.to_int num.Usize.MIN
   let i1 ← Usize.Insts.Hax_libIntToInt.to_int x
   let i2 ← Usize.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
     let i5 := num.Usize.MAX
     let i6 ← Usize.Insts.Hax_libIntToInt.to_int i5
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i6
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i6
     if b1
     then let i7 ← x - y
          ok (option.Option.Some i7)
     else ok option.Option.None
   else ok option.Option.None
+
+/-- [core_models::num::{core_models::num::u8}::wrapping_mul]:
+    Source: 'core-models/src/core/num/mod.rs', lines 71:12-73:13 -/
+def num.U8.wrapping_mul (x : Std.U8) (y : Std.U8) : Result Std.U8 := do
+  rust_primitives.arithmetic.wrapping_mul_u8 x y
+
+/-- [core_models::num::{core_models::num::u16}::wrapping_mul]:
+    Source: 'core-models/src/core/num/mod.rs', lines 71:12-73:13 -/
+def num.U16.wrapping_mul (x : Std.U16) (y : Std.U16) : Result Std.U16 := do
+  rust_primitives.arithmetic.wrapping_mul_u16 x y
+
+/-- [core_models::num::{core_models::num::u32}::wrapping_mul]:
+    Source: 'core-models/src/core/num/mod.rs', lines 71:12-73:13 -/
+def num.U32.wrapping_mul (x : Std.U32) (y : Std.U32) : Result Std.U32 := do
+  rust_primitives.arithmetic.wrapping_mul_u32 x y
+
+/-- [core_models::num::{core_models::num::u64}::wrapping_mul]:
+    Source: 'core-models/src/core/num/mod.rs', lines 71:12-73:13 -/
+def num.U64.wrapping_mul (x : Std.U64) (y : Std.U64) : Result Std.U64 := do
+  rust_primitives.arithmetic.wrapping_mul_u64 x y
+
+/-- [core_models::num::{core_models::num::u128}::wrapping_mul]:
+    Source: 'core-models/src/core/num/mod.rs', lines 71:12-73:13 -/
+def num.U128.wrapping_mul (x : Std.U128) (y : Std.U128) : Result Std.U128 := do
+  rust_primitives.arithmetic.wrapping_mul_u128 x y
+
+/-- [core_models::num::{core_models::num::usize}::wrapping_mul]:
+    Source: 'core-models/src/core/num/mod.rs', lines 71:12-73:13 -/
+def num.Usize.wrapping_mul
+  (x : Std.Usize) (y : Std.Usize) : Result Std.Usize := do
+  rust_primitives.arithmetic.wrapping_mul_usize x y
 
 /-- [core_models::num::{core_models::num::u8}::saturating_mul]:
     Source: 'core-models/src/core/num/mod.rs', lines 75:12-77:13 -/
@@ -4016,13 +3470,13 @@ def num.U8.checked_mul
   let i ← U8.Insts.Hax_libIntToInt.to_int num.U8.MIN
   let i1 ← U8.Insts.Hax_libIntToInt.to_int x
   let i2 ← U8.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
     let i5 ← U8.Insts.Hax_libIntToInt.to_int num.U8.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x * y
          ok (option.Option.Some i6)
@@ -4036,13 +3490,13 @@ def num.U16.checked_mul
   let i ← U16.Insts.Hax_libIntToInt.to_int num.U16.MIN
   let i1 ← U16.Insts.Hax_libIntToInt.to_int x
   let i2 ← U16.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
     let i5 ← U16.Insts.Hax_libIntToInt.to_int num.U16.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x * y
          ok (option.Option.Some i6)
@@ -4056,13 +3510,13 @@ def num.U32.checked_mul
   let i ← U32.Insts.Hax_libIntToInt.to_int num.U32.MIN
   let i1 ← U32.Insts.Hax_libIntToInt.to_int x
   let i2 ← U32.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
     let i5 ← U32.Insts.Hax_libIntToInt.to_int num.U32.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x * y
          ok (option.Option.Some i6)
@@ -4076,13 +3530,13 @@ def num.U64.checked_mul
   let i ← U64.Insts.Hax_libIntToInt.to_int num.U64.MIN
   let i1 ← U64.Insts.Hax_libIntToInt.to_int x
   let i2 ← U64.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
     let i5 ← U64.Insts.Hax_libIntToInt.to_int num.U64.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x * y
          ok (option.Option.Some i6)
@@ -4096,13 +3550,13 @@ def num.U128.checked_mul
   let i ← U128.Insts.Hax_libIntToInt.to_int num.U128.MIN
   let i1 ← U128.Insts.Hax_libIntToInt.to_int x
   let i2 ← U128.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
     let i5 ← U128.Insts.Hax_libIntToInt.to_int num.U128.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x * y
          ok (option.Option.Some i6)
@@ -4116,14 +3570,14 @@ def num.Usize.checked_mul
   let i ← Usize.Insts.Hax_libIntToInt.to_int num.Usize.MIN
   let i1 ← Usize.Insts.Hax_libIntToInt.to_int x
   let i2 ← Usize.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
     let i5 := num.Usize.MAX
     let i6 ← Usize.Insts.Hax_libIntToInt.to_int i5
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i6
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i6
     if b1
     then let i7 ← x * y
          ok (option.Option.Some i7)
@@ -4220,6 +3674,68 @@ def num.U128.count_ones (x : Std.U128) : Result Std.U32 := do
     Source: 'core-models/src/core/num/mod.rs', lines 102:12-104:13 -/
 def num.Usize.count_ones (x : Std.Usize) : Result Std.U32 := do
   rust_primitives.arithmetic.count_ones_usize x
+
+/-- [core_models::num::{core_models::num::u8}::rotate_right]:
+    Source: 'core-models/src/core/num/mod.rs', lines 107:12-109:13 -/
+def num.U8.rotate_right (x : Std.U8) (n : Std.U32) : Result Std.U8 := do
+  rust_primitives.arithmetic.rotate_right_u8 x n
+
+/-- [core_models::num::{core_models::num::u16}::rotate_right]:
+    Source: 'core-models/src/core/num/mod.rs', lines 107:12-109:13 -/
+def num.U16.rotate_right (x : Std.U16) (n : Std.U32) : Result Std.U16 := do
+  rust_primitives.arithmetic.rotate_right_u16 x n
+
+/-- [core_models::num::{core_models::num::u32}::rotate_right]:
+    Source: 'core-models/src/core/num/mod.rs', lines 107:12-109:13 -/
+def num.U32.rotate_right (x : Std.U32) (n : Std.U32) : Result Std.U32 := do
+  rust_primitives.arithmetic.rotate_right_u32 x n
+
+/-- [core_models::num::{core_models::num::u64}::rotate_right]:
+    Source: 'core-models/src/core/num/mod.rs', lines 107:12-109:13 -/
+def num.U64.rotate_right (x : Std.U64) (n : Std.U32) : Result Std.U64 := do
+  rust_primitives.arithmetic.rotate_right_u64 x n
+
+/-- [core_models::num::{core_models::num::u128}::rotate_right]:
+    Source: 'core-models/src/core/num/mod.rs', lines 107:12-109:13 -/
+def num.U128.rotate_right (x : Std.U128) (n : Std.U32) : Result Std.U128 := do
+  rust_primitives.arithmetic.rotate_right_u128 x n
+
+/-- [core_models::num::{core_models::num::usize}::rotate_right]:
+    Source: 'core-models/src/core/num/mod.rs', lines 107:12-109:13 -/
+def num.Usize.rotate_right
+  (x : Std.Usize) (n : Std.U32) : Result Std.Usize := do
+  rust_primitives.arithmetic.rotate_right_usize x n
+
+/-- [core_models::num::{core_models::num::u8}::rotate_left]:
+    Source: 'core-models/src/core/num/mod.rs', lines 112:12-114:13 -/
+def num.U8.rotate_left (x : Std.U8) (n : Std.U32) : Result Std.U8 := do
+  rust_primitives.arithmetic.rotate_left_u8 x n
+
+/-- [core_models::num::{core_models::num::u16}::rotate_left]:
+    Source: 'core-models/src/core/num/mod.rs', lines 112:12-114:13 -/
+def num.U16.rotate_left (x : Std.U16) (n : Std.U32) : Result Std.U16 := do
+  rust_primitives.arithmetic.rotate_left_u16 x n
+
+/-- [core_models::num::{core_models::num::u32}::rotate_left]:
+    Source: 'core-models/src/core/num/mod.rs', lines 112:12-114:13 -/
+def num.U32.rotate_left (x : Std.U32) (n : Std.U32) : Result Std.U32 := do
+  rust_primitives.arithmetic.rotate_left_u32 x n
+
+/-- [core_models::num::{core_models::num::u64}::rotate_left]:
+    Source: 'core-models/src/core/num/mod.rs', lines 112:12-114:13 -/
+def num.U64.rotate_left (x : Std.U64) (n : Std.U32) : Result Std.U64 := do
+  rust_primitives.arithmetic.rotate_left_u64 x n
+
+/-- [core_models::num::{core_models::num::u128}::rotate_left]:
+    Source: 'core-models/src/core/num/mod.rs', lines 112:12-114:13 -/
+def num.U128.rotate_left (x : Std.U128) (n : Std.U32) : Result Std.U128 := do
+  rust_primitives.arithmetic.rotate_left_u128 x n
+
+/-- [core_models::num::{core_models::num::usize}::rotate_left]:
+    Source: 'core-models/src/core/num/mod.rs', lines 112:12-114:13 -/
+def num.Usize.rotate_left
+  (x : Std.Usize) (n : Std.U32) : Result Std.Usize := do
+  rust_primitives.arithmetic.rotate_left_usize x n
 
 /-- [core_models::num::{core_models::num::u8}::leading_zeros]:
     Source: 'core-models/src/core/num/mod.rs', lines 117:12-119:13 -/
@@ -4740,6 +4256,105 @@ def num.Isize.MAX : Result Std.Isize := rust_primitives.arithmetic.ISIZE_MAX
 @[global_simps, irreducible]
 def num.Isize.BITS : Result Std.U32 := rust_primitives.arithmetic.SIZE_BITS
 
+/-- [core_models::num::{core_models::num::i8}::wrapping_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 212:12-214:13 -/
+def num.I8.wrapping_add (x : Std.I8) (y : Std.I8) : Result Std.I8 := do
+  rust_primitives.arithmetic.wrapping_add_i8 x y
+
+/-- [core_models::num::{core_models::num::i16}::wrapping_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 212:12-214:13 -/
+def num.I16.wrapping_add (x : Std.I16) (y : Std.I16) : Result Std.I16 := do
+  rust_primitives.arithmetic.wrapping_add_i16 x y
+
+/-- [core_models::num::{core_models::num::i32}::wrapping_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 212:12-214:13 -/
+def num.I32.wrapping_add (x : Std.I32) (y : Std.I32) : Result Std.I32 := do
+  rust_primitives.arithmetic.wrapping_add_i32 x y
+
+/-- [core_models::num::{core_models::num::i64}::wrapping_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 212:12-214:13 -/
+def num.I64.wrapping_add (x : Std.I64) (y : Std.I64) : Result Std.I64 := do
+  rust_primitives.arithmetic.wrapping_add_i64 x y
+
+/-- [core_models::num::{core_models::num::i128}::wrapping_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 212:12-214:13 -/
+def num.I128.wrapping_add (x : Std.I128) (y : Std.I128) : Result Std.I128 := do
+  rust_primitives.arithmetic.wrapping_add_i128 x y
+
+/-- [core_models::num::{core_models::num::isize}::wrapping_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 212:12-214:13 -/
+def num.Isize.wrapping_add
+  (x : Std.Isize) (y : Std.Isize) : Result Std.Isize := do
+  rust_primitives.arithmetic.wrapping_add_isize x y
+
+/-- [core_models::num::{core_models::num::i8}::saturating_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 216:12-218:13 -/
+def num.I8.saturating_add (x : Std.I8) (y : Std.I8) : Result Std.I8 := do
+  rust_primitives.arithmetic.saturating_add_i8 x y
+
+/-- [core_models::num::{core_models::num::i16}::saturating_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 216:12-218:13 -/
+def num.I16.saturating_add (x : Std.I16) (y : Std.I16) : Result Std.I16 := do
+  rust_primitives.arithmetic.saturating_add_i16 x y
+
+/-- [core_models::num::{core_models::num::i32}::saturating_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 216:12-218:13 -/
+def num.I32.saturating_add (x : Std.I32) (y : Std.I32) : Result Std.I32 := do
+  rust_primitives.arithmetic.saturating_add_i32 x y
+
+/-- [core_models::num::{core_models::num::i64}::saturating_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 216:12-218:13 -/
+def num.I64.saturating_add (x : Std.I64) (y : Std.I64) : Result Std.I64 := do
+  rust_primitives.arithmetic.saturating_add_i64 x y
+
+/-- [core_models::num::{core_models::num::i128}::saturating_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 216:12-218:13 -/
+def num.I128.saturating_add
+  (x : Std.I128) (y : Std.I128) : Result Std.I128 := do
+  rust_primitives.arithmetic.saturating_add_i128 x y
+
+/-- [core_models::num::{core_models::num::isize}::saturating_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 216:12-218:13 -/
+def num.Isize.saturating_add
+  (x : Std.Isize) (y : Std.Isize) : Result Std.Isize := do
+  rust_primitives.arithmetic.saturating_add_isize x y
+
+/-- [core_models::num::{core_models::num::i8}::overflowing_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 220:12-222:13 -/
+def num.I8.overflowing_add
+  (x : Std.I8) (y : Std.I8) : Result (Std.I8 × Bool) := do
+  rust_primitives.arithmetic.overflowing_add_i8 x y
+
+/-- [core_models::num::{core_models::num::i16}::overflowing_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 220:12-222:13 -/
+def num.I16.overflowing_add
+  (x : Std.I16) (y : Std.I16) : Result (Std.I16 × Bool) := do
+  rust_primitives.arithmetic.overflowing_add_i16 x y
+
+/-- [core_models::num::{core_models::num::i32}::overflowing_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 220:12-222:13 -/
+def num.I32.overflowing_add
+  (x : Std.I32) (y : Std.I32) : Result (Std.I32 × Bool) := do
+  rust_primitives.arithmetic.overflowing_add_i32 x y
+
+/-- [core_models::num::{core_models::num::i64}::overflowing_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 220:12-222:13 -/
+def num.I64.overflowing_add
+  (x : Std.I64) (y : Std.I64) : Result (Std.I64 × Bool) := do
+  rust_primitives.arithmetic.overflowing_add_i64 x y
+
+/-- [core_models::num::{core_models::num::i128}::overflowing_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 220:12-222:13 -/
+def num.I128.overflowing_add
+  (x : Std.I128) (y : Std.I128) : Result (Std.I128 × Bool) := do
+  rust_primitives.arithmetic.overflowing_add_i128 x y
+
+/-- [core_models::num::{core_models::num::isize}::overflowing_add]:
+    Source: 'core-models/src/core/num/mod.rs', lines 220:12-222:13 -/
+def num.Isize.overflowing_add
+  (x : Std.Isize) (y : Std.Isize) : Result (Std.Isize × Bool) := do
+  rust_primitives.arithmetic.overflowing_add_isize x y
+
 /-- [core_models::num::{core_models::num::i8}::checked_add]:
     Source: 'core-models/src/core/num/mod.rs', lines 224:12-232:13 -/
 def num.I8.checked_add
@@ -4747,13 +4362,13 @@ def num.I8.checked_add
   let i ← I8.Insts.Hax_libIntToInt.to_int num.I8.MIN
   let i1 ← I8.Insts.Hax_libIntToInt.to_int x
   let i2 ← I8.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
     let i5 ← I8.Insts.Hax_libIntToInt.to_int num.I8.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x + y
          ok (option.Option.Some i6)
@@ -4767,13 +4382,13 @@ def num.I16.checked_add
   let i ← I16.Insts.Hax_libIntToInt.to_int num.I16.MIN
   let i1 ← I16.Insts.Hax_libIntToInt.to_int x
   let i2 ← I16.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
     let i5 ← I16.Insts.Hax_libIntToInt.to_int num.I16.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x + y
          ok (option.Option.Some i6)
@@ -4787,13 +4402,13 @@ def num.I32.checked_add
   let i ← I32.Insts.Hax_libIntToInt.to_int num.I32.MIN
   let i1 ← I32.Insts.Hax_libIntToInt.to_int x
   let i2 ← I32.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
     let i5 ← I32.Insts.Hax_libIntToInt.to_int num.I32.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x + y
          ok (option.Option.Some i6)
@@ -4807,13 +4422,13 @@ def num.I64.checked_add
   let i ← I64.Insts.Hax_libIntToInt.to_int num.I64.MIN
   let i1 ← I64.Insts.Hax_libIntToInt.to_int x
   let i2 ← I64.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
     let i5 ← I64.Insts.Hax_libIntToInt.to_int num.I64.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x + y
          ok (option.Option.Some i6)
@@ -4827,13 +4442,13 @@ def num.I128.checked_add
   let i ← I128.Insts.Hax_libIntToInt.to_int num.I128.MIN
   let i1 ← I128.Insts.Hax_libIntToInt.to_int x
   let i2 ← I128.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
     let i5 ← I128.Insts.Hax_libIntToInt.to_int num.I128.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x + y
          ok (option.Option.Some i6)
@@ -4848,19 +4463,82 @@ def num.Isize.checked_add
   let i1 ← Isize.Insts.Hax_libIntToInt.to_int i
   let i2 ← Isize.Insts.Hax_libIntToInt.to_int x
   let i3 ← Isize.Insts.Hax_libIntToInt.to_int y
-  let i4 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i2 i3
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i1 i4
+  let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i2 i3
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i1 i4
   if b
   then
-    let i5 ← hax_lib.int.Int.Insts.CoreOpsArithAddIntInt.add i2 i3
+    let i5 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i2 i3
     let i6 := num.Isize.MAX
     let i7 ← Isize.Insts.Hax_libIntToInt.to_int i6
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i5 i7
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i5 i7
     if b1
     then let i8 ← x + y
          ok (option.Option.Some i8)
     else ok option.Option.None
   else ok option.Option.None
+
+/-- [core_models::num::{core_models::num::i8}::wrapping_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 234:12-236:13 -/
+def num.I8.wrapping_sub (x : Std.I8) (y : Std.I8) : Result Std.I8 := do
+  rust_primitives.arithmetic.wrapping_sub_i8 x y
+
+/-- [core_models::num::{core_models::num::i16}::wrapping_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 234:12-236:13 -/
+def num.I16.wrapping_sub (x : Std.I16) (y : Std.I16) : Result Std.I16 := do
+  rust_primitives.arithmetic.wrapping_sub_i16 x y
+
+/-- [core_models::num::{core_models::num::i32}::wrapping_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 234:12-236:13 -/
+def num.I32.wrapping_sub (x : Std.I32) (y : Std.I32) : Result Std.I32 := do
+  rust_primitives.arithmetic.wrapping_sub_i32 x y
+
+/-- [core_models::num::{core_models::num::i64}::wrapping_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 234:12-236:13 -/
+def num.I64.wrapping_sub (x : Std.I64) (y : Std.I64) : Result Std.I64 := do
+  rust_primitives.arithmetic.wrapping_sub_i64 x y
+
+/-- [core_models::num::{core_models::num::i128}::wrapping_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 234:12-236:13 -/
+def num.I128.wrapping_sub (x : Std.I128) (y : Std.I128) : Result Std.I128 := do
+  rust_primitives.arithmetic.wrapping_sub_i128 x y
+
+/-- [core_models::num::{core_models::num::isize}::wrapping_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 234:12-236:13 -/
+def num.Isize.wrapping_sub
+  (x : Std.Isize) (y : Std.Isize) : Result Std.Isize := do
+  rust_primitives.arithmetic.wrapping_sub_isize x y
+
+/-- [core_models::num::{core_models::num::i8}::saturating_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 238:12-240:13 -/
+def num.I8.saturating_sub (x : Std.I8) (y : Std.I8) : Result Std.I8 := do
+  rust_primitives.arithmetic.saturating_sub_i8 x y
+
+/-- [core_models::num::{core_models::num::i16}::saturating_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 238:12-240:13 -/
+def num.I16.saturating_sub (x : Std.I16) (y : Std.I16) : Result Std.I16 := do
+  rust_primitives.arithmetic.saturating_sub_i16 x y
+
+/-- [core_models::num::{core_models::num::i32}::saturating_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 238:12-240:13 -/
+def num.I32.saturating_sub (x : Std.I32) (y : Std.I32) : Result Std.I32 := do
+  rust_primitives.arithmetic.saturating_sub_i32 x y
+
+/-- [core_models::num::{core_models::num::i64}::saturating_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 238:12-240:13 -/
+def num.I64.saturating_sub (x : Std.I64) (y : Std.I64) : Result Std.I64 := do
+  rust_primitives.arithmetic.saturating_sub_i64 x y
+
+/-- [core_models::num::{core_models::num::i128}::saturating_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 238:12-240:13 -/
+def num.I128.saturating_sub
+  (x : Std.I128) (y : Std.I128) : Result Std.I128 := do
+  rust_primitives.arithmetic.saturating_sub_i128 x y
+
+/-- [core_models::num::{core_models::num::isize}::saturating_sub]:
+    Source: 'core-models/src/core/num/mod.rs', lines 238:12-240:13 -/
+def num.Isize.saturating_sub
+  (x : Std.Isize) (y : Std.Isize) : Result Std.Isize := do
+  rust_primitives.arithmetic.saturating_sub_isize x y
 
 /-- [core_models::num::{core_models::num::i8}::overflowing_sub]:
     Source: 'core-models/src/core/num/mod.rs', lines 242:12-244:13 -/
@@ -4905,13 +4583,13 @@ def num.I8.checked_sub
   let i ← I8.Insts.Hax_libIntToInt.to_int num.I8.MIN
   let i1 ← I8.Insts.Hax_libIntToInt.to_int x
   let i2 ← I8.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
     let i5 ← I8.Insts.Hax_libIntToInt.to_int num.I8.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x - y
          ok (option.Option.Some i6)
@@ -4925,13 +4603,13 @@ def num.I16.checked_sub
   let i ← I16.Insts.Hax_libIntToInt.to_int num.I16.MIN
   let i1 ← I16.Insts.Hax_libIntToInt.to_int x
   let i2 ← I16.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
     let i5 ← I16.Insts.Hax_libIntToInt.to_int num.I16.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x - y
          ok (option.Option.Some i6)
@@ -4945,13 +4623,13 @@ def num.I32.checked_sub
   let i ← I32.Insts.Hax_libIntToInt.to_int num.I32.MIN
   let i1 ← I32.Insts.Hax_libIntToInt.to_int x
   let i2 ← I32.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
     let i5 ← I32.Insts.Hax_libIntToInt.to_int num.I32.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x - y
          ok (option.Option.Some i6)
@@ -4965,13 +4643,13 @@ def num.I64.checked_sub
   let i ← I64.Insts.Hax_libIntToInt.to_int num.I64.MIN
   let i1 ← I64.Insts.Hax_libIntToInt.to_int x
   let i2 ← I64.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
     let i5 ← I64.Insts.Hax_libIntToInt.to_int num.I64.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x - y
          ok (option.Option.Some i6)
@@ -4985,13 +4663,13 @@ def num.I128.checked_sub
   let i ← I128.Insts.Hax_libIntToInt.to_int num.I128.MIN
   let i1 ← I128.Insts.Hax_libIntToInt.to_int x
   let i2 ← I128.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
     let i5 ← I128.Insts.Hax_libIntToInt.to_int num.I128.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x - y
          ok (option.Option.Some i6)
@@ -5006,19 +4684,50 @@ def num.Isize.checked_sub
   let i1 ← Isize.Insts.Hax_libIntToInt.to_int i
   let i2 ← Isize.Insts.Hax_libIntToInt.to_int x
   let i3 ← Isize.Insts.Hax_libIntToInt.to_int y
-  let i4 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i2 i3
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i1 i4
+  let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i2 i3
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i1 i4
   if b
   then
-    let i5 ← hax_lib.int.Int.Insts.CoreOpsArithSubIntInt.sub i2 i3
+    let i5 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i2 i3
     let i6 := num.Isize.MAX
     let i7 ← Isize.Insts.Hax_libIntToInt.to_int i6
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i5 i7
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i5 i7
     if b1
     then let i8 ← x - y
          ok (option.Option.Some i8)
     else ok option.Option.None
   else ok option.Option.None
+
+/-- [core_models::num::{core_models::num::i8}::wrapping_mul]:
+    Source: 'core-models/src/core/num/mod.rs', lines 256:12-258:13 -/
+def num.I8.wrapping_mul (x : Std.I8) (y : Std.I8) : Result Std.I8 := do
+  rust_primitives.arithmetic.wrapping_mul_i8 x y
+
+/-- [core_models::num::{core_models::num::i16}::wrapping_mul]:
+    Source: 'core-models/src/core/num/mod.rs', lines 256:12-258:13 -/
+def num.I16.wrapping_mul (x : Std.I16) (y : Std.I16) : Result Std.I16 := do
+  rust_primitives.arithmetic.wrapping_mul_i16 x y
+
+/-- [core_models::num::{core_models::num::i32}::wrapping_mul]:
+    Source: 'core-models/src/core/num/mod.rs', lines 256:12-258:13 -/
+def num.I32.wrapping_mul (x : Std.I32) (y : Std.I32) : Result Std.I32 := do
+  rust_primitives.arithmetic.wrapping_mul_i32 x y
+
+/-- [core_models::num::{core_models::num::i64}::wrapping_mul]:
+    Source: 'core-models/src/core/num/mod.rs', lines 256:12-258:13 -/
+def num.I64.wrapping_mul (x : Std.I64) (y : Std.I64) : Result Std.I64 := do
+  rust_primitives.arithmetic.wrapping_mul_i64 x y
+
+/-- [core_models::num::{core_models::num::i128}::wrapping_mul]:
+    Source: 'core-models/src/core/num/mod.rs', lines 256:12-258:13 -/
+def num.I128.wrapping_mul (x : Std.I128) (y : Std.I128) : Result Std.I128 := do
+  rust_primitives.arithmetic.wrapping_mul_i128 x y
+
+/-- [core_models::num::{core_models::num::isize}::wrapping_mul]:
+    Source: 'core-models/src/core/num/mod.rs', lines 256:12-258:13 -/
+def num.Isize.wrapping_mul
+  (x : Std.Isize) (y : Std.Isize) : Result Std.Isize := do
+  rust_primitives.arithmetic.wrapping_mul_isize x y
 
 /-- [core_models::num::{core_models::num::i8}::saturating_mul]:
     Source: 'core-models/src/core/num/mod.rs', lines 260:12-262:13 -/
@@ -5095,13 +4804,13 @@ def num.I8.checked_mul
   let i ← I8.Insts.Hax_libIntToInt.to_int num.I8.MIN
   let i1 ← I8.Insts.Hax_libIntToInt.to_int x
   let i2 ← I8.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
     let i5 ← I8.Insts.Hax_libIntToInt.to_int num.I8.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x * y
          ok (option.Option.Some i6)
@@ -5115,13 +4824,13 @@ def num.I16.checked_mul
   let i ← I16.Insts.Hax_libIntToInt.to_int num.I16.MIN
   let i1 ← I16.Insts.Hax_libIntToInt.to_int x
   let i2 ← I16.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
     let i5 ← I16.Insts.Hax_libIntToInt.to_int num.I16.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x * y
          ok (option.Option.Some i6)
@@ -5135,13 +4844,13 @@ def num.I32.checked_mul
   let i ← I32.Insts.Hax_libIntToInt.to_int num.I32.MIN
   let i1 ← I32.Insts.Hax_libIntToInt.to_int x
   let i2 ← I32.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
     let i5 ← I32.Insts.Hax_libIntToInt.to_int num.I32.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x * y
          ok (option.Option.Some i6)
@@ -5155,13 +4864,13 @@ def num.I64.checked_mul
   let i ← I64.Insts.Hax_libIntToInt.to_int num.I64.MIN
   let i1 ← I64.Insts.Hax_libIntToInt.to_int x
   let i2 ← I64.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
     let i5 ← I64.Insts.Hax_libIntToInt.to_int num.I64.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x * y
          ok (option.Option.Some i6)
@@ -5175,13 +4884,13 @@ def num.I128.checked_mul
   let i ← I128.Insts.Hax_libIntToInt.to_int num.I128.MIN
   let i1 ← I128.Insts.Hax_libIntToInt.to_int x
   let i2 ← I128.Insts.Hax_libIntToInt.to_int y
-  let i3 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i1 i2
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i i3
+  let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
-    let i4 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i1 i2
+    let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
     let i5 ← I128.Insts.Hax_libIntToInt.to_int num.I128.MAX
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i4 i5
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x * y
          ok (option.Option.Some i6)
@@ -5196,14 +4905,14 @@ def num.Isize.checked_mul
   let i1 ← Isize.Insts.Hax_libIntToInt.to_int i
   let i2 ← Isize.Insts.Hax_libIntToInt.to_int x
   let i3 ← Isize.Insts.Hax_libIntToInt.to_int y
-  let i4 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i2 i3
-  let b ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i1 i4
+  let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i2 i3
+  let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i1 i4
   if b
   then
-    let i5 ← hax_lib.int.Int.Insts.CoreOpsArithMulIntInt.mul i2 i3
+    let i5 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i2 i3
     let i6 := num.Isize.MAX
     let i7 ← Isize.Insts.Hax_libIntToInt.to_int i6
-    let b1 ← hax_lib.int.Int.Insts.CoreCmpPartialOrdInt.le i5 i7
+    let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i5 i7
     if b1
     then let i8 ← x * y
          ok (option.Option.Some i8)
@@ -5330,6 +5039,68 @@ def num.I128.abs (x : Std.I128) : Result Std.I128 := do
     Source: 'core-models/src/core/num/mod.rs', lines 292:12-294:13 -/
 def num.Isize.abs (x : Std.Isize) : Result Std.Isize := do
   rust_primitives.arithmetic.abs_isize x
+
+/-- [core_models::num::{core_models::num::i8}::rotate_right]:
+    Source: 'core-models/src/core/num/mod.rs', lines 297:12-299:13 -/
+def num.I8.rotate_right (x : Std.I8) (n : Std.U32) : Result Std.I8 := do
+  rust_primitives.arithmetic.rotate_right_i8 x n
+
+/-- [core_models::num::{core_models::num::i16}::rotate_right]:
+    Source: 'core-models/src/core/num/mod.rs', lines 297:12-299:13 -/
+def num.I16.rotate_right (x : Std.I16) (n : Std.U32) : Result Std.I16 := do
+  rust_primitives.arithmetic.rotate_right_i16 x n
+
+/-- [core_models::num::{core_models::num::i32}::rotate_right]:
+    Source: 'core-models/src/core/num/mod.rs', lines 297:12-299:13 -/
+def num.I32.rotate_right (x : Std.I32) (n : Std.U32) : Result Std.I32 := do
+  rust_primitives.arithmetic.rotate_right_i32 x n
+
+/-- [core_models::num::{core_models::num::i64}::rotate_right]:
+    Source: 'core-models/src/core/num/mod.rs', lines 297:12-299:13 -/
+def num.I64.rotate_right (x : Std.I64) (n : Std.U32) : Result Std.I64 := do
+  rust_primitives.arithmetic.rotate_right_i64 x n
+
+/-- [core_models::num::{core_models::num::i128}::rotate_right]:
+    Source: 'core-models/src/core/num/mod.rs', lines 297:12-299:13 -/
+def num.I128.rotate_right (x : Std.I128) (n : Std.U32) : Result Std.I128 := do
+  rust_primitives.arithmetic.rotate_right_i128 x n
+
+/-- [core_models::num::{core_models::num::isize}::rotate_right]:
+    Source: 'core-models/src/core/num/mod.rs', lines 297:12-299:13 -/
+def num.Isize.rotate_right
+  (x : Std.Isize) (n : Std.U32) : Result Std.Isize := do
+  rust_primitives.arithmetic.rotate_right_isize x n
+
+/-- [core_models::num::{core_models::num::i8}::rotate_left]:
+    Source: 'core-models/src/core/num/mod.rs', lines 302:12-304:13 -/
+def num.I8.rotate_left (x : Std.I8) (n : Std.U32) : Result Std.I8 := do
+  rust_primitives.arithmetic.rotate_left_i8 x n
+
+/-- [core_models::num::{core_models::num::i16}::rotate_left]:
+    Source: 'core-models/src/core/num/mod.rs', lines 302:12-304:13 -/
+def num.I16.rotate_left (x : Std.I16) (n : Std.U32) : Result Std.I16 := do
+  rust_primitives.arithmetic.rotate_left_i16 x n
+
+/-- [core_models::num::{core_models::num::i32}::rotate_left]:
+    Source: 'core-models/src/core/num/mod.rs', lines 302:12-304:13 -/
+def num.I32.rotate_left (x : Std.I32) (n : Std.U32) : Result Std.I32 := do
+  rust_primitives.arithmetic.rotate_left_i32 x n
+
+/-- [core_models::num::{core_models::num::i64}::rotate_left]:
+    Source: 'core-models/src/core/num/mod.rs', lines 302:12-304:13 -/
+def num.I64.rotate_left (x : Std.I64) (n : Std.U32) : Result Std.I64 := do
+  rust_primitives.arithmetic.rotate_left_i64 x n
+
+/-- [core_models::num::{core_models::num::i128}::rotate_left]:
+    Source: 'core-models/src/core/num/mod.rs', lines 302:12-304:13 -/
+def num.I128.rotate_left (x : Std.I128) (n : Std.U32) : Result Std.I128 := do
+  rust_primitives.arithmetic.rotate_left_i128 x n
+
+/-- [core_models::num::{core_models::num::isize}::rotate_left]:
+    Source: 'core-models/src/core/num/mod.rs', lines 302:12-304:13 -/
+def num.Isize.rotate_left
+  (x : Std.Isize) (n : Std.U32) : Result Std.Isize := do
+  rust_primitives.arithmetic.rotate_left_isize x n
 
 /-- [core_models::num::{core_models::num::i8}::leading_zeros]:
     Source: 'core-models/src/core/num/mod.rs', lines 307:12-309:13 -/
@@ -6385,24 +6156,28 @@ def ops.range.RangeIsize.Insts.Core_modelsIterTraitsIteratorIteratorIsize :
     Source: 'core-models/src/core/option.rs', lines 24:4-29:5
     Visibility: public -/
 def option.Option.is_some_and
-  {T : Type} {F : Type} (coreopsfunctionFnOnceFTupleTBoolInst :
-  core.ops.function.FnOnce F T Bool) (self : option.Option T) (f : F) :
+  {T : Type} {F : Type} (core_modelsopsfunctionFnOnceFTupleTBoolInst :
+  core_models.ops.function.FnOnce F T Bool) (self : option.Option T) 
+  (f : F) :
   Result Bool
   := do
   match self with
-  | option.Option.Some x => coreopsfunctionFnOnceFTupleTBoolInst.call_once f x
+  | option.Option.Some x =>
+    core_modelsopsfunctionFnOnceFTupleTBoolInst.call_once f x
   | option.Option.None => ok false
 
 /-- [core_models::option::{core_models::option::Option<T>}::is_none_or]:
     Source: 'core-models/src/core/option.rs', lines 37:4-42:5
     Visibility: public -/
 def option.Option.is_none_or
-  {T : Type} {F : Type} (coreopsfunctionFnOnceFTupleTBoolInst :
-  core.ops.function.FnOnce F T Bool) (self : option.Option T) (f : F) :
+  {T : Type} {F : Type} (core_modelsopsfunctionFnOnceFTupleTBoolInst :
+  core_models.ops.function.FnOnce F T Bool) (self : option.Option T) 
+  (f : F) :
   Result Bool
   := do
   match self with
-  | option.Option.Some x => coreopsfunctionFnOnceFTupleTBoolInst.call_once f x
+  | option.Option.Some x =>
+    core_modelsopsfunctionFnOnceFTupleTBoolInst.call_once f x
   | option.Option.None => ok true
 
 /-- [core_models::option::{core_models::option::Option<T>}::as_ref]:
@@ -6435,13 +6210,15 @@ def option.Option.unwrap {T : Type} (self : option.Option T) : Result T := do
     Source: 'core-models/src/core/option.rs', lines 79:4-84:5
     Visibility: public -/
 def option.Option.unwrap_or_else
-  {T : Type} {F : Type} (coreopsfunctionFnOnceFTupleTInst :
-  core.ops.function.FnOnce F Unit T) (self : option.Option T) (f : F) :
+  {T : Type} {F : Type} (core_modelsopsfunctionFnOnceFTupleTInst :
+  core_models.ops.function.FnOnce F Unit T) (self : option.Option T) 
+  (f : F) :
   Result T
   := do
   match self with
   | option.Option.Some x => ok x
-  | option.Option.None => coreopsfunctionFnOnceFTupleTInst.call_once f ()
+  | option.Option.None =>
+    core_modelsopsfunctionFnOnceFTupleTInst.call_once f ()
 
 /-- [core_models::option::{core_models::option::Option<T>}::unwrap_or_default]:
     Source: 'core-models/src/core/option.rs', lines 87:4-95:5
@@ -6459,13 +6236,13 @@ def option.Option.unwrap_or_default
     Source: 'core-models/src/core/option.rs', lines 98:4-106:5
     Visibility: public -/
 def option.Option.map
-  {T : Type} {U : Type} {F : Type} (coreopsfunctionFnOnceFTupleTUInst :
-  core.ops.function.FnOnce F T U) (self : option.Option T) (f : F) :
+  {T : Type} {U : Type} {F : Type} (core_modelsopsfunctionFnOnceFTupleTUInst :
+  core_models.ops.function.FnOnce F T U) (self : option.Option T) (f : F) :
   Result (option.Option U)
   := do
   match self with
   | option.Option.Some x =>
-    let t ← coreopsfunctionFnOnceFTupleTUInst.call_once f x
+    let t ← core_modelsopsfunctionFnOnceFTupleTUInst.call_once f x
     ok (option.Option.Some t)
   | option.Option.None => ok option.Option.None
 
@@ -6473,13 +6250,14 @@ def option.Option.map
     Source: 'core-models/src/core/option.rs', lines 109:4-117:5
     Visibility: public -/
 def option.Option.map_or
-  {T : Type} {U : Type} {F : Type} (coreopsfunctionFnOnceFTupleTUInst :
-  core.ops.function.FnOnce F T U) (self : option.Option T) (default : U)
+  {T : Type} {U : Type} {F : Type} (core_modelsopsfunctionFnOnceFTupleTUInst :
+  core_models.ops.function.FnOnce F T U) (self : option.Option T) (default : U)
   (f : F) :
   Result U
   := do
   match self with
-  | option.Option.Some t => coreopsfunctionFnOnceFTupleTUInst.call_once f t
+  | option.Option.Some t =>
+    core_modelsopsfunctionFnOnceFTupleTUInst.call_once f t
   | option.Option.None => ok default
 
 /-- [core_models::option::{core_models::option::Option<T>}::map_or_else]:
@@ -6487,26 +6265,30 @@ def option.Option.map_or
     Visibility: public -/
 def option.Option.map_or_else
   {T : Type} {U : Type} {D : Type} {F : Type}
-  (coreopsfunctionFnOnceFTupleTUInst : core.ops.function.FnOnce F T U)
-  (coreopsfunctionFnOnceDTupleUInst : core.ops.function.FnOnce D Unit U)
-  (self : option.Option T) (default : D) (f : F) :
+  (core_modelsopsfunctionFnOnceFTupleTUInst : core_models.ops.function.FnOnce F
+  T U) (core_modelsopsfunctionFnOnceDTupleUInst :
+  core_models.ops.function.FnOnce D Unit U) (self : option.Option T)
+  (default : D) (f : F) :
   Result U
   := do
   match self with
-  | option.Option.Some t => coreopsfunctionFnOnceFTupleTUInst.call_once f t
-  | option.Option.None => coreopsfunctionFnOnceDTupleUInst.call_once default ()
+  | option.Option.Some t =>
+    core_modelsopsfunctionFnOnceFTupleTUInst.call_once f t
+  | option.Option.None =>
+    core_modelsopsfunctionFnOnceDTupleUInst.call_once default ()
 
 /-- [core_models::option::{core_models::option::Option<T>}::map_or_default]:
     Source: 'core-models/src/core/option.rs', lines 132:4-141:5
     Visibility: public -/
 def option.Option.map_or_default
-  {T : Type} {U : Type} {F : Type} (coreopsfunctionFnOnceFTupleTUInst :
-  core.ops.function.FnOnce F T U) (defaultDefaultInst : default.Default U)
-  (self : option.Option T) (f : F) :
+  {T : Type} {U : Type} {F : Type} (core_modelsopsfunctionFnOnceFTupleTUInst :
+  core_models.ops.function.FnOnce F T U) (defaultDefaultInst : default.Default
+  U) (self : option.Option T) (f : F) :
   Result U
   := do
   match self with
-  | option.Option.Some t => coreopsfunctionFnOnceFTupleTUInst.call_once f t
+  | option.Option.Some t =>
+    core_modelsopsfunctionFnOnceFTupleTUInst.call_once f t
   | option.Option.None => defaultDefaultInst.default
 
 /-- [core_models::option::{core_models::option::Option<T>}::ok_or]:
@@ -6524,28 +6306,30 @@ def option.Option.ok_or
     Source: 'core-models/src/core/option.rs', lines 152:4-157:5
     Visibility: public -/
 def option.Option.ok_or_else
-  {T : Type} {E : Type} {F : Type} (coreopsfunctionFnOnceFTupleEInst :
-  core.ops.function.FnOnce F Unit E) (self : option.Option T) (err : F) :
+  {T : Type} {E : Type} {F : Type} (core_modelsopsfunctionFnOnceFTupleEInst :
+  core_models.ops.function.FnOnce F Unit E) (self : option.Option T) 
+  (err : F) :
   Result (result.Result T E)
   := do
   match self with
   | option.Option.Some v => ok (result.Result.Ok v)
   | option.Option.None =>
-    let t ← coreopsfunctionFnOnceFTupleEInst.call_once err ()
+    let t ← core_modelsopsfunctionFnOnceFTupleEInst.call_once err ()
     ok (result.Result.Err t)
 
 /-- [core_models::option::{core_models::option::Option<T>}::and_then]:
     Source: 'core-models/src/core/option.rs', lines 160:4-168:5
     Visibility: public -/
 def option.Option.and_then
-  {T : Type} {U : Type} {F : Type} (coreopsfunctionFnOnceFTupleTOptionInst :
-  core.ops.function.FnOnce F T (option.Option U)) (self : option.Option T)
-  (f : F) :
+  {T : Type} {U : Type} {F : Type}
+  (core_modelsopsfunctionFnOnceFTupleTOptionInst :
+  core_models.ops.function.FnOnce F T (option.Option U))
+  (self : option.Option T) (f : F) :
   Result (option.Option U)
   := do
   match self with
   | option.Option.Some x =>
-    coreopsfunctionFnOnceFTupleTOptionInst.call_once f x
+    core_modelsopsfunctionFnOnceFTupleTOptionInst.call_once f x
   | option.Option.None => ok option.Option.None
 
 /-- [core_models::option::{core_models::option::Option<T>}::or]:
@@ -6563,14 +6347,15 @@ def option.Option.or
     Source: 'core-models/src/core/option.rs', lines 203:4-208:5
     Visibility: public -/
 def option.Option.or_else
-  {T : Type} {F : Type} (coreopsfunctionFnOnceFTupleOptionInst :
-  core.ops.function.FnOnce F Unit (option.Option T)) (self : option.Option T)
-  (f : F) :
+  {T : Type} {F : Type} (core_modelsopsfunctionFnOnceFTupleOptionInst :
+  core_models.ops.function.FnOnce F Unit (option.Option T))
+  (self : option.Option T) (f : F) :
   Result (option.Option T)
   := do
   match self with
   | option.Option.Some _ => ok self
-  | option.Option.None => coreopsfunctionFnOnceFTupleOptionInst.call_once f ()
+  | option.Option.None =>
+    core_modelsopsfunctionFnOnceFTupleOptionInst.call_once f ()
 
 /-- [core_models::option::{core_models::option::Option<T>}::xor]:
     Source: 'core-models/src/core/option.rs', lines 211:4-217:5
@@ -6779,4 +6564,4 @@ def U64.Insts.Core_modelsStrTraitsFromStrU64 : str.traits.FromStr Std.U64
   from_str := U64.Insts.Core_modelsStrTraitsFromStrU64.from_str
 }
 
-end CoreModels.core
+end core_models

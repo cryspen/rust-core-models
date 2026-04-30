@@ -2,7 +2,7 @@ import Aeneas
 
 open Aeneas.Std
 
-namespace CoreModels.core
+namespace core_models
 
 /-! ## Function closures -/
 
@@ -35,6 +35,9 @@ defeat that. -/
 structure Phantom (A : Type) where mk ::
 deriving Inhabited
 
+@[reducible]
+def marker.PhantomData (T : Type) := T
+
 /-! ## Option
 
 Rust's `Option` aliased to Lean's built-in
@@ -54,17 +57,13 @@ inductive cmp.Ordering where
 | Equal : cmp.Ordering
 | Greater : cmp.Ordering
 
-end CoreModels.core
-
-namespace CoreModels
 
 /-! ## Rust's `Result` enum -/
-
-namespace core.result
+namespace result
 
 inductive Result (T : Type) (E : Type) where
-| Ok : T → core.result.Result T E
-| Err : E → core.result.Result T E
+| Ok : T → Result T E
+| Err : E → Result T E
 
 def Result.ok {T E : Type} (r : Result T E) : Aeneas.Std.Result (_root_.Option T) :=
   match r with
@@ -88,8 +87,13 @@ def Result.is_err {T E : Type} (r : Result T E) : Aeneas.Std.Result Bool :=
   match r with
   | Result.Ok _  => Aeneas.Std.Result.ok false
   | Result.Err _ => Aeneas.Std.Result.ok true
-end core.result
+end result
 
+export Aeneas.Std.core (
+  clone.Clone marker.Copy
+)
+
+end core_models
 
 /-! ## Hax lib -/
 namespace hax_lib
@@ -97,9 +101,3 @@ namespace hax_lib
 @[reducible] def int.Int := _root_.Int
 
 end hax_lib
-
-export Aeneas.Std (
-  core.clone.Clone core.marker.Copy
-)
-
-end CoreModels

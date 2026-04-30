@@ -5,7 +5,7 @@
 import CoreModels.Types
 import CoreModels.Alloc.Types
 
-namespace CoreModels.core
+namespace core_models
 
 open Aeneas.Std Result
 
@@ -92,11 +92,6 @@ def cmp.PartialOrdI32   := mkIPartialOrd .I32
 def cmp.PartialOrdI64   := mkIPartialOrd .I64
 def cmp.PartialOrdI128  := mkIPartialOrd .I128
 def cmp.PartialOrdIsize := mkIPartialOrd .Isize
-
-end CoreModels.core
-
-namespace CoreModels
-namespace core
 
 /-! ### Scalar Clone / Copy instances
 
@@ -192,7 +187,7 @@ def IteratorRange.next {A : Type} (StepInst : Step A) :
   let cmp ← StepInst.partialOrdInst.partial_cmp range.start range.«end»
   let isLess : Bool := match cmp with
     | Option.some o => match o with
-                       | CoreModels.core.cmp.Ordering.Less => true
+                       | core_models.cmp.Ordering.Less => true
                        | _ => false
     | _ => false
   if isLess then
@@ -205,64 +200,71 @@ def IteratorRange.next {A : Type} (StepInst : Step A) :
 
 end iter.range
 
-end core
+abbrev ops.range.Range.Insts.Core_modelsIterTraitsIteratorIterator.next :=
+  @core_models.iter.range.IteratorRange.next
+
+abbrev Usize.Insts.Core_modelsIterRangeStep := core_models.iter.range.StepUsize
+
+/-! ## Slice -/
+
+def slice.Slice.len {T : Type u} (v : Aeneas.Std.Slice T) : Aeneas.Std.Result Usize :=
+  pure (@Aeneas.Std.Slice.len T v)
+
+/-! ## Option -/
+
+def option.Option.unwrap_or :=
+  fun {T} x y => Aeneas.Std.Result.ok (@Aeneas.Std.core.option.Option.unwrap_or T x y)
+
+def option.Option.is_some :=
+  fun {T} x => Aeneas.Std.Result.ok (@Aeneas.Std.core.option.Option.is_some T x)
+
+def option.Option.is_none :=
+  fun {T} x => Aeneas.Std.Result.ok (@Aeneas.Std.core.option.Option.is_none T x)
+
+def option.Option.take :=
+  fun {T} x => Aeneas.Std.Result.ok (@Aeneas.Std.core.option.Option.take T x)
+
+/-! ## Mem -/
+
+def mem.swap :=
+  fun {T} x y => Aeneas.Std.Result.ok (@Aeneas.Std.core.mem.swap T x y)
+
+def mem.replace :=
+  fun {T} x y => Aeneas.Std.Result.ok (@Aeneas.Std.core.mem.replace T x y)
 
 /-! ## Redirects to Aeneas's library -/
 
-export Aeneas.Std (
-  core.num.U8.MIN core.num.U8.MAX core.num.I8.MIN core.num.I8.MAX
-  core.num.U16.MIN core.num.U16.MAX core.num.I16.MIN core.num.I16.MAX
-  core.num.U32.MIN core.num.U32.MAX core.num.I32.MIN core.num.I32.MAX
-  core.num.U64.MIN core.num.U64.MAX core.num.I64.MIN core.num.I64.MAX
-  core.num.U128.MIN core.num.U128.MAX core.num.I128.MIN core.num.I128.MAX
-  core.num.Usize.MIN core.num.Usize.MAX core.num.Isize.MIN core.num.Isize.MAX
-  core.num.U8.wrapping_add core.num.I8.wrapping_add
-  core.num.U16.wrapping_add core.num.I16.wrapping_add
-  core.num.U32.wrapping_add core.num.I32.wrapping_add
-  core.num.U64.wrapping_add core.num.I64.wrapping_add
-  core.num.U128.wrapping_add core.num.I128.wrapping_add
-  core.num.Usize.wrapping_add core.num.Isize.wrapping_add
-  core.num.U8.wrapping_sub core.num.I8.wrapping_sub
-  core.num.U16.wrapping_sub core.num.I16.wrapping_sub
-  core.num.U32.wrapping_sub core.num.I32.wrapping_sub
-  core.num.U64.wrapping_sub core.num.I64.wrapping_sub
-  core.num.U128.wrapping_sub core.num.I128.wrapping_sub
-  core.num.Usize.wrapping_sub core.num.Isize.wrapping_sub
-  core.num.U8.wrapping_mul core.num.I8.wrapping_mul
-  core.num.U16.wrapping_mul core.num.I16.wrapping_mul
-  core.num.U32.wrapping_mul core.num.I32.wrapping_mul
-  core.num.U64.wrapping_mul core.num.I64.wrapping_mul
-  core.num.U128.wrapping_mul core.num.I128.wrapping_mul
-  core.num.Usize.wrapping_mul core.num.Isize.wrapping_mul
-  core.option.Option.unwrap_or
-  core.option.Option.is_some
-  core.option.Option.is_none
-  core.option.Option.take
-  core.mem.swap core.mem.replace
-  core.convert.num.FromU16U8.from
-  core.convert.num.FromU32U8.from
-  core.convert.num.FromU32U16.from
-  core.convert.num.FromU64U8.from
-  core.convert.num.FromU64U16.from
-  core.convert.num.FromU64U32.from
-  core.convert.num.FromU128U8.from
-  core.convert.num.FromU128U16.from
-  core.convert.num.FromU128U32.from
-  core.convert.num.FromU128U64.from
-  core.convert.num.FromUsizeU8.from
-  core.convert.num.FromUsizeU16.from
-  core.convert.num.FromI16I8.from
-  core.convert.num.FromI32I8.from
-  core.convert.num.FromI32I16.from
-  core.convert.num.FromI64I8.from
-  core.convert.num.FromI64I16.from
-  core.convert.num.FromI64I32.from
-  core.convert.num.FromI128I8.from
-  core.convert.num.FromI128I16.from
-  core.convert.num.FromI128I32.from
-  core.convert.num.FromI128I64.from
-  core.convert.num.FromIsizeI8.from
-  core.convert.num.FromIsizeI16.from
+export Aeneas.Std.core (
+  num.U8.MIN num.U8.MAX num.I8.MIN num.I8.MAX
+  num.U16.MIN num.U16.MAX num.I16.MIN num.I16.MAX
+  num.U32.MIN num.U32.MAX num.I32.MIN num.I32.MAX
+  num.U64.MIN num.U64.MAX num.I64.MIN num.I64.MAX
+  num.U128.MIN num.U128.MAX num.I128.MIN num.I128.MAX
+  num.Usize.MIN num.Usize.MAX num.Isize.MIN num.Isize.MAX
+  convert.num.FromU16U8.from
+  convert.num.FromU32U8.from
+  convert.num.FromU32U16.from
+  convert.num.FromU64U8.from
+  convert.num.FromU64U16.from
+  convert.num.FromU64U32.from
+  convert.num.FromU128U8.from
+  convert.num.FromU128U16.from
+  convert.num.FromU128U32.from
+  convert.num.FromU128U64.from
+  convert.num.FromUsizeU8.from
+  convert.num.FromUsizeU16.from
+  convert.num.FromI16I8.from
+  convert.num.FromI32I8.from
+  convert.num.FromI32I16.from
+  convert.num.FromI64I8.from
+  convert.num.FromI64I16.from
+  convert.num.FromI64I32.from
+  convert.num.FromI128I8.from
+  convert.num.FromI128I16.from
+  convert.num.FromI128I32.from
+  convert.num.FromI128I64.from
+  convert.num.FromIsizeI8.from
+  convert.num.FromIsizeI16.from
 )
 
-end CoreModels
+end core_models

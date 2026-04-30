@@ -66,14 +66,6 @@ CHARON_EXCLUDES = \
     --exclude 'core_models::option::_::is_none' \
     --exclude 'core_models::option::_::unwrap_or' \
     --exclude 'core_models::option::_::take' \
-    --exclude 'core_models::num::*::wrapping_add' \
-    --exclude 'core_models::num::*::wrapping_sub' \
-    --exclude 'core_models::num::*::wrapping_mul' \
-    --exclude 'core_models::num::*::saturating_add' \
-    --exclude 'core_models::num::*::saturating_sub' \
-    --exclude 'core_models::num::*::rotate_left' \
-    --exclude 'core_models::num::*::rotate_right' \
-    --exclude 'core_models::num::*::overflowing_add' \
     --exclude 'core_models::slice::index::*'
 
 llbc: $(LLBC_FILE)
@@ -91,7 +83,7 @@ extract: $(LLBC_FILE) alloc-extract
 	mkdir -p $(LEAN_DIR)
 	# Aeneas may exit non-zero while still producing partial files; that's OK,
 	# our patcher and the surrounding hand-written library handle the gaps.
-	-$(AENEAS) -backend lean $(LLBC_FILE) -split-files -dest $(LEAN_DIR)
+	-$(AENEAS) -core-models-lib -backend lean $(LLBC_FILE) -split-files -dest $(LEAN_DIR)
 
 # -----------------------------------------------------------------------------
 # alloc/ extraction (with the `alloc_models` crate-name workaround)
@@ -125,7 +117,7 @@ alloc-llbc: $(ALLOC_LLBC_FILE)
 # `-subdir CoreModels/Alloc` makes Aeneas emit `import CoreModels.Alloc.<X>` rather
 # than the auto-derived `Alloc_models.<X>` prefix.
 alloc-extract: $(ALLOC_LLBC_FILE)
-	-$(AENEAS) -backend lean $(ALLOC_LLBC_FILE) -split-files \
+	-$(AENEAS) -core-models-lib -backend lean $(ALLOC_LLBC_FILE) -split-files \
 	    -dest $(LEAN_DIR) -subdir CoreModels/Alloc
 
 # 3. Move generated files into $(LEAN_DIR)/CoreModels/ and apply our patches
