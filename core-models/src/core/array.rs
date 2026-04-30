@@ -115,6 +115,30 @@ impl<T, const N: usize> Index<RangeFull> for [T; N] {
     }
 }
 
+#[cfg(not(hax))]
+impl<T: crate::clone::Clone, const N: usize> crate::clone::Clone for [T; N] {
+    fn clone(self) -> Self {
+        self
+    }
+}
+
+pub mod equality {
+    use rust_primitives::slice::array_index;
+
+    impl<T: crate::cmp::PartialEq<U>, U, const N: usize> crate::cmp::PartialEq<[U; N]> for [T; N] {
+        fn eq(&self, other: &[U; N]) -> bool {
+            let mut i = 0;
+            while i < N {
+                if !array_index(self, i).eq(array_index(other, i)) {
+                    return false;
+                }
+                i += 1;
+            }
+            true
+        }
+    }
+}
+
 mod iter {
     use crate::option::Option;
     use rust_primitives::sequence::*;
@@ -197,6 +221,13 @@ mod tests {
             for i in 0..4 {
                 prop_assert_eq!(*model_refs[i], *std_refs[i]);
             }
+        }
+
+        #[test]
+        fn test_eq(a in any::<[u8; 4]>(), b in any::<[u8; 4]>()) {
+            let ma = a.inject();
+            let mb = b.inject();
+            prop_assert_eq!(crate::cmp::PartialEq::eq(&ma, &mb), a == b);
         }
     }
 }

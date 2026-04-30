@@ -54,7 +54,7 @@ structure iter.traits.collect.IntoIterator (Self : Type) (Self_Item : Type)
   into_iter : Self → Result Self_IntoIter
 
 /-- [core_models::array::iter::IntoIter]
-    Source: 'core-models/src/core/array.rs', lines 121:4-121:55
+    Source: 'core-models/src/core/array.rs', lines 145:4-145:55
     Visibility: public -/
 @[reducible]
 def array.iter.IntoIter (T : Type) (N : Std.Usize) :=
@@ -92,6 +92,20 @@ structure ops.range.RangeFrom (T : Type) where
 def ops.range.RangeFull := Unit
 
 /-
+/-- Trait declaration: [core_models::clone::Clone]
+    Source: 'core-models/src/core/clone.rs', lines 13:0-16:1
+    Visibility: public -/
+structure clone.Clone (Self : Type) where
+  clone : Self → Result Self
+-/
+
+/-- Trait declaration: [core_models::cmp::PartialEq]
+    Source: 'core-models/src/core/cmp.rs', lines 5:0-12:1
+    Visibility: public -/
+structure cmp.PartialEq (Self : Type) (Rhs : Type) where
+  eq : Self → Rhs → Result Bool
+
+/-
 /-- [core_models::option::Option]
     Source: 'core-models/src/core/option.rs', lines 3:0-8:1
     Visibility: public -/
@@ -111,20 +125,6 @@ structure iter.traits.iterator.Iterator (Self : Type) (Self_Item : Type) where
     Source: 'core-models/src/core/borrow.rs', lines 2:0-5:1 -/
 structure borrow.Borrow (Self : Type) (Borrowed : Type) where
   borrow : Self → Result Borrowed
-
-/-
-/-- Trait declaration: [core_models::clone::Clone]
-    Source: 'core-models/src/core/clone.rs', lines 13:0-16:1
-    Visibility: public -/
-structure clone.Clone (Self : Type) where
-  clone : Self → Result Self
--/
-
-/-- Trait declaration: [core_models::cmp::PartialEq]
-    Source: 'core-models/src/core/cmp.rs', lines 5:0-12:1
-    Visibility: public -/
-structure cmp.PartialEq (Self : Type) (Rhs : Type) where
-  eq : Self → Rhs → Result Bool
 
 /-- Trait declaration: [core_models::cmp::Eq]
     Source: 'core-models/src/core/cmp.rs', lines 15:0-15:32

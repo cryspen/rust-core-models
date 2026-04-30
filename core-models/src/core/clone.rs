@@ -16,6 +16,7 @@ pub trait Clone {
 }
 
 // In our model, everything is clonable
+#[cfg(hax)]
 impl<T> Clone for T {
     fn clone(self) -> Self {
         self

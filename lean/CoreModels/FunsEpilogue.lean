@@ -27,4 +27,9 @@ def alloc.slice.Slice.into_vec
 
 end
 
+/-! ## Function renamings -/
+
+abbrev core.array.equality.PartialEqArray.eq := @core.Array.Insts.Core_modelsCmpPartialEqArray.eq
+abbrev core.array.CloneArray.clone := @core.Array.Insts.Core_modelsCloneClone.clone
+
 end CoreModels
