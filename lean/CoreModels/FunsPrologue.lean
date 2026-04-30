@@ -40,6 +40,25 @@ def cmp.impls.PartialEqI64   : cmp.PartialEq I64   I64   := { eq := liftBoolCmp2
 def cmp.impls.PartialEqI128  : cmp.PartialEq I128  I128  := { eq := liftBoolCmp2 (· == ·) }
 def cmp.impls.PartialEqIsize : cmp.PartialEq Isize Isize := { eq := liftBoolCmp2 (· == ·) }
 
+namespace cmp
+-- when exported in a user project, these instances get different names:
+export impls (
+  PartialEqU8 PartialEqU8.eq
+  PartialEqU16 PartialEqU16.eq
+  PartialEqU32 PartialEqU32.eq
+  PartialEqU64 PartialEqU64.eq
+  PartialEqU128 PartialEqU128.eq
+  PartialEqUsize PartialEqUsize.eq
+  PartialEqI8 PartialEqI8.eq
+  PartialEqI16 PartialEqI16.eq
+  PartialEqI32 PartialEqI32.eq
+  PartialEqI64 PartialEqI64.eq
+  PartialEqI128 PartialEqI128.eq
+  PartialEqIsize PartialEqIsize.eq
+)
+
+end cmp
+
 private def mkUPartialOrd (ty) : cmp.PartialOrd (UScalar ty) (UScalar ty) := {
   PartialEqInst := { eq := liftBoolCmp2 (· == ·) }
   partial_cmp := fun x y =>
