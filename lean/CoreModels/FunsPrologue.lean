@@ -14,50 +14,18 @@ open Aeneas.Std Result
 private def liftBoolCmp2 {α β} (f : α → β → Bool) : α → β → Result Bool :=
   fun x y => ok (f x y)
 
-def cmp.impls.PartialEqU8.eq    : U8    → U8    → Bool := (· == ·)
-def cmp.impls.PartialEqU16.eq   : U16   → U16   → Bool := (· == ·)
-def cmp.impls.PartialEqU32.eq   : U32   → U32   → Bool := (· == ·)
-def cmp.impls.PartialEqU64.eq   : U64   → U64   → Bool := (· == ·)
-def cmp.impls.PartialEqU128.eq  : U128  → U128  → Bool := (· == ·)
-def cmp.impls.PartialEqUsize.eq : Usize → Usize → Bool := (· == ·)
-def cmp.impls.PartialEqI8.eq    : I8    → I8    → Bool := (· == ·)
-def cmp.impls.PartialEqI16.eq   : I16   → I16   → Bool := (· == ·)
-def cmp.impls.PartialEqI32.eq   : I32   → I32   → Bool := (· == ·)
-def cmp.impls.PartialEqI64.eq   : I64   → I64   → Bool := (· == ·)
-def cmp.impls.PartialEqI128.eq  : I128  → I128  → Bool := (· == ·)
-def cmp.impls.PartialEqIsize.eq : Isize → Isize → Bool := (· == ·)
-
-def cmp.impls.PartialEqU8    : cmp.PartialEq U8    U8    := { eq := liftBoolCmp2 (· == ·) }
-def cmp.impls.PartialEqU16   : cmp.PartialEq U16   U16   := { eq := liftBoolCmp2 (· == ·) }
-def cmp.impls.PartialEqU32   : cmp.PartialEq U32   U32   := { eq := liftBoolCmp2 (· == ·) }
-def cmp.impls.PartialEqU64   : cmp.PartialEq U64   U64   := { eq := liftBoolCmp2 (· == ·) }
-def cmp.impls.PartialEqU128  : cmp.PartialEq U128  U128  := { eq := liftBoolCmp2 (· == ·) }
-def cmp.impls.PartialEqUsize : cmp.PartialEq Usize Usize := { eq := liftBoolCmp2 (· == ·) }
-def cmp.impls.PartialEqI8    : cmp.PartialEq I8    I8    := { eq := liftBoolCmp2 (· == ·) }
-def cmp.impls.PartialEqI16   : cmp.PartialEq I16   I16   := { eq := liftBoolCmp2 (· == ·) }
-def cmp.impls.PartialEqI32   : cmp.PartialEq I32   I32   := { eq := liftBoolCmp2 (· == ·) }
-def cmp.impls.PartialEqI64   : cmp.PartialEq I64   I64   := { eq := liftBoolCmp2 (· == ·) }
-def cmp.impls.PartialEqI128  : cmp.PartialEq I128  I128  := { eq := liftBoolCmp2 (· == ·) }
-def cmp.impls.PartialEqIsize : cmp.PartialEq Isize Isize := { eq := liftBoolCmp2 (· == ·) }
-
-namespace cmp
--- when exported in a user project, these instances get different names:
-export impls (
-  PartialEqU8 PartialEqU8.eq
-  PartialEqU16 PartialEqU16.eq
-  PartialEqU32 PartialEqU32.eq
-  PartialEqU64 PartialEqU64.eq
-  PartialEqU128 PartialEqU128.eq
-  PartialEqUsize PartialEqUsize.eq
-  PartialEqI8 PartialEqI8.eq
-  PartialEqI16 PartialEqI16.eq
-  PartialEqI32 PartialEqI32.eq
-  PartialEqI64 PartialEqI64.eq
-  PartialEqI128 PartialEqI128.eq
-  PartialEqIsize PartialEqIsize.eq
-)
-
-end cmp
+instance U8.Insts.Core_modelsCmpPartialEqU8       : cmp.PartialEq U8    U8    := { eq := liftBoolCmp2 (· == ·) }
+instance U16.Insts.Core_modelsCmpPartialEqU16     : cmp.PartialEq U16   U16   := { eq := liftBoolCmp2 (· == ·) }
+instance U32.Insts.Core_modelsCmpPartialEqU32     : cmp.PartialEq U32   U32   := { eq := liftBoolCmp2 (· == ·) }
+instance U64.Insts.Core_modelsCmpPartialEqU64     : cmp.PartialEq U64   U64   := { eq := liftBoolCmp2 (· == ·) }
+instance U128.Insts.Core_modelsCmpPartialEqU128   : cmp.PartialEq U128  U128  := { eq := liftBoolCmp2 (· == ·) }
+instance Usize.Insts.Core_modelsCmpPartialEqUsize : cmp.PartialEq Usize Usize := { eq := liftBoolCmp2 (· == ·) }
+instance I8.Insts.Core_modelsCmpPartialEqI8       : cmp.PartialEq I8    I8    := { eq := liftBoolCmp2 (· == ·) }
+instance I16.Insts.Core_modelsCmpPartialEqI16     : cmp.PartialEq I16   I16   := { eq := liftBoolCmp2 (· == ·) }
+instance I32.Insts.Core_modelsCmpPartialEqI32     : cmp.PartialEq I32   I32   := { eq := liftBoolCmp2 (· == ·) }
+instance I64.Insts.Core_modelsCmpPartialEqI64     : cmp.PartialEq I64   I64   := { eq := liftBoolCmp2 (· == ·) }
+instance I128.Insts.Core_modelsCmpPartialEqI128   : cmp.PartialEq I128  I128  := { eq := liftBoolCmp2 (· == ·) }
+instance Isize.Insts.Core_modelsCmpPartialEqIsize : cmp.PartialEq Isize Isize := { eq := liftBoolCmp2 (· == ·) }
 
 private def mkUPartialOrd (ty) : cmp.PartialOrd (UScalar ty) (UScalar ty) := {
   PartialEqInst := { eq := liftBoolCmp2 (· == ·) }
