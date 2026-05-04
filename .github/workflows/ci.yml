@@ -10,7 +10,7 @@ on:
 env:
   RUST_TOOLCHAIN: nightly-2026-02-07
   CHARON_REV:    ed22146b1cd4d0b578006a58b3299d41ecbe0fd4
-  AENEAS_REV:    a2fcf1923d16684cec638f5503da11acd0ef002d
+  AENEAS_REV:    863909afa638edd449035a56ba76801c57c9213d
   # Where the cache step stages the charon / aeneas binaries.
   AENEAS_DIR: ${{ github.workspace }}/.tools/aeneas
 
@@ -132,7 +132,7 @@ jobs:
         run: |
           mkdir -p $AENEAS_DIR/bin
           aeneas_out=$(nix build --print-out-paths --no-link \
-            "github:AeneasVerif/aeneas/$AENEAS_REV#aeneas-static")
+            "github:maximebuyse/aeneas/$AENEAS_REV#aeneas-static")
           cp -L "$aeneas_out"/bin/aeneas $AENEAS_DIR/bin/aeneas
 
       - name: Save charon + aeneas binaries
