@@ -27,101 +27,6 @@ instance I64.Insts.Core_modelsCmpPartialEqI64     : cmp.PartialEq I64   I64   :=
 instance I128.Insts.Core_modelsCmpPartialEqI128   : cmp.PartialEq I128  I128  := { eq := liftBoolCmp2 (· == ·) }
 instance Isize.Insts.Core_modelsCmpPartialEqIsize : cmp.PartialEq Isize Isize := { eq := liftBoolCmp2 (· == ·) }
 
-private def mkUPartialOrd (ty) : cmp.PartialOrd (UScalar ty) (UScalar ty) := {
-  PartialEqInst := { eq := liftBoolCmp2 (· == ·) }
-  partial_cmp := fun x y =>
-    ok (option.Option.Some
-      (match compare x.val y.val with
-       | .lt => cmp.Ordering.Less
-       | .eq => cmp.Ordering.Equal
-       | .gt => cmp.Ordering.Greater))
-}
-
-def cmp.PartialOrdU8    := mkUPartialOrd .U8
-def cmp.PartialOrdU16   := mkUPartialOrd .U16
-def cmp.PartialOrdU32   := mkUPartialOrd .U32
-def cmp.PartialOrdU64   := mkUPartialOrd .U64
-def cmp.PartialOrdU128  := mkUPartialOrd .U128
-def cmp.PartialOrdUsize := mkUPartialOrd .Usize
-
-private def mkIPartialOrd (ty) : cmp.PartialOrd (IScalar ty) (IScalar ty) := {
-  PartialEqInst := { eq := liftBoolCmp2 (· == ·) }
-  partial_cmp := fun x y =>
-    ok (option.Option.Some
-      (match compare x.val y.val with
-       | .lt => cmp.Ordering.Less
-       | .eq => cmp.Ordering.Equal
-       | .gt => cmp.Ordering.Greater))
-}
-
-def cmp.PartialOrdI8    := mkIPartialOrd .I8
-def cmp.PartialOrdI16   := mkIPartialOrd .I16
-def cmp.PartialOrdI32   := mkIPartialOrd .I32
-def cmp.PartialOrdI64   := mkIPartialOrd .I64
-def cmp.PartialOrdI128  := mkIPartialOrd .I128
-def cmp.PartialOrdIsize := mkIPartialOrd .Isize
-
-/-! ### Scalar Clone / Copy instances
-
-Aeneas's standard library names them `core.clone.CloneU8`, `core.marker.CopyU8`,
-etc. Downstream Aeneas-extracted code that calls e.g. `<u64 as Clone>::clone`
-references these exact names. -/
-
-private def builtinScalarClone {α : Type} : clone.Clone α where
-  clone := fun x => Aeneas.Std.Result.ok x
-
-def clone.CloneU8    : clone.Clone U8    := builtinScalarClone
-def clone.CloneU16   : clone.Clone U16   := builtinScalarClone
-def clone.CloneU32   : clone.Clone U32   := builtinScalarClone
-def clone.CloneU64   : clone.Clone U64   := builtinScalarClone
-def clone.CloneU128  : clone.Clone U128  := builtinScalarClone
-def clone.CloneUsize : clone.Clone Usize := builtinScalarClone
-def clone.CloneI8    : clone.Clone I8    := builtinScalarClone
-def clone.CloneI16   : clone.Clone I16   := builtinScalarClone
-def clone.CloneI32   : clone.Clone I32   := builtinScalarClone
-def clone.CloneI64   : clone.Clone I64   := builtinScalarClone
-def clone.CloneI128  : clone.Clone I128  := builtinScalarClone
-def clone.CloneIsize : clone.Clone Isize := builtinScalarClone
-def clone.CloneBool  : clone.Clone Bool  := builtinScalarClone
-
-def marker.CopyU8    : marker.Copy U8    := { cloneInst := clone.CloneU8 }
-def marker.CopyU16   : marker.Copy U16   := { cloneInst := clone.CloneU16 }
-def marker.CopyU32   : marker.Copy U32   := { cloneInst := clone.CloneU32 }
-def marker.CopyU64   : marker.Copy U64   := { cloneInst := clone.CloneU64 }
-def marker.CopyU128  : marker.Copy U128  := { cloneInst := clone.CloneU128 }
-def marker.CopyUsize : marker.Copy Usize := { cloneInst := clone.CloneUsize }
-def marker.CopyI8    : marker.Copy I8    := { cloneInst := clone.CloneI8 }
-def marker.CopyI16   : marker.Copy I16   := { cloneInst := clone.CloneI16 }
-def marker.CopyI32   : marker.Copy I32   := { cloneInst := clone.CloneI32 }
-def marker.CopyI64   : marker.Copy I64   := { cloneInst := clone.CloneI64 }
-def marker.CopyI128  : marker.Copy I128  := { cloneInst := clone.CloneI128 }
-def marker.CopyIsize : marker.Copy Isize := { cloneInst := clone.CloneIsize }
-def marker.CopyBool  : marker.Copy Bool  := { cloneInst := clone.CloneBool }
-
-/-! ### Pure scalar Clone helpers
-
-Aeneas extracts `<u8 as Clone>::clone` to a *pure* function
-`core.clone.impls.CloneU8.clone` (Aeneas marks it `~can_fail:false`).
-The implementation is just the identity. -/
-
-namespace clone.impls
-
-def CloneU8.clone    (x : U8)    : U8    := x
-def CloneU16.clone   (x : U16)   : U16   := x
-def CloneU32.clone   (x : U32)   : U32   := x
-def CloneU64.clone   (x : U64)   : U64   := x
-def CloneU128.clone  (x : U128)  : U128  := x
-def CloneUsize.clone (x : Usize) : Usize := x
-def CloneI8.clone    (x : I8)    : I8    := x
-def CloneI16.clone   (x : I16)   : I16   := x
-def CloneI32.clone   (x : I32)   : I32   := x
-def CloneI64.clone   (x : I64)   : I64   := x
-def CloneI128.clone  (x : I128)  : I128  := x
-def CloneIsize.clone (x : Isize) : Isize := x
-def CloneBool.clone  (x : Bool)  : Bool  := x
-
-end clone.impls
-
 /-! ## core::iter::range — Range iteration
 
 Aeneas extracts `for i in lo..hi { … }` to a loop driven by
@@ -139,10 +44,20 @@ structure Step (Self : Type) where
   forward_checked : Self → Aeneas.Std.Usize → Aeneas.Std.Result (Option Self)
   backward_checked: Self → Aeneas.Std.Usize → Aeneas.Std.Result (Option Self)
 
+private def mkUPartialOrd (ty) : cmp.PartialOrd (UScalar ty) (UScalar ty) := {
+  PartialEqInst := { eq := liftBoolCmp2 (· == ·) }
+  partial_cmp := fun x y =>
+    ok (option.Option.Some
+      (match compare x.val y.val with
+       | .lt => cmp.Ordering.Less
+       | .eq => cmp.Ordering.Equal
+       | .gt => cmp.Ordering.Greater))
+}
+
 /-- Step instance for `Usize`. -/
 def StepUsize : Step Aeneas.Std.Usize := {
-  cloneInst       := clone.CloneUsize
-  partialOrdInst  := cmp.PartialOrdUsize
+  cloneInst       := { clone := fun x => Aeneas.Std.Result.ok x}
+  partialOrdInst  := mkUPartialOrd .Usize
   steps_between   := Aeneas.Std.core.iter.range.StepUsize.steps_between
   forward_checked := Aeneas.Std.core.iter.range.StepUsize.forward_checked
   backward_checked := Aeneas.Std.core.iter.range.StepUsize.backward_checked

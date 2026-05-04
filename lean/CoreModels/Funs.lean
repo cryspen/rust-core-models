@@ -2696,12 +2696,88 @@ def marker.Sync.Blanket (T : Type) : marker.Sync T := {
 def marker.Sized.Blanket (T : Type) : marker.Sized T := {
 }
 
-/-- Trait implementation: [core_models::marker::{core_models::marker::Copy for T}]
-    Source: 'core-models/src/core/marker.rs', lines 18:0-18:28 -/
+/-- Trait implementation: [core_models::marker::{core_models::marker::Copy for u8}]
+    Source: 'core-models/src/core/marker.rs', lines 24:12-24:31 -/
 @[reducible]
-def marker.Copy.Blanket {T : Type} (cloneCloneInst1 : clone.Clone T) :
-  marker.Copy T := {
-  cloneInst := cloneCloneInst1
+def U8.Insts.Core_modelsMarkerCopy : marker.Copy Std.U8 := {
+  cloneInst := U8.Insts.Core_modelsCloneClone
+}
+
+/-- Trait implementation: [core_models::marker::{core_models::marker::Copy for u16}]
+    Source: 'core-models/src/core/marker.rs', lines 24:12-24:31 -/
+@[reducible]
+def U16.Insts.Core_modelsMarkerCopy : marker.Copy Std.U16 := {
+  cloneInst := U16.Insts.Core_modelsCloneClone
+}
+
+/-- Trait implementation: [core_models::marker::{core_models::marker::Copy for u32}]
+    Source: 'core-models/src/core/marker.rs', lines 24:12-24:31 -/
+@[reducible]
+def U32.Insts.Core_modelsMarkerCopy : marker.Copy Std.U32 := {
+  cloneInst := U32.Insts.Core_modelsCloneClone
+}
+
+/-- Trait implementation: [core_models::marker::{core_models::marker::Copy for u64}]
+    Source: 'core-models/src/core/marker.rs', lines 24:12-24:31 -/
+@[reducible]
+def U64.Insts.Core_modelsMarkerCopy : marker.Copy Std.U64 := {
+  cloneInst := U64.Insts.Core_modelsCloneClone
+}
+
+/-- Trait implementation: [core_models::marker::{core_models::marker::Copy for u128}]
+    Source: 'core-models/src/core/marker.rs', lines 24:12-24:31 -/
+@[reducible]
+def U128.Insts.Core_modelsMarkerCopy : marker.Copy Std.U128 := {
+  cloneInst := U128.Insts.Core_modelsCloneClone
+}
+
+/-- Trait implementation: [core_models::marker::{core_models::marker::Copy for usize}]
+    Source: 'core-models/src/core/marker.rs', lines 24:12-24:31 -/
+@[reducible]
+def Usize.Insts.Core_modelsMarkerCopy : marker.Copy Std.Usize := {
+  cloneInst := Usize.Insts.Core_modelsCloneClone
+}
+
+/-- Trait implementation: [core_models::marker::{core_models::marker::Copy for i8}]
+    Source: 'core-models/src/core/marker.rs', lines 24:12-24:31 -/
+@[reducible]
+def I8.Insts.Core_modelsMarkerCopy : marker.Copy Std.I8 := {
+  cloneInst := I8.Insts.Core_modelsCloneClone
+}
+
+/-- Trait implementation: [core_models::marker::{core_models::marker::Copy for i16}]
+    Source: 'core-models/src/core/marker.rs', lines 24:12-24:31 -/
+@[reducible]
+def I16.Insts.Core_modelsMarkerCopy : marker.Copy Std.I16 := {
+  cloneInst := I16.Insts.Core_modelsCloneClone
+}
+
+/-- Trait implementation: [core_models::marker::{core_models::marker::Copy for i32}]
+    Source: 'core-models/src/core/marker.rs', lines 24:12-24:31 -/
+@[reducible]
+def I32.Insts.Core_modelsMarkerCopy : marker.Copy Std.I32 := {
+  cloneInst := I32.Insts.Core_modelsCloneClone
+}
+
+/-- Trait implementation: [core_models::marker::{core_models::marker::Copy for i64}]
+    Source: 'core-models/src/core/marker.rs', lines 24:12-24:31 -/
+@[reducible]
+def I64.Insts.Core_modelsMarkerCopy : marker.Copy Std.I64 := {
+  cloneInst := I64.Insts.Core_modelsCloneClone
+}
+
+/-- Trait implementation: [core_models::marker::{core_models::marker::Copy for i128}]
+    Source: 'core-models/src/core/marker.rs', lines 24:12-24:31 -/
+@[reducible]
+def I128.Insts.Core_modelsMarkerCopy : marker.Copy Std.I128 := {
+  cloneInst := I128.Insts.Core_modelsCloneClone
+}
+
+/-- Trait implementation: [core_models::marker::{core_models::marker::Copy for isize}]
+    Source: 'core-models/src/core/marker.rs', lines 24:12-24:31 -/
+@[reducible]
+def Isize.Insts.Core_modelsMarkerCopy : marker.Copy Std.Isize := {
+  cloneInst := Isize.Insts.Core_modelsCloneClone
 }
 
 /-- [core_models::mem::forget]:

@@ -490,7 +490,7 @@ structure marker.StructuralPartialEq (Self : Type) where
 
 /-
 /-- [core_models::marker::PhantomData]
-    Source: 'core-models/src/core/marker.rs', lines 23:0-23:25 -/
+    Source: 'core-models/src/core/marker.rs', lines 48:0-48:25 -/
 @[reducible]
 def marker.PhantomData (T : Type) := T
 -/  -- replaced by core_models.Phantom (see rewrite_alloc_phantom_data)
