@@ -51,8 +51,6 @@ GENERATED_FILES = [
 
 # Type declarations in Types.lean to comment out (provided by TypesPrologue.lean)
 TYPES_TO_REMOVE = [
-    "core_models::clone::Clone",
-    "core_models::marker::Copy",
     "core_models::ops::function::FnOnce",
     "core_models::ops::function::FnMut",
     "core_models::ops::function::Fn",
@@ -227,30 +225,6 @@ def rewrite_phantom_data(text: str) -> str:
         text, ["core_models::marker::PhantomData"],
         trailer="replaced by core_models.Phantom (see rewrite_alloc_phantom_data)",
     )
-
-
-def rename_clone_clone_inst(text: str) -> str:
-    """Aeneas's standard library names `marker.Copy`'s clone-instance field
-    `cloneInst`, but `core_models::marker::Copy` uses the macro-generated
-    `cloneCloneInst`. We forward-declare `marker.Copy` in `TypesPrologue.lean`
-    with the Aeneas-compatible name `cloneInst`, so we have to rewrite the
-    field accessor in the generated code accordingly.
-
-    There are three syntactic forms to rewrite:
-
-      1. Field projection:        ‹e›.cloneCloneInst
-      2. Record-literal label:    cloneCloneInst :=
-      3. Local binders/uses introduced by Aeneas as the parameter name —
-         these have the same identifier as the field. Since the binder name
-         is independent of the field name, only the *label* in the record
-         literal needs to change. We rename binders too for readability.
-    """
-    # Field label in record literals: `cloneCloneInst :=`
-    text = re.sub(r"\bcloneCloneInst\s*:=", "cloneInst :=", text)
-    # Field projection: `<expr>.cloneCloneInst`
-    text = re.sub(r"\.cloneCloneInst\b", ".cloneInst", text)
-    return text
-
 
 def desugar_pure_num_bound_binds(text: str) -> str:
     """The generated `Funs.lean` uses monadic bind syntax to fetch numeric
@@ -522,7 +496,6 @@ def main() -> int:
             continue
         text = read(path)
         text = rewrite_imports_and_opens(text)
-        text = rename_clone_clone_inst(text)
         text = rewrite_phantom_data(text)
         if path == funs_path:
             text = fix_fail_panic(text)

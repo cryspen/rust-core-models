@@ -77,13 +77,11 @@ structure ops.range.RangeFrom (T : Type) where
 @[reducible]
 def ops.range.RangeFull := Unit
 
-/-
 /-- Trait declaration: [core_models::clone::Clone]
     Source: 'core-models/src/core/clone.rs', lines 13:0-16:1
     Visibility: public -/
 structure clone.Clone (Self : Type) where
   clone : Self → Result Self
--/
 
 /-- Trait declaration: [core_models::cmp::PartialEq]
     Source: 'core-models/src/core/cmp.rs', lines 5:0-12:1
@@ -460,13 +458,11 @@ structure iter.traits.iterator.IteratorMethods (Self : Type) (Self_Clause0_Item
   collect : forall {B : Type} (collectFromIteratorInst :
     iter.traits.collect.FromIterator B Self_Clause0_Item), Self → Result B
 
-/-
 /-- Trait declaration: [core_models::marker::Copy]
     Source: 'core-models/src/core/marker.rs', lines 4:0-4:24
     Visibility: public -/
 structure marker.Copy (Self : Type) where
   cloneCloneInst : clone.Clone Self
--/
 
 /-- Trait declaration: [core_models::marker::Send]
     Source: 'core-models/src/core/marker.rs', lines 6:0-6:17

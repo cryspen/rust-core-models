@@ -89,10 +89,6 @@ def Result.is_err {T E : Type} (r : Result T E) : Aeneas.Std.Result Bool :=
   | Result.Err _ => Aeneas.Std.Result.ok true
 end result
 
-export Aeneas.Std.core (
-  clone.Clone marker.Copy
-)
-
 end core_models
 
 /-! ## Hax lib -/
