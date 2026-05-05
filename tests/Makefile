@@ -20,7 +20,7 @@ llbc: $(LLBC_FILE)
 
 # 2. Run Aeneas to extract Lean files into $(LEAN_DIR)/$(SUBDIR)/.
 extract: $(LLBC_FILE)
-	$(AENEAS) -backend lean $(LLBC_FILE) -split-files \
+	$(AENEAS) -core-models-lib -backend lean $(LLBC_FILE) -split-files \
 		-dest $(LEAN_DIR) -subdir $(SUBDIR)
 	# Aeneas writes `*External_Template.lean` files alongside its
 	# real output. Our hand-written `FunsExternal.lean` /
@@ -32,7 +32,7 @@ extract: $(LLBC_FILE)
 # 3. Patch the `import`s and `open`s in the generated file:
 patch: extract
 	sed -i \
-		'/^open Aeneas /c\open CoreModels Aeneas\nopen Aeneas.Std hiding namespace core alloc\nopen Result ControlFlow Error' \
+		'/^open Aeneas /c\open core_models Aeneas\nopen Aeneas.Std hiding namespace core alloc\nopen Result ControlFlow Error' \
 		$(LEAN_DIR)/$(SUBDIR)/Funs.lean
 	sed -i \
 		's/import Aeneas/import CoreModels/' \

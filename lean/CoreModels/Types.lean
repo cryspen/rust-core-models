@@ -14,21 +14,7 @@ set_option linter.unusedVariables false
 /- You can set the `maxHeartbeats` value with the `-max-heartbeats` CLI option -/
 set_option maxHeartbeats 1000000
 
-namespace CoreModels.core
-
-/-- [core::marker::PhantomData]
-    Source: '/rustc/library/core/src/marker.rs', lines 814:0-814:39
-    Name pattern: [core::marker::PhantomData]
-    Visibility: public -/
-@[reducible, rust_type "core::marker::PhantomData"]
-def core.marker.PhantomData (T : Type) := Unit
-
-/-- [hax_lib::int::Int]
-    Source: '/cargo/git/checkouts/hax-580ebeee043cdea1/492a34e/hax-lib/src/dummy.rs', lines 78:4-78:18
-    Name pattern: [hax_lib::int::Int]
-    Visibility: public -/
-@[reducible, rust_type "hax_lib::int::Int"]
-def hax_lib.int.Int := Std.U8
+namespace core_models
 
 /-- [core_models::array::TryFromSliceError]
     Source: 'core-models/src/core/array.rs', lines 4:0-4:29
@@ -91,13 +77,11 @@ structure ops.range.RangeFrom (T : Type) where
 @[reducible]
 def ops.range.RangeFull := Unit
 
-/-
 /-- Trait declaration: [core_models::clone::Clone]
     Source: 'core-models/src/core/clone.rs', lines 13:0-16:1
     Visibility: public -/
 structure clone.Clone (Self : Type) where
   clone : Self → Result Self
--/
 
 /-- Trait declaration: [core_models::cmp::PartialEq]
     Source: 'core-models/src/core/cmp.rs', lines 5:0-12:1
@@ -289,7 +273,7 @@ def fmt.Arguments := Unit
     Source: 'core-models/src/core/fmt.rs', lines 52:4-59:5 -/
 @[discriminant isize]
 inductive fmt.rt.ArgumentType where
-| Placeholder : core.marker.PhantomData Unit → fmt.rt.ArgumentType
+| Placeholder : core_models.Phantom Unit → fmt.rt.ArgumentType
 
 /-- [core_models::fmt::rt::Argument]
     Source: 'core-models/src/core/fmt.rs', lines 61:4-63:5
@@ -415,52 +399,57 @@ structure iter.traits.collect.FromIterator (Self : Type) (A : Type) where
 structure iter.traits.iterator.IteratorMethods (Self : Type) (Self_Clause0_Item
   : Type) where
   IteratorInst : iter.traits.iterator.Iterator Self Self_Clause0_Item
-  fold : forall {B : Type} {F : Type} (coreopsfunctionFnPPairPInst :
-    core.ops.function.Fn F (B × Self_Clause0_Item) B), Self → B → F →
-    Result B
+  fold : forall {B : Type} {F : Type} (core_modelsopsfunctionFnPPairPInst :
+    core_models.ops.function.Fn F (B × Self_Clause0_Item) B), Self → B → F
+    → Result B
   enumerate : Self → Result (iter.adapters.enumerate.Enumerate Self)
   step_by : Self → Std.Usize → Result (iter.adapters.step_by.StepBy Self)
-  map : forall {O : Type} {F : Type} (coreopsfunctionFnPTupleFPInst :
-    core.ops.function.Fn F Self_Clause0_Item O), Self → F → Result
+  map : forall {O : Type} {F : Type} (core_modelsopsfunctionFnPTupleFPInst :
+    core_models.ops.function.Fn F Self_Clause0_Item O), Self → F → Result
     (iter.adapters.map.Map Self F)
-  all : forall {F : Type} (coreopsfunctionFnPTuplePBoolInst :
-    core.ops.function.Fn F Self_Clause0_Item Bool), Self → F → Result Bool
+  all : forall {F : Type} (core_modelsopsfunctionFnPTuplePBoolInst :
+    core_models.ops.function.Fn F Self_Clause0_Item Bool), Self → F →
+    Result Bool
   take : Self → Std.Usize → Result (iter.adapters.take.Take Self)
   flat_map : forall {U : Type} {F : Type} {Clause0_Item : Type} (IteratorInst1
     : iter.traits.iterator.Iterator U Clause0_Item)
-    (coreopsfunctionFnPTupleFPInst : core.ops.function.Fn F Self_Clause0_Item
-    U), Self → F → Result (iter.adapters.flat_map.FlatMap Self U F)
+    (core_modelsopsfunctionFnPTupleFPInst : core_models.ops.function.Fn F
+    Self_Clause0_Item U), Self → F → Result (iter.adapters.flat_map.FlatMap
+    Self U F)
   flatten : forall {Clause0_Item : Type} (IteratorInst1 :
     iter.traits.iterator.Iterator Self_Clause0_Item Clause0_Item), Self →
     Result (iter.adapters.flatten.Flatten Self Self_Clause0_Item Clause0_Item)
   zip : forall {I2 : Type} {Clause0_Item : Type} (IteratorInst1 :
     iter.traits.iterator.Iterator I2 Clause0_Item), Self → I2 → Result
     (iter.adapters.zip.Zip Self I2)
-  filter : forall {P : Type} (coreopsfunctionFnPTupleSharedPBoolInst :
-    core.ops.function.Fn P Self_Clause0_Item Bool), Self → P → Result
-    (iter.adapters.filter.Filter Self P)
+  filter : forall {P : Type} (core_modelsopsfunctionFnPTupleSharedPBoolInst :
+    core_models.ops.function.Fn P Self_Clause0_Item Bool), Self → P →
+    Result (iter.adapters.filter.Filter Self P)
   chain : forall {U : Type} (IteratorInst1 : iter.traits.iterator.Iterator U
     Self_Clause0_Item), Self → U → Result (iter.adapters.chain.Chain Self
     U)
   skip : Self → Std.Usize → Result (iter.adapters.skip.Skip Self)
-  any : forall {F : Type} (coreopsfunctionFnPTuplePBoolInst :
-    core.ops.function.Fn F Self_Clause0_Item Bool), Self → F → Result Bool
-  find : forall {P : Type} (coreopsfunctionFnPTupleSharedPBoolInst :
-    core.ops.function.Fn P Self_Clause0_Item Bool), Self → P → Result
-    (option.Option Self_Clause0_Item)
-  find_map : forall {B : Type} {F : Type} (coreopsfunctionFnPTupleFOptionInst :
-    core.ops.function.Fn F Self_Clause0_Item (option.Option B)), Self → F →
-    Result (option.Option B)
-  position : forall {P : Type} (coreopsfunctionFnPTuplePBoolInst :
-    core.ops.function.Fn P Self_Clause0_Item Bool), Self → P → Result
-    (option.Option Std.Usize)
+  any : forall {F : Type} (core_modelsopsfunctionFnPTuplePBoolInst :
+    core_models.ops.function.Fn F Self_Clause0_Item Bool), Self → F →
+    Result Bool
+  find : forall {P : Type} (core_modelsopsfunctionFnPTupleSharedPBoolInst :
+    core_models.ops.function.Fn P Self_Clause0_Item Bool), Self → P →
+    Result (option.Option Self_Clause0_Item)
+  find_map : forall {B : Type} {F : Type}
+    (core_modelsopsfunctionFnPTupleFOptionInst : core_models.ops.function.Fn F
+    Self_Clause0_Item (option.Option B)), Self → F → Result (option.Option
+    B)
+  position : forall {P : Type} (core_modelsopsfunctionFnPTuplePBoolInst :
+    core_models.ops.function.Fn P Self_Clause0_Item Bool), Self → P →
+    Result (option.Option Std.Usize)
   count : Self → Result Std.Usize
   nth : Self → Std.Usize → Result (option.Option Self_Clause0_Item)
   last : Self → Result (option.Option Self_Clause0_Item)
-  for_each : forall {F : Type} (coreopsfunctionFnPTuplePTupleInst :
-    core.ops.function.Fn F Self_Clause0_Item Unit), Self → F → Result Unit
-  «reduce» : forall {F : Type} (coreopsfunctionFnPPairPInst :
-    core.ops.function.Fn F (Self_Clause0_Item × Self_Clause0_Item)
+  for_each : forall {F : Type} (core_modelsopsfunctionFnPTuplePTupleInst :
+    core_models.ops.function.Fn F Self_Clause0_Item Unit), Self → F →
+    Result Unit
+  «reduce» : forall {F : Type} (core_modelsopsfunctionFnPPairPInst :
+    core_models.ops.function.Fn F (Self_Clause0_Item × Self_Clause0_Item)
     Self_Clause0_Item), Self → F → Result (option.Option Self_Clause0_Item)
   min : forall (cmpOrdInst : cmp.Ord Self_Clause0_Item), Self → Result
     (option.Option Self_Clause0_Item)
@@ -469,13 +458,11 @@ structure iter.traits.iterator.IteratorMethods (Self : Type) (Self_Clause0_Item
   collect : forall {B : Type} (collectFromIteratorInst :
     iter.traits.collect.FromIterator B Self_Clause0_Item), Self → Result B
 
-/-
 /-- Trait declaration: [core_models::marker::Copy]
     Source: 'core-models/src/core/marker.rs', lines 4:0-4:24
     Visibility: public -/
 structure marker.Copy (Self : Type) where
   cloneCloneInst : clone.Clone Self
--/
 
 /-- Trait declaration: [core_models::marker::Send]
     Source: 'core-models/src/core/marker.rs', lines 6:0-6:17
@@ -497,10 +484,12 @@ structure marker.Sized (Self : Type) where
     Visibility: public -/
 structure marker.StructuralPartialEq (Self : Type) where
 
+/-
 /-- [core_models::marker::PhantomData]
-    Source: 'core-models/src/core/marker.rs', lines 23:0-23:25 -/
+    Source: 'core-models/src/core/marker.rs', lines 48:0-48:25 -/
 @[reducible]
 def marker.PhantomData (T : Type) := T
+-/  -- replaced by core_models.Phantom (see rewrite_alloc_phantom_data)
 
 /-- [core_models::mem::manually_drop::ManuallyDrop]
     Source: 'core-models/src/core/mem.rs', lines 118:4-120:5
@@ -840,4 +829,4 @@ def str.iter.Split (T : Type) := T
 structure str.traits.FromStr (Self : Type) (Self_Err : Type) where
   from_str : Str → Result (result.Result Self Self_Err)
 
-end CoreModels.core
+end core_models

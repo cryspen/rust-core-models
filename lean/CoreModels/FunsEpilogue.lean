@@ -1,6 +1,6 @@
 import CoreModels.Alloc.Funs
 
-namespace CoreModels
+namespace alloc
 
 /-! ## `[T]::to_vec` and `Box<[T]>::into_vec`
 
@@ -15,21 +15,19 @@ extractions land on a defined symbol.
 noncomputable section
 
 @[rust_fun "alloc::slice::{[@T]}::to_vec"]
-def alloc.slice.Slice.to_vec
-  {T : Type} (cloneInst : core.clone.Clone T) (s : Aeneas.Std.Slice T) :
-  Aeneas.Std.Result (alloc.vec.Vec T) :=
-  alloc.slice.Dummy.to_vec cloneInst s
+def slice.Slice.to_vec
+  {T : Type} (cloneInst : core_models.clone.Clone T) (s : Aeneas.Std.Slice T) :
+  Aeneas.Std.Result (vec.Vec T alloc.Global) :=
+  slice.Dummy.to_vec cloneInst s
 
 @[rust_fun "alloc::slice::{alloc::boxed::Box<[@T], @A>}::into_vec"]
-def alloc.slice.Slice.into_vec
-  {T : Type} (A : Type) (s : Aeneas.Std.Slice T) : Aeneas.Std.Result (alloc.vec.Vec T) :=
-  alloc.slice.Dummy.into_vec A s
+def slice.Slice.into_vec
+  {T : Type} (A : Type) (s : Aeneas.Std.Slice T) : Aeneas.Std.Result (vec.Vec T A) :=
+  slice.Dummy.into_vec A s
 
 end
 
-/-! ## Function renamings -/
+def vec.Vec.new := @vec.VecTGlobal.new
+def vec.Vec.with_capacity := @vec.VecTGlobal.with_capacity
 
-abbrev core.array.equality.PartialEqArray.eq := @core.Array.Insts.Core_modelsCmpPartialEqArray.eq
-abbrev core.array.CloneArray.clone := @core.Array.Insts.Core_modelsCloneClone.clone
-
-end CoreModels
+end alloc

@@ -11,8 +11,6 @@ set_option linter.dupNamespace false
 set_option linter.hashCommand false
 set_option linter.unusedVariables false
 
-namespace CoreModels
-
 /- You can set the `maxHeartbeats` value with the `-max-heartbeats` CLI option -/
 set_option maxHeartbeats 1000000
 
@@ -23,4 +21,4 @@ set_option maxHeartbeats 1000000
 @[rust_type "rust_primitives::sequence::Seq"]
 def rust_primitives.sequence.Seq (T : Type) := Aeneas.Std.Slice T
 
-end CoreModels
+def alloc.string.String := _root_.String

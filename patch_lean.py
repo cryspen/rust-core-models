@@ -18,8 +18,6 @@ For `alloc`, Aeneas writes the following files into ./lean/CoreModels/Alloc :
 This script:
   * Moves the files generated from `core_model` into ./lean/CoreModels/.
   * Rewrites imports & opens to match our package layout.
-  * Renames `namespace core_models` -> `namespace CoreModels.core`.
-    and `namespace alloc` -> `namespace CoreModels.alloc`.
   * Comments out the type-level items that we forward-declare
     in `TypesPrologue.lean`.
   * Comments out a small number of generated function definitions that have
@@ -27,8 +25,7 @@ This script:
   * Fixes some other elaboration issues via search and replace.
 
 Pure-fn duplicates of `core::option::Option::{is_some, is_none, unwrap_or,
-take}`, `core::mem::{swap, replace}` and the `core::num::*::{wrapping_*,
-saturating_*, rotate_*, overflowing_*}` arithmetic helpers are stripped at
+take}`, `core::mem::{swap, replace}` are stripped at
 the LLBC level by charon's `--exclude` flag (see `CHARON_EXCLUDES` in the
 parent `Makefile`), not by this script.
 """
@@ -54,8 +51,6 @@ GENERATED_FILES = [
 
 # Type declarations in Types.lean to comment out (provided by TypesPrologue.lean)
 TYPES_TO_REMOVE = [
-    "core_models::clone::Clone",
-    "core_models::marker::Copy",
     "core_models::ops::function::FnOnce",
     "core_models::ops::function::FnMut",
     "core_models::ops::function::Fn",
@@ -96,17 +91,6 @@ def rewrite_imports_and_opens(text: str) -> str:
     return text
 
 
-def rename_namespace(text: str) -> str:
-    text = re.sub(r"^namespace core_models$", "namespace CoreModels.core",
-                  text, flags=re.MULTILINE)
-    text = re.sub(r"^end core_models$", "end CoreModels.core",
-                  text, flags=re.MULTILINE)
-    # Drop `open core_models` from external template files
-    text = re.sub(r"^open core_models$", "-- open core_models removed",
-                  text, flags=re.MULTILINE)
-    return text
-
-
 def fix_fail_panic(text: str) -> str:
     """In the definition of a Lean `item` called `panic`, the name `panic`
     does not resolve to `Error.panic` as it should."""
@@ -125,8 +109,8 @@ def rename_alloc_models(text: str) -> str:
     the `alloc_models` namespace; the helpers below put the namespace back to
     `alloc` (where downstream Aeneas-extracted code expects to find it).
     """
-    text = text.replace("namespace alloc_models", "namespace CoreModels.alloc")
-    text = text.replace("end alloc_models", "end CoreModels.alloc")
+    text = text.replace("namespace alloc_models", "namespace alloc")
+    text = text.replace("end alloc_models", "end alloc")
     text = text.replace("alloc_models", "alloc")
     return text
 
@@ -171,170 +155,76 @@ def rewrite_alloc_imports(text: str) -> str:
     )
     return text
 
-
-def make_vec_pure_methods_pure(text: str) -> str:
-    """Aeneas's standard library marks `Vec::new`, `Vec::with_capacity`,
-    and `Vec::len` as `~can_fail:false ~lift:false`. Downstream
-    Aeneas-extracted code therefore references them as bare expressions
-    (e.g. `let i := v.len`), expecting them to return the value type
-    directly, not `Result …`.
-
-    Our extraction of the local `alloc/` crate emits these as monadic
-    `Result T` defs. Identify each one by its doc-comment header and swap
-    in a pure version. We also rename `vec.VecTGlobal.new`/`with_capacity`
-    to `vec.Vec.new`/`with_capacity` so the names line up with Aeneas's
-    builtin map (which always uses `vec.Vec.*`).
-
-    The bodies use the fact that `rust_primitives.sequence.Seq T := Array T`
-    in the parent's `TypesExternal.lean`, so we can build an empty `Seq`
-    via `Array.empty` and read the length via the underlying list size.
-    """
-    return replace_blocks(text, [
-        ("alloc::vec::{alloc::vec::Vec<T, alloc::alloc::Global>}::new",
-         "def vec.Vec.new (T : Type) : vec.Vec T :=\n"
-         "  (.new T, core.Phantom.mk)"),
-        ("alloc::vec::{alloc::vec::Vec<T, alloc::alloc::Global>}::with_capacity",
-         "def vec.Vec.with_capacity (T : Type) (_c : Std.Usize) : vec.Vec T :=\n"
-         "  vec.Vec.new T"),
-        ("alloc::vec::{alloc::vec::Vec<T, A>}::len",
-         "def vec.Vec.len {T : Type} (self : vec.Vec T) : Std.Usize :=\n"
-         "  let (s, _) := self\n"
-         "  .mk (Std.Slice.len s)"),
-    ])
-
-
-def drop_vec_allocator_param(text: str) -> str:
-    """Aeneas's standard library models `alloc::vec::Vec<T, A>` as a 1-arg
-    `Vec α` (the allocator parameter is dropped via `keepParams`). Our
-    extraction of the local `alloc/` crate sees the source as
-    `Vec<T, A>(Seq<T>, PhantomData<A>)` and emits a 2-arg type. When a
-    downstream test crate references std's `Vec<u32>`, charon translates
-    it through Aeneas's builtin name map which produces 1-arg references —
-    these don't match our 2-arg definition.
-
-    Rewrite our extraction so `vec.Vec` (and the related drain types) take
-    just `T`, with the phantom slot fixed to `core.Phantom Unit`.
-    """
-    # Type definitions: drop the second `(A : Type)` parameter and erase
-    # `A` in the body. Each is identified by its doc-comment header so that a
-    # change in line-wrapping or whitespace inside the body cannot silently
-    # turn the rewrite into a no-op.
+def fix_vec_allocator(text: str) -> str:
     text = replace_blocks(text, [
         ("alloc::vec::Vec",
-         "def vec.Vec (T : Type) :=\n"
-         "  rust_primitives.sequence.Seq T × core.Phantom Unit"),
+         "def vec.Vec (T : Type) (A : Type := alloc.Global) :=\n"
+         "  rust_primitives.sequence.Seq T × core_models.Phantom A"),
         ("alloc::vec::drain::Drain",
-         "def vec.drain.Drain (T : Type) :=\n"
-         "  rust_primitives.sequence.Seq T × core.Phantom Unit"),
+         "def vec.drain.Drain (T : Type) (A : Type := alloc.Global) :=\n"
+         "  rust_primitives.sequence.Seq T × core_models.Phantom A"),
         ("alloc::vec::into_iter::IntoIter",
-         "def vec.into_iter.IntoIter (T : Type) :=\n"
-         "  rust_primitives.sequence.Seq T × core.Phantom Unit"),
+         "def vec.into_iter.IntoIter (T : Type) (A : Type := alloc.Global) :=\n"
+         "  rust_primitives.sequence.Seq T × core_models.Phantom A"),
     ])
-    # Note: `collections.vec_deque.VecDeque` is intentionally left 2-arg
-    # (Self + Allocator), matching std's `VecDeque<T, A>` shape, so that
-    # downstream references like `alloc.collections.vec_deque.VecDeque T
-    # Global` elaborate directly against our extracted type without any
-    # rewrite. `Vec`/`Drain`/`IntoIter` still get collapsed to 1-arg
-    # because Aeneas's builtin name map maps them that way.
-    #
-    # Function definitions: every `vec.Vec T A` reference becomes `vec.Vec T`.
-    # Both the type parameter and the allocator can be a single identifier
-    # (`T`, `A`, `Global`) or a dotted path (`Std.U32`, `alloc.alloc.Global`),
-    # so we accept dots in both groups. The `\b` at the start matches the
-    # boundary between `.` and the first letter, so the regex also fires on
-    # downstream references like `alloc.vec.Vec Std.U32 alloc.alloc.Global`.
-    for name in ("vec.Vec", "vec.drain.Drain",
-                 "vec.into_iter.IntoIter"):
-        # Both the type parameter and the allocator can appear either as a
-        # simple/dotted identifier (`T`, `A`, `Global`, `Std.U32`,
-        # `alloc.alloc.Global`) or as a parenthesized type expression
-        # (e.g. `VecDeque (Seq U8) Global`). Accept both for group 1 and
-        # for the allocator slot; `[^()]*?` keeps the non-nested match
-        # local to a single balanced pair so we don't over-consume.
-        arg = r"(?:\([^()]*\)|[A-Za-z_][\w.]*)"
-        text = re.sub(
-            rf"\b{re.escape(name)}\s+({arg})\s+{arg}",
-            rf"{name} \1",
-            text,
-        )
 
-    # Drop the now-unused `{A : Type}` binder.
+    # alloc.vec.Vec.len/push/extend_from_slice/insert have {A : Type} inferred from the
+    # allocator default, but Lean needs it explicit at call sites — make it a
+    # regular (non-implicit) parameter.
     text = re.sub(
-        r"(def vec\.(?:Vec|drain)[A-Za-z0-9._]+\s+[({]T : Type[)}])\s+[({]A : Type[)}]",
-        r"\1",
-        text,
+        r'(vec\.Vec\.(?:len|push|extend_from_slice|insert))\s+(\{T\s*:\s*Type\})\s+(\{A\s*:\s*Type\})',
+        r'\1 \2 (A : Type)',
+        text, flags=re.MULTILINE,
     )
 
     return text
 
 
-def rewrite_alloc_phantom_data(text: str) -> str:
+def rewrite_phantom_data(text: str) -> str:
     """Aeneas's alloc extraction declares `core::marker::PhantomData (T) := Unit`
     inside its own namespace and then references that path in struct field
     types. The constructor sites use `()`.
 
-    Core's hand-written Types.lean already has a `core.marker.PhantomData`
+    Core's hand-written Types.lean already has a `core_models.marker.PhantomData`
     at the *root* path, but its body is `:= T`, which doesn't accept `()`.
 
     Rather than fight the conflict, we:
 
-      - rewrite every `core.marker.PhantomData A` *type-level* reference in
-        the alloc files to `core.Phantom A` (a *non-reducible* `structure`
+      - rewrite every `core_models.marker.PhantomData A` *type-level* reference in
+        the alloc files to `core_models.Phantom A` (a *non-reducible* `structure`
         with a phantom type parameter — see `Aeneas/Primitives.lean`). The
         non-reducibility is important: a `def` would let Lean unfold the
         alias and lose `A` during unification, breaking the `{A : Type}`
         implicit at call sites like `alloc.vec.Vec.clear v`.
 
       - rewrite every `()` constructor in a phantom-field position to
-        `core.Phantom.mk`. The constructor sites in the extracted alloc
+        `core_models.Phantom.mk`. The constructor sites in the extracted alloc
         Funs.lean look like `(seq, ())` (or `(seq, pd)` when the variable
         was destructured); we leave the destructured form alone but
         rewrite the bare `()` form via a textual heuristic: `, ()` inside
         a tuple-construction expression on a line that builds a `vec.Vec`
         / `VecDeque` / `Drain` value.
 
-      - erase the now-redundant `def core.Phantom (T) := Unit` block that
+      - erase the now-redundant `def core_models.Phantom (T) := Unit` block that
         Aeneas emitted in `Types.lean`.
     """
-    # 1. Type-level: `core.marker.PhantomData` -> `core.Phantom`.
+    # 1. Type-level: `core_models.marker.PhantomData` -> `core_models.Phantom`.
     text = re.sub(
-        r"\bcore\.marker\.PhantomData\b",
-        "core.Phantom",
+        r"\bcore_models\.marker\.PhantomData\b",
+        "core_models.Phantom",
         text,
     )
-    # 2. Constructor-site: `, ())` (closing the outer pair) -> `, core.Phantom.mk)`.
+    # 2. Constructor-site: `, ())` (closing the outer pair) -> `, core_models.Phantom.mk)`.
     #    Aeneas's extraction always wraps the phantom in the second slot
     #    of a 2-tuple immediately followed by `)`.
-    text = re.sub(r",\s*\(\)\)", ", core.Phantom.mk)", text)
+    text = re.sub(r",\s*\(\)\)", ", core_models.Phantom.mk)", text)
+    text = re.sub(r"fmt\.rt\.ArgumentType\.Placeholder \(\)", "fmt.rt.ArgumentType.Placeholder core_models.Phantom.mk", text)
+    
     # 3. Erase the (now redundant) declaration block.
     return comment_out_blocks(
-        text, ["core::marker::PhantomData"],
-        trailer="replaced by core.Phantom (see rewrite_alloc_phantom_data)",
+        text, ["core_models::marker::PhantomData"],
+        trailer="replaced by core_models.Phantom (see rewrite_alloc_phantom_data)",
     )
-
-
-def rename_clone_clone_inst(text: str) -> str:
-    """Aeneas's standard library names `marker.Copy`'s clone-instance field
-    `cloneInst`, but `core_models::marker::Copy` uses the macro-generated
-    `cloneCloneInst`. We forward-declare `marker.Copy` in `TypesPrologue.lean`
-    with the Aeneas-compatible name `cloneInst`, so we have to rewrite the
-    field accessor in the generated code accordingly.
-
-    There are three syntactic forms to rewrite:
-
-      1. Field projection:        ‹e›.cloneCloneInst
-      2. Record-literal label:    cloneCloneInst :=
-      3. Local binders/uses introduced by Aeneas as the parameter name —
-         these have the same identifier as the field. Since the binder name
-         is independent of the field name, only the *label* in the record
-         literal needs to change. We rename binders too for readability.
-    """
-    # Field label in record literals: `cloneCloneInst :=`
-    text = re.sub(r"\bcloneCloneInst\s*:=", "cloneInst :=", text)
-    # Field projection: `<expr>.cloneCloneInst`
-    text = re.sub(r"\.cloneCloneInst\b", ".cloneInst", text)
-    return text
-
 
 def desugar_pure_num_bound_binds(text: str) -> str:
     """The generated `Funs.lean` uses monadic bind syntax to fetch numeric
@@ -356,7 +246,7 @@ def desugar_pure_num_bound_binds(text: str) -> str:
 
 
 def comment_out_num_bounds(text: str) -> str:
-    """Aeneas extracts `core.num.<X>.MIN/MAX` as a mix of pure literals and
+    """Aeneas extracts `core_models.num.<X>.MIN/MAX` as a mix of pure literals and
     monadic axioms (depending on whether the bound is computable). We
     forward-declare them all as PURE in `Aeneas.Primitives` so that earlier
     code in `Funs.lean` (which references them via `IScalar.cast`) can find
@@ -606,8 +496,7 @@ def main() -> int:
             continue
         text = read(path)
         text = rewrite_imports_and_opens(text)
-        text = rename_namespace(text)
-        text = rename_clone_clone_inst(text)
+        text = rewrite_phantom_data(text)
         if path == funs_path:
             text = fix_fail_panic(text)
             text = add_funs_prologue_import(text)
@@ -671,7 +560,7 @@ def patch_alloc() -> None:
         write(path, text)
         print(f"rewrote alloc_models -> alloc in Aeneas/Alloc/{path.name}")
 
-    # 3. Replace `core.marker.PhantomData` with `core.Phantom` in alloc
+    # 3. Replace `core_models.marker.PhantomData` with `core_models.Phantom` in alloc
     #    Types.lean AND alloc Funs.lean (the two files have to agree on the
     #    shape of `vec.Vec`). Then drop the allocator type parameter from
     #    `vec.Vec` and friends so they line up with Aeneas's standard 1-arg
@@ -681,10 +570,8 @@ def patch_alloc() -> None:
         if not path.exists():
             continue
         text = read(path)
-        text = rewrite_alloc_phantom_data(text)
-        text = drop_vec_allocator_param(text)
-        if path == funs:
-            text = make_vec_pure_methods_pure(text)
+        text = rewrite_phantom_data(text)
+        text = fix_vec_allocator(text)
         write(path, text)
     print("rewrote PhantomData and dropped allocator param in Aeneas/Alloc/{Types,Funs}.lean")
 
