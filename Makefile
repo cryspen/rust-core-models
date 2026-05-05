@@ -1,5 +1,6 @@
-CHARON ?= RUSTFLAGS="--cfg charon" charon
+CHARON ?= charon
 AENEAS ?= aeneas
+RUSTFLAGS ?= "--cfg charon"
 
 # `hax-lib` git revision, derived from the workspace Cargo.toml so the
 # alloc-staging step (which inlines an explicit `hax-lib = { git, rev }`
@@ -71,7 +72,7 @@ CHARON_EXCLUDES = \
 llbc: $(LLBC_FILE)
 
 $(LLBC_FILE): $(CORE_MODELS_DIR)/src/**/*.rs $(CORE_MODELS_DIR)/Cargo.toml
-	cd $(CORE_MODELS_DIR) && $(CHARON) cargo --preset=aeneas \
+	cd $(CORE_MODELS_DIR) && RUSTFLAGS=$(RUSTFLAGS) $(CHARON) cargo --preset=aeneas \
 	    $(CHARON_EXCLUDES) \
 	    --dest-file $(abspath $(LLBC_FILE))
 
@@ -107,7 +108,7 @@ $(ALLOC_STAGE_DIR)/Cargo.toml: alloc/Cargo.toml
 alloc-stage: $(ALLOC_STAGE_DIR)/Cargo.toml
 
 $(ALLOC_LLBC_FILE): $(ALLOC_STAGE_DIR)/Cargo.toml alloc/src/lib.rs
-	cd $(ALLOC_STAGE_DIR) && $(CHARON) cargo --preset=aeneas \
+	cd $(ALLOC_STAGE_DIR) && RUSTFLAGS=$(RUSTFLAGS) $(CHARON) cargo --preset=aeneas \
 	    $(ALLOC_CHARON_EXCLUDES) \
 	    --dest-file $(abspath $(ALLOC_LLBC_FILE))
 
