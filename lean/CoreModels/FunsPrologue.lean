@@ -11,21 +11,18 @@ open Aeneas.Std Result
 
 /-! ## Scalar PartialEq / PartialOrd instances -/
 
-private def liftBoolCmp2 {α β} (f : α → β → Bool) : α → β → Result Bool :=
-  fun x y => ok (f x y)
-
-instance U8.Insts.Core_modelsCmpPartialEqU8       : cmp.PartialEq U8    U8    := { eq := liftBoolCmp2 (· == ·) }
-instance U16.Insts.Core_modelsCmpPartialEqU16     : cmp.PartialEq U16   U16   := { eq := liftBoolCmp2 (· == ·) }
-instance U32.Insts.Core_modelsCmpPartialEqU32     : cmp.PartialEq U32   U32   := { eq := liftBoolCmp2 (· == ·) }
-instance U64.Insts.Core_modelsCmpPartialEqU64     : cmp.PartialEq U64   U64   := { eq := liftBoolCmp2 (· == ·) }
-instance U128.Insts.Core_modelsCmpPartialEqU128   : cmp.PartialEq U128  U128  := { eq := liftBoolCmp2 (· == ·) }
-instance Usize.Insts.Core_modelsCmpPartialEqUsize : cmp.PartialEq Usize Usize := { eq := liftBoolCmp2 (· == ·) }
-instance I8.Insts.Core_modelsCmpPartialEqI8       : cmp.PartialEq I8    I8    := { eq := liftBoolCmp2 (· == ·) }
-instance I16.Insts.Core_modelsCmpPartialEqI16     : cmp.PartialEq I16   I16   := { eq := liftBoolCmp2 (· == ·) }
-instance I32.Insts.Core_modelsCmpPartialEqI32     : cmp.PartialEq I32   I32   := { eq := liftBoolCmp2 (· == ·) }
-instance I64.Insts.Core_modelsCmpPartialEqI64     : cmp.PartialEq I64   I64   := { eq := liftBoolCmp2 (· == ·) }
-instance I128.Insts.Core_modelsCmpPartialEqI128   : cmp.PartialEq I128  I128  := { eq := liftBoolCmp2 (· == ·) }
-instance Isize.Insts.Core_modelsCmpPartialEqIsize : cmp.PartialEq Isize Isize := { eq := liftBoolCmp2 (· == ·) }
+instance U8.Insts.Core_modelsCmpPartialEqU8       : cmp.PartialEq U8    U8    := { eq := fun x y => ok (x == y) }
+instance U16.Insts.Core_modelsCmpPartialEqU16     : cmp.PartialEq U16   U16   := { eq := fun x y => ok (x == y) }
+instance U32.Insts.Core_modelsCmpPartialEqU32     : cmp.PartialEq U32   U32   := { eq := fun x y => ok (x == y) }
+instance U64.Insts.Core_modelsCmpPartialEqU64     : cmp.PartialEq U64   U64   := { eq := fun x y => ok (x == y) }
+instance U128.Insts.Core_modelsCmpPartialEqU128   : cmp.PartialEq U128  U128  := { eq := fun x y => ok (x == y) }
+instance Usize.Insts.Core_modelsCmpPartialEqUsize : cmp.PartialEq Usize Usize := { eq := fun x y => ok (x == y) }
+instance I8.Insts.Core_modelsCmpPartialEqI8       : cmp.PartialEq I8    I8    := { eq := fun x y => ok (x == y) }
+instance I16.Insts.Core_modelsCmpPartialEqI16     : cmp.PartialEq I16   I16   := { eq := fun x y => ok (x == y) }
+instance I32.Insts.Core_modelsCmpPartialEqI32     : cmp.PartialEq I32   I32   := { eq := fun x y => ok (x == y) }
+instance I64.Insts.Core_modelsCmpPartialEqI64     : cmp.PartialEq I64   I64   := { eq := fun x y => ok (x == y) }
+instance I128.Insts.Core_modelsCmpPartialEqI128   : cmp.PartialEq I128  I128  := { eq := fun x y => ok (x == y) }
+instance Isize.Insts.Core_modelsCmpPartialEqIsize : cmp.PartialEq Isize Isize := { eq := fun x y => ok (x == y) }
 
 /-! ## core::iter::range — Range iteration
 
@@ -44,20 +41,18 @@ structure Step (Self : Type) where
   forward_checked : Self → Aeneas.Std.Usize → Aeneas.Std.Result (Option Self)
   backward_checked: Self → Aeneas.Std.Usize → Aeneas.Std.Result (Option Self)
 
-private def mkUPartialOrd (ty) : cmp.PartialOrd (UScalar ty) (UScalar ty) := {
-  PartialEqInst := { eq := liftBoolCmp2 (· == ·) }
-  partial_cmp := fun x y =>
-    ok (option.Option.Some
-      (match compare x.val y.val with
-       | .lt => cmp.Ordering.Less
-       | .eq => cmp.Ordering.Equal
-       | .gt => cmp.Ordering.Greater))
-}
-
 /-- Step instance for `Usize`. -/
 def StepUsize : Step Aeneas.Std.Usize := {
   cloneInst       := { clone := fun x => Aeneas.Std.Result.ok x}
-  partialOrdInst  := mkUPartialOrd .Usize
+  partialOrdInst  := {
+    PartialEqInst := { eq := fun x y => ok (x == y) }
+    partial_cmp := fun x y =>
+      ok (option.Option.Some
+        (match compare x.val y.val with
+        | .lt => cmp.Ordering.Less
+        | .eq => cmp.Ordering.Equal
+        | .gt => cmp.Ordering.Greater))
+  }
   steps_between   := Aeneas.Std.core.iter.range.StepUsize.steps_between
   forward_checked := Aeneas.Std.core.iter.range.StepUsize.forward_checked
   backward_checked := Aeneas.Std.core.iter.range.StepUsize.backward_checked
