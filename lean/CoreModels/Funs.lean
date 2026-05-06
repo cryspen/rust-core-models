@@ -1075,20 +1075,6 @@ def U128.Insts.Core_modelsConvertFromU64 : convert.From Std.U128 Std.U64 := {
   «from» := U128.Insts.Core_modelsConvertFromU64.from
 }
 
-/-- [core_models::convert::{core_models::convert::From<usize> for u128}::from]:
-    Source: 'core-models/src/core/convert.rs', lines 103:16-105:17 -/
-def U128.Insts.Core_modelsConvertFromUsize.from
-  (x : Std.Usize) : Result Std.U128 := do
-  ok (UScalar.cast .U128 x)
-
-/-- Trait implementation: [core_models::convert::{core_models::convert::From<usize> for u128}]
-    Source: 'core-models/src/core/convert.rs', lines 102:12-106:13 -/
-@[reducible]
-def U128.Insts.Core_modelsConvertFromUsize : convert.From Std.U128 Std.Usize
-  := {
-  «from» := U128.Insts.Core_modelsConvertFromUsize.from
-}
-
 /-- [core_models::convert::{core_models::convert::From<u8> for usize}::from]:
     Source: 'core-models/src/core/convert.rs', lines 103:16-105:17 -/
 def Usize.Insts.Core_modelsConvertFromU8.from
@@ -1240,20 +1226,6 @@ def I128.Insts.Core_modelsConvertFromI64.from
 @[reducible]
 def I128.Insts.Core_modelsConvertFromI64 : convert.From Std.I128 Std.I64 := {
   «from» := I128.Insts.Core_modelsConvertFromI64.from
-}
-
-/-- [core_models::convert::{core_models::convert::From<isize> for i128}::from]:
-    Source: 'core-models/src/core/convert.rs', lines 103:16-105:17 -/
-def I128.Insts.Core_modelsConvertFromIsize.from
-  (x : Std.Isize) : Result Std.I128 := do
-  ok (IScalar.cast .I128 x)
-
-/-- Trait implementation: [core_models::convert::{core_models::convert::From<isize> for i128}]
-    Source: 'core-models/src/core/convert.rs', lines 102:12-106:13 -/
-@[reducible]
-def I128.Insts.Core_modelsConvertFromIsize : convert.From Std.I128 Std.Isize
-  := {
-  «from» := I128.Insts.Core_modelsConvertFromIsize.from
 }
 
 /-- [core_models::convert::{core_models::convert::From<i8> for isize}::from]:
@@ -2077,6 +2049,40 @@ def Isize.Insts.Core_modelsConvertTryFromI32TryFromIntError.try_from
 def Isize.Insts.Core_modelsConvertTryFromI32TryFromIntError : convert.TryFrom
   Std.Isize Std.I32 num.error.TryFromIntError := {
   try_from := Isize.Insts.Core_modelsConvertTryFromI32TryFromIntError.try_from
+}
+
+/-- [core_models::convert::{core_models::convert::TryFrom<isize, core_models::num::error::TryFromIntError> for i128}::try_from]:
+    Source: 'core-models/src/core/convert.rs', lines 143:16-145:17 -/
+def I128.Insts.Core_modelsConvertTryFromIsizeTryFromIntError.try_from
+  (x : Std.Isize) :
+  Result (result.Result Std.I128 num.error.TryFromIntError)
+  := do
+  let i ← lift (IScalar.cast .I128 x)
+  ok (result.Result.Ok i)
+
+/-- Trait implementation: [core_models::convert::{core_models::convert::TryFrom<isize, core_models::num::error::TryFromIntError> for i128}]
+    Source: 'core-models/src/core/convert.rs', lines 141:12-146:13 -/
+@[reducible]
+def I128.Insts.Core_modelsConvertTryFromIsizeTryFromIntError : convert.TryFrom
+  Std.I128 Std.Isize num.error.TryFromIntError := {
+  try_from := I128.Insts.Core_modelsConvertTryFromIsizeTryFromIntError.try_from
+}
+
+/-- [core_models::convert::{core_models::convert::TryFrom<usize, core_models::num::error::TryFromIntError> for u128}::try_from]:
+    Source: 'core-models/src/core/convert.rs', lines 143:16-145:17 -/
+def U128.Insts.Core_modelsConvertTryFromUsizeTryFromIntError.try_from
+  (x : Std.Usize) :
+  Result (result.Result Std.U128 num.error.TryFromIntError)
+  := do
+  let i ← lift (UScalar.cast .U128 x)
+  ok (result.Result.Ok i)
+
+/-- Trait implementation: [core_models::convert::{core_models::convert::TryFrom<usize, core_models::num::error::TryFromIntError> for u128}]
+    Source: 'core-models/src/core/convert.rs', lines 141:12-146:13 -/
+@[reducible]
+def U128.Insts.Core_modelsConvertTryFromUsizeTryFromIntError : convert.TryFrom
+  Std.U128 Std.Usize num.error.TryFromIntError := {
+  try_from := U128.Insts.Core_modelsConvertTryFromUsizeTryFromIntError.try_from
 }
 
 /-- [core_models::f32::{core_models::f32::f32}::abs]:
