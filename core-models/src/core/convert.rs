@@ -149,13 +149,13 @@ macro_rules! int_try_from_trivial {
 }
 
 int_from! {
-    u8  u8  u16 u8  u16 u32 u8   u16  u32  u64  usize u8    u16,
-    u16 u32 u32 u64 u64 u64 u128 u128 u128 u128 u128  usize usize,
+    u8  u8  u16 u8  u16 u32 u8   u16  u32  u64  u8    u16,
+    u16 u32 u32 u64 u64 u64 u128 u128 u128 u128 usize usize,
 }
 
 int_from! {
-    i8  i8  i16 i8  i16 i32 i8   i16  i32  i64  isize i8    i16,
-    i16 i32 i32 i64 i64 i64 i128 i128 i128 i128 i128  isize isize,
+    i8  i8  i16 i8  i16 i32 i8   i16  i32  i64  i8    i16,
+    i16 i32 i32 i64 i64 i64 i128 i128 i128 i128 isize isize,
 }
 
 int_try_from! {
@@ -169,9 +169,9 @@ int_try_from! {
 }
 
 // We assume a 64-bits machine
-int_try_from_trivial!{
-    i32,
-    isize, 
+int_try_from_trivial! {
+    i32   isize usize,
+    isize i128  u128,
 }
 
 #[cfg(test)]
@@ -237,23 +237,23 @@ mod tests {
         }
 
     int_from_test! {
-        u8  u8  u16 u8  u16 u32 u8   u16  u32  u64  usize u8    u16,
-        u16 u32 u32 u64 u64 u64 u128 u128 u128 u128 u128 usize usize,
+        u8  u8  u16 u8  u16 u32 u8   u16  u32  u64  u8    u16,
+        u16 u32 u32 u64 u64 u64 u128 u128 u128 u128 usize usize,
     }
 
     int_from_test! {
-        i8  i8  i16 i8  i16 i32 i8   i16  i32  i64  isize i8    i16,
-        i16 i32 i32 i64 i64 i64 i128 i128 i128 i128 i128  isize isize,
+        i8  i8  i16 i8  i16 i32 i8   i16  i32  i64  i8    i16,
+        i16 i32 i32 i64 i64 i64 i128 i128 i128 i128 isize isize,
     }
 
     int_try_from_test! {
-        u16 u32 u32 u32   u64 u64 u64 u64   u128 u128 u128 u128 u128  usize usize usize usize,
-        u8  u8  u16 usize u8  u16 u32 usize u8   u16  u32  u64  usize u8    u16   u32   u64,
+        u16 u32 u32 u32   u64 u64 u64 u64   u128 u128 u128 u128 u128  usize usize usize usize usize,
+        u8  u8  u16 usize u8  u16 u32 usize u8   u16  u32  u64  usize u8    u16   u32   u64   u128,
     }
 
     int_try_from_test! {
-        i16 i32 i32 i32   i64 i64 i64 i64   i128 i128 i128 i128 i128  isize isize isize isize,
-        i8  i8  i16 isize i8  i16 i32 isize i8   i16  i32  i64  isize i8    i16   i32   i64,
+        i16 i32 i32 i32   i64 i64 i64 i64   i128 i128 i128 i128 i128  isize isize isize isize isize,
+        i8  i8  i16 isize i8  i16 i32 isize i8   i16  i32  i64  isize i8    i16   i32   i64   i128,
     }
 
     proptest! {
