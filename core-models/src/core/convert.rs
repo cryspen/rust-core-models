@@ -319,33 +319,12 @@ mod tests {
         i8  i8  i16 isize i8  i16 i32 isize i8   i16  i32  i64  isize i8    i16   i32   i64   i128,
     }
 
-    macro_rules! int_try_from_mixed_test {
-        (
-            $($From_t: ident)*,
-            $($To_t: ident)*,
-        ) => {
-            paste!{
-                $(
-                    proptest!{
-                        #[test]
-                        fn [<test_try_from_$From_t _to_ $To_t>](x in any::<$From_t>()) {
-                            prop_assert_eq!(
-                                <$To_t as super::TryFrom<$From_t>>::try_from(x.inject()),
-                                $To_t::try_from(x).inject()
-                            );
-                        }
-                    }
-                )*
-            }
-        }
-    }
-
-    int_try_from_mixed_test! {
+    int_try_from_test! {
         u8   u16 u16 u32 u32 u32 u64 u64 u64 u64  u128 u128 u128 u128 u128  usize usize usize usize usize,
         i8   i8  i16 i8  i16 i32 i8  i16 i32 i64  i8   i16  i32  i64  i128  i8    i16   i32   i64   isize,
     }
 
-    int_try_from_mixed_test! {
+    int_try_from_test! {
         i8  i8  i8  i8  i8   i8    i16 i16 i16 i16 i16  i16   i32 i32 i32 i32 i32  i32   i64 i64 i64 i64 i64  i64   i128 i128 i128 i128 i128 i128  isize isize isize isize isize isize,
         u8  u16 u32 u64 u128 usize u8  u16 u32 u64 u128 usize u8  u16 u32 u64 u128 usize u8  u16 u32 u64 u128 usize u8   u16  u32  u64  u128 usize u8    u16   u32   u64   u128  usize,
     }
