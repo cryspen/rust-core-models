@@ -159,8 +159,8 @@ int_from! {
 }
 
 int_try_from! {
-    u16 u32 u32 u32   u64 u64 u64 u64   u128 u128 u128 u128 u128  usize usize usize usize,
-    u8  u8  u16 usize u8  u16 u32 usize u8   u16  u32  u64  usize u8    u16   u32   u64,
+    u16 u32 u32 u64 u64 u64 u64   u128 u128 u128 u128 u128  usize usize usize usize,
+    u8  u8  u16 u8  u16 u32 usize u8   u16  u32  u64  usize u8    u16   u32   u64,
 }
 
 int_try_from! {
@@ -170,8 +170,8 @@ int_try_from! {
 
 // We assume a 64-bits machine
 int_try_from_trivial! {
-    i32   isize usize,
-    isize i128  u128,
+    i32   isize u32   usize,
+    isize i128  usize u128,
 }
 
 #[cfg(test)]

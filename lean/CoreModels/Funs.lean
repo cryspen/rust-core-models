@@ -1322,30 +1322,6 @@ def U16.Insts.Core_modelsConvertTryFromU32TryFromIntError : convert.TryFrom
   try_from := U16.Insts.Core_modelsConvertTryFromU32TryFromIntError.try_from
 }
 
-/-- [core_models::convert::{core_models::convert::TryFrom<u32, core_models::num::error::TryFromIntError> for usize}::try_from]:
-    Source: 'core-models/src/core/convert.rs', lines 122:16-128:17 -/
-def Usize.Insts.Core_modelsConvertTryFromU32TryFromIntError.try_from
-  (x : Std.U32) :
-  Result (result.Result Std.Usize num.error.TryFromIntError)
-  := do
-  let i ← lift (UScalar.cast .U32 core_models.num.Usize.MAX)
-  if x > i
-  then ok (result.Result.Err ())
-  else
-    let i1 ← lift (UScalar.cast .U32 core_models.num.Usize.MIN)
-    if x < i1
-    then ok (result.Result.Err ())
-    else let i2 ← lift (UScalar.cast .Usize x)
-         ok (result.Result.Ok i2)
-
-/-- Trait implementation: [core_models::convert::{core_models::convert::TryFrom<u32, core_models::num::error::TryFromIntError> for usize}]
-    Source: 'core-models/src/core/convert.rs', lines 120:12-129:13 -/
-@[reducible]
-def Usize.Insts.Core_modelsConvertTryFromU32TryFromIntError : convert.TryFrom
-  Std.Usize Std.U32 num.error.TryFromIntError := {
-  try_from := Usize.Insts.Core_modelsConvertTryFromU32TryFromIntError.try_from
-}
-
 /-- [core_models::convert::{core_models::convert::TryFrom<u64, core_models::num::error::TryFromIntError> for u8}::try_from]:
     Source: 'core-models/src/core/convert.rs', lines 122:16-128:17 -/
 def U8.Insts.Core_modelsConvertTryFromU64TryFromIntError.try_from
@@ -2066,6 +2042,23 @@ def I128.Insts.Core_modelsConvertTryFromIsizeTryFromIntError.try_from
 def I128.Insts.Core_modelsConvertTryFromIsizeTryFromIntError : convert.TryFrom
   Std.I128 Std.Isize num.error.TryFromIntError := {
   try_from := I128.Insts.Core_modelsConvertTryFromIsizeTryFromIntError.try_from
+}
+
+/-- [core_models::convert::{core_models::convert::TryFrom<u32, core_models::num::error::TryFromIntError> for usize}::try_from]:
+    Source: 'core-models/src/core/convert.rs', lines 143:16-145:17 -/
+def Usize.Insts.Core_modelsConvertTryFromU32TryFromIntError.try_from
+  (x : Std.U32) :
+  Result (result.Result Std.Usize num.error.TryFromIntError)
+  := do
+  let i ← lift (UScalar.cast .Usize x)
+  ok (result.Result.Ok i)
+
+/-- Trait implementation: [core_models::convert::{core_models::convert::TryFrom<u32, core_models::num::error::TryFromIntError> for usize}]
+    Source: 'core-models/src/core/convert.rs', lines 141:12-146:13 -/
+@[reducible]
+def Usize.Insts.Core_modelsConvertTryFromU32TryFromIntError : convert.TryFrom
+  Std.Usize Std.U32 num.error.TryFromIntError := {
+  try_from := Usize.Insts.Core_modelsConvertTryFromU32TryFromIntError.try_from
 }
 
 /-- [core_models::convert::{core_models::convert::TryFrom<usize, core_models::num::error::TryFromIntError> for u128}::try_from]:
