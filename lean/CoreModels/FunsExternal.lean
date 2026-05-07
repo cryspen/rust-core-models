@@ -95,7 +95,7 @@ def hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul
     Name pattern: [hax_lib::int::{hax_lib::int::ToInt<u8>}::to_int]
     Visibility: public -/
 @[rust_fun "hax_lib::int::{hax_lib::int::ToInt<u8>}::to_int"]
-def U8.Insts.Hax_libIntToInt.to_int : Std.U8 → Result hax_lib.int.Int :=
+def hax_lib.U8.Insts.Hax_libIntToInt.to_int : Std.U8 → Result hax_lib.int.Int :=
   fun x => ok (x.val : Int)
 
 /-- [hax_lib::int::{hax_lib::int::ToInt for u16}::to_int]:
@@ -103,7 +103,7 @@ def U8.Insts.Hax_libIntToInt.to_int : Std.U8 → Result hax_lib.int.Int :=
     Name pattern: [hax_lib::int::{hax_lib::int::ToInt<u16>}::to_int]
     Visibility: public -/
 @[rust_fun "hax_lib::int::{hax_lib::int::ToInt<u16>}::to_int"]
-def U16.Insts.Hax_libIntToInt.to_int : Std.U16 → Result hax_lib.int.Int :=
+def hax_lib.U16.Insts.Hax_libIntToInt.to_int : Std.U16 → Result hax_lib.int.Int :=
   fun x => ok (x.val : Int)
 
 /-- [hax_lib::int::{hax_lib::int::ToInt for u32}::to_int]:
@@ -111,7 +111,7 @@ def U16.Insts.Hax_libIntToInt.to_int : Std.U16 → Result hax_lib.int.Int :=
     Name pattern: [hax_lib::int::{hax_lib::int::ToInt<u32>}::to_int]
     Visibility: public -/
 @[rust_fun "hax_lib::int::{hax_lib::int::ToInt<u32>}::to_int"]
-def U32.Insts.Hax_libIntToInt.to_int : Std.U32 → Result hax_lib.int.Int :=
+def hax_lib.U32.Insts.Hax_libIntToInt.to_int : Std.U32 → Result hax_lib.int.Int :=
   fun x => ok (x.val : Int)
 
 /-- [hax_lib::int::{hax_lib::int::ToInt for u64}::to_int]:
@@ -119,7 +119,7 @@ def U32.Insts.Hax_libIntToInt.to_int : Std.U32 → Result hax_lib.int.Int :=
     Name pattern: [hax_lib::int::{hax_lib::int::ToInt<u64>}::to_int]
     Visibility: public -/
 @[rust_fun "hax_lib::int::{hax_lib::int::ToInt<u64>}::to_int"]
-def U64.Insts.Hax_libIntToInt.to_int : Std.U64 → Result hax_lib.int.Int :=
+def hax_lib.U64.Insts.Hax_libIntToInt.to_int : Std.U64 → Result hax_lib.int.Int :=
   fun x => ok (x.val : Int)
 
 /-- [hax_lib::int::{hax_lib::int::ToInt for u128}::to_int]:
@@ -127,7 +127,7 @@ def U64.Insts.Hax_libIntToInt.to_int : Std.U64 → Result hax_lib.int.Int :=
     Name pattern: [hax_lib::int::{hax_lib::int::ToInt<u128>}::to_int]
     Visibility: public -/
 @[rust_fun "hax_lib::int::{hax_lib::int::ToInt<u128>}::to_int"]
-def U128.Insts.Hax_libIntToInt.to_int : Std.U128 → Result hax_lib.int.Int :=
+def hax_lib.U128.Insts.Hax_libIntToInt.to_int : Std.U128 → Result hax_lib.int.Int :=
   fun x => ok (x.val : Int)
 
 /-- [hax_lib::int::{hax_lib::int::ToInt for usize}::to_int]:
@@ -135,7 +135,7 @@ def U128.Insts.Hax_libIntToInt.to_int : Std.U128 → Result hax_lib.int.Int :=
     Name pattern: [hax_lib::int::{hax_lib::int::ToInt<usize>}::to_int]
     Visibility: public -/
 @[rust_fun "hax_lib::int::{hax_lib::int::ToInt<usize>}::to_int"]
-def Usize.Insts.Hax_libIntToInt.to_int : Std.Usize → Result hax_lib.int.Int :=
+def hax_lib.Usize.Insts.Hax_libIntToInt.to_int : Std.Usize → Result hax_lib.int.Int :=
   fun x => ok (x.val : Int)
 
 /-- [hax_lib::int::{hax_lib::int::ToInt for i8}::to_int]:
@@ -143,7 +143,7 @@ def Usize.Insts.Hax_libIntToInt.to_int : Std.Usize → Result hax_lib.int.Int :=
     Name pattern: [hax_lib::int::{hax_lib::int::ToInt<i8>}::to_int]
     Visibility: public -/
 @[rust_fun "hax_lib::int::{hax_lib::int::ToInt<i8>}::to_int"]
-def I8.Insts.Hax_libIntToInt.to_int : Std.I8 → Result hax_lib.int.Int :=
+def hax_lib.I8.Insts.Hax_libIntToInt.to_int : Std.I8 → Result hax_lib.int.Int :=
   fun x => ok x.val
 
 /-- [hax_lib::int::{hax_lib::int::ToInt for i16}::to_int]:
@@ -151,7 +151,7 @@ def I8.Insts.Hax_libIntToInt.to_int : Std.I8 → Result hax_lib.int.Int :=
     Name pattern: [hax_lib::int::{hax_lib::int::ToInt<i16>}::to_int]
     Visibility: public -/
 @[rust_fun "hax_lib::int::{hax_lib::int::ToInt<i16>}::to_int"]
-def I16.Insts.Hax_libIntToInt.to_int : Std.I16 → Result hax_lib.int.Int :=
+def hax_lib.I16.Insts.Hax_libIntToInt.to_int : Std.I16 → Result hax_lib.int.Int :=
   fun x => ok x.val
 
 /-- [hax_lib::int::{hax_lib::int::ToInt for i32}::to_int]:
@@ -159,7 +159,7 @@ def I16.Insts.Hax_libIntToInt.to_int : Std.I16 → Result hax_lib.int.Int :=
     Name pattern: [hax_lib::int::{hax_lib::int::ToInt<i32>}::to_int]
     Visibility: public -/
 @[rust_fun "hax_lib::int::{hax_lib::int::ToInt<i32>}::to_int"]
-def I32.Insts.Hax_libIntToInt.to_int : Std.I32 → Result hax_lib.int.Int :=
+def hax_lib.I32.Insts.Hax_libIntToInt.to_int : Std.I32 → Result hax_lib.int.Int :=
   fun x => ok x.val
 
 /-- [hax_lib::int::{hax_lib::int::ToInt for i64}::to_int]:
@@ -167,7 +167,7 @@ def I32.Insts.Hax_libIntToInt.to_int : Std.I32 → Result hax_lib.int.Int :=
     Name pattern: [hax_lib::int::{hax_lib::int::ToInt<i64>}::to_int]
     Visibility: public -/
 @[rust_fun "hax_lib::int::{hax_lib::int::ToInt<i64>}::to_int"]
-def I64.Insts.Hax_libIntToInt.to_int : Std.I64 → Result hax_lib.int.Int :=
+def hax_lib.I64.Insts.Hax_libIntToInt.to_int : Std.I64 → Result hax_lib.int.Int :=
   fun x => ok x.val
 
 /-- [hax_lib::int::{hax_lib::int::ToInt for i128}::to_int]:
@@ -175,7 +175,7 @@ def I64.Insts.Hax_libIntToInt.to_int : Std.I64 → Result hax_lib.int.Int :=
     Name pattern: [hax_lib::int::{hax_lib::int::ToInt<i128>}::to_int]
     Visibility: public -/
 @[rust_fun "hax_lib::int::{hax_lib::int::ToInt<i128>}::to_int"]
-def I128.Insts.Hax_libIntToInt.to_int : Std.I128 → Result hax_lib.int.Int :=
+def hax_lib.I128.Insts.Hax_libIntToInt.to_int : Std.I128 → Result hax_lib.int.Int :=
   fun x => ok x.val
 
 /-- [hax_lib::int::{hax_lib::int::ToInt for isize}::to_int]:
@@ -183,7 +183,7 @@ def I128.Insts.Hax_libIntToInt.to_int : Std.I128 → Result hax_lib.int.Int :=
     Name pattern: [hax_lib::int::{hax_lib::int::ToInt<isize>}::to_int]
     Visibility: public -/
 @[rust_fun "hax_lib::int::{hax_lib::int::ToInt<isize>}::to_int"]
-def Isize.Insts.Hax_libIntToInt.to_int : Std.Isize → Result hax_lib.int.Int :=
+def hax_lib.Isize.Insts.Hax_libIntToInt.to_int : Std.Isize → Result hax_lib.int.Int :=
   fun x => ok x.val
 
 end core_models

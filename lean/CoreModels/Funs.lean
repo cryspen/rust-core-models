@@ -1075,20 +1075,6 @@ def U128.Insts.Core_modelsConvertFromU64 : convert.From Std.U128 Std.U64 := {
   «from» := U128.Insts.Core_modelsConvertFromU64.from
 }
 
-/-- [core_models::convert::{core_models::convert::From<usize> for u128}::from]:
-    Source: 'core-models/src/core/convert.rs', lines 103:16-105:17 -/
-def U128.Insts.Core_modelsConvertFromUsize.from
-  (x : Std.Usize) : Result Std.U128 := do
-  ok (UScalar.cast .U128 x)
-
-/-- Trait implementation: [core_models::convert::{core_models::convert::From<usize> for u128}]
-    Source: 'core-models/src/core/convert.rs', lines 102:12-106:13 -/
-@[reducible]
-def U128.Insts.Core_modelsConvertFromUsize : convert.From Std.U128 Std.Usize
-  := {
-  «from» := U128.Insts.Core_modelsConvertFromUsize.from
-}
-
 /-- [core_models::convert::{core_models::convert::From<u8> for usize}::from]:
     Source: 'core-models/src/core/convert.rs', lines 103:16-105:17 -/
 def Usize.Insts.Core_modelsConvertFromU8.from
@@ -1242,20 +1228,6 @@ def I128.Insts.Core_modelsConvertFromI64 : convert.From Std.I128 Std.I64 := {
   «from» := I128.Insts.Core_modelsConvertFromI64.from
 }
 
-/-- [core_models::convert::{core_models::convert::From<isize> for i128}::from]:
-    Source: 'core-models/src/core/convert.rs', lines 103:16-105:17 -/
-def I128.Insts.Core_modelsConvertFromIsize.from
-  (x : Std.Isize) : Result Std.I128 := do
-  ok (IScalar.cast .I128 x)
-
-/-- Trait implementation: [core_models::convert::{core_models::convert::From<isize> for i128}]
-    Source: 'core-models/src/core/convert.rs', lines 102:12-106:13 -/
-@[reducible]
-def I128.Insts.Core_modelsConvertFromIsize : convert.From Std.I128 Std.Isize
-  := {
-  «from» := I128.Insts.Core_modelsConvertFromIsize.from
-}
-
 /-- [core_models::convert::{core_models::convert::From<i8> for isize}::from]:
     Source: 'core-models/src/core/convert.rs', lines 103:16-105:17 -/
 def Isize.Insts.Core_modelsConvertFromI8.from
@@ -1348,30 +1320,6 @@ def U16.Insts.Core_modelsConvertTryFromU32TryFromIntError.try_from
 def U16.Insts.Core_modelsConvertTryFromU32TryFromIntError : convert.TryFrom
   Std.U16 Std.U32 num.error.TryFromIntError := {
   try_from := U16.Insts.Core_modelsConvertTryFromU32TryFromIntError.try_from
-}
-
-/-- [core_models::convert::{core_models::convert::TryFrom<u32, core_models::num::error::TryFromIntError> for usize}::try_from]:
-    Source: 'core-models/src/core/convert.rs', lines 122:16-128:17 -/
-def Usize.Insts.Core_modelsConvertTryFromU32TryFromIntError.try_from
-  (x : Std.U32) :
-  Result (result.Result Std.Usize num.error.TryFromIntError)
-  := do
-  let i ← lift (UScalar.cast .U32 core_models.num.Usize.MAX)
-  if x > i
-  then ok (result.Result.Err ())
-  else
-    let i1 ← lift (UScalar.cast .U32 core_models.num.Usize.MIN)
-    if x < i1
-    then ok (result.Result.Err ())
-    else let i2 ← lift (UScalar.cast .Usize x)
-         ok (result.Result.Ok i2)
-
-/-- Trait implementation: [core_models::convert::{core_models::convert::TryFrom<u32, core_models::num::error::TryFromIntError> for usize}]
-    Source: 'core-models/src/core/convert.rs', lines 120:12-129:13 -/
-@[reducible]
-def Usize.Insts.Core_modelsConvertTryFromU32TryFromIntError : convert.TryFrom
-  Std.Usize Std.U32 num.error.TryFromIntError := {
-  try_from := Usize.Insts.Core_modelsConvertTryFromU32TryFromIntError.try_from
 }
 
 /-- [core_models::convert::{core_models::convert::TryFrom<u64, core_models::num::error::TryFromIntError> for u8}::try_from]:
@@ -1752,30 +1700,6 @@ def I16.Insts.Core_modelsConvertTryFromI32TryFromIntError : convert.TryFrom
   try_from := I16.Insts.Core_modelsConvertTryFromI32TryFromIntError.try_from
 }
 
-/-- [core_models::convert::{core_models::convert::TryFrom<i32, core_models::num::error::TryFromIntError> for isize}::try_from]:
-    Source: 'core-models/src/core/convert.rs', lines 122:16-128:17 -/
-def Isize.Insts.Core_modelsConvertTryFromI32TryFromIntError.try_from
-  (x : Std.I32) :
-  Result (result.Result Std.Isize num.error.TryFromIntError)
-  := do
-  let i ← lift (IScalar.cast .I32 core_models.num.Isize.MAX)
-  if x > i
-  then ok (result.Result.Err ())
-  else
-    let i1 ← lift (IScalar.cast .I32 core_models.num.Isize.MIN)
-    if x < i1
-    then ok (result.Result.Err ())
-    else let i2 ← lift (IScalar.cast .Isize x)
-         ok (result.Result.Ok i2)
-
-/-- Trait implementation: [core_models::convert::{core_models::convert::TryFrom<i32, core_models::num::error::TryFromIntError> for isize}]
-    Source: 'core-models/src/core/convert.rs', lines 120:12-129:13 -/
-@[reducible]
-def Isize.Insts.Core_modelsConvertTryFromI32TryFromIntError : convert.TryFrom
-  Std.Isize Std.I32 num.error.TryFromIntError := {
-  try_from := Isize.Insts.Core_modelsConvertTryFromI32TryFromIntError.try_from
-}
-
 /-- [core_models::convert::{core_models::convert::TryFrom<i64, core_models::num::error::TryFromIntError> for i8}::try_from]:
     Source: 'core-models/src/core/convert.rs', lines 122:16-128:17 -/
 def I8.Insts.Core_modelsConvertTryFromI64TryFromIntError.try_from
@@ -2084,6 +2008,74 @@ def I64.Insts.Core_modelsConvertTryFromIsizeTryFromIntError.try_from
 def I64.Insts.Core_modelsConvertTryFromIsizeTryFromIntError : convert.TryFrom
   Std.I64 Std.Isize num.error.TryFromIntError := {
   try_from := I64.Insts.Core_modelsConvertTryFromIsizeTryFromIntError.try_from
+}
+
+/-- [core_models::convert::{core_models::convert::TryFrom<i32, core_models::num::error::TryFromIntError> for isize}::try_from]:
+    Source: 'core-models/src/core/convert.rs', lines 143:16-145:17 -/
+def Isize.Insts.Core_modelsConvertTryFromI32TryFromIntError.try_from
+  (x : Std.I32) :
+  Result (result.Result Std.Isize num.error.TryFromIntError)
+  := do
+  let i ← lift (IScalar.cast .Isize x)
+  ok (result.Result.Ok i)
+
+/-- Trait implementation: [core_models::convert::{core_models::convert::TryFrom<i32, core_models::num::error::TryFromIntError> for isize}]
+    Source: 'core-models/src/core/convert.rs', lines 141:12-146:13 -/
+@[reducible]
+def Isize.Insts.Core_modelsConvertTryFromI32TryFromIntError : convert.TryFrom
+  Std.Isize Std.I32 num.error.TryFromIntError := {
+  try_from := Isize.Insts.Core_modelsConvertTryFromI32TryFromIntError.try_from
+}
+
+/-- [core_models::convert::{core_models::convert::TryFrom<isize, core_models::num::error::TryFromIntError> for i128}::try_from]:
+    Source: 'core-models/src/core/convert.rs', lines 143:16-145:17 -/
+def I128.Insts.Core_modelsConvertTryFromIsizeTryFromIntError.try_from
+  (x : Std.Isize) :
+  Result (result.Result Std.I128 num.error.TryFromIntError)
+  := do
+  let i ← lift (IScalar.cast .I128 x)
+  ok (result.Result.Ok i)
+
+/-- Trait implementation: [core_models::convert::{core_models::convert::TryFrom<isize, core_models::num::error::TryFromIntError> for i128}]
+    Source: 'core-models/src/core/convert.rs', lines 141:12-146:13 -/
+@[reducible]
+def I128.Insts.Core_modelsConvertTryFromIsizeTryFromIntError : convert.TryFrom
+  Std.I128 Std.Isize num.error.TryFromIntError := {
+  try_from := I128.Insts.Core_modelsConvertTryFromIsizeTryFromIntError.try_from
+}
+
+/-- [core_models::convert::{core_models::convert::TryFrom<u32, core_models::num::error::TryFromIntError> for usize}::try_from]:
+    Source: 'core-models/src/core/convert.rs', lines 143:16-145:17 -/
+def Usize.Insts.Core_modelsConvertTryFromU32TryFromIntError.try_from
+  (x : Std.U32) :
+  Result (result.Result Std.Usize num.error.TryFromIntError)
+  := do
+  let i ← lift (UScalar.cast .Usize x)
+  ok (result.Result.Ok i)
+
+/-- Trait implementation: [core_models::convert::{core_models::convert::TryFrom<u32, core_models::num::error::TryFromIntError> for usize}]
+    Source: 'core-models/src/core/convert.rs', lines 141:12-146:13 -/
+@[reducible]
+def Usize.Insts.Core_modelsConvertTryFromU32TryFromIntError : convert.TryFrom
+  Std.Usize Std.U32 num.error.TryFromIntError := {
+  try_from := Usize.Insts.Core_modelsConvertTryFromU32TryFromIntError.try_from
+}
+
+/-- [core_models::convert::{core_models::convert::TryFrom<usize, core_models::num::error::TryFromIntError> for u128}::try_from]:
+    Source: 'core-models/src/core/convert.rs', lines 143:16-145:17 -/
+def U128.Insts.Core_modelsConvertTryFromUsizeTryFromIntError.try_from
+  (x : Std.Usize) :
+  Result (result.Result Std.U128 num.error.TryFromIntError)
+  := do
+  let i ← lift (UScalar.cast .U128 x)
+  ok (result.Result.Ok i)
+
+/-- Trait implementation: [core_models::convert::{core_models::convert::TryFrom<usize, core_models::num::error::TryFromIntError> for u128}]
+    Source: 'core-models/src/core/convert.rs', lines 141:12-146:13 -/
+@[reducible]
+def U128.Insts.Core_modelsConvertTryFromUsizeTryFromIntError : convert.TryFrom
+  Std.U128 Std.Usize num.error.TryFromIntError := {
+  try_from := U128.Insts.Core_modelsConvertTryFromUsizeTryFromIntError.try_from
 }
 
 /-- [core_models::f32::{core_models::f32::f32}::abs]:
@@ -3103,15 +3095,15 @@ def num.Usize.overflowing_add
     Source: 'core-models/src/core/num/mod.rs', lines 39:12-47:13 -/
 def num.U8.checked_add
   (x : Std.U8) (y : Std.U8) : Result (option.Option Std.U8) := do
-  let i ← U8.Insts.Hax_libIntToInt.to_int num.U8.MIN
-  let i1 ← U8.Insts.Hax_libIntToInt.to_int x
-  let i2 ← U8.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.U8.Insts.Hax_libIntToInt.to_int num.U8.MIN
+  let i1 ← hax_lib.U8.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.U8.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
-    let i5 ← U8.Insts.Hax_libIntToInt.to_int num.U8.MAX
+    let i5 ← hax_lib.U8.Insts.Hax_libIntToInt.to_int num.U8.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x + y
@@ -3123,15 +3115,15 @@ def num.U8.checked_add
     Source: 'core-models/src/core/num/mod.rs', lines 39:12-47:13 -/
 def num.U16.checked_add
   (x : Std.U16) (y : Std.U16) : Result (option.Option Std.U16) := do
-  let i ← U16.Insts.Hax_libIntToInt.to_int num.U16.MIN
-  let i1 ← U16.Insts.Hax_libIntToInt.to_int x
-  let i2 ← U16.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.U16.Insts.Hax_libIntToInt.to_int num.U16.MIN
+  let i1 ← hax_lib.U16.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.U16.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
-    let i5 ← U16.Insts.Hax_libIntToInt.to_int num.U16.MAX
+    let i5 ← hax_lib.U16.Insts.Hax_libIntToInt.to_int num.U16.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x + y
@@ -3143,15 +3135,15 @@ def num.U16.checked_add
     Source: 'core-models/src/core/num/mod.rs', lines 39:12-47:13 -/
 def num.U32.checked_add
   (x : Std.U32) (y : Std.U32) : Result (option.Option Std.U32) := do
-  let i ← U32.Insts.Hax_libIntToInt.to_int num.U32.MIN
-  let i1 ← U32.Insts.Hax_libIntToInt.to_int x
-  let i2 ← U32.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.U32.Insts.Hax_libIntToInt.to_int num.U32.MIN
+  let i1 ← hax_lib.U32.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.U32.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
-    let i5 ← U32.Insts.Hax_libIntToInt.to_int num.U32.MAX
+    let i5 ← hax_lib.U32.Insts.Hax_libIntToInt.to_int num.U32.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x + y
@@ -3163,15 +3155,15 @@ def num.U32.checked_add
     Source: 'core-models/src/core/num/mod.rs', lines 39:12-47:13 -/
 def num.U64.checked_add
   (x : Std.U64) (y : Std.U64) : Result (option.Option Std.U64) := do
-  let i ← U64.Insts.Hax_libIntToInt.to_int num.U64.MIN
-  let i1 ← U64.Insts.Hax_libIntToInt.to_int x
-  let i2 ← U64.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.U64.Insts.Hax_libIntToInt.to_int num.U64.MIN
+  let i1 ← hax_lib.U64.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.U64.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
-    let i5 ← U64.Insts.Hax_libIntToInt.to_int num.U64.MAX
+    let i5 ← hax_lib.U64.Insts.Hax_libIntToInt.to_int num.U64.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x + y
@@ -3183,15 +3175,15 @@ def num.U64.checked_add
     Source: 'core-models/src/core/num/mod.rs', lines 39:12-47:13 -/
 def num.U128.checked_add
   (x : Std.U128) (y : Std.U128) : Result (option.Option Std.U128) := do
-  let i ← U128.Insts.Hax_libIntToInt.to_int num.U128.MIN
-  let i1 ← U128.Insts.Hax_libIntToInt.to_int x
-  let i2 ← U128.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.U128.Insts.Hax_libIntToInt.to_int num.U128.MIN
+  let i1 ← hax_lib.U128.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.U128.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
-    let i5 ← U128.Insts.Hax_libIntToInt.to_int num.U128.MAX
+    let i5 ← hax_lib.U128.Insts.Hax_libIntToInt.to_int num.U128.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x + y
@@ -3203,16 +3195,16 @@ def num.U128.checked_add
     Source: 'core-models/src/core/num/mod.rs', lines 39:12-47:13 -/
 def num.Usize.checked_add
   (x : Std.Usize) (y : Std.Usize) : Result (option.Option Std.Usize) := do
-  let i ← Usize.Insts.Hax_libIntToInt.to_int num.Usize.MIN
-  let i1 ← Usize.Insts.Hax_libIntToInt.to_int x
-  let i2 ← Usize.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.Usize.Insts.Hax_libIntToInt.to_int num.Usize.MIN
+  let i1 ← hax_lib.Usize.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.Usize.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
     let i5 := num.Usize.MAX
-    let i6 ← Usize.Insts.Hax_libIntToInt.to_int i5
+    let i6 ← hax_lib.Usize.Insts.Hax_libIntToInt.to_int i5
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i6
     if b1
     then let i7 ← x + y
@@ -3323,15 +3315,15 @@ def num.Usize.overflowing_sub
     Source: 'core-models/src/core/num/mod.rs', lines 61:12-69:13 -/
 def num.U8.checked_sub
   (x : Std.U8) (y : Std.U8) : Result (option.Option Std.U8) := do
-  let i ← U8.Insts.Hax_libIntToInt.to_int num.U8.MIN
-  let i1 ← U8.Insts.Hax_libIntToInt.to_int x
-  let i2 ← U8.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.U8.Insts.Hax_libIntToInt.to_int num.U8.MIN
+  let i1 ← hax_lib.U8.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.U8.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
-    let i5 ← U8.Insts.Hax_libIntToInt.to_int num.U8.MAX
+    let i5 ← hax_lib.U8.Insts.Hax_libIntToInt.to_int num.U8.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x - y
@@ -3343,15 +3335,15 @@ def num.U8.checked_sub
     Source: 'core-models/src/core/num/mod.rs', lines 61:12-69:13 -/
 def num.U16.checked_sub
   (x : Std.U16) (y : Std.U16) : Result (option.Option Std.U16) := do
-  let i ← U16.Insts.Hax_libIntToInt.to_int num.U16.MIN
-  let i1 ← U16.Insts.Hax_libIntToInt.to_int x
-  let i2 ← U16.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.U16.Insts.Hax_libIntToInt.to_int num.U16.MIN
+  let i1 ← hax_lib.U16.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.U16.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
-    let i5 ← U16.Insts.Hax_libIntToInt.to_int num.U16.MAX
+    let i5 ← hax_lib.U16.Insts.Hax_libIntToInt.to_int num.U16.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x - y
@@ -3363,15 +3355,15 @@ def num.U16.checked_sub
     Source: 'core-models/src/core/num/mod.rs', lines 61:12-69:13 -/
 def num.U32.checked_sub
   (x : Std.U32) (y : Std.U32) : Result (option.Option Std.U32) := do
-  let i ← U32.Insts.Hax_libIntToInt.to_int num.U32.MIN
-  let i1 ← U32.Insts.Hax_libIntToInt.to_int x
-  let i2 ← U32.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.U32.Insts.Hax_libIntToInt.to_int num.U32.MIN
+  let i1 ← hax_lib.U32.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.U32.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
-    let i5 ← U32.Insts.Hax_libIntToInt.to_int num.U32.MAX
+    let i5 ← hax_lib.U32.Insts.Hax_libIntToInt.to_int num.U32.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x - y
@@ -3383,15 +3375,15 @@ def num.U32.checked_sub
     Source: 'core-models/src/core/num/mod.rs', lines 61:12-69:13 -/
 def num.U64.checked_sub
   (x : Std.U64) (y : Std.U64) : Result (option.Option Std.U64) := do
-  let i ← U64.Insts.Hax_libIntToInt.to_int num.U64.MIN
-  let i1 ← U64.Insts.Hax_libIntToInt.to_int x
-  let i2 ← U64.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.U64.Insts.Hax_libIntToInt.to_int num.U64.MIN
+  let i1 ← hax_lib.U64.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.U64.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
-    let i5 ← U64.Insts.Hax_libIntToInt.to_int num.U64.MAX
+    let i5 ← hax_lib.U64.Insts.Hax_libIntToInt.to_int num.U64.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x - y
@@ -3403,15 +3395,15 @@ def num.U64.checked_sub
     Source: 'core-models/src/core/num/mod.rs', lines 61:12-69:13 -/
 def num.U128.checked_sub
   (x : Std.U128) (y : Std.U128) : Result (option.Option Std.U128) := do
-  let i ← U128.Insts.Hax_libIntToInt.to_int num.U128.MIN
-  let i1 ← U128.Insts.Hax_libIntToInt.to_int x
-  let i2 ← U128.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.U128.Insts.Hax_libIntToInt.to_int num.U128.MIN
+  let i1 ← hax_lib.U128.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.U128.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
-    let i5 ← U128.Insts.Hax_libIntToInt.to_int num.U128.MAX
+    let i5 ← hax_lib.U128.Insts.Hax_libIntToInt.to_int num.U128.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x - y
@@ -3423,16 +3415,16 @@ def num.U128.checked_sub
     Source: 'core-models/src/core/num/mod.rs', lines 61:12-69:13 -/
 def num.Usize.checked_sub
   (x : Std.Usize) (y : Std.Usize) : Result (option.Option Std.Usize) := do
-  let i ← Usize.Insts.Hax_libIntToInt.to_int num.Usize.MIN
-  let i1 ← Usize.Insts.Hax_libIntToInt.to_int x
-  let i2 ← Usize.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.Usize.Insts.Hax_libIntToInt.to_int num.Usize.MIN
+  let i1 ← hax_lib.Usize.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.Usize.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
     let i5 := num.Usize.MAX
-    let i6 ← Usize.Insts.Hax_libIntToInt.to_int i5
+    let i6 ← hax_lib.Usize.Insts.Hax_libIntToInt.to_int i5
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i6
     if b1
     then let i7 ← x - y
@@ -3543,15 +3535,15 @@ def num.Usize.overflowing_mul
     Source: 'core-models/src/core/num/mod.rs', lines 83:12-91:13 -/
 def num.U8.checked_mul
   (x : Std.U8) (y : Std.U8) : Result (option.Option Std.U8) := do
-  let i ← U8.Insts.Hax_libIntToInt.to_int num.U8.MIN
-  let i1 ← U8.Insts.Hax_libIntToInt.to_int x
-  let i2 ← U8.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.U8.Insts.Hax_libIntToInt.to_int num.U8.MIN
+  let i1 ← hax_lib.U8.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.U8.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
-    let i5 ← U8.Insts.Hax_libIntToInt.to_int num.U8.MAX
+    let i5 ← hax_lib.U8.Insts.Hax_libIntToInt.to_int num.U8.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x * y
@@ -3563,15 +3555,15 @@ def num.U8.checked_mul
     Source: 'core-models/src/core/num/mod.rs', lines 83:12-91:13 -/
 def num.U16.checked_mul
   (x : Std.U16) (y : Std.U16) : Result (option.Option Std.U16) := do
-  let i ← U16.Insts.Hax_libIntToInt.to_int num.U16.MIN
-  let i1 ← U16.Insts.Hax_libIntToInt.to_int x
-  let i2 ← U16.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.U16.Insts.Hax_libIntToInt.to_int num.U16.MIN
+  let i1 ← hax_lib.U16.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.U16.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
-    let i5 ← U16.Insts.Hax_libIntToInt.to_int num.U16.MAX
+    let i5 ← hax_lib.U16.Insts.Hax_libIntToInt.to_int num.U16.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x * y
@@ -3583,15 +3575,15 @@ def num.U16.checked_mul
     Source: 'core-models/src/core/num/mod.rs', lines 83:12-91:13 -/
 def num.U32.checked_mul
   (x : Std.U32) (y : Std.U32) : Result (option.Option Std.U32) := do
-  let i ← U32.Insts.Hax_libIntToInt.to_int num.U32.MIN
-  let i1 ← U32.Insts.Hax_libIntToInt.to_int x
-  let i2 ← U32.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.U32.Insts.Hax_libIntToInt.to_int num.U32.MIN
+  let i1 ← hax_lib.U32.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.U32.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
-    let i5 ← U32.Insts.Hax_libIntToInt.to_int num.U32.MAX
+    let i5 ← hax_lib.U32.Insts.Hax_libIntToInt.to_int num.U32.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x * y
@@ -3603,15 +3595,15 @@ def num.U32.checked_mul
     Source: 'core-models/src/core/num/mod.rs', lines 83:12-91:13 -/
 def num.U64.checked_mul
   (x : Std.U64) (y : Std.U64) : Result (option.Option Std.U64) := do
-  let i ← U64.Insts.Hax_libIntToInt.to_int num.U64.MIN
-  let i1 ← U64.Insts.Hax_libIntToInt.to_int x
-  let i2 ← U64.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.U64.Insts.Hax_libIntToInt.to_int num.U64.MIN
+  let i1 ← hax_lib.U64.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.U64.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
-    let i5 ← U64.Insts.Hax_libIntToInt.to_int num.U64.MAX
+    let i5 ← hax_lib.U64.Insts.Hax_libIntToInt.to_int num.U64.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x * y
@@ -3623,15 +3615,15 @@ def num.U64.checked_mul
     Source: 'core-models/src/core/num/mod.rs', lines 83:12-91:13 -/
 def num.U128.checked_mul
   (x : Std.U128) (y : Std.U128) : Result (option.Option Std.U128) := do
-  let i ← U128.Insts.Hax_libIntToInt.to_int num.U128.MIN
-  let i1 ← U128.Insts.Hax_libIntToInt.to_int x
-  let i2 ← U128.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.U128.Insts.Hax_libIntToInt.to_int num.U128.MIN
+  let i1 ← hax_lib.U128.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.U128.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
-    let i5 ← U128.Insts.Hax_libIntToInt.to_int num.U128.MAX
+    let i5 ← hax_lib.U128.Insts.Hax_libIntToInt.to_int num.U128.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x * y
@@ -3643,16 +3635,16 @@ def num.U128.checked_mul
     Source: 'core-models/src/core/num/mod.rs', lines 83:12-91:13 -/
 def num.Usize.checked_mul
   (x : Std.Usize) (y : Std.Usize) : Result (option.Option Std.Usize) := do
-  let i ← Usize.Insts.Hax_libIntToInt.to_int num.Usize.MIN
-  let i1 ← Usize.Insts.Hax_libIntToInt.to_int x
-  let i2 ← Usize.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.Usize.Insts.Hax_libIntToInt.to_int num.Usize.MIN
+  let i1 ← hax_lib.Usize.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.Usize.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
     let i5 := num.Usize.MAX
-    let i6 ← Usize.Insts.Hax_libIntToInt.to_int i5
+    let i6 ← hax_lib.Usize.Insts.Hax_libIntToInt.to_int i5
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i6
     if b1
     then let i7 ← x * y
@@ -4435,15 +4427,15 @@ def num.Isize.overflowing_add
     Source: 'core-models/src/core/num/mod.rs', lines 224:12-232:13 -/
 def num.I8.checked_add
   (x : Std.I8) (y : Std.I8) : Result (option.Option Std.I8) := do
-  let i ← I8.Insts.Hax_libIntToInt.to_int num.I8.MIN
-  let i1 ← I8.Insts.Hax_libIntToInt.to_int x
-  let i2 ← I8.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.I8.Insts.Hax_libIntToInt.to_int num.I8.MIN
+  let i1 ← hax_lib.I8.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.I8.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
-    let i5 ← I8.Insts.Hax_libIntToInt.to_int num.I8.MAX
+    let i5 ← hax_lib.I8.Insts.Hax_libIntToInt.to_int num.I8.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x + y
@@ -4455,15 +4447,15 @@ def num.I8.checked_add
     Source: 'core-models/src/core/num/mod.rs', lines 224:12-232:13 -/
 def num.I16.checked_add
   (x : Std.I16) (y : Std.I16) : Result (option.Option Std.I16) := do
-  let i ← I16.Insts.Hax_libIntToInt.to_int num.I16.MIN
-  let i1 ← I16.Insts.Hax_libIntToInt.to_int x
-  let i2 ← I16.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.I16.Insts.Hax_libIntToInt.to_int num.I16.MIN
+  let i1 ← hax_lib.I16.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.I16.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
-    let i5 ← I16.Insts.Hax_libIntToInt.to_int num.I16.MAX
+    let i5 ← hax_lib.I16.Insts.Hax_libIntToInt.to_int num.I16.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x + y
@@ -4475,15 +4467,15 @@ def num.I16.checked_add
     Source: 'core-models/src/core/num/mod.rs', lines 224:12-232:13 -/
 def num.I32.checked_add
   (x : Std.I32) (y : Std.I32) : Result (option.Option Std.I32) := do
-  let i ← I32.Insts.Hax_libIntToInt.to_int num.I32.MIN
-  let i1 ← I32.Insts.Hax_libIntToInt.to_int x
-  let i2 ← I32.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.I32.Insts.Hax_libIntToInt.to_int num.I32.MIN
+  let i1 ← hax_lib.I32.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.I32.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
-    let i5 ← I32.Insts.Hax_libIntToInt.to_int num.I32.MAX
+    let i5 ← hax_lib.I32.Insts.Hax_libIntToInt.to_int num.I32.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x + y
@@ -4495,15 +4487,15 @@ def num.I32.checked_add
     Source: 'core-models/src/core/num/mod.rs', lines 224:12-232:13 -/
 def num.I64.checked_add
   (x : Std.I64) (y : Std.I64) : Result (option.Option Std.I64) := do
-  let i ← I64.Insts.Hax_libIntToInt.to_int num.I64.MIN
-  let i1 ← I64.Insts.Hax_libIntToInt.to_int x
-  let i2 ← I64.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.I64.Insts.Hax_libIntToInt.to_int num.I64.MIN
+  let i1 ← hax_lib.I64.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.I64.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
-    let i5 ← I64.Insts.Hax_libIntToInt.to_int num.I64.MAX
+    let i5 ← hax_lib.I64.Insts.Hax_libIntToInt.to_int num.I64.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x + y
@@ -4515,15 +4507,15 @@ def num.I64.checked_add
     Source: 'core-models/src/core/num/mod.rs', lines 224:12-232:13 -/
 def num.I128.checked_add
   (x : Std.I128) (y : Std.I128) : Result (option.Option Std.I128) := do
-  let i ← I128.Insts.Hax_libIntToInt.to_int num.I128.MIN
-  let i1 ← I128.Insts.Hax_libIntToInt.to_int x
-  let i2 ← I128.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.I128.Insts.Hax_libIntToInt.to_int num.I128.MIN
+  let i1 ← hax_lib.I128.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.I128.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i1 i2
-    let i5 ← I128.Insts.Hax_libIntToInt.to_int num.I128.MAX
+    let i5 ← hax_lib.I128.Insts.Hax_libIntToInt.to_int num.I128.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x + y
@@ -4536,16 +4528,16 @@ def num.I128.checked_add
 def num.Isize.checked_add
   (x : Std.Isize) (y : Std.Isize) : Result (option.Option Std.Isize) := do
   let i := num.Isize.MIN
-  let i1 ← Isize.Insts.Hax_libIntToInt.to_int i
-  let i2 ← Isize.Insts.Hax_libIntToInt.to_int x
-  let i3 ← Isize.Insts.Hax_libIntToInt.to_int y
+  let i1 ← hax_lib.Isize.Insts.Hax_libIntToInt.to_int i
+  let i2 ← hax_lib.Isize.Insts.Hax_libIntToInt.to_int x
+  let i3 ← hax_lib.Isize.Insts.Hax_libIntToInt.to_int y
   let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i2 i3
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i1 i4
   if b
   then
     let i5 ← hax_lib.int.Int.Insts.Core_modelsOpsArithAddIntInt.add i2 i3
     let i6 := num.Isize.MAX
-    let i7 ← Isize.Insts.Hax_libIntToInt.to_int i6
+    let i7 ← hax_lib.Isize.Insts.Hax_libIntToInt.to_int i6
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i5 i7
     if b1
     then let i8 ← x + y
@@ -4656,15 +4648,15 @@ def num.Isize.overflowing_sub
     Source: 'core-models/src/core/num/mod.rs', lines 246:12-254:13 -/
 def num.I8.checked_sub
   (x : Std.I8) (y : Std.I8) : Result (option.Option Std.I8) := do
-  let i ← I8.Insts.Hax_libIntToInt.to_int num.I8.MIN
-  let i1 ← I8.Insts.Hax_libIntToInt.to_int x
-  let i2 ← I8.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.I8.Insts.Hax_libIntToInt.to_int num.I8.MIN
+  let i1 ← hax_lib.I8.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.I8.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
-    let i5 ← I8.Insts.Hax_libIntToInt.to_int num.I8.MAX
+    let i5 ← hax_lib.I8.Insts.Hax_libIntToInt.to_int num.I8.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x - y
@@ -4676,15 +4668,15 @@ def num.I8.checked_sub
     Source: 'core-models/src/core/num/mod.rs', lines 246:12-254:13 -/
 def num.I16.checked_sub
   (x : Std.I16) (y : Std.I16) : Result (option.Option Std.I16) := do
-  let i ← I16.Insts.Hax_libIntToInt.to_int num.I16.MIN
-  let i1 ← I16.Insts.Hax_libIntToInt.to_int x
-  let i2 ← I16.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.I16.Insts.Hax_libIntToInt.to_int num.I16.MIN
+  let i1 ← hax_lib.I16.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.I16.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
-    let i5 ← I16.Insts.Hax_libIntToInt.to_int num.I16.MAX
+    let i5 ← hax_lib.I16.Insts.Hax_libIntToInt.to_int num.I16.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x - y
@@ -4696,15 +4688,15 @@ def num.I16.checked_sub
     Source: 'core-models/src/core/num/mod.rs', lines 246:12-254:13 -/
 def num.I32.checked_sub
   (x : Std.I32) (y : Std.I32) : Result (option.Option Std.I32) := do
-  let i ← I32.Insts.Hax_libIntToInt.to_int num.I32.MIN
-  let i1 ← I32.Insts.Hax_libIntToInt.to_int x
-  let i2 ← I32.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.I32.Insts.Hax_libIntToInt.to_int num.I32.MIN
+  let i1 ← hax_lib.I32.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.I32.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
-    let i5 ← I32.Insts.Hax_libIntToInt.to_int num.I32.MAX
+    let i5 ← hax_lib.I32.Insts.Hax_libIntToInt.to_int num.I32.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x - y
@@ -4716,15 +4708,15 @@ def num.I32.checked_sub
     Source: 'core-models/src/core/num/mod.rs', lines 246:12-254:13 -/
 def num.I64.checked_sub
   (x : Std.I64) (y : Std.I64) : Result (option.Option Std.I64) := do
-  let i ← I64.Insts.Hax_libIntToInt.to_int num.I64.MIN
-  let i1 ← I64.Insts.Hax_libIntToInt.to_int x
-  let i2 ← I64.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.I64.Insts.Hax_libIntToInt.to_int num.I64.MIN
+  let i1 ← hax_lib.I64.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.I64.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
-    let i5 ← I64.Insts.Hax_libIntToInt.to_int num.I64.MAX
+    let i5 ← hax_lib.I64.Insts.Hax_libIntToInt.to_int num.I64.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x - y
@@ -4736,15 +4728,15 @@ def num.I64.checked_sub
     Source: 'core-models/src/core/num/mod.rs', lines 246:12-254:13 -/
 def num.I128.checked_sub
   (x : Std.I128) (y : Std.I128) : Result (option.Option Std.I128) := do
-  let i ← I128.Insts.Hax_libIntToInt.to_int num.I128.MIN
-  let i1 ← I128.Insts.Hax_libIntToInt.to_int x
-  let i2 ← I128.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.I128.Insts.Hax_libIntToInt.to_int num.I128.MIN
+  let i1 ← hax_lib.I128.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.I128.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i1 i2
-    let i5 ← I128.Insts.Hax_libIntToInt.to_int num.I128.MAX
+    let i5 ← hax_lib.I128.Insts.Hax_libIntToInt.to_int num.I128.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x - y
@@ -4757,16 +4749,16 @@ def num.I128.checked_sub
 def num.Isize.checked_sub
   (x : Std.Isize) (y : Std.Isize) : Result (option.Option Std.Isize) := do
   let i := num.Isize.MIN
-  let i1 ← Isize.Insts.Hax_libIntToInt.to_int i
-  let i2 ← Isize.Insts.Hax_libIntToInt.to_int x
-  let i3 ← Isize.Insts.Hax_libIntToInt.to_int y
+  let i1 ← hax_lib.Isize.Insts.Hax_libIntToInt.to_int i
+  let i2 ← hax_lib.Isize.Insts.Hax_libIntToInt.to_int x
+  let i3 ← hax_lib.Isize.Insts.Hax_libIntToInt.to_int y
   let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i2 i3
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i1 i4
   if b
   then
     let i5 ← hax_lib.int.Int.Insts.Core_modelsOpsArithSubIntInt.sub i2 i3
     let i6 := num.Isize.MAX
-    let i7 ← Isize.Insts.Hax_libIntToInt.to_int i6
+    let i7 ← hax_lib.Isize.Insts.Hax_libIntToInt.to_int i6
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i5 i7
     if b1
     then let i8 ← x - y
@@ -4877,15 +4869,15 @@ def num.Isize.overflowing_mul
     Source: 'core-models/src/core/num/mod.rs', lines 268:12-276:13 -/
 def num.I8.checked_mul
   (x : Std.I8) (y : Std.I8) : Result (option.Option Std.I8) := do
-  let i ← I8.Insts.Hax_libIntToInt.to_int num.I8.MIN
-  let i1 ← I8.Insts.Hax_libIntToInt.to_int x
-  let i2 ← I8.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.I8.Insts.Hax_libIntToInt.to_int num.I8.MIN
+  let i1 ← hax_lib.I8.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.I8.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
-    let i5 ← I8.Insts.Hax_libIntToInt.to_int num.I8.MAX
+    let i5 ← hax_lib.I8.Insts.Hax_libIntToInt.to_int num.I8.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x * y
@@ -4897,15 +4889,15 @@ def num.I8.checked_mul
     Source: 'core-models/src/core/num/mod.rs', lines 268:12-276:13 -/
 def num.I16.checked_mul
   (x : Std.I16) (y : Std.I16) : Result (option.Option Std.I16) := do
-  let i ← I16.Insts.Hax_libIntToInt.to_int num.I16.MIN
-  let i1 ← I16.Insts.Hax_libIntToInt.to_int x
-  let i2 ← I16.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.I16.Insts.Hax_libIntToInt.to_int num.I16.MIN
+  let i1 ← hax_lib.I16.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.I16.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
-    let i5 ← I16.Insts.Hax_libIntToInt.to_int num.I16.MAX
+    let i5 ← hax_lib.I16.Insts.Hax_libIntToInt.to_int num.I16.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x * y
@@ -4917,15 +4909,15 @@ def num.I16.checked_mul
     Source: 'core-models/src/core/num/mod.rs', lines 268:12-276:13 -/
 def num.I32.checked_mul
   (x : Std.I32) (y : Std.I32) : Result (option.Option Std.I32) := do
-  let i ← I32.Insts.Hax_libIntToInt.to_int num.I32.MIN
-  let i1 ← I32.Insts.Hax_libIntToInt.to_int x
-  let i2 ← I32.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.I32.Insts.Hax_libIntToInt.to_int num.I32.MIN
+  let i1 ← hax_lib.I32.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.I32.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
-    let i5 ← I32.Insts.Hax_libIntToInt.to_int num.I32.MAX
+    let i5 ← hax_lib.I32.Insts.Hax_libIntToInt.to_int num.I32.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x * y
@@ -4937,15 +4929,15 @@ def num.I32.checked_mul
     Source: 'core-models/src/core/num/mod.rs', lines 268:12-276:13 -/
 def num.I64.checked_mul
   (x : Std.I64) (y : Std.I64) : Result (option.Option Std.I64) := do
-  let i ← I64.Insts.Hax_libIntToInt.to_int num.I64.MIN
-  let i1 ← I64.Insts.Hax_libIntToInt.to_int x
-  let i2 ← I64.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.I64.Insts.Hax_libIntToInt.to_int num.I64.MIN
+  let i1 ← hax_lib.I64.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.I64.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
-    let i5 ← I64.Insts.Hax_libIntToInt.to_int num.I64.MAX
+    let i5 ← hax_lib.I64.Insts.Hax_libIntToInt.to_int num.I64.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x * y
@@ -4957,15 +4949,15 @@ def num.I64.checked_mul
     Source: 'core-models/src/core/num/mod.rs', lines 268:12-276:13 -/
 def num.I128.checked_mul
   (x : Std.I128) (y : Std.I128) : Result (option.Option Std.I128) := do
-  let i ← I128.Insts.Hax_libIntToInt.to_int num.I128.MIN
-  let i1 ← I128.Insts.Hax_libIntToInt.to_int x
-  let i2 ← I128.Insts.Hax_libIntToInt.to_int y
+  let i ← hax_lib.I128.Insts.Hax_libIntToInt.to_int num.I128.MIN
+  let i1 ← hax_lib.I128.Insts.Hax_libIntToInt.to_int x
+  let i2 ← hax_lib.I128.Insts.Hax_libIntToInt.to_int y
   let i3 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i i3
   if b
   then
     let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i1 i2
-    let i5 ← I128.Insts.Hax_libIntToInt.to_int num.I128.MAX
+    let i5 ← hax_lib.I128.Insts.Hax_libIntToInt.to_int num.I128.MAX
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i4 i5
     if b1
     then let i6 ← x * y
@@ -4978,16 +4970,16 @@ def num.I128.checked_mul
 def num.Isize.checked_mul
   (x : Std.Isize) (y : Std.Isize) : Result (option.Option Std.Isize) := do
   let i := num.Isize.MIN
-  let i1 ← Isize.Insts.Hax_libIntToInt.to_int i
-  let i2 ← Isize.Insts.Hax_libIntToInt.to_int x
-  let i3 ← Isize.Insts.Hax_libIntToInt.to_int y
+  let i1 ← hax_lib.Isize.Insts.Hax_libIntToInt.to_int i
+  let i2 ← hax_lib.Isize.Insts.Hax_libIntToInt.to_int x
+  let i3 ← hax_lib.Isize.Insts.Hax_libIntToInt.to_int y
   let i4 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i2 i3
   let b ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i1 i4
   if b
   then
     let i5 ← hax_lib.int.Int.Insts.Core_modelsOpsArithMulIntInt.mul i2 i3
     let i6 := num.Isize.MAX
-    let i7 ← Isize.Insts.Hax_libIntToInt.to_int i6
+    let i7 ← hax_lib.Isize.Insts.Hax_libIntToInt.to_int i6
     let b1 ← hax_lib.int.Int.Insts.Core_modelsCmpPartialOrdInt.le i5 i7
     if b1
     then let i8 ← x * y
