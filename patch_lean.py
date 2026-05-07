@@ -179,6 +179,17 @@ def fix_vec_allocator(text: str) -> str:
 
     return text
 
+def fix_result_match(text: str) -> str:
+    """ A match on `result.Result` cannot be parsed properly by Lean in
+    `I128.Insts.Core_modelsIterStepStep.steps_between`.
+    """
+    text = re.sub(
+        r'\| result\.Result\.',
+        r'| core_models.result.Result.',
+        text
+    )
+
+    return text
 
 def rewrite_phantom_data(text: str) -> str:
     """Aeneas's alloc extraction declares `core::marker::PhantomData (T) := Unit`
@@ -502,6 +513,7 @@ def main() -> int:
             text = add_funs_prologue_import(text)
             text = comment_out_num_bounds(text)
             text = desugar_pure_num_bound_binds(text)
+            text = fix_result_match(text)
         write(path, text)
         print(f"rewrote imports/opens/namespace in Aeneas/{path.name}")
 
