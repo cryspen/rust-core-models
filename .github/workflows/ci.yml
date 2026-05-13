@@ -30,6 +30,11 @@ jobs:
 
       - run: cargo fmt --all -- --check
 
+      # `tests/` is a separate workspace; `cargo fmt --all` from the
+      # root doesn't reach it.
+      - run: cargo fmt --all -- --check
+        working-directory: tests
+
   # ---------------------------------------------------------------- rust tests
   rust-test:
     name: cargo test
@@ -43,6 +48,14 @@ jobs:
           toolchain: ${{ env.RUST_TOOLCHAIN }}
 
       - run: cargo test --workspace
+
+      # `tests/` is its own workspace (members: client_test,
+      # rust_lean_equiv_test/{source,macro}) — the root `cargo test
+      # --workspace` doesn't reach it. The `cargo test --lib` here runs
+      # the Rust half of every `#[rust_lean_test]` (the Lean half runs
+      # in the lean-build job below).
+      - run: cargo test --workspace --lib
+        working-directory: tests
 
   # ----------------------------------------------------------- lean extraction
   lean-build:

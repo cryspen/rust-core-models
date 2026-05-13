@@ -3,6 +3,6 @@
 -- `core::result::Result::*`); those axioms already live in our parent
 -- `CoreModels.FunsExternal` module, which is pulled in by `import CoreModels`
 -- from the auto-generated `Funs.lean`. So this file just needs to exist
--- (referenced by the auto-generated `import Tests.FunsExternal`) and
+-- (referenced by the auto-generated `import ClientTest.FunsExternal`) and
 -- otherwise carry no content of its own.
 import Aeneas
