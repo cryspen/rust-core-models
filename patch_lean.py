@@ -225,6 +225,13 @@ def rewrite_phantom_data(text: str) -> str:
         text, ["core_models::marker::PhantomData"],
         trailer="replaced by core_models.Phantom (see rewrite_alloc_phantom_data)",
     )
+    
+def escape_keywords(text: str) -> str:
+    """Aeneas introduces `branch` as a keyword, so we need to escape it.
+    https://github.com/AeneasVerif/aeneas/issues/1023
+    """
+    return re.sub(r"(?<![A-Za-z0-9])branch(?![A-Za-z0-9])", "«branch»", text)
+
 
 def desugar_pure_num_bound_binds(text: str) -> str:
     """The generated `Funs.lean` uses monadic bind syntax to fetch numeric
@@ -497,6 +504,7 @@ def main() -> int:
         text = read(path)
         text = rewrite_imports_and_opens(text)
         text = rewrite_phantom_data(text)
+        text = escape_keywords(text)
         if path == funs_path:
             text = fix_fail_panic(text)
             text = add_funs_prologue_import(text)
