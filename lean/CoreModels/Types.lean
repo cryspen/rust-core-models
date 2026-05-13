@@ -760,7 +760,7 @@ structure ops.try_trait.FromResidual (Self : Type) (R : Type) where
 structure ops.try_trait.Try (Self : Type) (Self_Output : Type) (Self_Residual :
   Type) where
   from_output : Self_Output → Result Self
-  branch : Self → Result (ops.control_flow.ControlFlow Self_Residual
+  «branch» : Self → Result (ops.control_flow.ControlFlow Self_Residual
     Self_Output)
 
 /-- Trait declaration: [core_models::ops::deref::Deref]

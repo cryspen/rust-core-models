@@ -8,4 +8,4 @@ name = "CoreModels"
 [[require]]
 name = "aeneas"
 git = { url = "https://github.com/abentkamp/aeneas", subDir = "backends/lean" }
-rev = "4e02d6d8e1421562e6ab4a9737fae159ba602d8b"
+rev = "14dff64073df177210e5335bed1a5cb62d13274e"

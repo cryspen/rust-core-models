@@ -914,38 +914,31 @@ def rust_primitives.arithmetic.to_be_bytes_u128 : Std.U128 → Result (Array Std
 
 @[rust_fun "rust_primitives::arithmetic::to_be_bytes_usize"]
 def rust_primitives.arithmetic.to_be_bytes_usize : Std.Usize → Result (Array Std.U8 8#usize) :=
-  fun x => ok ⟨ (x.bv.setWidth 64).toBEBytes.map UScalar.mk, by
-    simp only [List.length_map, UScalar.ofNatCore_val_eq, @BitVec.toBEBytes_length (8 * 8)] ⟩
+  fun x => ok ⟨ (x.bv.setWidth 64).toBEBytes.map UScalar.mk, by grind [BitVec.toBEBytes_length] ⟩
 
 @[rust_fun "rust_primitives::arithmetic::to_be_bytes_i8"]
 def rust_primitives.arithmetic.to_be_bytes_i8 : Std.I8 → Result (Array Std.U8 1#usize) :=
-  fun x => ok ⟨ x.bv.toBEBytes.map UScalar.mk, by
-    simp only [List.length_map, UScalar.ofNatCore_val_eq, @BitVec.toBEBytes_length (1 * 8)] ⟩
+  fun x => ok ⟨ x.bv.toBEBytes.map UScalar.mk, by grind [BitVec.toBEBytes_length] ⟩
 
 @[rust_fun "rust_primitives::arithmetic::to_be_bytes_i16"]
 def rust_primitives.arithmetic.to_be_bytes_i16 : Std.I16 → Result (Array Std.U8 2#usize) :=
-  fun x => ok ⟨ x.bv.toBEBytes.map UScalar.mk, by
-    simp only [List.length_map, UScalar.ofNatCore_val_eq, @BitVec.toBEBytes_length (2 * 8)] ⟩
+  fun x => ok ⟨ x.bv.toBEBytes.map UScalar.mk, by grind [BitVec.toBEBytes_length] ⟩
 
 @[rust_fun "rust_primitives::arithmetic::to_be_bytes_i32"]
 def rust_primitives.arithmetic.to_be_bytes_i32 : Std.I32 → Result (Array Std.U8 4#usize) :=
-  fun x => ok ⟨ x.bv.toBEBytes.map UScalar.mk, by
-    simp only [List.length_map, UScalar.ofNatCore_val_eq, @BitVec.toBEBytes_length (4 * 8)] ⟩
+  fun x => ok ⟨ x.bv.toBEBytes.map UScalar.mk, by grind [BitVec.toBEBytes_length] ⟩
 
 @[rust_fun "rust_primitives::arithmetic::to_be_bytes_i64"]
 def rust_primitives.arithmetic.to_be_bytes_i64 : Std.I64 → Result (Array Std.U8 8#usize) :=
-  fun x => ok ⟨ x.bv.toBEBytes.map UScalar.mk, by
-    simp only [List.length_map, UScalar.ofNatCore_val_eq, @BitVec.toBEBytes_length (8 * 8)] ⟩
+  fun x => ok ⟨ x.bv.toBEBytes.map UScalar.mk, by grind [BitVec.toBEBytes_length] ⟩
 
 @[rust_fun "rust_primitives::arithmetic::to_be_bytes_i128"]
 def rust_primitives.arithmetic.to_be_bytes_i128 : Std.I128 → Result (Array Std.U8 16#usize) :=
-  fun x => ok ⟨ x.bv.toBEBytes.map UScalar.mk, by
-    simp only [List.length_map, UScalar.ofNatCore_val_eq, @BitVec.toBEBytes_length (16 * 8)] ⟩
+  fun x => ok ⟨ x.bv.toBEBytes.map UScalar.mk, by grind [BitVec.toBEBytes_length] ⟩
 
 @[rust_fun "rust_primitives::arithmetic::to_be_bytes_isize"]
 def rust_primitives.arithmetic.to_be_bytes_isize : Std.Isize → Result (Array Std.U8 8#usize) :=
-  fun x => ok ⟨ (x.bv.setWidth 64).toBEBytes.map UScalar.mk, by
-    simp only [List.length_map, UScalar.ofNatCore_val_eq, @BitVec.toBEBytes_length (8 * 8)] ⟩
+  fun x => ok ⟨ (x.bv.setWidth 64).toBEBytes.map UScalar.mk, by grind [BitVec.toBEBytes_length] ⟩
 
 @[rust_fun "rust_primitives::arithmetic::to_le_bytes_u8"]
 def rust_primitives.arithmetic.to_le_bytes_u8 : Std.U8 → Result (Array Std.U8 1#usize) :=
@@ -969,38 +962,31 @@ def rust_primitives.arithmetic.to_le_bytes_u128 : Std.U128 → Result (Array Std
 
 @[rust_fun "rust_primitives::arithmetic::to_le_bytes_usize"]
 def rust_primitives.arithmetic.to_le_bytes_usize : Std.Usize → Result (Array Std.U8 8#usize) :=
-  fun x => ok ⟨ (x.bv.setWidth 64).toLEBytes.map UScalar.mk, by
-    simp only [List.length_map, UScalar.ofNatCore_val_eq, @BitVec.toLEBytes_length (8 * 8)] ⟩
+  fun x => ok ⟨ (x.bv.setWidth 64).toLEBytes.map UScalar.mk, by grind [BitVec.toBEBytes_length] ⟩
 
 @[rust_fun "rust_primitives::arithmetic::to_le_bytes_i8"]
 def rust_primitives.arithmetic.to_le_bytes_i8 : Std.I8 → Result (Array Std.U8 1#usize) :=
-  fun x => ok ⟨ x.bv.toLEBytes.map UScalar.mk, by
-    simp only [List.length_map, UScalar.ofNatCore_val_eq, @BitVec.toLEBytes_length (1 * 8)] ⟩
+  fun x => ok ⟨ x.bv.toLEBytes.map UScalar.mk, by grind [BitVec.toBEBytes_length] ⟩
 
 @[rust_fun "rust_primitives::arithmetic::to_le_bytes_i16"]
 def rust_primitives.arithmetic.to_le_bytes_i16 : Std.I16 → Result (Array Std.U8 2#usize) :=
-  fun x => ok ⟨ x.bv.toLEBytes.map UScalar.mk, by
-    simp only [List.length_map, UScalar.ofNatCore_val_eq, @BitVec.toLEBytes_length (2 * 8)] ⟩
+  fun x => ok ⟨ x.bv.toLEBytes.map UScalar.mk, by grind [BitVec.toBEBytes_length] ⟩
 
 @[rust_fun "rust_primitives::arithmetic::to_le_bytes_i32"]
 def rust_primitives.arithmetic.to_le_bytes_i32 : Std.I32 → Result (Array Std.U8 4#usize) :=
-  fun x => ok ⟨ x.bv.toLEBytes.map UScalar.mk, by
-    simp only [List.length_map, UScalar.ofNatCore_val_eq, @BitVec.toLEBytes_length (4 * 8)] ⟩
+  fun x => ok ⟨ x.bv.toLEBytes.map UScalar.mk, by grind [BitVec.toBEBytes_length] ⟩
 
 @[rust_fun "rust_primitives::arithmetic::to_le_bytes_i64"]
 def rust_primitives.arithmetic.to_le_bytes_i64 : Std.I64 → Result (Array Std.U8 8#usize) :=
-  fun x => ok ⟨ x.bv.toLEBytes.map UScalar.mk, by
-    simp only [List.length_map, UScalar.ofNatCore_val_eq, @BitVec.toLEBytes_length (8 * 8)] ⟩
+  fun x => ok ⟨ x.bv.toLEBytes.map UScalar.mk, by grind [BitVec.toBEBytes_length] ⟩
 
 @[rust_fun "rust_primitives::arithmetic::to_le_bytes_i128"]
 def rust_primitives.arithmetic.to_le_bytes_i128 : Std.I128 → Result (Array Std.U8 16#usize) :=
-  fun x => ok ⟨ x.bv.toLEBytes.map UScalar.mk, by
-    simp only [List.length_map, UScalar.ofNatCore_val_eq, @BitVec.toLEBytes_length (16 * 8)] ⟩
+  fun x => ok ⟨ x.bv.toLEBytes.map UScalar.mk, by grind [BitVec.toBEBytes_length] ⟩
 
 @[rust_fun "rust_primitives::arithmetic::to_le_bytes_isize"]
 def rust_primitives.arithmetic.to_le_bytes_isize : Std.Isize → Result (Array Std.U8 8#usize) :=
-  fun x => ok ⟨ (x.bv.setWidth 64).toLEBytes.map UScalar.mk, by
-    simp only [List.length_map, UScalar.ofNatCore_val_eq, @BitVec.toLEBytes_length (8 * 8)] ⟩
+  fun x => ok ⟨ (x.bv.setWidth 64).toLEBytes.map UScalar.mk, by grind [BitVec.toBEBytes_length] ⟩
 
 @[rust_fun "rust_primitives::arithmetic::abs_i8"]
 def rust_primitives.arithmetic.abs_i8 : Std.I8 → Result Std.I8 :=
