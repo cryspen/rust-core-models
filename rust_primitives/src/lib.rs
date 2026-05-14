@@ -1,23 +1,29 @@
 #![allow(unused_variables)]
 
 pub mod slice {
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn slice_length<T>(s: &[T]) -> usize {
         s.len()
     }
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     #[hax_lib::requires(mid <= slice_length(s))]
     pub fn slice_split_at<T>(s: &[T], mid: usize) -> (&[T], &[T]) {
         s.split_at(mid)
     }
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn slice_contains<T: PartialEq>(s: &[T], v: &T) -> bool {
         s.contains(v)
     }
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     #[hax_lib::requires(i < slice_length(s))]
     pub fn slice_index<T>(s: &[T], i: usize) -> &T {
         &s[i]
     }
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn slice_slice<T>(s: &[T], b: usize, e: usize) -> &[T] {
         &s[b..e]
     }
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn slice_clone_from_slice<T: Clone>(s: &mut [T], src: &[T]) {
         s.clone_from_slice(src)
     }
@@ -25,18 +31,23 @@ pub mod slice {
     // Not constraining that here allows to call it with closures,
     // or to pass parameters that implement the `Fn` trait for core_models.
     // Each backend can type `f` as needed.
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn array_from_fn<T, const N: usize, F: FnMut(usize) -> T>(f: F) -> [T; N] {
         std::array::from_fn(f)
     }
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn array_map<T, U, const N: usize, F: Fn(T) -> U>(s: [T; N], f: F) -> [U; N] {
         s.map(f)
     }
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn array_as_slice<T, const N: usize>(s: &[T; N]) -> &[T] {
         &s[..]
     }
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn array_slice<T, const N: usize>(a: &[T; N], b: usize, e: usize) -> &[T] {
         &a[b..e]
     }
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn array_index<T, const N: usize>(a: &[T; N], i: usize) -> &T {
         &a[i]
     }
@@ -45,48 +56,62 @@ pub mod slice {
 pub mod sequence {
     #[derive(PartialEq, Debug)]
     pub struct Seq<T>(Vec<T>);
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn seq_empty<T>() -> Seq<T> {
         Seq(Vec::new())
     }
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn seq_from_slice<T>(s: &[T]) -> Seq<&T> {
         Seq(s.iter().collect())
     }
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn seq_from_boxed_slice<T>(s: Box<[T]>) -> Seq<T> {
         Seq(s.into_vec())
     }
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn seq_from_array<T, const N: usize>(s: [T; N]) -> Seq<T> {
         Seq(s.into_iter().collect())
     }
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn seq_to_slice<T>(s: &Seq<T>) -> &[T] {
         s.0.as_slice()
     }
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn seq_concat<T>(s1: &mut Seq<T>, s2: &mut Seq<T>) {
         s1.0.append(&mut s2.0)
     }
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn seq_extend<T>(s1: &mut Seq<T>, s2: &[T])
     where
         T: Clone,
     {
         s1.0.extend_from_slice(s2)
     }
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn seq_push<T>(s1: &mut Seq<T>, v: T) {
         s1.0.push(v)
     }
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn seq_one<T>(x: T) -> Seq<T> {
         Seq(vec![x])
     }
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn seq_create<T: Clone>(x: T, n: usize) -> Seq<T> {
         Seq(vec![x; n])
     }
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn seq_len<T>(s: &Seq<T>) -> usize {
         s.0.len()
     }
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn seq_drain<T>(s: &mut Seq<T>, b: usize, e: usize) -> Seq<T> {
         Seq(s.0.drain(b..e).collect())
     }
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn seq_remove<T>(s: &mut Seq<T>, n: usize) -> T {
         s.0.remove(n)
     }
+    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
     pub fn seq_index<T>(s: &Seq<T>, i: usize) -> &T {
         &s.0[i]
     }
@@ -129,10 +154,14 @@ pub mod arithmetic {
             overflowing_ops: $($ov_op:ident)*,
         ) => {
             paste!{
-                $(pub fn [<$op _ $t>](x: $t, y: $t) -> $t {
+                $(
+                #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
+                pub fn [<$op _ $t>](x: $t, y: $t) -> $t {
                     x.$op(y)
                 })*
-                $(pub fn [<$ov_op _ $t>](x: $t, y: $t) -> ($t, bool) {
+                $(
+                #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
+                pub fn [<$ov_op _ $t>](x: $t, y: $t) -> ($t, bool) {
                     x.$ov_op(y)
                 })*
             }
@@ -156,33 +185,43 @@ pub mod arithmetic {
         ) => {
             paste! {
                 $(
+                #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
                 pub fn [<pow_ $Self>](x: $Self, exp: u32) -> $Self {
                     x.pow(exp)
                 }
+                #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
                 pub fn [<count_ones_ $Self>](x: $Self) -> u32 {
                     x.count_ones()
                 }
+                #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
                 pub fn [<rotate_right_ $Self>](x: $Self, n: u32) -> $Self {
                     x.rotate_right(n)
                 }
+                #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
                 pub fn [<rotate_left_ $Self>](x: $Self, n: u32) -> $Self {
                     x.rotate_left(n)
                 }
+                #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
                 pub fn [<leading_zeros_ $Self>](x: $Self) -> u32 {
                     x.leading_zeros()
                 }
+                #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
                 pub fn [<ilog2_ $Self>](x: $Self) -> u32 {
                     x.ilog2()
                 }
+                #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
                 pub fn [<from_be_bytes_ $Self>](bytes: [u8; $Bytes]) -> $Self {
                     $Self::from_be_bytes(bytes)
                 }
+                #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
                 pub fn [<from_le_bytes_ $Self>](bytes: [u8; $Bytes]) -> $Self {
                     $Self::from_le_bytes(bytes)
                 }
+                #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
                 pub fn [<to_be_bytes_ $Self>](bytes: $Self) -> [u8; $Bytes] {
                     bytes.to_be_bytes()
                 }
+                #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
                 pub fn [<to_le_bytes_ $Self>](bytes: $Self) -> [u8; $Bytes] {
                     bytes.to_le_bytes()
                 })*
@@ -194,6 +233,7 @@ pub mod arithmetic {
         ($($Self: ident)*) => {
             paste! {
                 $(
+                    #[cfg_attr(hax_backend_proverif, hax_lib::pv_constructor)]
                     pub fn [<abs_ $Self>](x: $Self) -> $Self {
                     x.abs()
                 }
