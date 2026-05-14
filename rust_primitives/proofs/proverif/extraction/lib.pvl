@@ -1,0 +1,1057 @@
+(*
+  Run with:
+    proverif -lib <hax>/hax-lib/proof-libs/proverif/primitives.pvl lib.pvl
+
+  The `primitives.pvl` library ships with hax and supplies
+  everything the extracted file references that isn't defined
+  below: the public channel `c`, the `construct_fail` sink,
+  `bitstring_default`/`bitstring_err`, the `Some`/`None`/
+  `True`/`False`/`nat_lit` constructors, `logical_and`/`or`, and
+  every `rust_primitives::*` / `core::*` / `hax_lib::*` opaque
+  function the extraction surface needs.
+*)
+
+(*****************************************)
+(* Auto-declared external symbols        *)
+(*****************************************)
+fun alloc__fmt__format(bitstring): bitstring [data].
+fun alloc__slice__Impl__into_vec(bitstring): bitstring [data].
+fun alloc__string__ToString__to_string(bitstring): bitstring [data].
+fun alloc__vec__Impl_1__append(bitstring, bitstring): bitstring [data].
+fun alloc__vec__Impl_1__drain(bitstring, bitstring): bitstring [data].
+fun alloc__vec__Impl_1__len(bitstring): bitstring [data].
+fun alloc__vec__Impl_1__push(bitstring, bitstring): bitstring [data].
+fun alloc__vec__Impl_1__remove(bitstring, bitstring): bitstring [data].
+fun alloc__vec__Impl_2__extend_from_slice(bitstring, bitstring): bitstring [data].
+fun alloc__vec__Impl__new_kw(bitstring): bitstring [data].
+fun alloc__vec__from_elem(bitstring, bitstring): bitstring [data].
+fun core__array__Impl_23__map(bitstring, bitstring): bitstring [data].
+fun core__array__from_fn(bitstring): bitstring [data].
+fun core__fmt__rt__Impl_1__new_v1(bitstring, bitstring): bitstring [data].
+fun core__fmt__rt__Impl__new_display(bitstring): bitstring [data].
+fun core__hint__must_use(bitstring): bitstring [data].
+fun core__iter__traits__collect__IntoIterator__into_iter(bitstring): bitstring [data].
+fun core__iter__traits__iterator__Iterator__collect(bitstring): bitstring [data].
+fun core__iter__traits__iterator__Iterator__nth(bitstring, bitstring): bitstring [data].
+fun core__iter__traits__iterator__Iterator__skip(bitstring, bitstring): bitstring [data].
+fun core__iter__traits__iterator__Iterator__take(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_10__count_ones(bitstring): bitstring [data].
+fun core__num__Impl_10__from_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl_10__from_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl_10__ilog2(bitstring): bitstring [data].
+fun core__num__Impl_10__leading_zeros(bitstring): bitstring [data].
+fun core__num__Impl_10__overflowing_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_10__overflowing_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_10__overflowing_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_10__pow(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_10__rem_euclid(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_10__rotate_left(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_10__rotate_right(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_10__saturating_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_10__saturating_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_10__saturating_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_10__to_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl_10__to_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl_10__wrapping_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_10__wrapping_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_10__wrapping_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_11__count_ones(bitstring): bitstring [data].
+fun core__num__Impl_11__from_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl_11__from_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl_11__ilog2(bitstring): bitstring [data].
+fun core__num__Impl_11__leading_zeros(bitstring): bitstring [data].
+fun core__num__Impl_11__overflowing_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_11__overflowing_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_11__overflowing_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_11__pow(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_11__rem_euclid(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_11__rotate_left(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_11__rotate_right(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_11__saturating_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_11__saturating_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_11__saturating_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_11__to_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl_11__to_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl_11__wrapping_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_11__wrapping_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_11__wrapping_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_1__abs(bitstring): bitstring [data].
+fun core__num__Impl_1__count_ones(bitstring): bitstring [data].
+fun core__num__Impl_1__from_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl_1__from_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl_1__ilog2(bitstring): bitstring [data].
+fun core__num__Impl_1__leading_zeros(bitstring): bitstring [data].
+fun core__num__Impl_1__overflowing_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_1__overflowing_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_1__overflowing_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_1__pow(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_1__rem_euclid(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_1__rotate_left(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_1__rotate_right(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_1__saturating_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_1__saturating_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_1__saturating_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_1__to_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl_1__to_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl_1__wrapping_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_1__wrapping_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_1__wrapping_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_2__abs(bitstring): bitstring [data].
+fun core__num__Impl_2__count_ones(bitstring): bitstring [data].
+fun core__num__Impl_2__from_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl_2__from_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl_2__ilog2(bitstring): bitstring [data].
+fun core__num__Impl_2__leading_zeros(bitstring): bitstring [data].
+fun core__num__Impl_2__overflowing_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_2__overflowing_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_2__overflowing_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_2__pow(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_2__rem_euclid(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_2__rotate_left(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_2__rotate_right(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_2__saturating_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_2__saturating_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_2__saturating_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_2__to_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl_2__to_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl_2__wrapping_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_2__wrapping_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_2__wrapping_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_3__abs(bitstring): bitstring [data].
+fun core__num__Impl_3__count_ones(bitstring): bitstring [data].
+fun core__num__Impl_3__from_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl_3__from_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl_3__ilog2(bitstring): bitstring [data].
+fun core__num__Impl_3__leading_zeros(bitstring): bitstring [data].
+fun core__num__Impl_3__overflowing_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_3__overflowing_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_3__overflowing_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_3__pow(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_3__rem_euclid(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_3__rotate_left(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_3__rotate_right(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_3__saturating_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_3__saturating_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_3__saturating_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_3__to_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl_3__to_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl_3__wrapping_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_3__wrapping_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_3__wrapping_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_4__abs(bitstring): bitstring [data].
+fun core__num__Impl_4__count_ones(bitstring): bitstring [data].
+fun core__num__Impl_4__from_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl_4__from_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl_4__ilog2(bitstring): bitstring [data].
+fun core__num__Impl_4__leading_zeros(bitstring): bitstring [data].
+fun core__num__Impl_4__overflowing_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_4__overflowing_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_4__overflowing_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_4__pow(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_4__rem_euclid(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_4__rotate_left(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_4__rotate_right(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_4__saturating_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_4__saturating_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_4__saturating_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_4__to_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl_4__to_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl_4__wrapping_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_4__wrapping_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_4__wrapping_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_5__abs(bitstring): bitstring [data].
+fun core__num__Impl_5__count_ones(bitstring): bitstring [data].
+fun core__num__Impl_5__from_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl_5__from_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl_5__ilog2(bitstring): bitstring [data].
+fun core__num__Impl_5__leading_zeros(bitstring): bitstring [data].
+fun core__num__Impl_5__overflowing_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_5__overflowing_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_5__overflowing_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_5__pow(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_5__rem_euclid(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_5__rotate_left(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_5__rotate_right(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_5__saturating_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_5__saturating_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_5__saturating_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_5__to_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl_5__to_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl_5__wrapping_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_5__wrapping_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_5__wrapping_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_6__count_ones(bitstring): bitstring [data].
+fun core__num__Impl_6__from_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl_6__from_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl_6__ilog2(bitstring): bitstring [data].
+fun core__num__Impl_6__leading_zeros(bitstring): bitstring [data].
+fun core__num__Impl_6__overflowing_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_6__overflowing_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_6__overflowing_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_6__pow(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_6__rem_euclid(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_6__rotate_left(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_6__rotate_right(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_6__saturating_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_6__saturating_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_6__saturating_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_6__to_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl_6__to_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl_6__wrapping_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_6__wrapping_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_6__wrapping_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_7__count_ones(bitstring): bitstring [data].
+fun core__num__Impl_7__from_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl_7__from_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl_7__ilog2(bitstring): bitstring [data].
+fun core__num__Impl_7__leading_zeros(bitstring): bitstring [data].
+fun core__num__Impl_7__overflowing_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_7__overflowing_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_7__overflowing_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_7__pow(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_7__rem_euclid(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_7__rotate_left(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_7__rotate_right(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_7__saturating_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_7__saturating_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_7__saturating_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_7__to_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl_7__to_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl_7__wrapping_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_7__wrapping_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_7__wrapping_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_8__count_ones(bitstring): bitstring [data].
+fun core__num__Impl_8__from_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl_8__from_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl_8__ilog2(bitstring): bitstring [data].
+fun core__num__Impl_8__leading_zeros(bitstring): bitstring [data].
+fun core__num__Impl_8__overflowing_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_8__overflowing_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_8__overflowing_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_8__pow(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_8__rem_euclid(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_8__rotate_left(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_8__rotate_right(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_8__saturating_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_8__saturating_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_8__saturating_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_8__to_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl_8__to_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl_8__wrapping_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_8__wrapping_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_8__wrapping_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_9__count_ones(bitstring): bitstring [data].
+fun core__num__Impl_9__from_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl_9__from_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl_9__ilog2(bitstring): bitstring [data].
+fun core__num__Impl_9__leading_zeros(bitstring): bitstring [data].
+fun core__num__Impl_9__overflowing_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_9__overflowing_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_9__overflowing_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_9__pow(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_9__rem_euclid(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_9__rotate_left(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_9__rotate_right(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_9__saturating_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_9__saturating_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_9__saturating_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_9__to_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl_9__to_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl_9__wrapping_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_9__wrapping_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl_9__wrapping_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl__abs(bitstring): bitstring [data].
+fun core__num__Impl__count_ones(bitstring): bitstring [data].
+fun core__num__Impl__from_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl__from_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl__ilog2(bitstring): bitstring [data].
+fun core__num__Impl__leading_zeros(bitstring): bitstring [data].
+fun core__num__Impl__overflowing_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl__overflowing_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl__overflowing_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl__pow(bitstring, bitstring): bitstring [data].
+fun core__num__Impl__rem_euclid(bitstring, bitstring): bitstring [data].
+fun core__num__Impl__rotate_left(bitstring, bitstring): bitstring [data].
+fun core__num__Impl__rotate_right(bitstring, bitstring): bitstring [data].
+fun core__num__Impl__saturating_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl__saturating_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl__saturating_sub(bitstring, bitstring): bitstring [data].
+fun core__num__Impl__to_be_bytes(bitstring): bitstring [data].
+fun core__num__Impl__to_le_bytes(bitstring): bitstring [data].
+fun core__num__Impl__wrapping_add(bitstring, bitstring): bitstring [data].
+fun core__num__Impl__wrapping_mul(bitstring, bitstring): bitstring [data].
+fun core__num__Impl__wrapping_sub(bitstring, bitstring): bitstring [data].
+const core__ops__range__RangeFull__RangeFull: bitstring.
+fun core__ops__range__Range__Range(bitstring, bitstring): bitstring [data].
+fun core__option__Impl__unwrap(bitstring): bitstring [data].
+fun core__result__Impl__unwrap(bitstring): bitstring [data].
+fun core__slice__Impl__clone_from_slice(bitstring, bitstring): bitstring [data].
+fun core__slice__Impl__contains(bitstring, bitstring): bitstring [data].
+fun core__slice__Impl__iter(bitstring): bitstring [data].
+fun core__slice__Impl__split_at(bitstring, bitstring): bitstring [data].
+fun core__str__Impl__chars(bitstring): bitstring [data].
+fun rust_primitives__hax__Tuple2__Tuple2__0(bitstring): bitstring [data].
+fun rust_primitives__hax__Tuple2__Tuple2__1(bitstring): bitstring [data].
+fun rust_primitives__sequence__Seq(bitstring): bitstring [data].
+fun std__sync_kw__once_lock__Impl__get_or_init(bitstring, bitstring): bitstring [data].
+fun std__sync_kw__once_lock__Impl__new_kw(bitstring): bitstring [data].
+fun std__sync_kw__poison__mutex__Impl_6__new_kw(bitstring): bitstring [data].
+fun std__sync_kw__poison__mutex__Impl_7__lock(bitstring): bitstring [data].
+const string_lit__empty: bitstring.
+
+const rust_primitives__string__STRING_ARENA: bitstring.
+letfun rust_primitives__string__leak_string(s: bitstring) =
+let arena = (std__sync_kw__once_lock__Impl__get_or_init(rust_primitives__string__STRING_ARENA,
+  bitstring_err() (* Closures not supported in ProVerif *))) in
+  let arena = (core__result__Impl__unwrap(std__sync_kw__poison__mutex__Impl_7__lock(arena))) in
+  let arena = (alloc__vec__Impl_1__push(arena,
+  s)) in
+  bitstring_err() (* error node *).
+letfun rust_primitives__string__str_concat(s1: bitstring,
+s2: bitstring) =
+let args = (rust_primitives__hax__Tuple2__Tuple2(s1,
+  s2)) in
+  let args = (bitstring_err() (* Array expressions not supported in ProVerif *)) in
+  rust_primitives__string__leak_string(core__hint__must_use(alloc__fmt__format(core__fmt__rt__Impl_1__new_v1(bitstring_err() (* Array expressions not supported in ProVerif *),
+  args)))).
+letfun rust_primitives__string__str_of_char(c: bitstring) =
+rust_primitives__string__leak_string(alloc__string__ToString__to_string(c)).
+letfun rust_primitives__string__str_sub(s: bitstring,
+b: bitstring,
+e: bitstring) =
+rust_primitives__string__leak_string(core__iter__traits__iterator__Iterator__collect(core__iter__traits__iterator__Iterator__take(core__iter__traits__iterator__Iterator__skip(core__str__Impl__chars(s),
+  b),
+  rust_primitives__hax__machine_int__sub(e,
+  b)))).
+letfun rust_primitives__string__str_index(s: bitstring,
+i: bitstring) =
+let rust_primitives__hax__Tuple2__Tuple2(wildcard: bitstring,
+  out_kw: bitstring) = (core__iter__traits__iterator__Iterator__nth(core__str__Impl__chars(s),
+  i)) in (core__option__Impl__unwrap(out_kw)) else bitstring_err().
+(* marked as constructor *)
+fun rust_primitives__slice__slice_length(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__slice__slice_split_at(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__slice__slice_contains(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__slice__slice_index(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__slice__slice_slice(bitstring,
+bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__slice__slice_clone_from_slice(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__slice__array_from_fn(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__slice__array_map(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__slice__array_as_slice(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__slice__array_slice(bitstring,
+bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__slice__array_index(bitstring,
+bitstring): bitstring [data].
+fun rust_primitives__sequence__Seq__Seq(bitstring): bitstring [data].
+reduc forall rust_primitives__sequence__Seq__Seq__0_v: bitstring;
+  rust_primitives__sequence__Seq__Seq__0(rust_primitives__sequence__Seq__Seq(rust_primitives__sequence__Seq__Seq__0_v)) = rust_primitives__sequence__Seq__Seq__0_v.
+
+
+
+(* marked as constructor *)
+fun rust_primitives__sequence__seq_empty(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__sequence__seq_from_slice(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__sequence__seq_from_boxed_slice(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__sequence__seq_from_array(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__sequence__seq_to_slice(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__sequence__seq_concat(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__sequence__seq_extend(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__sequence__seq_push(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__sequence__seq_one(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__sequence__seq_create(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__sequence__seq_len(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__sequence__seq_drain(bitstring,
+bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__sequence__seq_remove(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__sequence__seq_index(bitstring,
+bitstring): bitstring [data].
+const rust_primitives__arithmetic__SIZE_BYTES: bitstring.
+const rust_primitives__arithmetic__SIZE_BITS: bitstring.
+const rust_primitives__arithmetic__USIZE_MAX: bitstring.
+const rust_primitives__arithmetic__ISIZE_MAX: bitstring.
+const rust_primitives__arithmetic__ISIZE_MIN: bitstring.
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_add_u8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_add_u8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_sub_u8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_sub_u8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_mul_u8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_mul_u8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rem_euclid_u8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_add_u8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_sub_u8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_mul_u8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_add_u16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_add_u16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_sub_u16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_sub_u16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_mul_u16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_mul_u16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rem_euclid_u16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_add_u16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_sub_u16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_mul_u16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_add_u32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_add_u32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_sub_u32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_sub_u32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_mul_u32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_mul_u32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rem_euclid_u32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_add_u32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_sub_u32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_mul_u32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_add_u64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_add_u64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_sub_u64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_sub_u64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_mul_u64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_mul_u64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rem_euclid_u64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_add_u64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_sub_u64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_mul_u64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_add_u128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_add_u128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_sub_u128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_sub_u128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_mul_u128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_mul_u128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rem_euclid_u128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_add_u128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_sub_u128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_mul_u128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_add_usize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_add_usize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_sub_usize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_sub_usize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_mul_usize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_mul_usize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rem_euclid_usize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_add_usize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_sub_usize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_mul_usize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_add_i8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_add_i8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_sub_i8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_sub_i8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_mul_i8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_mul_i8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rem_euclid_i8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_add_i8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_sub_i8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_mul_i8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_add_i16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_add_i16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_sub_i16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_sub_i16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_mul_i16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_mul_i16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rem_euclid_i16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_add_i16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_sub_i16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_mul_i16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_add_i32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_add_i32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_sub_i32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_sub_i32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_mul_i32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_mul_i32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rem_euclid_i32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_add_i32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_sub_i32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_mul_i32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_add_i64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_add_i64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_sub_i64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_sub_i64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_mul_i64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_mul_i64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rem_euclid_i64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_add_i64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_sub_i64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_mul_i64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_add_i128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_add_i128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_sub_i128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_sub_i128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_mul_i128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_mul_i128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rem_euclid_i128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_add_i128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_sub_i128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_mul_i128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_add_isize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_add_isize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_sub_isize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_sub_isize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__wrapping_mul_isize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__saturating_mul_isize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rem_euclid_isize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_add_isize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_sub_isize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__overflowing_mul_isize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__pow_u8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__count_ones_u8(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_right_u8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_left_u8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__leading_zeros_u8(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__ilog2_u8(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_be_bytes_u8(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_le_bytes_u8(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_be_bytes_u8(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_le_bytes_u8(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__pow_u16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__count_ones_u16(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_right_u16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_left_u16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__leading_zeros_u16(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__ilog2_u16(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_be_bytes_u16(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_le_bytes_u16(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_be_bytes_u16(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_le_bytes_u16(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__pow_u32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__count_ones_u32(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_right_u32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_left_u32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__leading_zeros_u32(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__ilog2_u32(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_be_bytes_u32(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_le_bytes_u32(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_be_bytes_u32(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_le_bytes_u32(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__pow_u64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__count_ones_u64(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_right_u64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_left_u64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__leading_zeros_u64(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__ilog2_u64(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_be_bytes_u64(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_le_bytes_u64(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_be_bytes_u64(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_le_bytes_u64(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__pow_u128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__count_ones_u128(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_right_u128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_left_u128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__leading_zeros_u128(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__ilog2_u128(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_be_bytes_u128(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_le_bytes_u128(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_be_bytes_u128(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_le_bytes_u128(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__pow_usize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__count_ones_usize(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_right_usize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_left_usize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__leading_zeros_usize(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__ilog2_usize(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_be_bytes_usize(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_le_bytes_usize(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_be_bytes_usize(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_le_bytes_usize(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__pow_i8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__count_ones_i8(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_right_i8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_left_i8(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__leading_zeros_i8(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__ilog2_i8(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_be_bytes_i8(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_le_bytes_i8(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_be_bytes_i8(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_le_bytes_i8(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__pow_i16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__count_ones_i16(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_right_i16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_left_i16(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__leading_zeros_i16(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__ilog2_i16(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_be_bytes_i16(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_le_bytes_i16(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_be_bytes_i16(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_le_bytes_i16(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__pow_i32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__count_ones_i32(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_right_i32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_left_i32(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__leading_zeros_i32(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__ilog2_i32(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_be_bytes_i32(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_le_bytes_i32(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_be_bytes_i32(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_le_bytes_i32(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__pow_i64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__count_ones_i64(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_right_i64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_left_i64(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__leading_zeros_i64(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__ilog2_i64(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_be_bytes_i64(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_le_bytes_i64(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_be_bytes_i64(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_le_bytes_i64(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__pow_i128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__count_ones_i128(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_right_i128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_left_i128(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__leading_zeros_i128(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__ilog2_i128(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_be_bytes_i128(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_le_bytes_i128(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_be_bytes_i128(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_le_bytes_i128(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__pow_isize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__count_ones_isize(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_right_isize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__rotate_left_isize(bitstring,
+bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__leading_zeros_isize(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__ilog2_isize(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_be_bytes_isize(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__from_le_bytes_isize(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_be_bytes_isize(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__to_le_bytes_isize(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__abs_i8(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__abs_i16(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__abs_i32(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__abs_i64(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__abs_i128(bitstring): bitstring [data].
+(* marked as constructor *)
+fun rust_primitives__arithmetic__abs_isize(bitstring): bitstring [data].
