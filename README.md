@@ -92,7 +92,7 @@ open Aeneas Aeneas.Std Result ControlFlow Error
 ```
 by
 ```
-open core_models Aeneas
+open CoreModels Aeneas
 open Aeneas.Std hiding namespace core alloc
 open Result ControlFlow Error
 ```

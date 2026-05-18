@@ -1,6 +1,6 @@
 import CoreModels.Alloc.Funs
 
-namespace alloc
+namespace CoreModels.alloc
 
 /-! ## `[T]::to_vec` and `Box<[T]>::into_vec`
 
@@ -16,7 +16,7 @@ noncomputable section
 
 @[rust_fun "alloc::slice::{[@T]}::to_vec"]
 def slice.Slice.to_vec
-  {T : Type} (cloneInst : core_models.clone.Clone T) (s : Aeneas.Std.Slice T) :
+  {T : Type} (cloneInst : core.clone.Clone T) (s : Aeneas.Std.Slice T) :
   Aeneas.Std.Result (vec.Vec T alloc.Global) :=
   slice.Dummy.to_vec cloneInst s
 
@@ -30,4 +30,4 @@ end
 def vec.Vec.new := @vec.VecTGlobal.new
 def vec.Vec.with_capacity := @vec.VecTGlobal.with_capacity
 
-end alloc
+end CoreModels.alloc

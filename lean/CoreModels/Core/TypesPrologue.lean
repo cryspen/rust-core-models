@@ -2,7 +2,7 @@ import Aeneas
 
 open Aeneas.Std
 
-namespace core_models
+namespace CoreModels.core
 
 /-! ## Function closures -/
 
@@ -89,7 +89,7 @@ def Result.is_err {T E : Type} (r : Result T E) : Aeneas.Std.Result Bool :=
   | Result.Err _ => Aeneas.Std.Result.ok true
 end result
 
-end core_models
+end CoreModels.core
 
 /-! ## Hax lib -/
 namespace hax_lib
