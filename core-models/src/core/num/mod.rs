@@ -38,13 +38,8 @@ macro_rules! uint_impl {
             }
             /// See [`std::primitive::u8::checked_add`] (and similar for other integer types)
             pub fn checked_add(x: $Self, y: $Self) -> Option<$Self> {
-                if Self::MIN.to_int() <= x.to_int() + y.to_int()
-                    && x.to_int() + y.to_int() <= Self::MAX.to_int()
-                {
-                    Option::Some(x + y)
-                } else {
-                    Option::None
-                }
+                let (result, overflowed) = Self::overflowing_add(x, y);
+                if overflowed { Option::None } else { Option::Some(result) }
             }
             /// See [`std::primitive::u8::unchecked_add`] (and similar for other integer types)
             pub unsafe fn unchecked_add(x: $Self, y: $Self) -> $Self {
@@ -64,13 +59,8 @@ macro_rules! uint_impl {
             }
             /// See [`std::primitive::u8::checked_sub`] (and similar for other integer types)
             pub fn checked_sub(x: $Self, y: $Self) -> Option<$Self> {
-                if Self::MIN.to_int() <= x.to_int() - y.to_int()
-                    && x.to_int() - y.to_int() <= Self::MAX.to_int()
-                {
-                    Option::Some(x - y)
-                } else {
-                    Option::None
-                }
+                let (result, overflowed) = Self::overflowing_sub(x, y);
+                if overflowed { Option::None } else { Option::Some(result) }
             }
             /// See [`std::primitive::u8::unchecked_sub`] (and similar for other integer types)
             pub unsafe fn unchecked_sub(x: $Self, y: $Self) -> $Self {
@@ -90,13 +80,8 @@ macro_rules! uint_impl {
             }
             /// See [`std::primitive::u8::checked_mul`] (and similar for other integer types)
             pub fn checked_mul(x: $Self, y: $Self) -> Option<$Self> {
-                if Self::MIN.to_int() <= x.to_int() * y.to_int()
-                    && x.to_int() * y.to_int() <= Self::MAX.to_int()
-                {
-                    Option::Some(x * y)
-                } else {
-                    Option::None
-                }
+                let (result, overflowed) = Self::overflowing_mul(x, y);
+                if overflowed { Option::None } else { Option::Some(result) }
             }
             /// See [`std::primitive::u8::unchecked_mul`] (and similar for other integer types)
             pub unsafe fn unchecked_mul(x: $Self, y: $Self) -> $Self {
@@ -243,13 +228,8 @@ macro_rules! iint_impl {
             }
             /// See [`std::primitive::u8::checked_add`] (and similar for other integer types)
             pub fn checked_add(x: $Self, y: $Self) -> Option<$Self> {
-                if Self::MIN.to_int() <= x.to_int() + y.to_int()
-                    && x.to_int() + y.to_int() <= Self::MAX.to_int()
-                {
-                    Option::Some(x + y)
-                } else {
-                    Option::None
-                }
+                let (result, overflowed) = Self::overflowing_add(x, y);
+                if overflowed { Option::None } else { Option::Some(result) }
             }
             /// See [`std::primitive::u8::unchecked_add`] (and similar for other integer types)
             pub unsafe fn unchecked_add(x: $Self, y: $Self) -> $Self {
@@ -269,13 +249,8 @@ macro_rules! iint_impl {
             }
             /// See [`std::primitive::u8::checked_sub`] (and similar for other integer types)
             pub fn checked_sub(x: $Self, y: $Self) -> Option<$Self> {
-                if Self::MIN.to_int() <= x.to_int() - y.to_int()
-                    && x.to_int() - y.to_int() <= Self::MAX.to_int()
-                {
-                    Option::Some(x - y)
-                } else {
-                    Option::None
-                }
+                let (result, overflowed) = Self::overflowing_sub(x, y);
+                if overflowed { Option::None } else { Option::Some(result) }
             }
             /// See [`std::primitive::u8::unchecked_sub`] (and similar for other integer types)
             pub unsafe fn unchecked_sub(x: $Self, y: $Self) -> $Self {
@@ -283,21 +258,15 @@ macro_rules! iint_impl {
             }
             /// See [`std::primitive::i8::checked_add_unsigned`] (and similar for other signed integer types)
             pub fn checked_add_unsigned(x: $Self, y: $USelf) -> Option<$Self> {
-                let result = x.to_int() + y.to_int();
-                if Self::MIN.to_int() <= result && result <= Self::MAX.to_int() {
-                    Option::Some(x + (y as $Self))
-                } else {
-                    Option::None
-                }
+                // Signed overflow from wrapping_add(x, y as $Self) represents unsigned overflow
+                // iff the signed overflow flag matches whether y exceeds the signed maximum.
+                let (result, overflowed) = Self::overflowing_add(x, y as $Self);
+                if overflowed == (y > Self::MAX as $USelf) { Option::Some(result) } else { Option::None }
             }
             /// See [`std::primitive::i8::checked_sub_unsigned`] (and similar for other signed integer types)
             pub fn checked_sub_unsigned(x: $Self, y: $USelf) -> Option<$Self> {
-                let result = x.to_int() - y.to_int();
-                if Self::MIN.to_int() <= result && result <= Self::MAX.to_int() {
-                    Option::Some(x - (y as $Self))
-                } else {
-                    Option::None
-                }
+                let (result, overflowed) = Self::overflowing_sub(x, y as $Self);
+                if overflowed == (y > Self::MAX as $USelf) { Option::Some(result) } else { Option::None }
             }
             /// See [`std::primitive::u8::wrapping_mul`] (and similar for other integer types)
             pub fn wrapping_mul(x: $Self, y: $Self) -> $Self {
@@ -313,13 +282,8 @@ macro_rules! iint_impl {
             }
             /// See [`std::primitive::u8::checked_mul`] (and similar for other integer types)
             pub fn checked_mul(x: $Self, y: $Self) -> Option<$Self> {
-                if Self::MIN.to_int() <= x.to_int() * y.to_int()
-                    && x.to_int() * y.to_int() <= Self::MAX.to_int()
-                {
-                    Option::Some(x * y)
-                } else {
-                    Option::None
-                }
+                let (result, overflowed) = Self::overflowing_mul(x, y);
+                if overflowed { Option::None } else { Option::Some(result) }
             }
             /// See [`std::primitive::u8::unchecked_mul`] (and similar for other integer types)
             pub unsafe fn unchecked_mul(x: $Self, y: $Self) -> $Self {
@@ -679,15 +643,20 @@ mod tests {
                             prop_assert_eq!(super::$t::overflowing_add(x.inject(), y.inject()), x.overflowing_add(y));
                         }
 
-                        // checked_add/sub/mul tests are intentionally
-                        // omitted: the model implementations rely on
-                        // `to_int()` to detect overflow, but hax-lib's
-                        // non-hax `to_int()` is a stub that returns 0,
-                        // so the bounds check is vacuous and the
-                        // fallback `Some(x op y)` panics on real overflow.
-                        // Re-enable once cryspen/hax#1980 lands and the
-                        // model can be rewritten against a working
-                        // native `to_int`.
+                        #[test]
+                        fn [<test_ $t _checked_add>](x in any::<$t>(), y in any::<$t>()) {
+                            prop_assert_eq!(super::$t::checked_add(x.inject(), y.inject()), x.checked_add(y).inject());
+                        }
+
+                        #[test]
+                        fn [<test_ $t _checked_sub>](x in any::<$t>(), y in any::<$t>()) {
+                            prop_assert_eq!(super::$t::checked_sub(x.inject(), y.inject()), x.checked_sub(y).inject());
+                        }
+
+                        #[test]
+                        fn [<test_ $t _checked_mul>](x in any::<$t>(), y in any::<$t>()) {
+                            prop_assert_eq!(super::$t::checked_mul(x.inject(), y.inject()), x.checked_mul(y).inject());
+                        }
 
                         #[test]
                         fn [<test_ $t _wrapping_sub>](x in any::<$t>(), y in any::<$t>()) {
@@ -848,9 +817,37 @@ mod tests {
         }
     }
 
+    // Tests for signed operations that take an unsigned argument.
+    macro_rules! iint_mixed_test {
+        ($(($signed:ty, $unsigned:ty))*) => {
+            paste! {
+                $(
+                    proptest! {
+                        #[test]
+                        fn [<test_ $signed _checked_add_unsigned>](x in any::<$signed>(), y in any::<$unsigned>()) {
+                            prop_assert_eq!(
+                                super::$signed::checked_add_unsigned(x.inject(), y.inject()),
+                                x.checked_add_unsigned(y).inject(),
+                            );
+                        }
+
+                        #[test]
+                        fn [<test_ $signed _checked_sub_unsigned>](x in any::<$signed>(), y in any::<$unsigned>()) {
+                            prop_assert_eq!(
+                                super::$signed::checked_sub_unsigned(x.inject(), y.inject()),
+                                x.checked_sub_unsigned(y).inject(),
+                            );
+                        }
+                    }
+                )*
+            }
+        }
+    }
+
     int_test! { u8 u16 u32 u64 u128 usize i8 i16 i32 i64 i128 isize }
     uint_test! { u8 u16 u32 u64 u128 usize }
     iint_test! { i8 i16 i32 i64 i128 isize }
+    iint_mixed_test! { (i8, u8) (i16, u16) (i32, u32) (i64, u64) (i128, u128) (isize, usize) }
 
     macro_rules! default_test {
         ($($t:ty)*) => {

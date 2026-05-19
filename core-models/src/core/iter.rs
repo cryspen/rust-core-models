@@ -1100,4 +1100,92 @@ mod tests {
             prop_assert_eq!(model_result, std_result.inject());
         }
     }
+
+    macro_rules! step_tests {
+        ($mod_name:ident, $T:ty) => {
+            mod $mod_name {
+                use super::super::range::Step as ModelStep;
+                use crate::testing::Inject;
+                use proptest::prelude::*;
+                use std::iter::Step as StdStep;
+
+                proptest! {
+                    #[test]
+                    fn forward(x: $T, y: $T) {
+                        if let Some(n) = <$T as StdStep>::steps_between(&x, &y).1 {
+                            prop_assert_eq!(
+                                <$T as ModelStep>::forward(x, n),
+                                <$T as StdStep>::forward(x, n).inject(),
+                            );
+                        }
+                    }
+
+                    #[test]
+                    fn backward(x: $T, y: $T) {
+                        if let Some(n) = <$T as StdStep>::steps_between(&x, &y).1 {
+                            prop_assert_eq!(
+                                <$T as ModelStep>::backward(y, n),
+                                <$T as StdStep>::backward(y, n).inject(),
+                            );
+                        }
+                    }
+
+                    #[test]
+                    fn forward_unchecked(x: $T, y: $T) {
+                        if let Some(n) = <$T as StdStep>::steps_between(&x, &y).1 {
+                            prop_assert_eq!(
+                                unsafe { <$T as ModelStep>::forward_unchecked(x, n) },
+                                unsafe { <$T as StdStep>::forward_unchecked(x, n) }.inject(),
+                            );
+                        }
+                    }
+
+                    #[test]
+                    fn backward_unchecked(x: $T, y: $T) {
+                        if let Some(n) = <$T as StdStep>::steps_between(&x, &y).1 {
+                            prop_assert_eq!(
+                                unsafe { <$T as ModelStep>::backward_unchecked(y, n) },
+                                unsafe { <$T as StdStep>::backward_unchecked(y, n) }.inject(),
+                            );
+                        }
+                    }
+
+                    #[test]
+                    fn steps_between(a: $T, b: $T) {
+                        let (model_lower, model_exact) = <$T as ModelStep>::steps_between(&a, &b);
+                        let (std_lower, std_exact) = <$T as StdStep>::steps_between(&a, &b);
+                        prop_assert_eq!(model_lower, std_lower);
+                        prop_assert_eq!(model_exact, std_exact.inject());
+                    }
+
+                    #[test]
+                    fn forward_checked(x: $T, n: usize) {
+                        let model = <$T as ModelStep>::forward_checked(x, n);
+                        let std_result = <$T as StdStep>::forward_checked(x, n);
+                        prop_assert_eq!(model, std_result.inject());
+                    }
+
+                    #[test]
+                    fn backward_checked(x: $T, n: usize) {
+                        let model = <$T as ModelStep>::backward_checked(x, n);
+                        let std_result = <$T as StdStep>::backward_checked(x, n);
+                        prop_assert_eq!(model, std_result.inject());
+                    }
+                }
+            }
+        };
+    }
+
+    step_tests!(step_u8, u8);
+    step_tests!(step_i8, i8);
+    step_tests!(step_u16, u16);
+    step_tests!(step_i16, i16);
+    step_tests!(step_u32, u32);
+    step_tests!(step_i32, i32);
+    step_tests!(step_u64, u64);
+    step_tests!(step_i64, i64);
+    step_tests!(step_usize, usize);
+    step_tests!(step_isize, isize);
+    step_tests!(step_u128, u128);
+    step_tests!(step_i128, i128);
 }

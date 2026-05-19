@@ -26,6 +26,7 @@
 //! proof assistants and other verification tools.
 
 #![allow(dead_code, unused)]
+#![cfg_attr(test, feature(step_trait))]
 #![cfg_attr(charon, feature(register_tool))]
 #![cfg_attr(charon, register_tool(aeneas))]
 

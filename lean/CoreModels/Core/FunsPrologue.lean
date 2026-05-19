@@ -76,7 +76,7 @@ instance I128.Insts.CoreCmpPartialOrdI128   : cmp.PartialOrd I128  I128  := mkIP
 instance Isize.Insts.CoreCmpPartialOrdIsize : cmp.PartialOrd Isize Isize := mkIPartialOrd
 
 abbrev ops.range.Range.Insts.CoreIterTraitsIteratorIterator.next :=
-  @core.iter.range.IteratorRange.next
+  @IteratorRange.next
 
 /-! ## Slice -/
 
