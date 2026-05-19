@@ -32,7 +32,7 @@ extract: $(LLBC_FILE)
 # 3. Patch the `import`s and `open`s in the generated file:
 patch: extract
 	sed -i \
-		'/^open Aeneas /c\open core_models Aeneas\nopen Aeneas.Std hiding namespace core alloc\nopen Result ControlFlow Error' \
+		'/^open Aeneas /c\open CoreModels Aeneas\nopen Aeneas.Std hiding namespace core alloc\nopen Result ControlFlow Error' \
 		$(LEAN_DIR)/$(SUBDIR)/Funs.lean
 	sed -i \
 		's/import Aeneas/import CoreModels/' \

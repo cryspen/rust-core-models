@@ -84,7 +84,8 @@ extract: $(LLBC_FILE) alloc-extract
 	mkdir -p $(LEAN_DIR)
 	# Aeneas may exit non-zero while still producing partial files; that's OK,
 	# our patcher and the surrounding hand-written library handle the gaps.
-	-$(AENEAS) -core-models-lib -backend lean $(LLBC_FILE) -split-files -dest $(LEAN_DIR)
+	-$(AENEAS) -core-models-lib -backend lean $(LLBC_FILE) -split-files -dest $(LEAN_DIR) \
+	-subdir CoreModels/Core
 
 # -----------------------------------------------------------------------------
 # alloc/ extraction (with the `alloc_models` crate-name workaround)
@@ -135,14 +136,10 @@ lean: extract patch build
 
 # Remove only generated artifacts; preserve hand-written files.
 clean-generated:
-	rm -f $(LEAN_DIR)/Funs.lean
-	rm -f $(LEAN_DIR)/Types.lean
-	rm -f $(LEAN_DIR)/FunsExternal_Template.lean
-	rm -f $(LEAN_DIR)/TypesExternal_Template.lean
-	rm -f $(LEAN_DIR)/CoreModels/Funs.lean
-	rm -f $(LEAN_DIR)/CoreModels/Types.lean
-	rm -f $(LEAN_DIR)/CoreModels/FunsExternal_Template.lean
-	rm -f $(LEAN_DIR)/CoreModels/TypesExternal_Template.lean
+	rm -f $(LEAN_DIR)/CoreModels/Core/Funs.lean
+	rm -f $(LEAN_DIR)/CoreModels/Core/Types.lean
+	rm -f $(LEAN_DIR)/CoreModels/Core/FunsExternal_Template.lean
+	rm -f $(LEAN_DIR)/CoreModels/Core/TypesExternal_Template.lean
 	rm -rf $(LEAN_DIR)/CoreModels/Alloc
 
 # Drop the staged alloc copy and its llbc.

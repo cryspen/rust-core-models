@@ -2,27 +2,27 @@
   Scalar trait instances for the Aeneas library.
   Imported after Types.lean which provides the trait structure definitions.
 -/
-import CoreModels.Types
+import CoreModels.Core.Types
 import CoreModels.Alloc.Types
 
-namespace core_models
+namespace CoreModels.core
 
 open Aeneas.Std Result
 
 /-! ## Scalar PartialEq / PartialOrd instances -/
 
-instance U8.Insts.Core_modelsCmpPartialEqU8       : cmp.PartialEq U8    U8    := { eq := fun x y => ok (x == y) }
-instance U16.Insts.Core_modelsCmpPartialEqU16     : cmp.PartialEq U16   U16   := { eq := fun x y => ok (x == y) }
-instance U32.Insts.Core_modelsCmpPartialEqU32     : cmp.PartialEq U32   U32   := { eq := fun x y => ok (x == y) }
-instance U64.Insts.Core_modelsCmpPartialEqU64     : cmp.PartialEq U64   U64   := { eq := fun x y => ok (x == y) }
-instance U128.Insts.Core_modelsCmpPartialEqU128   : cmp.PartialEq U128  U128  := { eq := fun x y => ok (x == y) }
-instance Usize.Insts.Core_modelsCmpPartialEqUsize : cmp.PartialEq Usize Usize := { eq := fun x y => ok (x == y) }
-instance I8.Insts.Core_modelsCmpPartialEqI8       : cmp.PartialEq I8    I8    := { eq := fun x y => ok (x == y) }
-instance I16.Insts.Core_modelsCmpPartialEqI16     : cmp.PartialEq I16   I16   := { eq := fun x y => ok (x == y) }
-instance I32.Insts.Core_modelsCmpPartialEqI32     : cmp.PartialEq I32   I32   := { eq := fun x y => ok (x == y) }
-instance I64.Insts.Core_modelsCmpPartialEqI64     : cmp.PartialEq I64   I64   := { eq := fun x y => ok (x == y) }
-instance I128.Insts.Core_modelsCmpPartialEqI128   : cmp.PartialEq I128  I128  := { eq := fun x y => ok (x == y) }
-instance Isize.Insts.Core_modelsCmpPartialEqIsize : cmp.PartialEq Isize Isize := { eq := fun x y => ok (x == y) }
+instance U8.Insts.CoreCmpPartialEqU8       : cmp.PartialEq U8    U8    := { eq := fun x y => ok (x == y) }
+instance U16.Insts.CoreCmpPartialEqU16     : cmp.PartialEq U16   U16   := { eq := fun x y => ok (x == y) }
+instance U32.Insts.CoreCmpPartialEqU32     : cmp.PartialEq U32   U32   := { eq := fun x y => ok (x == y) }
+instance U64.Insts.CoreCmpPartialEqU64     : cmp.PartialEq U64   U64   := { eq := fun x y => ok (x == y) }
+instance U128.Insts.CoreCmpPartialEqU128   : cmp.PartialEq U128  U128  := { eq := fun x y => ok (x == y) }
+instance Usize.Insts.CoreCmpPartialEqUsize : cmp.PartialEq Usize Usize := { eq := fun x y => ok (x == y) }
+instance I8.Insts.CoreCmpPartialEqI8       : cmp.PartialEq I8    I8    := { eq := fun x y => ok (x == y) }
+instance I16.Insts.CoreCmpPartialEqI16     : cmp.PartialEq I16   I16   := { eq := fun x y => ok (x == y) }
+instance I32.Insts.CoreCmpPartialEqI32     : cmp.PartialEq I32   I32   := { eq := fun x y => ok (x == y) }
+instance I64.Insts.CoreCmpPartialEqI64     : cmp.PartialEq I64   I64   := { eq := fun x y => ok (x == y) }
+instance I128.Insts.CoreCmpPartialEqI128   : cmp.PartialEq I128  I128  := { eq := fun x y => ok (x == y) }
+instance Isize.Insts.CoreCmpPartialEqIsize : cmp.PartialEq Isize Isize := { eq := fun x y => ok (x == y) }
 
 /-! ## core::iter::range — Range iteration
 
@@ -65,7 +65,7 @@ def IteratorRange.next {A : Type} (StepInst : Step A) :
   let cmp ← StepInst.partialOrdInst.partial_cmp range.start range.«end»
   let isLess : Bool := match cmp with
     | Option.some o => match o with
-                       | core_models.cmp.Ordering.Less => true
+                       | core.cmp.Ordering.Less => true
                        | _ => false
     | _ => false
   if isLess then
@@ -78,10 +78,10 @@ def IteratorRange.next {A : Type} (StepInst : Step A) :
 
 end iter.range
 
-abbrev ops.range.Range.Insts.Core_modelsIterTraitsIteratorIterator.next :=
-  @core_models.iter.range.IteratorRange.next
+abbrev ops.range.Range.Insts.CoreIterTraitsIteratorIterator.next :=
+  @core.iter.range.IteratorRange.next
 
-abbrev Usize.Insts.Core_modelsIterRangeStep := core_models.iter.range.StepUsize
+abbrev Usize.Insts.CoreIterRangeStep := core.iter.range.StepUsize
 
 /-! ## Slice -/
 
@@ -145,4 +145,4 @@ export Aeneas.Std.core (
   convert.num.FromIsizeI16.from
 )
 
-end core_models
+end CoreModels.core

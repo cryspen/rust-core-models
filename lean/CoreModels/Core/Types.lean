@@ -2,8 +2,8 @@
 -- [core_models]: type definitions
 import Aeneas
 import CoreModels.Command
-import CoreModels.TypesPrologue
-import CoreModels.TypesExternal
+import CoreModels.Core.TypesPrologue
+import CoreModels.Core.TypesExternal
 open Aeneas
 open Aeneas.Std hiding namespace core alloc
 open Result ControlFlow Error
@@ -14,7 +14,10 @@ set_option linter.unusedVariables false
 /- You can set the `maxHeartbeats` value with the `-max-heartbeats` CLI option -/
 set_option maxHeartbeats 1000000
 
-namespace core_models
+/- You can set the `maxRecDepth` value with the `-max-recdepth` CLI option -/
+set_option maxRecDepth 2048
+
+namespace CoreModels.core
 
 /-- [core_models::array::TryFromSliceError]
     Source: 'core-models/src/core/array.rs', lines 4:0-4:29
@@ -273,7 +276,7 @@ def fmt.Arguments := Unit
     Source: 'core-models/src/core/fmt.rs', lines 52:4-59:5 -/
 @[discriminant isize]
 inductive fmt.rt.ArgumentType where
-| Placeholder : core_models.Phantom Unit → fmt.rt.ArgumentType
+| Placeholder : core.Phantom Unit → fmt.rt.ArgumentType
 
 /-- [core_models::fmt::rt::Argument]
     Source: 'core-models/src/core/fmt.rs', lines 61:4-63:5
@@ -399,57 +402,52 @@ structure iter.traits.collect.FromIterator (Self : Type) (A : Type) where
 structure iter.traits.iterator.IteratorMethods (Self : Type) (Self_Clause0_Item
   : Type) where
   IteratorInst : iter.traits.iterator.Iterator Self Self_Clause0_Item
-  fold : forall {B : Type} {F : Type} (core_modelsopsfunctionFnPPairPInst :
-    core_models.ops.function.Fn F (B × Self_Clause0_Item) B), Self → B → F
-    → Result B
+  fold : forall {B : Type} {F : Type} (coreopsfunctionFnPPairPInst :
+    core.ops.function.Fn F (B × Self_Clause0_Item) B), Self → B → F →
+    Result B
   enumerate : Self → Result (iter.adapters.enumerate.Enumerate Self)
   step_by : Self → Std.Usize → Result (iter.adapters.step_by.StepBy Self)
-  map : forall {O : Type} {F : Type} (core_modelsopsfunctionFnPTupleFPInst :
-    core_models.ops.function.Fn F Self_Clause0_Item O), Self → F → Result
+  map : forall {O : Type} {F : Type} (coreopsfunctionFnPTupleFPInst :
+    core.ops.function.Fn F Self_Clause0_Item O), Self → F → Result
     (iter.adapters.map.Map Self F)
-  all : forall {F : Type} (core_modelsopsfunctionFnPTuplePBoolInst :
-    core_models.ops.function.Fn F Self_Clause0_Item Bool), Self → F →
-    Result Bool
+  all : forall {F : Type} (coreopsfunctionFnPTuplePBoolInst :
+    core.ops.function.Fn F Self_Clause0_Item Bool), Self → F → Result Bool
   take : Self → Std.Usize → Result (iter.adapters.take.Take Self)
   flat_map : forall {U : Type} {F : Type} {Clause0_Item : Type} (IteratorInst1
     : iter.traits.iterator.Iterator U Clause0_Item)
-    (core_modelsopsfunctionFnPTupleFPInst : core_models.ops.function.Fn F
-    Self_Clause0_Item U), Self → F → Result (iter.adapters.flat_map.FlatMap
-    Self U F)
+    (coreopsfunctionFnPTupleFPInst : core.ops.function.Fn F Self_Clause0_Item
+    U), Self → F → Result (iter.adapters.flat_map.FlatMap Self U F)
   flatten : forall {Clause0_Item : Type} (IteratorInst1 :
     iter.traits.iterator.Iterator Self_Clause0_Item Clause0_Item), Self →
     Result (iter.adapters.flatten.Flatten Self Self_Clause0_Item Clause0_Item)
   zip : forall {I2 : Type} {Clause0_Item : Type} (IteratorInst1 :
     iter.traits.iterator.Iterator I2 Clause0_Item), Self → I2 → Result
     (iter.adapters.zip.Zip Self I2)
-  filter : forall {P : Type} (core_modelsopsfunctionFnPTupleSharedPBoolInst :
-    core_models.ops.function.Fn P Self_Clause0_Item Bool), Self → P →
-    Result (iter.adapters.filter.Filter Self P)
+  filter : forall {P : Type} (coreopsfunctionFnPTupleSharedPBoolInst :
+    core.ops.function.Fn P Self_Clause0_Item Bool), Self → P → Result
+    (iter.adapters.filter.Filter Self P)
   chain : forall {U : Type} (IteratorInst1 : iter.traits.iterator.Iterator U
     Self_Clause0_Item), Self → U → Result (iter.adapters.chain.Chain Self
     U)
   skip : Self → Std.Usize → Result (iter.adapters.skip.Skip Self)
-  any : forall {F : Type} (core_modelsopsfunctionFnPTuplePBoolInst :
-    core_models.ops.function.Fn F Self_Clause0_Item Bool), Self → F →
-    Result Bool
-  find : forall {P : Type} (core_modelsopsfunctionFnPTupleSharedPBoolInst :
-    core_models.ops.function.Fn P Self_Clause0_Item Bool), Self → P →
-    Result (option.Option Self_Clause0_Item)
-  find_map : forall {B : Type} {F : Type}
-    (core_modelsopsfunctionFnPTupleFOptionInst : core_models.ops.function.Fn F
-    Self_Clause0_Item (option.Option B)), Self → F → Result (option.Option
-    B)
-  position : forall {P : Type} (core_modelsopsfunctionFnPTuplePBoolInst :
-    core_models.ops.function.Fn P Self_Clause0_Item Bool), Self → P →
-    Result (option.Option Std.Usize)
+  any : forall {F : Type} (coreopsfunctionFnPTuplePBoolInst :
+    core.ops.function.Fn F Self_Clause0_Item Bool), Self → F → Result Bool
+  find : forall {P : Type} (coreopsfunctionFnPTupleSharedPBoolInst :
+    core.ops.function.Fn P Self_Clause0_Item Bool), Self → P → Result
+    (option.Option Self_Clause0_Item)
+  find_map : forall {B : Type} {F : Type} (coreopsfunctionFnPTupleFOptionInst :
+    core.ops.function.Fn F Self_Clause0_Item (option.Option B)), Self → F →
+    Result (option.Option B)
+  position : forall {P : Type} (coreopsfunctionFnPTuplePBoolInst :
+    core.ops.function.Fn P Self_Clause0_Item Bool), Self → P → Result
+    (option.Option Std.Usize)
   count : Self → Result Std.Usize
   nth : Self → Std.Usize → Result (option.Option Self_Clause0_Item)
   last : Self → Result (option.Option Self_Clause0_Item)
-  for_each : forall {F : Type} (core_modelsopsfunctionFnPTuplePTupleInst :
-    core_models.ops.function.Fn F Self_Clause0_Item Unit), Self → F →
-    Result Unit
-  «reduce» : forall {F : Type} (core_modelsopsfunctionFnPPairPInst :
-    core_models.ops.function.Fn F (Self_Clause0_Item × Self_Clause0_Item)
+  for_each : forall {F : Type} (coreopsfunctionFnPTuplePTupleInst :
+    core.ops.function.Fn F Self_Clause0_Item Unit), Self → F → Result Unit
+  «reduce» : forall {F : Type} (coreopsfunctionFnPPairPInst :
+    core.ops.function.Fn F (Self_Clause0_Item × Self_Clause0_Item)
     Self_Clause0_Item), Self → F → Result (option.Option Self_Clause0_Item)
   min : forall (cmpOrdInst : cmp.Ord Self_Clause0_Item), Self → Result
     (option.Option Self_Clause0_Item)
@@ -489,7 +487,7 @@ structure marker.StructuralPartialEq (Self : Type) where
     Source: 'core-models/src/core/marker.rs', lines 48:0-48:25 -/
 @[reducible]
 def marker.PhantomData (T : Type) := T
--/  -- replaced by core_models.Phantom (see rewrite_alloc_phantom_data)
+-/  -- replaced by core.Phantom (see rewrite_alloc_phantom_data)
 
 /-- [core_models::mem::manually_drop::ManuallyDrop]
     Source: 'core-models/src/core/mem.rs', lines 118:4-120:5
@@ -829,4 +827,4 @@ def str.iter.Split (T : Type) := T
 structure str.traits.FromStr (Self : Type) (Self_Err : Type) where
   from_str : Str → Result (result.Result Self Self_Err)
 
-end core_models
+end CoreModels.core
