@@ -39,7 +39,11 @@ macro_rules! uint_impl {
             /// See [`std::primitive::u8::checked_add`] (and similar for other integer types)
             pub fn checked_add(x: $Self, y: $Self) -> Option<$Self> {
                 let (result, overflowed) = Self::overflowing_add(x, y);
-                if overflowed { Option::None } else { Option::Some(result) }
+                if overflowed {
+                    Option::None
+                } else {
+                    Option::Some(result)
+                }
             }
             /// See [`std::primitive::u8::unchecked_add`] (and similar for other integer types)
             pub unsafe fn unchecked_add(x: $Self, y: $Self) -> $Self {
@@ -60,7 +64,11 @@ macro_rules! uint_impl {
             /// See [`std::primitive::u8::checked_sub`] (and similar for other integer types)
             pub fn checked_sub(x: $Self, y: $Self) -> Option<$Self> {
                 let (result, overflowed) = Self::overflowing_sub(x, y);
-                if overflowed { Option::None } else { Option::Some(result) }
+                if overflowed {
+                    Option::None
+                } else {
+                    Option::Some(result)
+                }
             }
             /// See [`std::primitive::u8::unchecked_sub`] (and similar for other integer types)
             pub unsafe fn unchecked_sub(x: $Self, y: $Self) -> $Self {
@@ -81,7 +89,11 @@ macro_rules! uint_impl {
             /// See [`std::primitive::u8::checked_mul`] (and similar for other integer types)
             pub fn checked_mul(x: $Self, y: $Self) -> Option<$Self> {
                 let (result, overflowed) = Self::overflowing_mul(x, y);
-                if overflowed { Option::None } else { Option::Some(result) }
+                if overflowed {
+                    Option::None
+                } else {
+                    Option::Some(result)
+                }
             }
             /// See [`std::primitive::u8::unchecked_mul`] (and similar for other integer types)
             pub unsafe fn unchecked_mul(x: $Self, y: $Self) -> $Self {
@@ -229,7 +241,11 @@ macro_rules! iint_impl {
             /// See [`std::primitive::u8::checked_add`] (and similar for other integer types)
             pub fn checked_add(x: $Self, y: $Self) -> Option<$Self> {
                 let (result, overflowed) = Self::overflowing_add(x, y);
-                if overflowed { Option::None } else { Option::Some(result) }
+                if overflowed {
+                    Option::None
+                } else {
+                    Option::Some(result)
+                }
             }
             /// See [`std::primitive::u8::unchecked_add`] (and similar for other integer types)
             pub unsafe fn unchecked_add(x: $Self, y: $Self) -> $Self {
@@ -250,7 +266,11 @@ macro_rules! iint_impl {
             /// See [`std::primitive::u8::checked_sub`] (and similar for other integer types)
             pub fn checked_sub(x: $Self, y: $Self) -> Option<$Self> {
                 let (result, overflowed) = Self::overflowing_sub(x, y);
-                if overflowed { Option::None } else { Option::Some(result) }
+                if overflowed {
+                    Option::None
+                } else {
+                    Option::Some(result)
+                }
             }
             /// See [`std::primitive::u8::unchecked_sub`] (and similar for other integer types)
             pub unsafe fn unchecked_sub(x: $Self, y: $Self) -> $Self {
@@ -261,12 +281,20 @@ macro_rules! iint_impl {
                 // Signed overflow from wrapping_add(x, y as $Self) represents unsigned overflow
                 // iff the signed overflow flag matches whether y exceeds the signed maximum.
                 let (result, overflowed) = Self::overflowing_add(x, y as $Self);
-                if overflowed == (y > Self::MAX as $USelf) { Option::Some(result) } else { Option::None }
+                if overflowed == (y > Self::MAX as $USelf) {
+                    Option::Some(result)
+                } else {
+                    Option::None
+                }
             }
             /// See [`std::primitive::i8::checked_sub_unsigned`] (and similar for other signed integer types)
             pub fn checked_sub_unsigned(x: $Self, y: $USelf) -> Option<$Self> {
                 let (result, overflowed) = Self::overflowing_sub(x, y as $Self);
-                if overflowed == (y > Self::MAX as $USelf) { Option::Some(result) } else { Option::None }
+                if overflowed == (y > Self::MAX as $USelf) {
+                    Option::Some(result)
+                } else {
+                    Option::None
+                }
             }
             /// See [`std::primitive::u8::wrapping_mul`] (and similar for other integer types)
             pub fn wrapping_mul(x: $Self, y: $Self) -> $Self {
@@ -283,7 +311,11 @@ macro_rules! iint_impl {
             /// See [`std::primitive::u8::checked_mul`] (and similar for other integer types)
             pub fn checked_mul(x: $Self, y: $Self) -> Option<$Self> {
                 let (result, overflowed) = Self::overflowing_mul(x, y);
-                if overflowed { Option::None } else { Option::Some(result) }
+                if overflowed {
+                    Option::None
+                } else {
+                    Option::Some(result)
+                }
             }
             /// See [`std::primitive::u8::unchecked_mul`] (and similar for other integer types)
             pub unsafe fn unchecked_mul(x: $Self, y: $Self) -> $Self {
