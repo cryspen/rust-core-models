@@ -86,16 +86,8 @@ rev = "COMMIT_HASH_HERE"
 subDir = "lean"
 ```
 
-Then `import CoreModels` in your generated Lean files and replace the line
-```
-open Aeneas Aeneas.Std Result ControlFlow Error
-```
-by
-```
-open CoreModels Aeneas
-open Aeneas.Std hiding namespace core alloc
-open Result ControlFlow Error
-```
+Use aeneas with the `-core-models-lib` option (currently only available with the following aeneas branch: https://github.com/cryspen/aeneas/tree/core-models-option)
+
 Then the Aeneas-extracted code that uses `std::*` types will resolve through this library's
 `core.*` / `alloc.*` shims.
 
