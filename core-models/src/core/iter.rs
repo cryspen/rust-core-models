@@ -722,6 +722,9 @@ pub mod adapters {
 
 pub mod range {
     use crate::clone::Clone;
+    // // We cannot use core model's PartialOrd because its instances currently have an
+    // // `aeneas::exclude` attribute.
+    // use crate::cmp::PartialOrd;
     use crate::option::Option;
     use crate::result::Result;
     /// See [`std::iter::Step`]
