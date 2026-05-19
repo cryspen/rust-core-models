@@ -8,7 +8,7 @@ import CoreModels.Alloc.Types
 import CoreModels.Core.FunsExternal
 import CoreModels.Core.Funs
 -- (alloc-side externals live in parent Aeneas.FunsExternal)
-open Aeneas
+open CoreModels Aeneas
 open Aeneas.Std hiding namespace core alloc
 open Result ControlFlow Error
 set_option linter.dupNamespace false
