@@ -42,17 +42,6 @@ jobs:
         with:
           toolchain: ${{ env.RUST_TOOLCHAIN }}
 
-      - name: Cache cargo registry & target
-        uses: actions/cache@v5
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            target
-          key: cargo-${{ runner.os }}-${{ hashFiles('**/Cargo.lock', '**/Cargo.toml') }}
-          restore-keys: |
-            cargo-${{ runner.os }}-
-
       - run: cargo test --workspace
 
   # ----------------------------------------------------------- lean extraction
@@ -97,18 +86,14 @@ jobs:
         if: steps.cache-tools.outputs.cache-hit != 'true'
         uses: cachix/install-nix-action@v27
 
-      # Cache the Nix store between runs. Even when CHARON_REV / AENEAS_REV
-      # change, most of the dependency graph (ocaml, nixpkgs deps, opam libs)
-      # is identical — only the charon/aeneas-specific derivations are
-      # rebuilt. `restore-prefixes-first-match` lets a fresh-rev run reuse
-      # the closest prior store; the post-job save then overlays the new
-      # paths into the cache for the next run.
-      - name: Cache Nix store
-        if: steps.cache-tools.outputs.cache-hit != 'true'
-        uses: nix-community/cache-nix-action@v6
-        with:
-          primary-key: nix-${{ runner.os }}-${{ env.CHARON_REV }}-${{ env.AENEAS_REV }}
-          restore-prefixes-first-match: nix-${{ runner.os }}-
+      # NOTE: we deliberately do NOT cache the Nix store. The store builds
+      # to ~6 GiB, and GitHub Actions enforces a 10 GiB per-repo cache cap
+      # with LRU eviction. A cached Nix store crowds out the small
+      # charon+aeneas binaries cache below (and everything else), so the
+      # binary cache silently disappeared between runs even though the key
+      # was stable. Trade-off: on a CHARON_REV / AENEAS_REV bump the nix
+      # builds start from a cold store (~10–15 min). That's rare — the
+      # steady-state path is a binary cache hit and skips Nix entirely.
 
       # Use the `*-portable` / `*-static` flake outputs: the regular
       # `#charon` / `#aeneas` derivations hardcode `/nix/store/...`
@@ -159,24 +144,9 @@ jobs:
           /tmp/elan-init -y --default-toolchain none
           echo "$HOME/.elan/bin" >> $GITHUB_PATH
 
-      - name: Cache Lean / mathlib build
-        uses: actions/cache@v5
-        with:
-          path: |
-            ~/.cache/mathlib
-            lean/.lake
-            tests/lean/.lake
-          key: lean-${{ runner.os }}-${{ hashFiles('lean/lean-toolchain') }}-${{ hashFiles('lean/lakefile.toml') }}
-
-      # ---- Cache cargo too ----------------------------------------------
-      - name: Cache cargo registry & target
-        uses: actions/cache@v5
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            target
-          key: cargo-lean-${{ runner.os }}-${{ hashFiles('**/Cargo.lock', '**/Cargo.toml') }}
+      # NOTE: no Lean/mathlib or cargo cache here — see the Nix store note
+      # above. Only the charon+aeneas binaries are cached, so the 10 GiB
+      # repo cache cap can't evict the one cache that actually matters.
 
       # ---- The actual pipeline ------------------------------------------
       - name: Extract Lean library, build Lean library, run regression tests
