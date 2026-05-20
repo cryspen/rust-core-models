@@ -5,9 +5,12 @@ members = [
     "alloc",
     "rust_primitives",
 ]
-# `tests` is intentionally NOT a member — it carries its own empty
-# `[workspace]` table to opt out, since it is a downstream consumer of
-# the extraction pipeline rather than part of the model being extracted.
+# `tests` is intentionally NOT a member — it is its own cargo
+# workspace (see `tests/Cargo.toml`) holding the two test surfaces
+# (`client_test/`, `rust_lean_equiv_test/`). Keeping it separate ensures
+# the model being extracted by charon/Aeneas is the pure
+# `core-models`/`alloc`/`rust_primitives` triple, with no test-only
+# items in the LLBC.
 
 [workspace.dependencies]
 # `hax-lib` provides the `#[hax_lib::attributes]`, `#[hax_lib::requires]`
