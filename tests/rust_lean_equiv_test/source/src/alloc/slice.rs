@@ -124,5 +124,8 @@ pub fn test_slice_to_vec_then_push() -> bool {
 
 // ----- closure-using methods (excluded) --------------------------------------
 
-// TODO(closure-extraction): `[T]::sort_by_key`, `[T]::sort_by`, and other
-// closure-taking slice methods are skipped until Fn/FnMut extraction lands.
+// TODO(slice-method-missing): `[T]::sort_by_key`, `[T]::sort_by`, and other
+// closure-taking slice methods are skipped — Aeneas handles closures
+// (see core::array::from_fn) but these methods are not in the model:
+// `alloc_models::slice::_::sort_by` is in `ALLOC_CHARON_EXCLUDES` and the
+// generic slice impl is not provided either.

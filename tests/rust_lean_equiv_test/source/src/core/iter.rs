@@ -37,18 +37,26 @@ pub fn test_range_count_offset() -> bool {
 
 // ----- skipped: closure-based iterator combinators --------------------------
 
-// TODO(closure-extraction): `Iterator::fold` takes a closure; Aeneas emits
-// an opaque def for the closure and the `Fn` instance has to live in the
-// type universe.
+// TODO(slice-iter-extraction): closure-based iterator combinators like
+// `fold` extract through Aeneas, but they bottom out in `slice::Iter::fold`
+// (and friends) which are missing from the extracted Lean. Tried
+// `[1u32,2,3,4].iter().fold(0u32, |acc, &x| acc + x)` — Aeneas emits the
+// closure fine, then Lean fails with
+//   `Unknown constant CoreModels.core.slice.Slice.iter`
+//   `Unknown constant CoreModels.core.slice.iter.Iter.Insts...fold`.
+// Revisit once slice iterators are modelled.
 // pub fn test_fold_sum() -> bool {
 //     let v = [1u32, 2, 3, 4];
 //     v.iter().fold(0u32, |acc, &x| acc + x) == 10
 // }
 
-// TODO(closure-extraction): `Iterator::map` / `Iterator::filter` /
+// TODO(slice-iter-extraction): `Iterator::map` / `Iterator::filter` /
 // `Iterator::any` / `Iterator::all` / `Iterator::find` /
 // `Iterator::find_map` / `Iterator::position` / `Iterator::for_each` /
-// `Iterator::reduce` all take closures.
+// `Iterator::reduce` all take closures. Aeneas handles the closure side
+// (see `core::array::test_from_fn_identity`), but on slice iterators they
+// bottom out in `slice::Iter::*` which is missing from the model — same
+// blocker as `fold` above.
 // pub fn test_map_collect_sum() -> bool {
 //     let v = [1u32, 2, 3];
 //     v.iter().map(|x| x + 1).fold(0u32, |a, b| a + b) == (2 + 3 + 4)
@@ -66,7 +74,10 @@ pub fn test_range_count_offset() -> bool {
 //     [10u32, 20, 30].iter().position(|x| *x == 20) == Some(1)
 // }
 
-// TODO(closure-extraction): `core::iter::from_fn` takes a closure.
+// `core::iter::from_fn` builds an iterator from a closure. Aeneas extracts
+// the closure, but the resulting `iter::FromFn` adapter is not modelled, so
+// any observation (`count`, `fold`, etc.) hits an unknown-constant error in
+// Lean. Revisit once `iter::FromFn` is added to the model.
 // pub fn test_from_fn() -> bool { ... }
 
 // TODO(slice-iter-extraction): `[T; N]::iter()` / `[T]::iter()` produce a

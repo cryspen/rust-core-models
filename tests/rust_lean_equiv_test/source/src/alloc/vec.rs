@@ -7,9 +7,6 @@
 //! - Indexing `v[i]` is in `ALLOC_CHARON_EXCLUDES` (see top-level `Makefile`),
 //!   so we verify per-element contents by sequential `pop()`s instead of
 //!   `v[i] == x`.
-//! - Several methods (`remove`, `clear`, `swap_remove`, `truncate`,
-//!   `resize`, `drain`) are `#[hax_lib::opaque]` in the model, so the Lean
-//!   side cannot observe their effect. Those are commented out.
 
 use rust_lean_test_macro::rust_lean_test;
 
@@ -254,21 +251,16 @@ pub fn test_vec_from_elem_zero_len() -> bool {
 // TODO(vec-index-excluded): Vec::from_iter is in ALLOC_CHARON_EXCLUDES.
 
 // ----- remove ----------------------------------------------------------------
-//
-// `Vec::remove` is `#[hax_lib::opaque]` in the model, but Aeneas still
-// extracts the underlying `seq_remove` body, so the Lean side mirrors
-// the real removal semantics.
 
 // TODO(vec-extraction-arity-mismatch: the Lean model marks `Vec.is_empty`/`as_slice`/`pop`/... with implicit `{A}`, but Aeneas extracts the call applying the allocator explicitly. Until that mismatch is fixed in the model, `Vec::*` tests fail.)
-/*
-#[rust_lean_test]
+
+/* #[rust_lean_test]
 pub fn test_vec_remove_only_element() -> bool {
     let mut v: Vec<u8> = Vec::new();
     v.push(7);
     let x = v.remove(0);
     x == 7 && v.is_empty()
-}
-*/
+} */
 
 // ----- swap_remove -----------------------------------------------------------
 
@@ -311,11 +303,14 @@ pub fn test_vec_swap_remove_back() -> bool {
 
 // ----- drain (iterator) ------------------------------------------------------
 
-// TODO(closure-extraction): Vec::drain returns an iterator we don't have
+// TODO(vec-iter-extraction): Vec::drain returns an iterator we don't have
 // a stable way to drive in extracted Lean yet.
 
 // ----- closure-using methods (excluded) --------------------------------------
 
-// TODO(closure-extraction): Vec::retain takes a closure; revisit when we
-// exercise Fn/FnMut.
-// TODO(closure-extraction): Vec::iter / Vec::into_iter use iterator traits.
+// TODO(closure-extraction + vec-extraction-arity-mismatch): Vec::retain takes
+// a closure. Aeneas can extract the closure (see core::array::from_fn) but
+// every Vec method first trips on the arity-mismatch issue above. Revisit
+// once Vec tests can compile in the first place.
+// TODO(vec-iter-extraction): Vec::iter / Vec::into_iter use iterator traits
+// whose Lean models we don't have yet.

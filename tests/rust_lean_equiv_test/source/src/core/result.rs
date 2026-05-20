@@ -52,11 +52,14 @@ pub fn test_is_err_err_max() -> bool {
 
 // ----- is_ok_and -------------------------------------------------------------
 
-// TODO(closure-extraction): is_ok_and takes a closure; revisit when we exercise FnOnce.
+// TODO(result-method-missing: `Result::is_ok_and` missing from extracted Lean —
+// the core-models `Result` impl is marked `aeneas::exclude`, so closure-taking
+// methods have no model. Revisit once Result methods are exposed.)
 
 // ----- is_err_and ------------------------------------------------------------
 
-// TODO(closure-extraction): is_err_and takes a closure; revisit when we exercise FnOnce.
+// TODO(result-method-missing: `Result::is_err_and` missing from extracted Lean
+// (see is_ok_and).)
 
 // ----- as_ref ----------------------------------------------------------------
 
@@ -177,7 +180,8 @@ pub fn test_unwrap_or_err_default_max() -> bool {
 
 // ----- unwrap_or_else --------------------------------------------------------
 
-// TODO(closure-extraction): unwrap_or_else takes a closure; revisit when we exercise FnOnce.
+// TODO(result-method-missing: `Result::unwrap_or_else` missing from extracted
+// Lean — the core-models `Result` impl is `aeneas::exclude`.)
 
 // ----- unwrap_or_default -----------------------------------------------------
 
@@ -207,27 +211,34 @@ pub fn test_unwrap_or_default_err() -> bool {
 
 // ----- map -------------------------------------------------------------------
 
-// TODO(closure-extraction): map takes a closure; revisit when we exercise FnOnce.
+// TODO(result-method-missing: `Result::map` missing from extracted Lean —
+// the core-models `Result` impl is `aeneas::exclude`.)
 
 // ----- map_or ----------------------------------------------------------------
 
-// TODO(closure-extraction): map_or takes a closure; revisit when we exercise FnOnce.
+// TODO(result-method-missing: `Result::map_or` missing from extracted Lean
+// (see map).)
 
 // ----- map_or_else -----------------------------------------------------------
 
-// TODO(closure-extraction): map_or_else takes two closures; revisit when we exercise FnOnce.
+// TODO(result-method-missing: `Result::map_or_else` missing from extracted
+// Lean (see map).)
 
 // ----- map_or_default --------------------------------------------------------
 
-// TODO(closure-extraction): map_or_default takes a closure; revisit when we exercise FnOnce.
+// TODO(result-method-missing: `Result::map_or_default` missing from extracted
+// Lean (see map).)
 
 // ----- map_err ---------------------------------------------------------------
 
-// TODO(closure-extraction): map_err takes a closure; revisit when we exercise FnOnce.
+// TODO(result-method-missing: `Result::map_err` missing from extracted Lean
+// (see map).)
 
 // ----- inspect / inspect_err -------------------------------------------------
 
-// TODO(closure-extraction): inspect / inspect_err take closures; revisit when we exercise FnOnce.
+// TODO(result-method-missing: `Result::inspect` and `Result::inspect_err`
+// missing from extracted Lean (see map). They also take `&T`/`&E` closures,
+// which Aeneas would reject even if the methods were present.)
 
 // ----- ok --------------------------------------------------------------------
 
@@ -311,7 +322,8 @@ pub fn test_and_err_err() -> bool {
 
 // ----- and_then --------------------------------------------------------------
 
-// TODO(closure-extraction): and_then takes a closure; revisit when we exercise FnOnce.
+// TODO(result-method-missing: `Result::and_then` missing from extracted Lean —
+// the core-models `Result` impl is `aeneas::exclude`.)
 
 // ----- or --------------------------------------------------------------------
 
@@ -349,7 +361,8 @@ pub fn test_or_err_err() -> bool {
 
 // ----- or_else ---------------------------------------------------------------
 
-// TODO(closure-extraction): or_else takes a closure; revisit when we exercise FnOnce.
+// TODO(result-method-missing: `Result::or_else` missing from extracted Lean —
+// the core-models `Result` impl is `aeneas::exclude`.)
 
 // ----- cloned ----------------------------------------------------------------
 

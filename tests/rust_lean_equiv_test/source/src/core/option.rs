@@ -55,11 +55,37 @@ pub fn test_is_none_some_max() -> bool {
 
 // ----- is_some_and -----------------------------------------------------------
 
-// TODO(closure-extraction): is_some_and takes a closure; revisit when we exercise FnOnce.
+#[rust_lean_test]
+pub fn test_is_some_and_some_true() -> bool {
+    Some(4u8).is_some_and(|x| x > 0) == true
+}
+
+#[rust_lean_test]
+pub fn test_is_some_and_some_false() -> bool {
+    Some(0u8).is_some_and(|x| x > 0) == false
+}
+
+#[rust_lean_test]
+pub fn test_is_some_and_none() -> bool {
+    none_u8().is_some_and(|x| x > 0) == false
+}
 
 // ----- is_none_or ------------------------------------------------------------
 
-// TODO(closure-extraction): is_none_or takes a closure; revisit when we exercise FnOnce.
+#[rust_lean_test]
+pub fn test_is_none_or_some_true() -> bool {
+    Some(4u8).is_none_or(|x| x > 0) == true
+}
+
+#[rust_lean_test]
+pub fn test_is_none_or_some_false() -> bool {
+    Some(0u8).is_none_or(|x| x > 0) == false
+}
+
+#[rust_lean_test]
+pub fn test_is_none_or_none() -> bool {
+    none_u8().is_none_or(|x| x > 0) == true
+}
 
 // ----- as_ref ----------------------------------------------------------------
 
@@ -154,7 +180,20 @@ pub fn test_unwrap_or_none_default_max() -> bool {
 
 // ----- unwrap_or_else --------------------------------------------------------
 
-// TODO(closure-extraction): unwrap_or_else takes a closure; revisit when we exercise FnOnce.
+#[rust_lean_test]
+pub fn test_unwrap_or_else_some_zero() -> bool {
+    Some(0u8).unwrap_or_else(|| 42) == 0
+}
+
+#[rust_lean_test]
+pub fn test_unwrap_or_else_some_max() -> bool {
+    Some(u8::MAX).unwrap_or_else(|| 0) == u8::MAX
+}
+
+#[rust_lean_test]
+pub fn test_unwrap_or_else_none() -> bool {
+    none_u8().unwrap_or_else(|| 7) == 7
+}
 
 // ----- unwrap_or_default -----------------------------------------------------
 
@@ -184,19 +223,60 @@ pub fn test_unwrap_or_default_none() -> bool {
 
 // ----- map -------------------------------------------------------------------
 
-// TODO(closure-extraction): map takes a closure; revisit when we exercise FnOnce.
+// TODO(closure-extraction-map): `Option::map` returns `Option<U>`; observing the
+// result requires either `Option::PartialEq` (blocked by option-eq-extraction)
+// or destructuring through `match`, but the latter goes back through
+// `Option::PartialEq` once we compare the inner value. Revisit alongside
+// option-eq-extraction.
+
+#[rust_lean_test]
+pub fn test_map_some_via_unwrap_or() -> bool {
+    Some(3u8).map(|x| x + 1).unwrap_or(0) == 4
+}
+
+#[rust_lean_test]
+pub fn test_map_none_via_unwrap_or() -> bool {
+    none_u8().map(|x| x + 1).unwrap_or(99) == 99
+}
+
+#[rust_lean_test]
+pub fn test_map_some_is_some() -> bool {
+    Some(3u8).map(|x| x + 1).is_some()
+}
+
+#[rust_lean_test]
+pub fn test_map_none_is_none() -> bool {
+    none_u8().map(|x| x + 1).is_none()
+}
 
 // ----- map_or ----------------------------------------------------------------
 
-// TODO(closure-extraction): map_or takes a closure; revisit when we exercise FnOnce.
+#[rust_lean_test]
+pub fn test_map_or_some_zero() -> bool {
+    Some(3u8).map_or(0u8, |x| x + 1) == 4
+}
+
+#[rust_lean_test]
+pub fn test_map_or_some_max() -> bool {
+    Some(0u8).map_or(99u8, |x| x + 1) == 1
+}
+
+#[rust_lean_test]
+pub fn test_map_or_none() -> bool {
+    none_u8().map_or(99u8, |x| x + 1) == 99
+}
 
 // ----- map_or_else -----------------------------------------------------------
 
-// TODO(closure-extraction): map_or_else takes two closures; revisit when we exercise FnOnce.
+// TODO(closure-extraction-order): `Option::map_or_else` takes (default: D, f: F)
+// in source order but the model lists the trait instances in (F, D) order, so
+// Aeneas emits them swapped and the Lean elaboration fails for the `None`
+// branch. Revisit once the closure-instance ordering is fixed.
 
 // ----- map_or_default --------------------------------------------------------
 
-// TODO(closure-extraction): map_or_default takes a closure; revisit when we exercise FnOnce.
+// TODO(map_or_default-unstable): `Option::map_or_default` is gated behind
+// `result_option_map_or_default` on stable. Revisit once it stabilises.
 
 // ----- ok_or -----------------------------------------------------------------
 
@@ -220,9 +300,40 @@ pub fn test_ok_or_none_err_max() -> bool {
     matches!(none_u8().ok_or(u8::MAX), Err(v) if v == u8::MAX)
 }
 
+// ----- ok_or_else ------------------------------------------------------------
+
+#[rust_lean_test]
+pub fn test_ok_or_else_some() -> bool {
+    matches!(Some(7u8).ok_or_else(|| 99u8), Ok(7))
+}
+
+#[rust_lean_test]
+pub fn test_ok_or_else_none() -> bool {
+    matches!(none_u8().ok_or_else(|| 42u8), Err(42))
+}
+
+// ----- and_then --------------------------------------------------------------
+
+#[rust_lean_test]
+pub fn test_and_then_some_to_some() -> bool {
+    Some(3u8).and_then(|x| Some(x + 1)).unwrap_or(0) == 4
+}
+
+#[rust_lean_test]
+pub fn test_and_then_some_to_none() -> bool {
+    Some(3u8).and_then(|_| none_u8()).is_none()
+}
+
+#[rust_lean_test]
+pub fn test_and_then_none() -> bool {
+    none_u8().and_then(|x| Some(x + 1)).is_none()
+}
+
 // ----- filter ----------------------------------------------------------------
 
-// TODO(closure-extraction): filter takes a closure; revisit when we exercise FnOnce.
+// TODO(closure-by-ref-extraction): `Option::filter` takes `FnOnce(&T) -> bool`;
+// Aeneas trips on the borrow with "Region ids should not be visited directly".
+// Revisit once closures whose parameter is a reference extract.
 
 // ----- or --------------------------------------------------------------------
 
@@ -257,7 +368,25 @@ pub fn test_or_none_none() -> bool {
 
 // ----- or_else ---------------------------------------------------------------
 
-// TODO(closure-extraction): or_else takes a closure; revisit when we exercise FnOnce.
+#[rust_lean_test]
+pub fn test_or_else_some_kept() -> bool {
+    Some(0u8).or_else(|| Some(99u8)).unwrap_or(7) == 0
+}
+
+#[rust_lean_test]
+pub fn test_or_else_some_max_kept() -> bool {
+    Some(u8::MAX).or_else(|| none_u8()).unwrap_or(0) == u8::MAX
+}
+
+#[rust_lean_test]
+pub fn test_or_else_none_to_some() -> bool {
+    none_u8().or_else(|| Some(42u8)).unwrap_or(0) == 42
+}
+
+#[rust_lean_test]
+pub fn test_or_else_none_to_none() -> bool {
+    none_u8().or_else(|| none_u8()).is_none()
+}
 
 // ----- xor -------------------------------------------------------------------
 
@@ -337,7 +466,9 @@ pub fn test_zip_none_none() -> bool {
 
 // ----- inspect ---------------------------------------------------------------
 
-// TODO(closure-extraction): inspect takes a closure; revisit when we exercise FnOnce.
+// TODO(closure-by-ref-extraction): `Option::inspect` takes `FnOnce(&T)`;
+// Aeneas trips on the borrow with "Region ids should not be visited directly".
+// Revisit once closures whose parameter is a reference extract.
 
 // ----- flatten ---------------------------------------------------------------
 

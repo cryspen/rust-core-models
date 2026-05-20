@@ -61,27 +61,25 @@ pub fn test_eq_all_zeros() -> bool {
     a == b
 }
 
+#[rust_lean_test]
+pub fn test_from_fn_identity() -> bool {
+    let a: [u8; 4] = core::array::from_fn(|i| i as u8);
+    a == [0, 1, 2, 3]
+}
+
 // ----- map / from_fn / each_ref ---------------------------------------------
 
-// TODO(closure-extraction): `[T; N]::map` takes a closure; Aeneas emits an
-// opaque def for the closure and the `Fn` instance has to live in the type
-// universe. Revisit when closure extraction lands.
-// pub fn test_map_add_one() -> bool {
-//     let a: [u8; 4] = [1, 2, 3, 4];
-//     a.map(|x| x + 1) == [2, 3, 4, 5]
-// }
-
-// TODO(closure-extraction): `core::array::from_fn` takes a closure.
-// pub fn test_from_fn_identity() -> bool {
-//     let a: [u8; 4] = core::array::from_fn(|i| i as u8);
-//     a == [0, 1, 2, 3]
-// }
+// TODO: `[T; N]::map` is not defined yet
+/* pub fn test_map_add_one() -> bool {
+    let a: [u8; 4] = [1, 2, 3, 4];
+    a.map(|x| x + 1) == [2, 3, 4, 5]
+} */
 
 // TODO(each-ref-refs): `each_ref` returns `[&T; N]`; arrays of references
 // through Aeneas extraction are tricky. Revisit when references-in-arrays
 // modelling lands.
-// pub fn test_each_ref_first() -> bool {
-//     let a: [u8; 4] = [1, 2, 3, 4];
-//     let refs: [&u8; 4] = a.each_ref();
-//     *refs[0] == 1
-// }
+/* pub fn test_each_ref_first() -> bool {
+    let a: [u8; 4] = [1, 2, 3, 4];
+    let refs: [&u8; 4] = a.each_ref();
+    *refs[0] == 1
+} */
