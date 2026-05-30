@@ -186,6 +186,33 @@ def I128.Insts.Hax_libIntToInt.to_int : Std.I128 → Result hax_lib.int.Int :=
 def Isize.Insts.Hax_libIntToInt.to_int : Std.Isize → Result hax_lib.int.Int :=
   fun x => ok x.val
 
+/-- `<[T]>::chunks_exact` — see `core::slice::ChunksExact::new`
+    (`core-models/src/core/slice.rs`): bundle the chunk size and the full
+    slice into the iterator state. Hand-written because the `Iterator`
+    impls in the Rust source are `#[cfg_attr(charon, aeneas::exclude)]`,
+    so aeneas does not extract them. -/
+def slice.Slice.chunks_exact {T : Type}
+    (s : Slice T) (cs : Std.Usize) : Result (slice.iter.ChunksExact T) :=
+  ok { cs := cs, elements := s }
+
+/-- `Iterator::next` for `ChunksExact<T>` (shared-slice item type).
+    Faithful model of `core::slice::ChunksExact::next`: while at least
+    `cs` elements remain, yield the first `cs` of them as a chunk and
+    advance past them via `split_at`; once fewer than `cs` remain,
+    terminate with `None` — the sub-`cs` remainder is dropped, exactly
+    as `ChunksExact` (unlike `Chunks`) specifies. The `cs ≤ length`
+    guard is precisely `split_at`'s success condition, so each yielded
+    chunk has exactly `cs` elements. -/
+def slice.iter.ChunksExact.Insts.Core_modelsIterTraitsIteratorIteratorSharedASlice.next
+    {T : Type} (iter : slice.iter.ChunksExact T) :
+    Result ((option.Option (Slice T)) × slice.iter.ChunksExact T) :=
+  if iter.cs.val ≤ iter.elements.length then
+    do
+    let (chunk, rest) ← Aeneas.Std.core.slice.Slice.split_at iter.elements iter.cs
+    ok (option.Option.Some chunk, { cs := iter.cs, elements := rest })
+  else
+    ok (option.Option.None, iter)
+
 end core_models
 
 /-- [rust_primitives::slice::slice_length]:

@@ -782,9 +782,17 @@ structure ops.range.RangeInclusive (T : Type) where
   «end» : T
 
 /-- [core_models::slice::Slice]
-    Source: 'core-models/src/core/slice.rs', lines 5:0-5:19 -/
+    Source: 'core-models/src/core/slice.rs', lines 5:0-5:19
+
+    The Rust side is a `#[hax_lib::exclude]` newtype `struct Slice<T>(T)`
+    used only as a carrier for the `impl Slice<T>` methods (which all take
+    `&[T]` explicitly). Modelled as the real Aeneas slice so that the
+    `iter::{Chunks,ChunksExact,Windows}` struct fields `elements : Slice T`
+    (whose `Slice` resolves to THIS def during struct elaboration, not the
+    `open`ed `Aeneas.Std.Slice`) actually carry a slice rather than a bare
+    `T`. Without this, `ChunksExact.next` cannot track remaining elements. -/
 @[reducible]
-def slice.Slice (T : Type) := T
+def slice.Slice (T : Type) := Aeneas.Std.Slice T
 
 /-- [core_models::slice::iter::Chunks]
     Source: 'core-models/src/core/slice.rs', lines 12:4-15:5
