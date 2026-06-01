@@ -3,7 +3,7 @@
 Post-process Aeneas-generated Lean files into the layout expected by our
 Aeneas core replacement library.
 
-For `core`, Aeneas writes the following files into ./lean/ :
+For `core`, Aeneas writes the following files into ./lean/CoreModels/Core :
     Funs.lean
     Types.lean
     FunsExternal_Template.lean
@@ -16,7 +16,6 @@ For `alloc`, Aeneas writes the following files into ./lean/CoreModels/Alloc :
     TypesExternal_Template.lean
 
 This script:
-  * Moves the files generated from `core_model` into ./lean/CoreModels/.
   * Rewrites imports & opens to match our package layout.
   * Comments out the type-level items that we forward-declare
     in `TypesPrologue.lean`.
@@ -24,10 +23,9 @@ This script:
     known elaboration issues.
   * Fixes some other elaboration issues via search and replace.
 
-Pure-fn duplicates of `core::option::Option::{is_some, is_none, unwrap_or,
-take}`, `core::mem::{swap, replace}` are stripped at
-the LLBC level by charon's `--exclude` flag (see `CHARON_EXCLUDES` in the
-parent `Makefile`), not by this script.
+Note that some items are being removed before this script even runs:
+* some items are excluded via charon's `--exclude` argument in our `Makefile`
+* some items are excluded via `aeneas::exclude` annotations in the Rust sources.
 """
 
 from __future__ import annotations
@@ -40,17 +38,6 @@ from pathlib import Path
 LEAN_DIR = Path(__file__).parent / "lean"
 CORE_DIR = LEAN_DIR / "CoreModels" / "Core"
 ALLOC_DIR = LEAN_DIR / "CoreModels" / "Alloc"
-
-# Type declarations in Types.lean to comment out (provided by TypesPrologue.lean)
-TYPES_TO_REMOVE = [
-    "core_models::ops::function::FnOnce",
-    "core_models::ops::function::FnMut",
-    "core_models::ops::function::Fn",
-    "core_models::cmp::Ordering",
-    "core_models::option::Option",
-    "core_models::result::Result",
-]
-
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -119,8 +106,7 @@ def rename_alloc_models(text: str) -> str:
 def rewrite_alloc_imports(text: str) -> str:
     """Adjust the imports / opens emitted by Aeneas for the staged alloc
     crate. The `alloc_models` rename has already happened by the time this
-    runs, so the import paths still look like `import CoreModels.Alloc.<X>`
-    (good — Aeneas emits those because of `-subdir CoreModels/Alloc`).
+    runs, so the import paths still look like `import CoreModels.Alloc.<X>`.
     """
     # Replace `import Aeneas` with the explicit pieces it needs.
     text = re.sub(
@@ -193,32 +179,37 @@ def fix_result_match(text: str) -> str:
     return text
 
 def rewrite_phantom_data(text: str) -> str:
-    """Aeneas's alloc extraction declares `core::marker::PhantomData (T) := Unit`
-    inside its own namespace and then references that path in struct field
-    types. The constructor sites use `()`.
+    """Replace Aeneas's `PhantomData` with our `core.Phantom` carrier.
 
-    Core's hand-written Types.lean already has a `core.marker.PhantomData`
-    at the *root* path, but its body is `:= T`, which doesn't accept `()`.
+    Aeneas extracts `core_models::marker::PhantomData` as a reducible alias
+    `def marker.PhantomData (T : Type) := T` in `Core/Types.lean`, and
+    constructs phantom values with `()` at call sites (Charon models
+    PhantomData as a ZST). So there is already a mismatch between type definition
+    and call site code. Even worse, none of the two options works for us.
+    Defining `PhantomData` as the identity would require us to produce values
+    for the given type out of thin air. The `()` approach doesn't work either because
+    when `PhantomData A` appears as the second component of `vec.Vec T A := Seq T × PhantomData A`,
+    Lean unfolds it and loses the `A` during unification, which then breaks
+    the `{A : Type}` implicit at call sites like `alloc.vec.Vec.clear v`.
 
-    Rather than fight the conflict, we:
+    `TypesPrologue.lean` defines a replacement: `structure Phantom (A : Type)
+    where mk ::` — a *non-reducible* carrier that keeps `A` syntactically
+    present. This pass rewires the Aeneas output to use it. It runs on both
+    `Core/{Types,Funs}.lean` and `Alloc/{Types,Funs}.lean`:
 
-      - rewrite every `core.marker.PhantomData A` *type-level* reference in
-        the alloc files to `core.Phantom A` (a *non-reducible* `structure`
-        with a phantom type parameter — see `Aeneas/Primitives.lean`). The
-        non-reducibility is important: a `def` would let Lean unfold the
-        alias and lose `A` during unification, breaking the `{A : Type}`
-        implicit at call sites like `alloc.vec.Vec.clear v`.
+      1. Retype every `core.marker.PhantomData` reference to `core.Phantom`.
 
-      - rewrite every `()` constructor in a phantom-field position to
-        `core.Phantom.mk`. The constructor sites in the extracted alloc
-        Funs.lean look like `(seq, ())` (or `(seq, pd)` when the variable
-        was destructured); we leave the destructured form alone but
-        rewrite the bare `()` form via a textual heuristic: `, ()` inside
-        a tuple-construction expression on a line that builds a `vec.Vec`
-        / `VecDeque` / `Drain` value.
+      2. Rewrite the `()` constructor in phantom-field position to
+         `core.Phantom.mk`. Two textual shapes are handled:
+           - `, ())` — the common form, where the phantom is the second
+             slot of a 2-tuple (`vec.Vec`, `VecDeque`, `Drain`, …).
+           - `fmt.rt.ArgumentType.Placeholder ()` — a one-off in
+             `Core/Types.lean` that the comma heuristic can't catch.
+         Destructured forms like `(seq, pd)` don't textually match `, ()`
+         and are left alone.
 
-      - erase the now-redundant `def core.Phantom (T) := Unit` block that
-        Aeneas emitted in `Types.lean`.
+      3. Comment out Aeneas's own `core_models::marker::PhantomData`
+         definition block in `Core/Types.lean`.
     """
     # 1. Type-level: `core.marker.PhantomData` -> `core.Phantom`.
     text = re.sub(
@@ -235,7 +226,7 @@ def rewrite_phantom_data(text: str) -> str:
     # 3. Erase the (now redundant) declaration block.
     return comment_out_blocks(
         text, ["core_models::marker::PhantomData"],
-        trailer="replaced by core.Phantom (see rewrite_alloc_phantom_data)",
+        trailer="replaced by core.Phantom (see rewrite_phantom_data)",
     )
     
 def escape_keywords(text: str) -> str:
@@ -267,19 +258,9 @@ def desugar_pure_num_bound_binds(text: str) -> str:
 def comment_out_num_bounds(text: str) -> str:
     """Aeneas extracts `core.num.<X>.MIN/MAX` as a mix of pure literals and
     monadic axioms (depending on whether the bound is computable). We
-    forward-declare them all as PURE in `Aeneas.Primitives` so that earlier
+    forward-declare them all as PURE in `FunsPrologue` so that earlier
     code in `Funs.lean` (which references them via `IScalar.cast`) can find
     them. The duplicates that follow in `Funs.lean` must be commented out.
-
-    Each generated bound looks like:
-
-        /-- [core_models::num::{core_models::num::<x>}::MIN]
-            Source: ...
-            Visibility: public -/
-        @[global_simps, irreducible] def num.X.MIN : Std.X := ...
-
-    Wrap the doc comment + attribute + def line in `/- ... -/` so the doc
-    comment doesn't dangle.
     """
     types = ("u8", "u16", "u32", "u64", "u128", "usize",
              "i8", "i16", "i32", "i64", "i128", "isize")
@@ -287,6 +268,18 @@ def comment_out_num_bounds(text: str) -> str:
             for t in types for b in ("MIN", "MAX")]
     return comment_out_blocks(text, subs, trailer="provided by CoreModels.Core.FunsPrologue")
 
+def comment_out_types(text: str) -> str:
+    """
+    Some type declarations in Types.lean are commented out (provided by TypesPrologue.lean).
+    """
+    return comment_out_blocks(text, [
+        "core_models::ops::function::FnOnce",
+        "core_models::ops::function::FnMut",
+        "core_models::ops::function::Fn",
+        "core_models::cmp::Ordering",
+        "core_models::option::Option",
+        "core_models::result::Result",
+    ])
 
 def add_funs_prologue_import(text: str) -> str:
     """Funs.lean needs CoreModels.Core.FunsPrologue."""
@@ -510,19 +503,10 @@ def main() -> int:
             text = comment_out_num_bounds(text)
             text = desugar_pure_num_bound_binds(text)
             text = fix_result_match(text)
+        if path == types_path:
+            text = comment_out_types(text)
         write(path, text)
-        print(f"rewrote imports/opens/namespace in Aeneas/{path.name}")
-
-    if types_path.exists():
-        text = read(types_path)
-        text = comment_out_blocks(text, TYPES_TO_REMOVE)
-        write(types_path, text)
-        print(f"commented out conflicting type defs in Aeneas/Types.lean")
-
-    if funs_path.exists():
-        text = read(funs_path)
-        write(funs_path, text)
-        print(f"commented out broken/duplicate function defs in Aeneas/Funs.lean")
+        print(f"patched {CORE_DIR}.")
 
     # ----- alloc/ patches ---------------------------------------------------
     patch_alloc()
@@ -557,7 +541,7 @@ def patch_alloc() -> None:
             path.unlink()
             print(f"removed Aeneas/Alloc/{path.name} (axioms live in parent FunsExternal.lean)")
 
-    # 2. Apply common rewrites to the remaining files.
+    # 2. Apply patches to the remaining files.
     for path in [types, funs]:
         if not path.exists():
             continue
@@ -565,23 +549,10 @@ def patch_alloc() -> None:
         text = rename_alloc_models(text)
         text = rewrite_alloc_imports(text)
         text = fix_fail_panic(text)
-        write(path, text)
-        print(f"rewrote alloc_models -> alloc in Aeneas/Alloc/{path.name}")
-
-    # 3. Replace `core.marker.PhantomData` with `core.Phantom` in alloc
-    #    Types.lean AND alloc Funs.lean (the two files have to agree on the
-    #    shape of `vec.Vec`). Then drop the allocator type parameter from
-    #    `vec.Vec` and friends so they line up with Aeneas's standard 1-arg
-    #    `Vec α` shape that downstream test crates expect when they use
-    #    `std::vec::Vec<T>`.
-    for path in [types, funs]:
-        if not path.exists():
-            continue
-        text = read(path)
         text = rewrite_phantom_data(text)
         text = fix_vec_allocator(text)
         write(path, text)
-    print("rewrote PhantomData and dropped allocator param in Aeneas/Alloc/{Types,Funs}.lean")
+    print(f"patched {ALLOC_DIR}.")
 
 
 if __name__ == "__main__":

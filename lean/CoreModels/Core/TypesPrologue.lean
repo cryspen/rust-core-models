@@ -25,18 +25,10 @@ end ops.function
 the existing `core.marker.PhantomData T := T` for the alloc rewrite (the
 extracted constructor sites use `()`, which is `Unit`). We instead rewrite
 the `core.marker.PhantomData A` field type to `core.Phantom A`.
-
-`Phantom` is a *non-reducible* `structure` with a phantom type parameter:
-the parameter must appear syntactically in the type for generic-allocator
-type inference to keep working at call sites (`alloc.vec.Vec.clear` etc.
-take the `A` implicit). A `@[reducible] def Phantom _ := Unit` would
-defeat that. -/
+-/
 
 structure Phantom (A : Type) where mk ::
 deriving Inhabited
-
-@[reducible]
-def marker.PhantomData (T : Type) := T
 
 /-! ## Option
 
