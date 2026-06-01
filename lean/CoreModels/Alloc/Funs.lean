@@ -3,11 +3,11 @@
 import Aeneas
 import CoreModels.Core.TypesPrologue
 import CoreModels.Core.Types
-import CoreModels.Core.TypesExternal
+import CoreModels.RustPrimitives.Types
 import CoreModels.Alloc.Types
-import CoreModels.Core.FunsExternal
+import CoreModels.RustPrimitives.Funs
 import CoreModels.Core.Funs
--- (alloc-side externals live in parent Aeneas.FunsExternal)
+-- (alloc-side externals live in parent CoreModels.RustPrimitives)
 open CoreModels Aeneas
 open Aeneas.Std hiding namespace core alloc
 open Result ControlFlow Error

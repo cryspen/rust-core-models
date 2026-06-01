@@ -78,6 +78,45 @@ instance Isize.Insts.CoreCmpPartialOrdIsize : cmp.PartialOrd Isize Isize := mkIP
 abbrev ops.range.Range.Insts.CoreIterTraitsIteratorIterator.next :=
   @IteratorRange.next
 
+/-- [core::cmp::impls::{core::cmp::PartialOrd<&0 (B)> for &1 (A)}::lt]:
+    Source: '/rustc/library/core/src/cmp.rs', lines 2133:8-2133:40
+    Name pattern: [core::cmp::impls::{core::cmp::PartialOrd<&'1 @A, &'0 @B>}::lt]
+    Visibility: public -/
+@[rust_fun "core::cmp::impls::{core::cmp::PartialOrd<&'1 @A, &'0 @B>}::lt"]
+def Shared1A.Insts.CoreCmpPartialOrdShared0B.lt
+  {A : Type} {B : Type} (PartialOrdInst : cmp.PartialOrd A B) :
+  A → B → Result Bool := fun a b => do
+  let o ← PartialOrdInst.partial_cmp a b
+  match o with
+  | some cmp.Ordering.Less => ok true
+  | _ => ok false
+
+/-- [core::cmp::impls::{core::cmp::PartialOrd<&0 (B)> for &1 (A)}::gt]:
+    Source: '/rustc/library/core/src/cmp.rs', lines 2141:8-2141:40
+    Name pattern: [core::cmp::impls::{core::cmp::PartialOrd<&'1 @A, &'0 @B>}::gt]
+    Visibility: public -/
+@[rust_fun "core::cmp::impls::{core::cmp::PartialOrd<&'1 @A, &'0 @B>}::gt"]
+def Shared1A.Insts.CoreCmpPartialOrdShared0B.gt
+  {A : Type} {B : Type} (PartialOrdInst : cmp.PartialOrd A B) :
+  A → B → Result Bool := fun a b => do
+  let o ← PartialOrdInst.partial_cmp a b
+  match o with
+  | some cmp.Ordering.Greater => ok true
+  | _ => ok false
+
+/-- [core::slice::cmp::{core::cmp::PartialEq<[U]> for [T]}::eq]:
+    Source: '/rustc/library/core/src/slice/cmp.rs', lines 18:4-18:37
+    Name pattern: [core::slice::cmp::{core::cmp::PartialEq<[@T], [@U]>}::eq]
+    Visibility: public -/
+@[rust_fun "core::slice::cmp::{core::cmp::PartialEq<[@T], [@U]>}::eq"]
+def Slice.Insts.CoreCmpPartialEqSlice.eq
+  {T : Type} {U : Type} (cmpPartialEqInst : cmp.PartialEq T U) :
+  Slice T → Slice U → Result Bool := fun s1 s2 =>
+  if s1.length ≠ s2.length then ok false
+  else do
+    let rs ← (s1.val.zip s2.val).mapM (fun p => cmpPartialEqInst.eq p.1 p.2)
+    ok (rs.all id)
+
 /-! ## Slice -/
 
 def slice.Slice.len {T : Type u} (v : Aeneas.Std.Slice T) : Aeneas.Std.Result Usize :=
