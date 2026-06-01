@@ -73,6 +73,18 @@ def rewrite_imports_and_opens(text: str) -> str:
         text, flags=re.MULTILINE,
     )
     
+    text = re.sub(
+        r"^import CoreModels.Core.FunsExternal$",
+        "import CoreModels.RustPrimitives.Funs",
+        text, flags=re.MULTILINE,
+    )
+    
+    text = re.sub(
+        r"^import CoreModels.Core.TypesExternal$",
+        "import CoreModels.RustPrimitives.Types",
+        text, flags=re.MULTILINE,
+    )
+    
     # Fix the `open`s: We want to open the Aeneas library definitions, except for
     # `core` and `alloc`.
     text = re.sub(
@@ -126,24 +138,24 @@ def rewrite_alloc_imports(text: str) -> str:
     text = re.sub(
         r"^import CoreModels$",
         "import CoreModels.Core.TypesPrologue\nimport CoreModels.Core.Types\n"
-        "import CoreModels.Core.TypesExternal",
+        "import CoreModels.RustPrimitives.Types",
         text,
         flags=re.MULTILINE,
     )
     # Additional imports just for `Funs.lean`
     text = re.sub(
         r"^import CoreModels.Alloc.Types$",
-        "import CoreModels.Alloc.Types\nimport CoreModels.Core.FunsExternal\n"
+        "import CoreModels.Alloc.Types\nimport CoreModels.RustPrimitives.Funs\n"
         "import CoreModels.Core.Funs",
         text,
         flags=re.MULTILINE,
     )
-    # Drop imports of the alloc-side external files: their axioms now live
-    # in the parent's `lean/Aeneas/FunsExternal.lean`, so the modules
+    # Drop imports of the alloc-side external files: their dependencies now live
+    # in the parent's `lean/RustPrimitives/Funs.lean`, so the modules
     # `Aeneas.Alloc.{Funs,Types}External` don't exist anymore.
     text = re.sub(
         r"^import CoreModels\.Alloc\.(?:Funs|Types)External$",
-        "-- (alloc-side externals live in parent Aeneas.FunsExternal)",
+        "-- (alloc-side externals live in parent CoreModels.RustPrimitives)",
         text, flags=re.MULTILINE,
     )
     
@@ -537,10 +549,9 @@ def patch_alloc() -> None:
     Aeneas writes them with the staged crate name `alloc_models`. We rename
     everything back to `alloc`, fix imports/opens. The alloc subdirectory
     holds only the two files Aeneas can populate by itself (`Funs.lean`
-    and `Types.lean`); the external axioms it would otherwise emit
-    (under `*External_Template.lean`) live in the parent's
-    `lean/Aeneas/FunsExternal.lean` instead, so we delete the templates
-    after extraction.
+    and `Types.lean`); the external dependencies it would otherwise emit
+    (under `*External_Template.lean`) live in `CoreModels/RustPrimitives`,
+    so we delete the templates after extraction.
     """
     if not ALLOC_DIR.exists():
         return
@@ -555,7 +566,7 @@ def patch_alloc() -> None:
     for path in [funs_ext_t, types_ext_t]:
         if path.exists():
             path.unlink()
-            print(f"removed Aeneas/Alloc/{path.name} (axioms live in parent FunsExternal.lean)")
+            print(f"removed Aeneas/Alloc/{path.name} (dependencies live in parent RustPrimitives/Funs.lean)")
 
     # 2. Apply common rewrites to the remaining files.
     for path in [types, funs]:
