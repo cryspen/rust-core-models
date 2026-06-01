@@ -85,7 +85,7 @@ extract: $(LLBC_FILE) alloc-extract
 	# Aeneas may exit non-zero while still producing partial files; that's OK,
 	# our patcher and the surrounding hand-written library handle the gaps.
 	-$(AENEAS) -core-models-lib -backend lean $(LLBC_FILE) -split-files -dest $(LEAN_DIR) \
-	-subdir CoreModels/Core
+	-subdir CoreModels/Core -all-computable
 
 # -----------------------------------------------------------------------------
 # alloc/ extraction (with the `alloc_models` crate-name workaround)
@@ -120,7 +120,7 @@ alloc-llbc: $(ALLOC_LLBC_FILE)
 # than the auto-derived `Alloc_models.<X>` prefix.
 alloc-extract: $(ALLOC_LLBC_FILE)
 	-$(AENEAS) -core-models-lib -backend lean $(ALLOC_LLBC_FILE) -split-files \
-	    -dest $(LEAN_DIR) -subdir CoreModels/Alloc
+	    -dest $(LEAN_DIR) -subdir CoreModels/Alloc -all-computable
 
 # 3. Move generated files into $(LEAN_DIR)/CoreModels/ and apply our patches
 #    (imports, opens, namespace rename, comment-outs of broken defs, etc.).
