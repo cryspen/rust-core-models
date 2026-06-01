@@ -24,64 +24,59 @@ instance I64.Insts.CoreCmpPartialEqI64     : cmp.PartialEq I64   I64   := { eq :
 instance I128.Insts.CoreCmpPartialEqI128   : cmp.PartialEq I128  I128  := { eq := fun x y => ok (x == y) }
 instance Isize.Insts.CoreCmpPartialEqIsize : cmp.PartialEq Isize Isize := { eq := fun x y => ok (x == y) }
 
-/-! ## core::iter::range — Range iteration
-
-Aeneas extracts `for i in lo..hi { … }` to a loop driven by
-`core.iter.range.IteratorRange.next`, which in turn uses a
-`core.iter.range.Step` dictionary. We provide both, plus a `StepUsize`
-instance, so that downstream extracted code that iterates over `Range<usize>`
-type-checks. -/
-
-namespace iter.range
-
-structure Step (Self : Type) where
-  cloneInst       : clone.Clone Self
-  partialOrdInst  : cmp.PartialOrd Self Self
-  steps_between   : Self → Self → Aeneas.Std.Result (Aeneas.Std.Usize × (Option Aeneas.Std.Usize))
-  forward_checked : Self → Aeneas.Std.Usize → Aeneas.Std.Result (Option Self)
-  backward_checked: Self → Aeneas.Std.Usize → Aeneas.Std.Result (Option Self)
-
-/-- Step instance for `Usize`. -/
-def StepUsize : Step Aeneas.Std.Usize := {
-  cloneInst       := { clone := fun x => Aeneas.Std.Result.ok x}
-  partialOrdInst  := {
-    PartialEqInst := { eq := fun x y => ok (x == y) }
-    partial_cmp := fun x y =>
-      ok (option.Option.Some
-        (match compare x.val y.val with
-        | .lt => cmp.Ordering.Less
-        | .eq => cmp.Ordering.Equal
-        | .gt => cmp.Ordering.Greater))
-  }
-  steps_between   := Aeneas.Std.core.iter.range.StepUsize.steps_between
-  forward_checked := Aeneas.Std.core.iter.range.StepUsize.forward_checked
-  backward_checked := Aeneas.Std.core.iter.range.StepUsize.backward_checked
+def mkUPartialOrd {ty} : cmp.PartialOrd (UScalar ty) (UScalar ty) := {
+  PartialEqInst := { eq := fun x y => ok (x == y) }
+  partial_cmp := fun x y =>
+    ok (option.Option.Some
+      (match compare x.val y.val with
+       | .lt => cmp.Ordering.Less
+       | .eq => cmp.Ordering.Equal
+       | .gt => cmp.Ordering.Greater))
 }
 
 /-- The `Iterator::next` implementation for `core::ops::range::Range<A>`,
     parameterised over the `Step` dictionary. -/
-def IteratorRange.next {A : Type} (StepInst : Step A) :
+def IteratorRange.next {A : Type} (StepInst : iter.range.Step A) :
     ops.range.Range A → Aeneas.Std.Result ((Option A) × ops.range.Range A) := fun range => do
-  let cmp ← StepInst.partialOrdInst.partial_cmp range.start range.«end»
+  let cmp ← StepInst.corecmpPartialOrdInst.partial_cmp range.start range.«end»
   let isLess : Bool := match cmp with
     | Option.some o => match o with
                        | core.cmp.Ordering.Less => true
                        | _ => false
     | _ => false
   if isLess then
-    let cur ← StepInst.cloneInst.clone range.start
+    let cur ← StepInst.cloneCloneInst.clone range.start
     let next? ← StepInst.forward_checked cur 1#usize
     match next? with
     | Option.none      => .fail .panic
     | Option.some next => .ok (Option.some cur, { range with start := next })
   else .ok (Option.none, range)
 
-end iter.range
+def mkIPartialOrd {ty} : cmp.PartialOrd (IScalar ty) (IScalar ty) := {
+  PartialEqInst := { eq := fun x y => ok (x == y) }
+  partial_cmp := fun x y =>
+    ok (option.Option.Some
+      (match compare x.val y.val with
+       | .lt => cmp.Ordering.Less
+       | .eq => cmp.Ordering.Equal
+       | .gt => cmp.Ordering.Greater))
+}
+
+instance U8.Insts.CoreCmpPartialOrdU8       : cmp.PartialOrd U8    U8    := mkUPartialOrd
+instance U16.Insts.CoreCmpPartialOrdU16     : cmp.PartialOrd U16   U16   := mkUPartialOrd
+instance U32.Insts.CoreCmpPartialOrdU32     : cmp.PartialOrd U32   U32   := mkUPartialOrd
+instance U64.Insts.CoreCmpPartialOrdU64     : cmp.PartialOrd U64   U64   := mkUPartialOrd
+instance U128.Insts.CoreCmpPartialOrdU128   : cmp.PartialOrd U128  U128  := mkUPartialOrd
+instance Usize.Insts.CoreCmpPartialOrdUsize : cmp.PartialOrd Usize Usize := mkUPartialOrd
+instance I8.Insts.CoreCmpPartialOrdI8       : cmp.PartialOrd I8    I8    := mkIPartialOrd
+instance I16.Insts.CoreCmpPartialOrdI16     : cmp.PartialOrd I16   I16   := mkIPartialOrd
+instance I32.Insts.CoreCmpPartialOrdI32     : cmp.PartialOrd I32   I32   := mkIPartialOrd
+instance I64.Insts.CoreCmpPartialOrdI64     : cmp.PartialOrd I64   I64   := mkIPartialOrd
+instance I128.Insts.CoreCmpPartialOrdI128   : cmp.PartialOrd I128  I128  := mkIPartialOrd
+instance Isize.Insts.CoreCmpPartialOrdIsize : cmp.PartialOrd Isize Isize := mkIPartialOrd
 
 abbrev ops.range.Range.Insts.CoreIterTraitsIteratorIterator.next :=
-  @core.iter.range.IteratorRange.next
-
-abbrev Usize.Insts.CoreIterRangeStep := core.iter.range.StepUsize
+  @IteratorRange.next
 
 /-! ## Slice -/
 
