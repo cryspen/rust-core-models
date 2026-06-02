@@ -117,6 +117,7 @@ pub mod traits {
 
         // opaque: while-let loop is not supported by hax FunctionalizeLoops
         #[hax_lib::opaque]
+        #[cfg_attr(charon, aeneas::exclude)]
         fn iter_find<I: Iterator, P: Fn(&I::Item) -> bool>(
             iter: &mut I,
             predicate: P,

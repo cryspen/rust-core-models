@@ -36,7 +36,7 @@ def array.Dummy (T : Type) (N : Std.Usize) := Array T N
 def array.Dummy.each_ref.closure (T : Type) (N : Std.Usize) := Array T N
 
 /-- Trait declaration: [core_models::iter::traits::collect::IntoIterator]
-    Source: 'core-models/src/core/iter.rs', lines 385:8-394:9
+    Source: 'core-models/src/core/iter.rs', lines 386:8-395:9
     Visibility: public -/
 structure iter.traits.collect.IntoIterator (Self : Type) (Self_Item : Type)
   (Self_IntoIter : Type) where
@@ -319,35 +319,35 @@ structure hash.Hash (Self : Type) where
     H
 
 /-- [core_models::iter::adapters::skip::Skip]
-    Source: 'core-models/src/core/iter.rs', lines 696:8-699:9
+    Source: 'core-models/src/core/iter.rs', lines 697:8-700:9
     Visibility: public -/
 structure iter.adapters.skip.Skip (I : Type) where
   iter : I
   n : Std.Usize
 
 /-- [core_models::iter::adapters::chain::Chain]
-    Source: 'core-models/src/core/iter.rs', lines 665:8-668:9
+    Source: 'core-models/src/core/iter.rs', lines 666:8-669:9
     Visibility: public -/
 structure iter.adapters.chain.Chain (A : Type) (B : Type) where
   a : option.Option A
   b : B
 
 /-- [core_models::iter::adapters::filter::Filter]
-    Source: 'core-models/src/core/iter.rs', lines 632:8-635:9
+    Source: 'core-models/src/core/iter.rs', lines 633:8-636:9
     Visibility: public -/
 structure iter.adapters.filter.Filter (I : Type) (P : Type) where
   iter : I
   predicate : P
 
 /-- [core_models::iter::adapters::zip::Zip]
-    Source: 'core-models/src/core/iter.rs', lines 605:8-608:9
+    Source: 'core-models/src/core/iter.rs', lines 606:8-609:9
     Visibility: public -/
 structure iter.adapters.zip.Zip (I1 : Type) (I2 : Type) where
   it1 : I1
   it2 : I2
 
 /-- [core_models::iter::adapters::flatten::Flatten]
-    Source: 'core-models/src/core/iter.rs', lines 561:8-567:9
+    Source: 'core-models/src/core/iter.rs', lines 562:8-568:9
     Visibility: public -/
 structure iter.adapters.flatten.Flatten (I : Type) (Clause0_Item : Type)
   (Clause1_Item : Type) where
@@ -355,7 +355,7 @@ structure iter.adapters.flatten.Flatten (I : Type) (Clause0_Item : Type)
   current : option.Option Clause0_Item
 
 /-- [core_models::iter::adapters::flat_map::FlatMap]
-    Source: 'core-models/src/core/iter.rs', lines 523:8-527:9
+    Source: 'core-models/src/core/iter.rs', lines 524:8-528:9
     Visibility: public -/
 structure iter.adapters.flat_map.FlatMap (I : Type) (U : Type) (F : Type) where
   it : I
@@ -363,35 +363,35 @@ structure iter.adapters.flat_map.FlatMap (I : Type) (U : Type) (F : Type) where
   current : option.Option U
 
 /-- [core_models::iter::adapters::take::Take]
-    Source: 'core-models/src/core/iter.rs', lines 496:8-499:9
+    Source: 'core-models/src/core/iter.rs', lines 497:8-500:9
     Visibility: public -/
 structure iter.adapters.take.Take (I : Type) where
   iter : I
   n : Std.Usize
 
 /-- [core_models::iter::adapters::map::Map]
-    Source: 'core-models/src/core/iter.rs', lines 469:8-472:9
+    Source: 'core-models/src/core/iter.rs', lines 470:8-473:9
     Visibility: public -/
 structure iter.adapters.map.Map (I : Type) (F : Type) where
   iter : I
   f : F
 
 /-- [core_models::iter::adapters::step_by::StepBy]
-    Source: 'core-models/src/core/iter.rs', lines 441:8-444:9
+    Source: 'core-models/src/core/iter.rs', lines 442:8-445:9
     Visibility: public -/
 structure iter.adapters.step_by.StepBy (I : Type) where
   iter : I
   step : Std.Usize
 
 /-- [core_models::iter::adapters::enumerate::Enumerate]
-    Source: 'core-models/src/core/iter.rs', lines 409:8-412:9
+    Source: 'core-models/src/core/iter.rs', lines 410:8-413:9
     Visibility: public -/
 structure iter.adapters.enumerate.Enumerate (I : Type) where
   iter : I
   count : Std.Usize
 
 /-- Trait declaration: [core_models::iter::traits::collect::FromIterator]
-    Source: 'core-models/src/core/iter.rs', lines 397:8-400:9
+    Source: 'core-models/src/core/iter.rs', lines 398:8-401:9
     Visibility: public -/
 structure iter.traits.collect.FromIterator (Self : Type) (A : Type) where
   from_iter : forall {T : Type} {Clause0_Item : Type} {Clause0_IntoIter : Type}
@@ -458,7 +458,7 @@ structure iter.traits.iterator.IteratorMethods (Self : Type) (Self_Clause0_Item
     iter.traits.collect.FromIterator B Self_Clause0_Item), Self → Result B
 
 /-- Trait declaration: [core_models::iter::range::Step]
-    Source: 'core-models/src/core/iter.rs', lines 731:4-751:5
+    Source: 'core-models/src/core/iter.rs', lines 732:4-752:5
     Visibility: public -/
 structure iter.range.Step (Self : Type) where
   cloneCloneInst : clone.Clone Self
@@ -524,73 +524,73 @@ structure num.error.ParseIntError where
   kind : num.error.IntErrorKind
 
 /-- [core_models::num::u8]
-    Source: 'core-models/src/core/num/mod.rs', lines 415:0-415:14
+    Source: 'core-models/src/core/num/mod.rs', lines 447:0-447:14
     Visibility: public -/
 @[reducible]
 def num.u8 := Unit
 
 /-- [core_models::num::u16]
-    Source: 'core-models/src/core/num/mod.rs', lines 418:0-418:15
+    Source: 'core-models/src/core/num/mod.rs', lines 450:0-450:15
     Visibility: public -/
 @[reducible]
 def num.u16 := Unit
 
 /-- [core_models::num::u32]
-    Source: 'core-models/src/core/num/mod.rs', lines 421:0-421:15
+    Source: 'core-models/src/core/num/mod.rs', lines 453:0-453:15
     Visibility: public -/
 @[reducible]
 def num.u32 := Unit
 
 /-- [core_models::num::u64]
-    Source: 'core-models/src/core/num/mod.rs', lines 424:0-424:15
+    Source: 'core-models/src/core/num/mod.rs', lines 456:0-456:15
     Visibility: public -/
 @[reducible]
 def num.u64 := Unit
 
 /-- [core_models::num::u128]
-    Source: 'core-models/src/core/num/mod.rs', lines 427:0-427:16
+    Source: 'core-models/src/core/num/mod.rs', lines 459:0-459:16
     Visibility: public -/
 @[reducible]
 def num.u128 := Unit
 
 /-- [core_models::num::usize]
-    Source: 'core-models/src/core/num/mod.rs', lines 430:0-430:17
+    Source: 'core-models/src/core/num/mod.rs', lines 462:0-462:17
     Visibility: public -/
 @[reducible]
 def num.usize := Unit
 
 /-- [core_models::num::i8]
-    Source: 'core-models/src/core/num/mod.rs', lines 433:0-433:14
+    Source: 'core-models/src/core/num/mod.rs', lines 465:0-465:14
     Visibility: public -/
 @[reducible]
 def num.i8 := Unit
 
 /-- [core_models::num::i16]
-    Source: 'core-models/src/core/num/mod.rs', lines 436:0-436:15
+    Source: 'core-models/src/core/num/mod.rs', lines 468:0-468:15
     Visibility: public -/
 @[reducible]
 def num.i16 := Unit
 
 /-- [core_models::num::i32]
-    Source: 'core-models/src/core/num/mod.rs', lines 439:0-439:15
+    Source: 'core-models/src/core/num/mod.rs', lines 471:0-471:15
     Visibility: public -/
 @[reducible]
 def num.i32 := Unit
 
 /-- [core_models::num::i64]
-    Source: 'core-models/src/core/num/mod.rs', lines 442:0-442:15
+    Source: 'core-models/src/core/num/mod.rs', lines 474:0-474:15
     Visibility: public -/
 @[reducible]
 def num.i64 := Unit
 
 /-- [core_models::num::i128]
-    Source: 'core-models/src/core/num/mod.rs', lines 445:0-445:16
+    Source: 'core-models/src/core/num/mod.rs', lines 477:0-477:16
     Visibility: public -/
 @[reducible]
 def num.i128 := Unit
 
 /-- [core_models::num::isize]
-    Source: 'core-models/src/core/num/mod.rs', lines 448:0-448:17
+    Source: 'core-models/src/core/num/mod.rs', lines 480:0-480:17
     Visibility: public -/
 @[reducible]
 def num.isize := Unit
