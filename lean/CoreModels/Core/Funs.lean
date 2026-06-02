@@ -3581,27 +3581,27 @@ def fmt.Arguments.write_fmt
 def fmt.rt.Argument.new_display
   {T : Type} (x : T) : Result fmt.rt.Argument := do
   let _ ← panicking.internal.panic fmt.rt.Argument
-  ok { ty := (fmt.rt.ArgumentType.Placeholder core.Phantom.mk) }
+  ok { ty := (fmt.rt.ArgumentType.Placeholder core.marker.PhantomData.mk) }
 
 /-- [core_models::fmt::rt::{core_models::fmt::rt::Argument<0>}::new_debug]:
     Source: 'core-models/src/core/fmt.rs', lines 71:8-73:9 -/
 def fmt.rt.Argument.new_debug {T : Type} (x : T) : Result fmt.rt.Argument := do
   let _ ← panicking.internal.panic fmt.rt.Argument
-  ok { ty := (fmt.rt.ArgumentType.Placeholder core.Phantom.mk) }
+  ok { ty := (fmt.rt.ArgumentType.Placeholder core.marker.PhantomData.mk) }
 
 /-- [core_models::fmt::rt::{core_models::fmt::rt::Argument<0>}::new_lower_hex]:
     Source: 'core-models/src/core/fmt.rs', lines 75:8-77:9 -/
 def fmt.rt.Argument.new_lower_hex
   {T : Type} (x : T) : Result fmt.rt.Argument := do
   let _ ← panicking.internal.panic fmt.rt.Argument
-  ok { ty := (fmt.rt.ArgumentType.Placeholder core.Phantom.mk) }
+  ok { ty := (fmt.rt.ArgumentType.Placeholder core.marker.PhantomData.mk) }
 
 /-- [core_models::fmt::rt::{core_models::fmt::rt::Argument<'a>}::new_binary]:
     Source: 'core-models/src/core/fmt.rs', lines 81:8-83:9 -/
 def fmt.rt.Argument.new_binary
   {T : Type} (x : T) : Result fmt.rt.Argument := do
   let _ ← panicking.internal.panic fmt.rt.Argument
-  ok { ty := (fmt.rt.ArgumentType.Placeholder core.Phantom.mk) }
+  ok { ty := (fmt.rt.ArgumentType.Placeholder core.marker.PhantomData.mk) }
 
 /-- [core_models::fmt::rt::{core_models::fmt::rt::Argument<'a>}::new_const]:
     Source: 'core-models/src/core/fmt.rs', lines 85:8-87:9 -/

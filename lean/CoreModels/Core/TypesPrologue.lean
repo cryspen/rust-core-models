@@ -27,7 +27,7 @@ extracted constructor sites use `()`, which is `Unit`). We instead rewrite
 the `core.marker.PhantomData A` field type to `core.Phantom A`.
 -/
 
-structure Phantom (A : Type) where mk ::
+structure marker.PhantomData (A : Type) where mk ::
 deriving Inhabited
 
 /-! ## Option

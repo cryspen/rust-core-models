@@ -146,13 +146,13 @@ def fix_vec_allocator(text: str) -> str:
     text = replace_blocks(text, [
         ("alloc::vec::Vec",
          "def vec.Vec (T : Type) (A : Type := alloc.Global) :=\n"
-         "  rust_primitives.sequence.Seq T × core.Phantom A"),
+         "  rust_primitives.sequence.Seq T × core.marker.PhantomData A"),
         ("alloc::vec::drain::Drain",
          "def vec.drain.Drain (T : Type) (A : Type := alloc.Global) :=\n"
-         "  rust_primitives.sequence.Seq T × core.Phantom A"),
+         "  rust_primitives.sequence.Seq T × core.marker.PhantomData A"),
         ("alloc::vec::into_iter::IntoIter",
          "def vec.into_iter.IntoIter (T : Type) (A : Type := alloc.Global) :=\n"
-         "  rust_primitives.sequence.Seq T × core.Phantom A"),
+         "  rust_primitives.sequence.Seq T × core.marker.PhantomData A"),
     ])
 
     # alloc.vec.Vec.len/push/extend_from_slice/insert have {A : Type} inferred from the
@@ -179,7 +179,7 @@ def fix_result_match(text: str) -> str:
     return text
 
 def rewrite_phantom_data(text: str) -> str:
-    """Replace Aeneas's `PhantomData` with our `core.Phantom` carrier.
+    """Redefine `PhantomData`.
 
     Aeneas extracts `core_models::marker::PhantomData` as a reducible alias
     `def marker.PhantomData (T : Type) := T` in `Core/Types.lean`, and
@@ -192,14 +192,12 @@ def rewrite_phantom_data(text: str) -> str:
     Lean unfolds it and loses the `A` during unification, which then breaks
     the `{A : Type}` implicit at call sites like `alloc.vec.Vec.clear v`.
 
-    `TypesPrologue.lean` defines a replacement: `structure Phantom (A : Type)
+    `TypesPrologue.lean` defines a replacement: `structure PhantomData (A : Type)
     where mk ::` — a *non-reducible* carrier that keeps `A` syntactically
     present. This pass rewires the Aeneas output to use it. It runs on both
     `Core/{Types,Funs}.lean` and `Alloc/{Types,Funs}.lean`:
 
-      1. Retype every `core.marker.PhantomData` reference to `core.Phantom`.
-
-      2. Rewrite the `()` constructor in phantom-field position to
+      1. Rewrite the `()` constructor in phantom-field position to
          `core.Phantom.mk`. Two textual shapes are handled:
            - `, ())` — the common form, where the phantom is the second
              slot of a 2-tuple (`vec.Vec`, `VecDeque`, `Drain`, …).
@@ -208,25 +206,15 @@ def rewrite_phantom_data(text: str) -> str:
          Destructured forms like `(seq, pd)` don't textually match `, ()`
          and are left alone.
 
-      3. Comment out Aeneas's own `core_models::marker::PhantomData`
+      2. Comment out Aeneas's own `core_models::marker::PhantomData`
          definition block in `Core/Types.lean`.
     """
-    # 1. Type-level: `core.marker.PhantomData` -> `core.Phantom`.
-    text = re.sub(
-        r"\bcore\.marker\.PhantomData\b",
-        "core.Phantom",
-        text,
-    )
-    # 2. Constructor-site: `, ())` (closing the outer pair) -> `, core.Phantom.mk)`.
-    #    Aeneas's extraction always wraps the phantom in the second slot
-    #    of a 2-tuple immediately followed by `)`.
-    text = re.sub(r",\s*\(\)\)", ", core.Phantom.mk)", text)
-    text = re.sub(r"fmt\.rt\.ArgumentType\.Placeholder \(\)", "fmt.rt.ArgumentType.Placeholder core.Phantom.mk", text)
+    text = re.sub(r",\s*\(\)\)", ", core.marker.PhantomData.mk)", text)
+    text = re.sub(r"fmt\.rt\.ArgumentType\.Placeholder \(\)", "fmt.rt.ArgumentType.Placeholder core.marker.PhantomData.mk", text)
     
-    # 3. Erase the (now redundant) declaration block.
     return comment_out_blocks(
         text, ["core_models::marker::PhantomData"],
-        trailer="replaced by core.Phantom (see rewrite_phantom_data)",
+        trailer="replaced by rewrite_phantom_data in favor of the def in `TypesPrologue.lean`",
     )
     
 def escape_keywords(text: str) -> str:
