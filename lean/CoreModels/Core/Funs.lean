@@ -3663,7 +3663,7 @@ def hint.must_use {T : Type} (value : T) : Result T := do
   ok value
 
 /-- [core_models::iter::traits::iterator::{core_models::iter::traits::collect::IntoIterator<Clause0_Item, I> for I}::into_iter]:
-    Source: 'core-models/src/core/iter.rs', lines 376:12-378:13
+    Source: 'core-models/src/core/iter.rs', lines 377:12-379:13
     Visibility: public -/
 def iter.traits.collect.IntoIterator.Blanket.into_iter
   {I : Type} {Clause0_Item : Type} (IteratorInst :
@@ -3673,7 +3673,7 @@ def iter.traits.collect.IntoIterator.Blanket.into_iter
   ok self
 
 /-- Trait implementation: [core_models::iter::traits::iterator::{core_models::iter::traits::collect::IntoIterator<Clause0_Item, I> for I}]
-    Source: 'core-models/src/core/iter.rs', lines 373:8-379:9 -/
+    Source: 'core-models/src/core/iter.rs', lines 374:8-380:9 -/
 @[reducible]
 def iter.traits.collect.IntoIterator.Blanket {I : Type} {Clause0_Item : Type}
   (IteratorInst : iter.traits.iterator.Iterator I Clause0_Item) :
@@ -3682,7 +3682,7 @@ def iter.traits.collect.IntoIterator.Blanket {I : Type} {Clause0_Item : Type}
 }
 
 /-- [core_models::iter::adapters::enumerate::{core_models::iter::traits::iterator::Iterator<(usize, Clause0_Item)> for core_models::iter::adapters::enumerate::Enumerate<I>}::next]:
-    Source: 'core-models/src/core/iter.rs', lines 422:12-434:13
+    Source: 'core-models/src/core/iter.rs', lines 423:12-435:13
     Visibility: public -/
 def
   iter.adapters.enumerate.Enumerate.Insts.CoreIterTraitsIteratorIteratorPairUsizeClause0_Item.next
@@ -3700,7 +3700,7 @@ def
   | option.Option.None => ok (option.Option.None, { self with iter := t })
 
 /-- Trait implementation: [core_models::iter::adapters::enumerate::{core_models::iter::traits::iterator::Iterator<(usize, Clause0_Item)> for core_models::iter::adapters::enumerate::Enumerate<I>}]
-    Source: 'core-models/src/core/iter.rs', lines 419:8-435:9 -/
+    Source: 'core-models/src/core/iter.rs', lines 420:8-436:9 -/
 @[reducible]
 def
   iter.adapters.enumerate.Enumerate.Insts.CoreIterTraitsIteratorIteratorPairUsizeClause0_Item
@@ -3713,7 +3713,7 @@ def
 }
 
 /-- [core_models::iter::adapters::map::{core_models::iter::traits::iterator::Iterator<O> for core_models::iter::adapters::map::Map<I, F>}::next]:
-    Source: 'core-models/src/core/iter.rs', lines 484:12-489:13
+    Source: 'core-models/src/core/iter.rs', lines 485:12-490:13
     Visibility: public -/
 def iter.adapters.map.Map.Insts.CoreIterTraitsIteratorIterator.next
   {I : Type} {O : Type} {F : Type} {Clause0_Item : Type}
@@ -3730,7 +3730,7 @@ def iter.adapters.map.Map.Insts.CoreIterTraitsIteratorIterator.next
   | option.Option.None => ok (option.Option.None, { self with iter := t })
 
 /-- Trait implementation: [core_models::iter::adapters::map::{core_models::iter::traits::iterator::Iterator<O> for core_models::iter::adapters::map::Map<I, F>}]
-    Source: 'core-models/src/core/iter.rs', lines 481:8-490:9 -/
+    Source: 'core-models/src/core/iter.rs', lines 482:8-491:9 -/
 @[reducible]
 def iter.adapters.map.Map.Insts.CoreIterTraitsIteratorIterator {I :
   Type} {O : Type} {F : Type} {Clause0_Item : Type} (traitsiteratorIteratorInst
@@ -3744,7 +3744,7 @@ def iter.adapters.map.Map.Insts.CoreIterTraitsIteratorIterator {I :
 }
 
 /-- [core_models::iter::adapters::take::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::take::Take<I>}::next]:
-    Source: 'core-models/src/core/iter.rs', lines 509:12-516:13
+    Source: 'core-models/src/core/iter.rs', lines 510:12-517:13
     Visibility: public -/
 def iter.adapters.take.Take.Insts.CoreIterTraitsIteratorIterator.next
   {I : Type} {Clause0_Item : Type} (traitsiteratorIteratorInst :
@@ -3760,7 +3760,7 @@ def iter.adapters.take.Take.Insts.CoreIterTraitsIteratorIterator.next
   else ok (option.Option.None, self)
 
 /-- Trait implementation: [core_models::iter::adapters::take::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::take::Take<I>}]
-    Source: 'core-models/src/core/iter.rs', lines 506:8-517:9 -/
+    Source: 'core-models/src/core/iter.rs', lines 507:8-518:9 -/
 @[reducible]
 def iter.adapters.take.Take.Insts.CoreIterTraitsIteratorIterator {I :
   Type} {Clause0_Item : Type} (traitsiteratorIteratorInst :
@@ -3772,7 +3772,7 @@ def iter.adapters.take.Take.Insts.CoreIterTraitsIteratorIterator {I :
 }
 
 /-- [core_models::iter::adapters::flat_map::{core_models::iter::adapters::flat_map::FlatMap<I, U, F>}::new]:
-    Source: 'core-models/src/core/iter.rs', lines 529:12-535:13
+    Source: 'core-models/src/core/iter.rs', lines 530:12-536:13
     Visibility: public -/
 def iter.adapters.flat_map.FlatMap.new
   {I : Type} {U : Type} {F : Type} {Clause0_Item : Type} {Clause1_Item : Type}
@@ -3785,7 +3785,7 @@ def iter.adapters.flat_map.FlatMap.new
   ok { it, f, current := option.Option.None }
 
 /-- [core_models::iter::adapters::flat_map::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flat_map::FlatMap<I, U, F>}::next]: loop body 0:
-    Source: 'core-models/src/core/iter.rs', lines 542:20-551:21
+    Source: 'core-models/src/core/iter.rs', lines 543:20-552:21
     Visibility: public -/
 @[rust_loop_body]
 def
@@ -3823,7 +3823,7 @@ def
       ok (done (option.Option.None, t, self.f, option.Option.None))
 
 /-- [core_models::iter::adapters::flat_map::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flat_map::FlatMap<I, U, F>}::next]: loop 0:
-    Source: 'core-models/src/core/iter.rs', lines 542:20-551:21
+    Source: 'core-models/src/core/iter.rs', lines 543:20-552:21
     Visibility: public -/
 @[rust_loop]
 def
@@ -3843,7 +3843,7 @@ def
     self
 
 /-- [core_models::iter::adapters::flat_map::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flat_map::FlatMap<I, U, F>}::next]:
-    Source: 'core-models/src/core/iter.rs', lines 540:12-553:13
+    Source: 'core-models/src/core/iter.rs', lines 541:12-554:13
     Visibility: public -/
 def
   iter.adapters.flat_map.FlatMap.Insts.CoreIterTraitsIteratorIterator.next
@@ -3862,7 +3862,7 @@ def
   ok (o, { it := t, f := t1, current := o1 })
 
 /-- Trait implementation: [core_models::iter::adapters::flat_map::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flat_map::FlatMap<I, U, F>}]
-    Source: 'core-models/src/core/iter.rs', lines 538:8-554:9 -/
+    Source: 'core-models/src/core/iter.rs', lines 539:8-555:9 -/
 @[reducible]
 def iter.adapters.flat_map.FlatMap.Insts.CoreIterTraitsIteratorIterator
   {I : Type} {U : Type} {F : Type} {Clause0_Item : Type} {Clause1_Item : Type}
@@ -3878,7 +3878,7 @@ def iter.adapters.flat_map.FlatMap.Insts.CoreIterTraitsIteratorIterator
 }
 
 /-- [core_models::iter::adapters::flatten::{core_models::iter::adapters::flatten::Flatten<I, Clause0_Item, Clause1_Item>}::new]:
-    Source: 'core-models/src/core/iter.rs', lines 572:12-577:13
+    Source: 'core-models/src/core/iter.rs', lines 573:12-578:13
     Visibility: public -/
 def iter.adapters.flatten.Flatten.new
   {I : Type} {Clause0_Item : Type} {Clause1_Item : Type}
@@ -3890,7 +3890,7 @@ def iter.adapters.flatten.Flatten.new
   ok { it, current := option.Option.None }
 
 /-- [core_models::iter::adapters::flatten::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flatten::Flatten<I, Clause0_Item, Clause1_Item>}::next]: loop body 0:
-    Source: 'core-models/src/core/iter.rs', lines 587:20-596:21
+    Source: 'core-models/src/core/iter.rs', lines 588:20-597:21
     Visibility: public -/
 @[rust_loop_body]
 def
@@ -3924,7 +3924,7 @@ def
       ok (done (option.Option.None, t, option.Option.None))
 
 /-- [core_models::iter::adapters::flatten::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flatten::Flatten<I, Clause0_Item, Clause1_Item>}::next]: loop 0:
-    Source: 'core-models/src/core/iter.rs', lines 587:20-596:21
+    Source: 'core-models/src/core/iter.rs', lines 588:20-597:21
     Visibility: public -/
 @[rust_loop]
 def
@@ -3943,7 +3943,7 @@ def
     self
 
 /-- [core_models::iter::adapters::flatten::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flatten::Flatten<I, Clause0_Item, Clause1_Item>}::next]:
-    Source: 'core-models/src/core/iter.rs', lines 585:12-598:13
+    Source: 'core-models/src/core/iter.rs', lines 586:12-599:13
     Visibility: public -/
 def
   iter.adapters.flatten.Flatten.Insts.CoreIterTraitsIteratorIterator.next
@@ -3961,7 +3961,7 @@ def
   ok (o, { it := t, current := o1 })
 
 /-- Trait implementation: [core_models::iter::adapters::flatten::{core_models::iter::traits::iterator::Iterator<Clause1_Item> for core_models::iter::adapters::flatten::Flatten<I, Clause0_Item, Clause1_Item>}]
-    Source: 'core-models/src/core/iter.rs', lines 580:8-599:9 -/
+    Source: 'core-models/src/core/iter.rs', lines 581:8-600:9 -/
 @[reducible]
 def iter.adapters.flatten.Flatten.Insts.CoreIterTraitsIteratorIterator
   {I : Type} {Clause0_Item : Type} {Clause1_Item : Type}
@@ -3975,7 +3975,7 @@ def iter.adapters.flatten.Flatten.Insts.CoreIterTraitsIteratorIterator
 }
 
 /-- [core_models::iter::adapters::zip::{core_models::iter::adapters::zip::Zip<I1, I2>}::new]:
-    Source: 'core-models/src/core/iter.rs', lines 610:12-612:13
+    Source: 'core-models/src/core/iter.rs', lines 611:12-613:13
     Visibility: public -/
 def iter.adapters.zip.Zip.new
   {I1 : Type} {I2 : Type} {Clause0_Item : Type} {Clause1_Item : Type}
@@ -3987,7 +3987,7 @@ def iter.adapters.zip.Zip.new
   ok { it1, it2 }
 
 /-- [core_models::iter::adapters::zip::{core_models::iter::traits::iterator::Iterator<(Clause0_Item, Clause1_Item)> for core_models::iter::adapters::zip::Zip<I1, I2>}::next]:
-    Source: 'core-models/src/core/iter.rs', lines 617:12-625:13
+    Source: 'core-models/src/core/iter.rs', lines 618:12-626:13
     Visibility: public -/
 def iter.adapters.zip.Zip.Insts.CoreIterTraitsIteratorIteratorPair.next
   {I1 : Type} {I2 : Type} {Clause0_Item : Type} {Clause1_Item : Type}
@@ -4008,7 +4008,7 @@ def iter.adapters.zip.Zip.Insts.CoreIterTraitsIteratorIteratorPair.next
   | option.Option.None => ok (option.Option.None, { self with it1 := t })
 
 /-- Trait implementation: [core_models::iter::adapters::zip::{core_models::iter::traits::iterator::Iterator<(Clause0_Item, Clause1_Item)> for core_models::iter::adapters::zip::Zip<I1, I2>}]
-    Source: 'core-models/src/core/iter.rs', lines 615:8-626:9 -/
+    Source: 'core-models/src/core/iter.rs', lines 616:8-627:9 -/
 @[reducible]
 def iter.adapters.zip.Zip.Insts.CoreIterTraitsIteratorIteratorPair {I1 :
   Type} {I2 : Type} {Clause0_Item : Type} {Clause1_Item : Type}
@@ -4022,7 +4022,7 @@ def iter.adapters.zip.Zip.Insts.CoreIterTraitsIteratorIteratorPair {I1 :
 }
 
 /-- [core_models::iter::adapters::chain::{core_models::iter::adapters::chain::Chain<A, B>}::new]:
-    Source: 'core-models/src/core/iter.rs', lines 670:12-675:13
+    Source: 'core-models/src/core/iter.rs', lines 671:12-676:13
     Visibility: public -/
 def iter.adapters.chain.Chain.new
   {A : Type} {B : Type} {Clause0_Item : Type} (traitsiteratorIteratorInst :
@@ -4033,7 +4033,7 @@ def iter.adapters.chain.Chain.new
   ok { a := (option.Option.Some a), b }
 
 /-- [core_models::iter::adapters::chain::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::chain::Chain<A, B>}::next]:
-    Source: 'core-models/src/core/iter.rs', lines 681:12-689:13
+    Source: 'core-models/src/core/iter.rs', lines 682:12-690:13
     Visibility: public -/
 def iter.adapters.chain.Chain.Insts.CoreIterTraitsIteratorIterator.next
   {A : Type} {B : Type} {Clause0_Item : Type} (traitsiteratorIteratorInst :
@@ -4056,7 +4056,7 @@ def iter.adapters.chain.Chain.Insts.CoreIterTraitsIteratorIterator.next
     ok (o, { a := option.Option.None, b := t })
 
 /-- Trait implementation: [core_models::iter::adapters::chain::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::chain::Chain<A, B>}]
-    Source: 'core-models/src/core/iter.rs', lines 679:8-690:9 -/
+    Source: 'core-models/src/core/iter.rs', lines 680:8-691:9 -/
 @[reducible]
 def iter.adapters.chain.Chain.Insts.CoreIterTraitsIteratorIterator {A :
   Type} {B : Type} {Clause0_Item : Type} (traitsiteratorIteratorInst :
@@ -4069,7 +4069,7 @@ def iter.adapters.chain.Chain.Insts.CoreIterTraitsIteratorIterator {A :
 }
 
 /-- [core_models::iter::adapters::skip::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::skip::Skip<I>}::next]: loop body 0:
-    Source: 'core-models/src/core/iter.rs', lines 711:16-718:13
+    Source: 'core-models/src/core/iter.rs', lines 712:16-719:13
     Visibility: public -/
 @[rust_loop_body]
 def
@@ -4092,7 +4092,7 @@ def
     ok (done (o, t, self.n))
 
 /-- [core_models::iter::adapters::skip::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::skip::Skip<I>}::next]: loop 0:
-    Source: 'core-models/src/core/iter.rs', lines 711:16-718:13
+    Source: 'core-models/src/core/iter.rs', lines 712:16-719:13
     Visibility: public -/
 @[rust_loop]
 def
@@ -4109,7 +4109,7 @@ def
     self
 
 /-- [core_models::iter::adapters::skip::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::skip::Skip<I>}::next]:
-    Source: 'core-models/src/core/iter.rs', lines 710:12-718:13
+    Source: 'core-models/src/core/iter.rs', lines 711:12-719:13
     Visibility: public -/
 def iter.adapters.skip.Skip.Insts.CoreIterTraitsIteratorIterator.next
   {I : Type} {Clause0_Item : Type} (traitsiteratorIteratorInst :
@@ -4123,7 +4123,7 @@ def iter.adapters.skip.Skip.Insts.CoreIterTraitsIteratorIterator.next
   ok (o, { iter := t, n := i })
 
 /-- Trait implementation: [core_models::iter::adapters::skip::{core_models::iter::traits::iterator::Iterator<Clause0_Item> for core_models::iter::adapters::skip::Skip<I>}]
-    Source: 'core-models/src/core/iter.rs', lines 708:8-719:9 -/
+    Source: 'core-models/src/core/iter.rs', lines 709:8-720:9 -/
 @[reducible]
 def iter.adapters.skip.Skip.Insts.CoreIterTraitsIteratorIterator {I :
   Type} {Clause0_Item : Type} (traitsiteratorIteratorInst :
@@ -4144,7 +4144,7 @@ def option.Option.expect
   | option.Option.None => panicking.internal.panic T
 
 /-- [core_models::iter::range::Step::forward]:
-    Source: 'core-models/src/core/iter.rs', lines 736:8-738:9
+    Source: 'core-models/src/core/iter.rs', lines 737:8-739:9
     Visibility: public -/
 def iter.range.Step.forward.default
   {Self : Type} (StepInst : iter.range.Step Self) (start : Self)
@@ -4155,7 +4155,7 @@ def iter.range.Step.forward.default
   option.Option.expect o (toStr "overflow in `Step::forward`")
 
 /-- [core_models::iter::range::Step::forward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 740:8-742:9
+    Source: 'core-models/src/core/iter.rs', lines 741:8-743:9
     Visibility: public -/
 def iter.range.Step.forward_unchecked.default
   {Self : Type} (StepInst : iter.range.Step Self) (start : Self)
@@ -4165,7 +4165,7 @@ def iter.range.Step.forward_unchecked.default
   StepInst.forward start count
 
 /-- [core_models::iter::range::Step::backward]:
-    Source: 'core-models/src/core/iter.rs', lines 744:8-746:9
+    Source: 'core-models/src/core/iter.rs', lines 745:8-747:9
     Visibility: public -/
 def iter.range.Step.backward.default
   {Self : Type} (StepInst : iter.range.Step Self) (start : Self)
@@ -4176,7 +4176,7 @@ def iter.range.Step.backward.default
   option.Option.expect o (toStr "overflow in `Step::backward`")
 
 /-- [core_models::iter::range::Step::backward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 748:8-750:9
+    Source: 'core-models/src/core/iter.rs', lines 749:8-751:9
     Visibility: public -/
 def iter.range.Step.backward_unchecked.default
   {Self : Type} (StepInst : iter.range.Step Self) (start : Self)
@@ -4194,7 +4194,7 @@ def option.Option.unwrap {T : Type} (self : option.Option T) : Result T := do
   | option.Option.None => panicking.internal.panic T
 
 /-- [core_models::num::{core_models::num::i8}::overflowing_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 226:12-228:13
+    Source: 'core-models/src/core/num/mod.rs', lines 238:12-240:13
     Visibility: public -/
 def num.I8.overflowing_add
   (x : Std.I8) (y : Std.I8) : Result (Std.I8 × Bool) := do
@@ -4202,13 +4202,13 @@ def num.I8.overflowing_add
 
 /-
 /-- [core_models::num::{core_models::num::i8}::MAX]
-    Source: 'core-models/src/core/num/mod.rs', lines 215:12-215:40
+    Source: 'core-models/src/core/num/mod.rs', lines 227:12-227:40
     Visibility: public -/
 @[global_simps, irreducible] def num.I8.MAX : Std.I8 := 127#i8
 -/  -- provided by CoreModels.Core.FunsPrologue
 
 /-- [core_models::num::{core_models::num::i8}::checked_add_unsigned]:
-    Source: 'core-models/src/core/num/mod.rs', lines 260:12-265:13
+    Source: 'core-models/src/core/num/mod.rs', lines 280:12-289:13
     Visibility: public -/
 def num.I8.checked_add_unsigned
   (x : Std.I8) (y : Std.U8) : Result (option.Option Std.I8) := do
@@ -4220,7 +4220,7 @@ def num.I8.checked_add_unsigned
   else ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i8}::forward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 755:12-757:13
+    Source: 'core-models/src/core/iter.rs', lines 756:12-758:13
     Visibility: public -/
 def I8.Insts.CoreIterRangeStep.forward_unchecked
   (start : Std.I8) (n : Std.Usize) : Result Std.I8 := do
@@ -4229,7 +4229,7 @@ def I8.Insts.CoreIterRangeStep.forward_unchecked
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::i16}::overflowing_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 226:12-228:13
+    Source: 'core-models/src/core/num/mod.rs', lines 238:12-240:13
     Visibility: public -/
 def num.I16.overflowing_add
   (x : Std.I16) (y : Std.I16) : Result (Std.I16 × Bool) := do
@@ -4237,13 +4237,13 @@ def num.I16.overflowing_add
 
 /-
 /-- [core_models::num::{core_models::num::i16}::MAX]
-    Source: 'core-models/src/core/num/mod.rs', lines 215:12-215:40
+    Source: 'core-models/src/core/num/mod.rs', lines 227:12-227:40
     Visibility: public -/
 @[global_simps, irreducible] def num.I16.MAX : Std.I16 := 32767#i16
 -/  -- provided by CoreModels.Core.FunsPrologue
 
 /-- [core_models::num::{core_models::num::i16}::checked_add_unsigned]:
-    Source: 'core-models/src/core/num/mod.rs', lines 260:12-265:13
+    Source: 'core-models/src/core/num/mod.rs', lines 280:12-289:13
     Visibility: public -/
 def num.I16.checked_add_unsigned
   (x : Std.I16) (y : Std.U16) : Result (option.Option Std.I16) := do
@@ -4255,7 +4255,7 @@ def num.I16.checked_add_unsigned
   else ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i16}::forward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 755:12-757:13
+    Source: 'core-models/src/core/iter.rs', lines 756:12-758:13
     Visibility: public -/
 def I16.Insts.CoreIterRangeStep.forward_unchecked
   (start : Std.I16) (n : Std.Usize) : Result Std.I16 := do
@@ -4264,7 +4264,7 @@ def I16.Insts.CoreIterRangeStep.forward_unchecked
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::i32}::overflowing_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 226:12-228:13
+    Source: 'core-models/src/core/num/mod.rs', lines 238:12-240:13
     Visibility: public -/
 def num.I32.overflowing_add
   (x : Std.I32) (y : Std.I32) : Result (Std.I32 × Bool) := do
@@ -4272,13 +4272,13 @@ def num.I32.overflowing_add
 
 /-
 /-- [core_models::num::{core_models::num::i32}::MAX]
-    Source: 'core-models/src/core/num/mod.rs', lines 215:12-215:40
+    Source: 'core-models/src/core/num/mod.rs', lines 227:12-227:40
     Visibility: public -/
 @[global_simps, irreducible] def num.I32.MAX : Std.I32 := 2147483647#i32
 -/  -- provided by CoreModels.Core.FunsPrologue
 
 /-- [core_models::num::{core_models::num::i32}::checked_add_unsigned]:
-    Source: 'core-models/src/core/num/mod.rs', lines 260:12-265:13
+    Source: 'core-models/src/core/num/mod.rs', lines 280:12-289:13
     Visibility: public -/
 def num.I32.checked_add_unsigned
   (x : Std.I32) (y : Std.U32) : Result (option.Option Std.I32) := do
@@ -4290,7 +4290,7 @@ def num.I32.checked_add_unsigned
   else ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i32}::forward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 755:12-757:13
+    Source: 'core-models/src/core/iter.rs', lines 756:12-758:13
     Visibility: public -/
 def I32.Insts.CoreIterRangeStep.forward_unchecked
   (start : Std.I32) (n : Std.Usize) : Result Std.I32 := do
@@ -4299,7 +4299,7 @@ def I32.Insts.CoreIterRangeStep.forward_unchecked
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::i64}::overflowing_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 226:12-228:13
+    Source: 'core-models/src/core/num/mod.rs', lines 238:12-240:13
     Visibility: public -/
 def num.I64.overflowing_add
   (x : Std.I64) (y : Std.I64) : Result (Std.I64 × Bool) := do
@@ -4307,14 +4307,14 @@ def num.I64.overflowing_add
 
 /-
 /-- [core_models::num::{core_models::num::i64}::MAX]
-    Source: 'core-models/src/core/num/mod.rs', lines 215:12-215:40
+    Source: 'core-models/src/core/num/mod.rs', lines 227:12-227:40
     Visibility: public -/
 @[global_simps, irreducible]
 def num.I64.MAX : Std.I64 := 9223372036854775807#i64
 -/  -- provided by CoreModels.Core.FunsPrologue
 
 /-- [core_models::num::{core_models::num::i64}::checked_add_unsigned]:
-    Source: 'core-models/src/core/num/mod.rs', lines 260:12-265:13
+    Source: 'core-models/src/core/num/mod.rs', lines 280:12-289:13
     Visibility: public -/
 def num.I64.checked_add_unsigned
   (x : Std.I64) (y : Std.U64) : Result (option.Option Std.I64) := do
@@ -4326,7 +4326,7 @@ def num.I64.checked_add_unsigned
   else ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i64}::forward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 755:12-757:13
+    Source: 'core-models/src/core/iter.rs', lines 756:12-758:13
     Visibility: public -/
 def I64.Insts.CoreIterRangeStep.forward_unchecked
   (start : Std.I64) (n : Std.Usize) : Result Std.I64 := do
@@ -4335,7 +4335,7 @@ def I64.Insts.CoreIterRangeStep.forward_unchecked
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::isize}::overflowing_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 226:12-228:13
+    Source: 'core-models/src/core/num/mod.rs', lines 238:12-240:13
     Visibility: public -/
 def num.Isize.overflowing_add
   (x : Std.Isize) (y : Std.Isize) : Result (Std.Isize × Bool) := do
@@ -4343,14 +4343,14 @@ def num.Isize.overflowing_add
 
 /-
 /-- [core_models::num::{core_models::num::isize}::MAX]
-    Source: 'core-models/src/core/num/mod.rs', lines 215:12-215:40
+    Source: 'core-models/src/core/num/mod.rs', lines 227:12-227:40
     Visibility: public -/
 @[global_simps, irreducible]
 def num.Isize.MAX : Result Std.Isize := rust_primitives.arithmetic.ISIZE_MAX
 -/  -- provided by CoreModels.Core.FunsPrologue
 
 /-- [core_models::num::{core_models::num::isize}::checked_add_unsigned]:
-    Source: 'core-models/src/core/num/mod.rs', lines 260:12-265:13
+    Source: 'core-models/src/core/num/mod.rs', lines 280:12-289:13
     Visibility: public -/
 def num.Isize.checked_add_unsigned
   (x : Std.Isize) (y : Std.Usize) : Result (option.Option Std.Isize) := do
@@ -4363,7 +4363,7 @@ def num.Isize.checked_add_unsigned
   else ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for isize}::forward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 755:12-757:13
+    Source: 'core-models/src/core/iter.rs', lines 756:12-758:13
     Visibility: public -/
 def Isize.Insts.CoreIterRangeStep.forward_unchecked
   (start : Std.Isize) (n : Std.Usize) : Result Std.Isize := do
@@ -4371,7 +4371,7 @@ def Isize.Insts.CoreIterRangeStep.forward_unchecked
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::i128}::overflowing_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 226:12-228:13
+    Source: 'core-models/src/core/num/mod.rs', lines 238:12-240:13
     Visibility: public -/
 def num.I128.overflowing_add
   (x : Std.I128) (y : Std.I128) : Result (Std.I128 × Bool) := do
@@ -4379,14 +4379,14 @@ def num.I128.overflowing_add
 
 /-
 /-- [core_models::num::{core_models::num::i128}::MAX]
-    Source: 'core-models/src/core/num/mod.rs', lines 215:12-215:40
+    Source: 'core-models/src/core/num/mod.rs', lines 227:12-227:40
     Visibility: public -/
 @[global_simps, irreducible]
 def num.I128.MAX : Std.I128 := 170141183460469231731687303715884105727#i128
 -/  -- provided by CoreModels.Core.FunsPrologue
 
 /-- [core_models::num::{core_models::num::i128}::checked_add_unsigned]:
-    Source: 'core-models/src/core/num/mod.rs', lines 260:12-265:13
+    Source: 'core-models/src/core/num/mod.rs', lines 280:12-289:13
     Visibility: public -/
 def num.I128.checked_add_unsigned
   (x : Std.I128) (y : Std.U128) : Result (option.Option Std.I128) := do
@@ -4398,7 +4398,7 @@ def num.I128.checked_add_unsigned
   else ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i128}::forward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 755:12-757:13
+    Source: 'core-models/src/core/iter.rs', lines 756:12-758:13
     Visibility: public -/
 def I128.Insts.CoreIterRangeStep.forward_unchecked
   (start : Std.I128) (n : Std.Usize) : Result Std.I128 := do
@@ -4407,14 +4407,14 @@ def I128.Insts.CoreIterRangeStep.forward_unchecked
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::i8}::overflowing_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 247:12-249:13
+    Source: 'core-models/src/core/num/mod.rs', lines 263:12-265:13
     Visibility: public -/
 def num.I8.overflowing_sub
   (x : Std.I8) (y : Std.I8) : Result (Std.I8 × Bool) := do
   rust_primitives.arithmetic.overflowing_sub_i8 x y
 
 /-- [core_models::num::{core_models::num::i8}::checked_sub_unsigned]:
-    Source: 'core-models/src/core/num/mod.rs', lines 267:12-270:13
+    Source: 'core-models/src/core/num/mod.rs', lines 291:12-298:13
     Visibility: public -/
 def num.I8.checked_sub_unsigned
   (x : Std.I8) (y : Std.U8) : Result (option.Option Std.I8) := do
@@ -4426,7 +4426,7 @@ def num.I8.checked_sub_unsigned
   else ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i8}::backward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 759:12-761:13
+    Source: 'core-models/src/core/iter.rs', lines 760:12-762:13
     Visibility: public -/
 def I8.Insts.CoreIterRangeStep.backward_unchecked
   (start : Std.I8) (n : Std.Usize) : Result Std.I8 := do
@@ -4435,14 +4435,14 @@ def I8.Insts.CoreIterRangeStep.backward_unchecked
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::i16}::overflowing_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 247:12-249:13
+    Source: 'core-models/src/core/num/mod.rs', lines 263:12-265:13
     Visibility: public -/
 def num.I16.overflowing_sub
   (x : Std.I16) (y : Std.I16) : Result (Std.I16 × Bool) := do
   rust_primitives.arithmetic.overflowing_sub_i16 x y
 
 /-- [core_models::num::{core_models::num::i16}::checked_sub_unsigned]:
-    Source: 'core-models/src/core/num/mod.rs', lines 267:12-270:13
+    Source: 'core-models/src/core/num/mod.rs', lines 291:12-298:13
     Visibility: public -/
 def num.I16.checked_sub_unsigned
   (x : Std.I16) (y : Std.U16) : Result (option.Option Std.I16) := do
@@ -4454,7 +4454,7 @@ def num.I16.checked_sub_unsigned
   else ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i16}::backward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 759:12-761:13
+    Source: 'core-models/src/core/iter.rs', lines 760:12-762:13
     Visibility: public -/
 def I16.Insts.CoreIterRangeStep.backward_unchecked
   (start : Std.I16) (n : Std.Usize) : Result Std.I16 := do
@@ -4463,14 +4463,14 @@ def I16.Insts.CoreIterRangeStep.backward_unchecked
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::i32}::overflowing_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 247:12-249:13
+    Source: 'core-models/src/core/num/mod.rs', lines 263:12-265:13
     Visibility: public -/
 def num.I32.overflowing_sub
   (x : Std.I32) (y : Std.I32) : Result (Std.I32 × Bool) := do
   rust_primitives.arithmetic.overflowing_sub_i32 x y
 
 /-- [core_models::num::{core_models::num::i32}::checked_sub_unsigned]:
-    Source: 'core-models/src/core/num/mod.rs', lines 267:12-270:13
+    Source: 'core-models/src/core/num/mod.rs', lines 291:12-298:13
     Visibility: public -/
 def num.I32.checked_sub_unsigned
   (x : Std.I32) (y : Std.U32) : Result (option.Option Std.I32) := do
@@ -4482,7 +4482,7 @@ def num.I32.checked_sub_unsigned
   else ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i32}::backward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 759:12-761:13
+    Source: 'core-models/src/core/iter.rs', lines 760:12-762:13
     Visibility: public -/
 def I32.Insts.CoreIterRangeStep.backward_unchecked
   (start : Std.I32) (n : Std.Usize) : Result Std.I32 := do
@@ -4491,14 +4491,14 @@ def I32.Insts.CoreIterRangeStep.backward_unchecked
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::i64}::overflowing_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 247:12-249:13
+    Source: 'core-models/src/core/num/mod.rs', lines 263:12-265:13
     Visibility: public -/
 def num.I64.overflowing_sub
   (x : Std.I64) (y : Std.I64) : Result (Std.I64 × Bool) := do
   rust_primitives.arithmetic.overflowing_sub_i64 x y
 
 /-- [core_models::num::{core_models::num::i64}::checked_sub_unsigned]:
-    Source: 'core-models/src/core/num/mod.rs', lines 267:12-270:13
+    Source: 'core-models/src/core/num/mod.rs', lines 291:12-298:13
     Visibility: public -/
 def num.I64.checked_sub_unsigned
   (x : Std.I64) (y : Std.U64) : Result (option.Option Std.I64) := do
@@ -4510,7 +4510,7 @@ def num.I64.checked_sub_unsigned
   else ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i64}::backward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 759:12-761:13
+    Source: 'core-models/src/core/iter.rs', lines 760:12-762:13
     Visibility: public -/
 def I64.Insts.CoreIterRangeStep.backward_unchecked
   (start : Std.I64) (n : Std.Usize) : Result Std.I64 := do
@@ -4519,14 +4519,14 @@ def I64.Insts.CoreIterRangeStep.backward_unchecked
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::isize}::overflowing_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 247:12-249:13
+    Source: 'core-models/src/core/num/mod.rs', lines 263:12-265:13
     Visibility: public -/
 def num.Isize.overflowing_sub
   (x : Std.Isize) (y : Std.Isize) : Result (Std.Isize × Bool) := do
   rust_primitives.arithmetic.overflowing_sub_isize x y
 
 /-- [core_models::num::{core_models::num::isize}::checked_sub_unsigned]:
-    Source: 'core-models/src/core/num/mod.rs', lines 267:12-270:13
+    Source: 'core-models/src/core/num/mod.rs', lines 291:12-298:13
     Visibility: public -/
 def num.Isize.checked_sub_unsigned
   (x : Std.Isize) (y : Std.Usize) : Result (option.Option Std.Isize) := do
@@ -4539,7 +4539,7 @@ def num.Isize.checked_sub_unsigned
   else ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for isize}::backward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 759:12-761:13
+    Source: 'core-models/src/core/iter.rs', lines 760:12-762:13
     Visibility: public -/
 def Isize.Insts.CoreIterRangeStep.backward_unchecked
   (start : Std.Isize) (n : Std.Usize) : Result Std.Isize := do
@@ -4547,14 +4547,14 @@ def Isize.Insts.CoreIterRangeStep.backward_unchecked
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::i128}::overflowing_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 247:12-249:13
+    Source: 'core-models/src/core/num/mod.rs', lines 263:12-265:13
     Visibility: public -/
 def num.I128.overflowing_sub
   (x : Std.I128) (y : Std.I128) : Result (Std.I128 × Bool) := do
   rust_primitives.arithmetic.overflowing_sub_i128 x y
 
 /-- [core_models::num::{core_models::num::i128}::checked_sub_unsigned]:
-    Source: 'core-models/src/core/num/mod.rs', lines 267:12-270:13
+    Source: 'core-models/src/core/num/mod.rs', lines 291:12-298:13
     Visibility: public -/
 def num.I128.checked_sub_unsigned
   (x : Std.I128) (y : Std.U128) : Result (option.Option Std.I128) := do
@@ -4566,7 +4566,7 @@ def num.I128.checked_sub_unsigned
   else ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i128}::backward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 759:12-761:13
+    Source: 'core-models/src/core/iter.rs', lines 760:12-762:13
     Visibility: public -/
 def I128.Insts.CoreIterRangeStep.backward_unchecked
   (start : Std.I128) (n : Std.Usize) : Result Std.I128 := do
@@ -4575,13 +4575,13 @@ def I128.Insts.CoreIterRangeStep.backward_unchecked
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::u8}::unchecked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 45:12-47:13
+    Source: 'core-models/src/core/num/mod.rs', lines 49:12-51:13
     Visibility: public -/
 def num.U8.unchecked_add (x : Std.U8) (y : Std.U8) : Result Std.U8 := do
   x + y
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u8}::forward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 767:12-769:13
+    Source: 'core-models/src/core/iter.rs', lines 768:12-770:13
     Visibility: public -/
 def U8.Insts.CoreIterRangeStep.forward_unchecked
   (start : Std.U8) (n : Std.Usize) : Result Std.U8 := do
@@ -4589,13 +4589,13 @@ def U8.Insts.CoreIterRangeStep.forward_unchecked
   num.U8.unchecked_add start i
 
 /-- [core_models::num::{core_models::num::u16}::unchecked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 45:12-47:13
+    Source: 'core-models/src/core/num/mod.rs', lines 49:12-51:13
     Visibility: public -/
 def num.U16.unchecked_add (x : Std.U16) (y : Std.U16) : Result Std.U16 := do
   x + y
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u16}::forward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 767:12-769:13
+    Source: 'core-models/src/core/iter.rs', lines 768:12-770:13
     Visibility: public -/
 def U16.Insts.CoreIterRangeStep.forward_unchecked
   (start : Std.U16) (n : Std.Usize) : Result Std.U16 := do
@@ -4603,13 +4603,13 @@ def U16.Insts.CoreIterRangeStep.forward_unchecked
   num.U16.unchecked_add start i
 
 /-- [core_models::num::{core_models::num::u32}::unchecked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 45:12-47:13
+    Source: 'core-models/src/core/num/mod.rs', lines 49:12-51:13
     Visibility: public -/
 def num.U32.unchecked_add (x : Std.U32) (y : Std.U32) : Result Std.U32 := do
   x + y
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u32}::forward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 767:12-769:13
+    Source: 'core-models/src/core/iter.rs', lines 768:12-770:13
     Visibility: public -/
 def U32.Insts.CoreIterRangeStep.forward_unchecked
   (start : Std.U32) (n : Std.Usize) : Result Std.U32 := do
@@ -4617,13 +4617,13 @@ def U32.Insts.CoreIterRangeStep.forward_unchecked
   num.U32.unchecked_add start i
 
 /-- [core_models::num::{core_models::num::u64}::unchecked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 45:12-47:13
+    Source: 'core-models/src/core/num/mod.rs', lines 49:12-51:13
     Visibility: public -/
 def num.U64.unchecked_add (x : Std.U64) (y : Std.U64) : Result Std.U64 := do
   x + y
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u64}::forward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 767:12-769:13
+    Source: 'core-models/src/core/iter.rs', lines 768:12-770:13
     Visibility: public -/
 def U64.Insts.CoreIterRangeStep.forward_unchecked
   (start : Std.U64) (n : Std.Usize) : Result Std.U64 := do
@@ -4631,28 +4631,28 @@ def U64.Insts.CoreIterRangeStep.forward_unchecked
   num.U64.unchecked_add start i
 
 /-- [core_models::num::{core_models::num::usize}::unchecked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 45:12-47:13
+    Source: 'core-models/src/core/num/mod.rs', lines 49:12-51:13
     Visibility: public -/
 def num.Usize.unchecked_add
   (x : Std.Usize) (y : Std.Usize) : Result Std.Usize := do
   x + y
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for usize}::forward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 767:12-769:13
+    Source: 'core-models/src/core/iter.rs', lines 768:12-770:13
     Visibility: public -/
 def Usize.Insts.CoreIterRangeStep.forward_unchecked
   (start : Std.Usize) (n : Std.Usize) : Result Std.Usize := do
   num.Usize.unchecked_add start n
 
 /-- [core_models::num::{core_models::num::u128}::unchecked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 45:12-47:13
+    Source: 'core-models/src/core/num/mod.rs', lines 49:12-51:13
     Visibility: public -/
 def num.U128.unchecked_add
   (x : Std.U128) (y : Std.U128) : Result Std.U128 := do
   x + y
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u128}::forward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 767:12-769:13
+    Source: 'core-models/src/core/iter.rs', lines 768:12-770:13
     Visibility: public -/
 def U128.Insts.CoreIterRangeStep.forward_unchecked
   (start : Std.U128) (n : Std.Usize) : Result Std.U128 := do
@@ -4660,13 +4660,13 @@ def U128.Insts.CoreIterRangeStep.forward_unchecked
   num.U128.unchecked_add start i
 
 /-- [core_models::num::{core_models::num::u8}::unchecked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 66:12-68:13
+    Source: 'core-models/src/core/num/mod.rs', lines 74:12-76:13
     Visibility: public -/
 def num.U8.unchecked_sub (x : Std.U8) (y : Std.U8) : Result Std.U8 := do
   x - y
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u8}::backward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 771:12-773:13
+    Source: 'core-models/src/core/iter.rs', lines 772:12-774:13
     Visibility: public -/
 def U8.Insts.CoreIterRangeStep.backward_unchecked
   (start : Std.U8) (n : Std.Usize) : Result Std.U8 := do
@@ -4674,13 +4674,13 @@ def U8.Insts.CoreIterRangeStep.backward_unchecked
   num.U8.unchecked_sub start i
 
 /-- [core_models::num::{core_models::num::u16}::unchecked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 66:12-68:13
+    Source: 'core-models/src/core/num/mod.rs', lines 74:12-76:13
     Visibility: public -/
 def num.U16.unchecked_sub (x : Std.U16) (y : Std.U16) : Result Std.U16 := do
   x - y
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u16}::backward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 771:12-773:13
+    Source: 'core-models/src/core/iter.rs', lines 772:12-774:13
     Visibility: public -/
 def U16.Insts.CoreIterRangeStep.backward_unchecked
   (start : Std.U16) (n : Std.Usize) : Result Std.U16 := do
@@ -4688,13 +4688,13 @@ def U16.Insts.CoreIterRangeStep.backward_unchecked
   num.U16.unchecked_sub start i
 
 /-- [core_models::num::{core_models::num::u32}::unchecked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 66:12-68:13
+    Source: 'core-models/src/core/num/mod.rs', lines 74:12-76:13
     Visibility: public -/
 def num.U32.unchecked_sub (x : Std.U32) (y : Std.U32) : Result Std.U32 := do
   x - y
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u32}::backward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 771:12-773:13
+    Source: 'core-models/src/core/iter.rs', lines 772:12-774:13
     Visibility: public -/
 def U32.Insts.CoreIterRangeStep.backward_unchecked
   (start : Std.U32) (n : Std.Usize) : Result Std.U32 := do
@@ -4702,13 +4702,13 @@ def U32.Insts.CoreIterRangeStep.backward_unchecked
   num.U32.unchecked_sub start i
 
 /-- [core_models::num::{core_models::num::u64}::unchecked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 66:12-68:13
+    Source: 'core-models/src/core/num/mod.rs', lines 74:12-76:13
     Visibility: public -/
 def num.U64.unchecked_sub (x : Std.U64) (y : Std.U64) : Result Std.U64 := do
   x - y
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u64}::backward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 771:12-773:13
+    Source: 'core-models/src/core/iter.rs', lines 772:12-774:13
     Visibility: public -/
 def U64.Insts.CoreIterRangeStep.backward_unchecked
   (start : Std.U64) (n : Std.Usize) : Result Std.U64 := do
@@ -4716,28 +4716,28 @@ def U64.Insts.CoreIterRangeStep.backward_unchecked
   num.U64.unchecked_sub start i
 
 /-- [core_models::num::{core_models::num::usize}::unchecked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 66:12-68:13
+    Source: 'core-models/src/core/num/mod.rs', lines 74:12-76:13
     Visibility: public -/
 def num.Usize.unchecked_sub
   (x : Std.Usize) (y : Std.Usize) : Result Std.Usize := do
   x - y
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for usize}::backward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 771:12-773:13
+    Source: 'core-models/src/core/iter.rs', lines 772:12-774:13
     Visibility: public -/
 def Usize.Insts.CoreIterRangeStep.backward_unchecked
   (start : Std.Usize) (n : Std.Usize) : Result Std.Usize := do
   num.Usize.unchecked_sub start n
 
 /-- [core_models::num::{core_models::num::u128}::unchecked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 66:12-68:13
+    Source: 'core-models/src/core/num/mod.rs', lines 74:12-76:13
     Visibility: public -/
 def num.U128.unchecked_sub
   (x : Std.U128) (y : Std.U128) : Result Std.U128 := do
   x - y
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u128}::backward_unchecked]:
-    Source: 'core-models/src/core/iter.rs', lines 771:12-773:13
+    Source: 'core-models/src/core/iter.rs', lines 772:12-774:13
     Visibility: public -/
 def U128.Insts.CoreIterRangeStep.backward_unchecked
   (start : Std.U128) (n : Std.Usize) : Result Std.U128 := do
@@ -4752,7 +4752,7 @@ def num.U8.overflowing_add
   rust_primitives.arithmetic.overflowing_add_u8 x y
 
 /-- [core_models::num::{core_models::num::u8}::checked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 40:12-43:13
+    Source: 'core-models/src/core/num/mod.rs', lines 40:12-47:13
     Visibility: public -/
 def num.U8.checked_add
   (x : Std.U8) (y : Std.U8) : Result (option.Option Std.U8) := do
@@ -4762,7 +4762,7 @@ def num.U8.checked_add
   else ok (option.Option.Some result)
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u8}::forward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 811:20-816:21
+    Source: 'core-models/src/core/iter.rs', lines 812:20-817:21
     Visibility: public -/
 def U8.Insts.CoreIterRangeStep.forward_checked
   (start : Std.U8) (n : Std.Usize) : Result (option.Option Std.U8) := do
@@ -4772,7 +4772,7 @@ def U8.Insts.CoreIterRangeStep.forward_checked
   | core.result.Result.Err _ => ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u8}::forward]:
-    Source: 'core-models/src/core/iter.rs', lines 779:12-781:13
+    Source: 'core-models/src/core/iter.rs', lines 780:12-782:13
     Visibility: public -/
 def U8.Insts.CoreIterRangeStep.forward
   (start : Std.U8) (n : Std.Usize) : Result Std.U8 := do
@@ -4780,13 +4780,13 @@ def U8.Insts.CoreIterRangeStep.forward
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::i8}::wrapping_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 218:12-220:13
+    Source: 'core-models/src/core/num/mod.rs', lines 230:12-232:13
     Visibility: public -/
 def num.I8.wrapping_add (x : Std.I8) (y : Std.I8) : Result Std.I8 := do
   rust_primitives.arithmetic.wrapping_add_i8 x y
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i8}::forward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 843:20-861:21
+    Source: 'core-models/src/core/iter.rs', lines 844:20-862:21
     Visibility: public -/
 def I8.Insts.CoreIterRangeStep.forward_checked
   (start : Std.I8) (n : Std.Usize) : Result (option.Option Std.I8) := do
@@ -4801,7 +4801,7 @@ def I8.Insts.CoreIterRangeStep.forward_checked
   | core.result.Result.Err _ => ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i8}::forward]:
-    Source: 'core-models/src/core/iter.rs', lines 779:12-781:13
+    Source: 'core-models/src/core/iter.rs', lines 780:12-782:13
     Visibility: public -/
 def I8.Insts.CoreIterRangeStep.forward
   (start : Std.I8) (n : Std.Usize) : Result Std.I8 := do
@@ -4816,7 +4816,7 @@ def num.U16.overflowing_add
   rust_primitives.arithmetic.overflowing_add_u16 x y
 
 /-- [core_models::num::{core_models::num::u16}::checked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 40:12-43:13
+    Source: 'core-models/src/core/num/mod.rs', lines 40:12-47:13
     Visibility: public -/
 def num.U16.checked_add
   (x : Std.U16) (y : Std.U16) : Result (option.Option Std.U16) := do
@@ -4826,7 +4826,7 @@ def num.U16.checked_add
   else ok (option.Option.Some result)
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u16}::forward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 811:20-816:21
+    Source: 'core-models/src/core/iter.rs', lines 812:20-817:21
     Visibility: public -/
 def U16.Insts.CoreIterRangeStep.forward_checked
   (start : Std.U16) (n : Std.Usize) : Result (option.Option Std.U16) := do
@@ -4836,7 +4836,7 @@ def U16.Insts.CoreIterRangeStep.forward_checked
   | core.result.Result.Err _ => ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u16}::forward]:
-    Source: 'core-models/src/core/iter.rs', lines 779:12-781:13
+    Source: 'core-models/src/core/iter.rs', lines 780:12-782:13
     Visibility: public -/
 def U16.Insts.CoreIterRangeStep.forward
   (start : Std.U16) (n : Std.Usize) : Result Std.U16 := do
@@ -4844,13 +4844,13 @@ def U16.Insts.CoreIterRangeStep.forward
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::i16}::wrapping_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 218:12-220:13
+    Source: 'core-models/src/core/num/mod.rs', lines 230:12-232:13
     Visibility: public -/
 def num.I16.wrapping_add (x : Std.I16) (y : Std.I16) : Result Std.I16 := do
   rust_primitives.arithmetic.wrapping_add_i16 x y
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i16}::forward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 843:20-861:21
+    Source: 'core-models/src/core/iter.rs', lines 844:20-862:21
     Visibility: public -/
 def I16.Insts.CoreIterRangeStep.forward_checked
   (start : Std.I16) (n : Std.Usize) : Result (option.Option Std.I16) := do
@@ -4865,7 +4865,7 @@ def I16.Insts.CoreIterRangeStep.forward_checked
   | core.result.Result.Err _ => ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i16}::forward]:
-    Source: 'core-models/src/core/iter.rs', lines 779:12-781:13
+    Source: 'core-models/src/core/iter.rs', lines 780:12-782:13
     Visibility: public -/
 def I16.Insts.CoreIterRangeStep.forward
   (start : Std.I16) (n : Std.Usize) : Result Std.I16 := do
@@ -4880,7 +4880,7 @@ def num.U32.overflowing_add
   rust_primitives.arithmetic.overflowing_add_u32 x y
 
 /-- [core_models::num::{core_models::num::u32}::checked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 40:12-43:13
+    Source: 'core-models/src/core/num/mod.rs', lines 40:12-47:13
     Visibility: public -/
 def num.U32.checked_add
   (x : Std.U32) (y : Std.U32) : Result (option.Option Std.U32) := do
@@ -4890,7 +4890,7 @@ def num.U32.checked_add
   else ok (option.Option.Some result)
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u32}::forward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 811:20-816:21
+    Source: 'core-models/src/core/iter.rs', lines 812:20-817:21
     Visibility: public -/
 def U32.Insts.CoreIterRangeStep.forward_checked
   (start : Std.U32) (n : Std.Usize) : Result (option.Option Std.U32) := do
@@ -4900,7 +4900,7 @@ def U32.Insts.CoreIterRangeStep.forward_checked
   | core.result.Result.Err _ => ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u32}::forward]:
-    Source: 'core-models/src/core/iter.rs', lines 779:12-781:13
+    Source: 'core-models/src/core/iter.rs', lines 780:12-782:13
     Visibility: public -/
 def U32.Insts.CoreIterRangeStep.forward
   (start : Std.U32) (n : Std.Usize) : Result Std.U32 := do
@@ -4908,13 +4908,13 @@ def U32.Insts.CoreIterRangeStep.forward
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::i32}::wrapping_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 218:12-220:13
+    Source: 'core-models/src/core/num/mod.rs', lines 230:12-232:13
     Visibility: public -/
 def num.I32.wrapping_add (x : Std.I32) (y : Std.I32) : Result Std.I32 := do
   rust_primitives.arithmetic.wrapping_add_i32 x y
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i32}::forward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 843:20-861:21
+    Source: 'core-models/src/core/iter.rs', lines 844:20-862:21
     Visibility: public -/
 def I32.Insts.CoreIterRangeStep.forward_checked
   (start : Std.I32) (n : Std.Usize) : Result (option.Option Std.I32) := do
@@ -4929,7 +4929,7 @@ def I32.Insts.CoreIterRangeStep.forward_checked
   | core.result.Result.Err _ => ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i32}::forward]:
-    Source: 'core-models/src/core/iter.rs', lines 779:12-781:13
+    Source: 'core-models/src/core/iter.rs', lines 780:12-782:13
     Visibility: public -/
 def I32.Insts.CoreIterRangeStep.forward
   (start : Std.I32) (n : Std.Usize) : Result Std.I32 := do
@@ -4944,7 +4944,7 @@ def num.U64.overflowing_add
   rust_primitives.arithmetic.overflowing_add_u64 x y
 
 /-- [core_models::num::{core_models::num::u64}::checked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 40:12-43:13
+    Source: 'core-models/src/core/num/mod.rs', lines 40:12-47:13
     Visibility: public -/
 def num.U64.checked_add
   (x : Std.U64) (y : Std.U64) : Result (option.Option Std.U64) := do
@@ -4954,7 +4954,7 @@ def num.U64.checked_add
   else ok (option.Option.Some result)
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u64}::forward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 811:20-816:21
+    Source: 'core-models/src/core/iter.rs', lines 812:20-817:21
     Visibility: public -/
 def U64.Insts.CoreIterRangeStep.forward_checked
   (start : Std.U64) (n : Std.Usize) : Result (option.Option Std.U64) := do
@@ -4964,7 +4964,7 @@ def U64.Insts.CoreIterRangeStep.forward_checked
   | core.result.Result.Err _ => ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u64}::forward]:
-    Source: 'core-models/src/core/iter.rs', lines 779:12-781:13
+    Source: 'core-models/src/core/iter.rs', lines 780:12-782:13
     Visibility: public -/
 def U64.Insts.CoreIterRangeStep.forward
   (start : Std.U64) (n : Std.Usize) : Result Std.U64 := do
@@ -4972,13 +4972,13 @@ def U64.Insts.CoreIterRangeStep.forward
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::i64}::wrapping_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 218:12-220:13
+    Source: 'core-models/src/core/num/mod.rs', lines 230:12-232:13
     Visibility: public -/
 def num.I64.wrapping_add (x : Std.I64) (y : Std.I64) : Result Std.I64 := do
   rust_primitives.arithmetic.wrapping_add_i64 x y
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i64}::forward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 843:20-861:21
+    Source: 'core-models/src/core/iter.rs', lines 844:20-862:21
     Visibility: public -/
 def I64.Insts.CoreIterRangeStep.forward_checked
   (start : Std.I64) (n : Std.Usize) : Result (option.Option Std.I64) := do
@@ -4993,7 +4993,7 @@ def I64.Insts.CoreIterRangeStep.forward_checked
   | core.result.Result.Err _ => ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i64}::forward]:
-    Source: 'core-models/src/core/iter.rs', lines 779:12-781:13
+    Source: 'core-models/src/core/iter.rs', lines 780:12-782:13
     Visibility: public -/
 def I64.Insts.CoreIterRangeStep.forward
   (start : Std.I64) (n : Std.Usize) : Result Std.I64 := do
@@ -5008,7 +5008,7 @@ def num.Usize.overflowing_add
   rust_primitives.arithmetic.overflowing_add_usize x y
 
 /-- [core_models::num::{core_models::num::usize}::checked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 40:12-43:13
+    Source: 'core-models/src/core/num/mod.rs', lines 40:12-47:13
     Visibility: public -/
 def num.Usize.checked_add
   (x : Std.Usize) (y : Std.Usize) : Result (option.Option Std.Usize) := do
@@ -5018,7 +5018,7 @@ def num.Usize.checked_add
   else ok (option.Option.Some result)
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for usize}::forward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 811:20-816:21
+    Source: 'core-models/src/core/iter.rs', lines 812:20-817:21
     Visibility: public -/
 def Usize.Insts.CoreIterRangeStep.forward_checked
   (start : Std.Usize) (n : Std.Usize) : Result (option.Option Std.Usize) := do
@@ -5030,7 +5030,7 @@ def Usize.Insts.CoreIterRangeStep.forward_checked
   | core.result.Result.Err _ => ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for usize}::forward]:
-    Source: 'core-models/src/core/iter.rs', lines 779:12-781:13
+    Source: 'core-models/src/core/iter.rs', lines 780:12-782:13
     Visibility: public -/
 def Usize.Insts.CoreIterRangeStep.forward
   (start : Std.Usize) (n : Std.Usize) : Result Std.Usize := do
@@ -5038,14 +5038,14 @@ def Usize.Insts.CoreIterRangeStep.forward
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::isize}::wrapping_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 218:12-220:13
+    Source: 'core-models/src/core/num/mod.rs', lines 230:12-232:13
     Visibility: public -/
 def num.Isize.wrapping_add
   (x : Std.Isize) (y : Std.Isize) : Result Std.Isize := do
   rust_primitives.arithmetic.wrapping_add_isize x y
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for isize}::forward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 843:20-861:21
+    Source: 'core-models/src/core/iter.rs', lines 844:20-862:21
     Visibility: public -/
 def Isize.Insts.CoreIterRangeStep.forward_checked
   (start : Std.Isize) (n : Std.Usize) : Result (option.Option Std.Isize) := do
@@ -5062,7 +5062,7 @@ def Isize.Insts.CoreIterRangeStep.forward_checked
   | core.result.Result.Err _ => ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for isize}::forward]:
-    Source: 'core-models/src/core/iter.rs', lines 779:12-781:13
+    Source: 'core-models/src/core/iter.rs', lines 780:12-782:13
     Visibility: public -/
 def Isize.Insts.CoreIterRangeStep.forward
   (start : Std.Isize) (n : Std.Usize) : Result Std.Isize := do
@@ -5077,7 +5077,7 @@ def num.U128.overflowing_add
   rust_primitives.arithmetic.overflowing_add_u128 x y
 
 /-- [core_models::num::{core_models::num::u128}::checked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 40:12-43:13
+    Source: 'core-models/src/core/num/mod.rs', lines 40:12-47:13
     Visibility: public -/
 def num.U128.checked_add
   (x : Std.U128) (y : Std.U128) : Result (option.Option Std.U128) := do
@@ -5087,7 +5087,7 @@ def num.U128.checked_add
   else ok (option.Option.Some result)
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u128}::forward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 901:20-903:21
+    Source: 'core-models/src/core/iter.rs', lines 902:20-904:21
     Visibility: public -/
 def U128.Insts.CoreIterRangeStep.forward_checked
   (start : Std.U128) (n : Std.Usize) : Result (option.Option Std.U128) := do
@@ -5095,7 +5095,7 @@ def U128.Insts.CoreIterRangeStep.forward_checked
   num.U128.checked_add start i
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u128}::forward]:
-    Source: 'core-models/src/core/iter.rs', lines 779:12-781:13
+    Source: 'core-models/src/core/iter.rs', lines 780:12-782:13
     Visibility: public -/
 def U128.Insts.CoreIterRangeStep.forward
   (start : Std.U128) (n : Std.Usize) : Result Std.U128 := do
@@ -5103,7 +5103,7 @@ def U128.Insts.CoreIterRangeStep.forward
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::i128}::checked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 230:12-233:13
+    Source: 'core-models/src/core/num/mod.rs', lines 242:12-249:13
     Visibility: public -/
 def num.I128.checked_add
   (x : Std.I128) (y : Std.I128) : Result (option.Option Std.I128) := do
@@ -5113,7 +5113,7 @@ def num.I128.checked_add
   else ok (option.Option.Some result)
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i128}::forward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 932:20-934:21
+    Source: 'core-models/src/core/iter.rs', lines 933:20-935:21
     Visibility: public -/
 def I128.Insts.CoreIterRangeStep.forward_checked
   (start : Std.I128) (n : Std.Usize) : Result (option.Option Std.I128) := do
@@ -5121,7 +5121,7 @@ def I128.Insts.CoreIterRangeStep.forward_checked
   num.I128.checked_add start i
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i128}::forward]:
-    Source: 'core-models/src/core/iter.rs', lines 779:12-781:13
+    Source: 'core-models/src/core/iter.rs', lines 780:12-782:13
     Visibility: public -/
 def I128.Insts.CoreIterRangeStep.forward
   (start : Std.I128) (n : Std.Usize) : Result Std.I128 := do
@@ -5129,14 +5129,14 @@ def I128.Insts.CoreIterRangeStep.forward
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::u8}::overflowing_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 57:12-59:13
+    Source: 'core-models/src/core/num/mod.rs', lines 61:12-63:13
     Visibility: public -/
 def num.U8.overflowing_sub
   (x : Std.U8) (y : Std.U8) : Result (Std.U8 × Bool) := do
   rust_primitives.arithmetic.overflowing_sub_u8 x y
 
 /-- [core_models::num::{core_models::num::u8}::checked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 61:12-64:13
+    Source: 'core-models/src/core/num/mod.rs', lines 65:12-72:13
     Visibility: public -/
 def num.U8.checked_sub
   (x : Std.U8) (y : Std.U8) : Result (option.Option Std.U8) := do
@@ -5146,7 +5146,7 @@ def num.U8.checked_sub
   else ok (option.Option.Some result)
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u8}::backward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 818:20-823:21
+    Source: 'core-models/src/core/iter.rs', lines 819:20-824:21
     Visibility: public -/
 def U8.Insts.CoreIterRangeStep.backward_checked
   (start : Std.U8) (n : Std.Usize) : Result (option.Option Std.U8) := do
@@ -5156,7 +5156,7 @@ def U8.Insts.CoreIterRangeStep.backward_checked
   | core.result.Result.Err _ => ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u8}::backward]:
-    Source: 'core-models/src/core/iter.rs', lines 783:12-785:13
+    Source: 'core-models/src/core/iter.rs', lines 784:12-786:13
     Visibility: public -/
 def U8.Insts.CoreIterRangeStep.backward
   (start : Std.U8) (n : Std.Usize) : Result Std.U8 := do
@@ -5164,13 +5164,13 @@ def U8.Insts.CoreIterRangeStep.backward
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::i8}::wrapping_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 239:12-241:13
+    Source: 'core-models/src/core/num/mod.rs', lines 255:12-257:13
     Visibility: public -/
 def num.I8.wrapping_sub (x : Std.I8) (y : Std.I8) : Result Std.I8 := do
   rust_primitives.arithmetic.wrapping_sub_i8 x y
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i8}::backward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 863:20-881:21
+    Source: 'core-models/src/core/iter.rs', lines 864:20-882:21
     Visibility: public -/
 def I8.Insts.CoreIterRangeStep.backward_checked
   (start : Std.I8) (n : Std.Usize) : Result (option.Option Std.I8) := do
@@ -5185,7 +5185,7 @@ def I8.Insts.CoreIterRangeStep.backward_checked
   | core.result.Result.Err _ => ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i8}::backward]:
-    Source: 'core-models/src/core/iter.rs', lines 783:12-785:13
+    Source: 'core-models/src/core/iter.rs', lines 784:12-786:13
     Visibility: public -/
 def I8.Insts.CoreIterRangeStep.backward
   (start : Std.I8) (n : Std.Usize) : Result Std.I8 := do
@@ -5193,14 +5193,14 @@ def I8.Insts.CoreIterRangeStep.backward
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::u16}::overflowing_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 57:12-59:13
+    Source: 'core-models/src/core/num/mod.rs', lines 61:12-63:13
     Visibility: public -/
 def num.U16.overflowing_sub
   (x : Std.U16) (y : Std.U16) : Result (Std.U16 × Bool) := do
   rust_primitives.arithmetic.overflowing_sub_u16 x y
 
 /-- [core_models::num::{core_models::num::u16}::checked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 61:12-64:13
+    Source: 'core-models/src/core/num/mod.rs', lines 65:12-72:13
     Visibility: public -/
 def num.U16.checked_sub
   (x : Std.U16) (y : Std.U16) : Result (option.Option Std.U16) := do
@@ -5210,7 +5210,7 @@ def num.U16.checked_sub
   else ok (option.Option.Some result)
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u16}::backward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 818:20-823:21
+    Source: 'core-models/src/core/iter.rs', lines 819:20-824:21
     Visibility: public -/
 def U16.Insts.CoreIterRangeStep.backward_checked
   (start : Std.U16) (n : Std.Usize) : Result (option.Option Std.U16) := do
@@ -5220,7 +5220,7 @@ def U16.Insts.CoreIterRangeStep.backward_checked
   | core.result.Result.Err _ => ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u16}::backward]:
-    Source: 'core-models/src/core/iter.rs', lines 783:12-785:13
+    Source: 'core-models/src/core/iter.rs', lines 784:12-786:13
     Visibility: public -/
 def U16.Insts.CoreIterRangeStep.backward
   (start : Std.U16) (n : Std.Usize) : Result Std.U16 := do
@@ -5228,13 +5228,13 @@ def U16.Insts.CoreIterRangeStep.backward
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::i16}::wrapping_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 239:12-241:13
+    Source: 'core-models/src/core/num/mod.rs', lines 255:12-257:13
     Visibility: public -/
 def num.I16.wrapping_sub (x : Std.I16) (y : Std.I16) : Result Std.I16 := do
   rust_primitives.arithmetic.wrapping_sub_i16 x y
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i16}::backward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 863:20-881:21
+    Source: 'core-models/src/core/iter.rs', lines 864:20-882:21
     Visibility: public -/
 def I16.Insts.CoreIterRangeStep.backward_checked
   (start : Std.I16) (n : Std.Usize) : Result (option.Option Std.I16) := do
@@ -5249,7 +5249,7 @@ def I16.Insts.CoreIterRangeStep.backward_checked
   | core.result.Result.Err _ => ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i16}::backward]:
-    Source: 'core-models/src/core/iter.rs', lines 783:12-785:13
+    Source: 'core-models/src/core/iter.rs', lines 784:12-786:13
     Visibility: public -/
 def I16.Insts.CoreIterRangeStep.backward
   (start : Std.I16) (n : Std.Usize) : Result Std.I16 := do
@@ -5257,14 +5257,14 @@ def I16.Insts.CoreIterRangeStep.backward
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::u32}::overflowing_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 57:12-59:13
+    Source: 'core-models/src/core/num/mod.rs', lines 61:12-63:13
     Visibility: public -/
 def num.U32.overflowing_sub
   (x : Std.U32) (y : Std.U32) : Result (Std.U32 × Bool) := do
   rust_primitives.arithmetic.overflowing_sub_u32 x y
 
 /-- [core_models::num::{core_models::num::u32}::checked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 61:12-64:13
+    Source: 'core-models/src/core/num/mod.rs', lines 65:12-72:13
     Visibility: public -/
 def num.U32.checked_sub
   (x : Std.U32) (y : Std.U32) : Result (option.Option Std.U32) := do
@@ -5274,7 +5274,7 @@ def num.U32.checked_sub
   else ok (option.Option.Some result)
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u32}::backward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 818:20-823:21
+    Source: 'core-models/src/core/iter.rs', lines 819:20-824:21
     Visibility: public -/
 def U32.Insts.CoreIterRangeStep.backward_checked
   (start : Std.U32) (n : Std.Usize) : Result (option.Option Std.U32) := do
@@ -5284,7 +5284,7 @@ def U32.Insts.CoreIterRangeStep.backward_checked
   | core.result.Result.Err _ => ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u32}::backward]:
-    Source: 'core-models/src/core/iter.rs', lines 783:12-785:13
+    Source: 'core-models/src/core/iter.rs', lines 784:12-786:13
     Visibility: public -/
 def U32.Insts.CoreIterRangeStep.backward
   (start : Std.U32) (n : Std.Usize) : Result Std.U32 := do
@@ -5292,13 +5292,13 @@ def U32.Insts.CoreIterRangeStep.backward
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::i32}::wrapping_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 239:12-241:13
+    Source: 'core-models/src/core/num/mod.rs', lines 255:12-257:13
     Visibility: public -/
 def num.I32.wrapping_sub (x : Std.I32) (y : Std.I32) : Result Std.I32 := do
   rust_primitives.arithmetic.wrapping_sub_i32 x y
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i32}::backward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 863:20-881:21
+    Source: 'core-models/src/core/iter.rs', lines 864:20-882:21
     Visibility: public -/
 def I32.Insts.CoreIterRangeStep.backward_checked
   (start : Std.I32) (n : Std.Usize) : Result (option.Option Std.I32) := do
@@ -5313,7 +5313,7 @@ def I32.Insts.CoreIterRangeStep.backward_checked
   | core.result.Result.Err _ => ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i32}::backward]:
-    Source: 'core-models/src/core/iter.rs', lines 783:12-785:13
+    Source: 'core-models/src/core/iter.rs', lines 784:12-786:13
     Visibility: public -/
 def I32.Insts.CoreIterRangeStep.backward
   (start : Std.I32) (n : Std.Usize) : Result Std.I32 := do
@@ -5321,14 +5321,14 @@ def I32.Insts.CoreIterRangeStep.backward
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::u64}::overflowing_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 57:12-59:13
+    Source: 'core-models/src/core/num/mod.rs', lines 61:12-63:13
     Visibility: public -/
 def num.U64.overflowing_sub
   (x : Std.U64) (y : Std.U64) : Result (Std.U64 × Bool) := do
   rust_primitives.arithmetic.overflowing_sub_u64 x y
 
 /-- [core_models::num::{core_models::num::u64}::checked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 61:12-64:13
+    Source: 'core-models/src/core/num/mod.rs', lines 65:12-72:13
     Visibility: public -/
 def num.U64.checked_sub
   (x : Std.U64) (y : Std.U64) : Result (option.Option Std.U64) := do
@@ -5338,7 +5338,7 @@ def num.U64.checked_sub
   else ok (option.Option.Some result)
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u64}::backward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 818:20-823:21
+    Source: 'core-models/src/core/iter.rs', lines 819:20-824:21
     Visibility: public -/
 def U64.Insts.CoreIterRangeStep.backward_checked
   (start : Std.U64) (n : Std.Usize) : Result (option.Option Std.U64) := do
@@ -5348,7 +5348,7 @@ def U64.Insts.CoreIterRangeStep.backward_checked
   | core.result.Result.Err _ => ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u64}::backward]:
-    Source: 'core-models/src/core/iter.rs', lines 783:12-785:13
+    Source: 'core-models/src/core/iter.rs', lines 784:12-786:13
     Visibility: public -/
 def U64.Insts.CoreIterRangeStep.backward
   (start : Std.U64) (n : Std.Usize) : Result Std.U64 := do
@@ -5356,13 +5356,13 @@ def U64.Insts.CoreIterRangeStep.backward
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::i64}::wrapping_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 239:12-241:13
+    Source: 'core-models/src/core/num/mod.rs', lines 255:12-257:13
     Visibility: public -/
 def num.I64.wrapping_sub (x : Std.I64) (y : Std.I64) : Result Std.I64 := do
   rust_primitives.arithmetic.wrapping_sub_i64 x y
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i64}::backward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 863:20-881:21
+    Source: 'core-models/src/core/iter.rs', lines 864:20-882:21
     Visibility: public -/
 def I64.Insts.CoreIterRangeStep.backward_checked
   (start : Std.I64) (n : Std.Usize) : Result (option.Option Std.I64) := do
@@ -5377,7 +5377,7 @@ def I64.Insts.CoreIterRangeStep.backward_checked
   | core.result.Result.Err _ => ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i64}::backward]:
-    Source: 'core-models/src/core/iter.rs', lines 783:12-785:13
+    Source: 'core-models/src/core/iter.rs', lines 784:12-786:13
     Visibility: public -/
 def I64.Insts.CoreIterRangeStep.backward
   (start : Std.I64) (n : Std.Usize) : Result Std.I64 := do
@@ -5385,14 +5385,14 @@ def I64.Insts.CoreIterRangeStep.backward
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::usize}::overflowing_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 57:12-59:13
+    Source: 'core-models/src/core/num/mod.rs', lines 61:12-63:13
     Visibility: public -/
 def num.Usize.overflowing_sub
   (x : Std.Usize) (y : Std.Usize) : Result (Std.Usize × Bool) := do
   rust_primitives.arithmetic.overflowing_sub_usize x y
 
 /-- [core_models::num::{core_models::num::usize}::checked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 61:12-64:13
+    Source: 'core-models/src/core/num/mod.rs', lines 65:12-72:13
     Visibility: public -/
 def num.Usize.checked_sub
   (x : Std.Usize) (y : Std.Usize) : Result (option.Option Std.Usize) := do
@@ -5402,7 +5402,7 @@ def num.Usize.checked_sub
   else ok (option.Option.Some result)
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for usize}::backward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 818:20-823:21
+    Source: 'core-models/src/core/iter.rs', lines 819:20-824:21
     Visibility: public -/
 def Usize.Insts.CoreIterRangeStep.backward_checked
   (start : Std.Usize) (n : Std.Usize) : Result (option.Option Std.Usize) := do
@@ -5414,7 +5414,7 @@ def Usize.Insts.CoreIterRangeStep.backward_checked
   | core.result.Result.Err _ => ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for usize}::backward]:
-    Source: 'core-models/src/core/iter.rs', lines 783:12-785:13
+    Source: 'core-models/src/core/iter.rs', lines 784:12-786:13
     Visibility: public -/
 def Usize.Insts.CoreIterRangeStep.backward
   (start : Std.Usize) (n : Std.Usize) : Result Std.Usize := do
@@ -5422,14 +5422,14 @@ def Usize.Insts.CoreIterRangeStep.backward
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::isize}::wrapping_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 239:12-241:13
+    Source: 'core-models/src/core/num/mod.rs', lines 255:12-257:13
     Visibility: public -/
 def num.Isize.wrapping_sub
   (x : Std.Isize) (y : Std.Isize) : Result Std.Isize := do
   rust_primitives.arithmetic.wrapping_sub_isize x y
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for isize}::backward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 863:20-881:21
+    Source: 'core-models/src/core/iter.rs', lines 864:20-882:21
     Visibility: public -/
 def Isize.Insts.CoreIterRangeStep.backward_checked
   (start : Std.Isize) (n : Std.Usize) : Result (option.Option Std.Isize) := do
@@ -5446,7 +5446,7 @@ def Isize.Insts.CoreIterRangeStep.backward_checked
   | core.result.Result.Err _ => ok option.Option.None
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for isize}::backward]:
-    Source: 'core-models/src/core/iter.rs', lines 783:12-785:13
+    Source: 'core-models/src/core/iter.rs', lines 784:12-786:13
     Visibility: public -/
 def Isize.Insts.CoreIterRangeStep.backward
   (start : Std.Isize) (n : Std.Usize) : Result Std.Isize := do
@@ -5454,14 +5454,14 @@ def Isize.Insts.CoreIterRangeStep.backward
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::u128}::overflowing_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 57:12-59:13
+    Source: 'core-models/src/core/num/mod.rs', lines 61:12-63:13
     Visibility: public -/
 def num.U128.overflowing_sub
   (x : Std.U128) (y : Std.U128) : Result (Std.U128 × Bool) := do
   rust_primitives.arithmetic.overflowing_sub_u128 x y
 
 /-- [core_models::num::{core_models::num::u128}::checked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 61:12-64:13
+    Source: 'core-models/src/core/num/mod.rs', lines 65:12-72:13
     Visibility: public -/
 def num.U128.checked_sub
   (x : Std.U128) (y : Std.U128) : Result (option.Option Std.U128) := do
@@ -5471,7 +5471,7 @@ def num.U128.checked_sub
   else ok (option.Option.Some result)
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u128}::backward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 905:20-907:21
+    Source: 'core-models/src/core/iter.rs', lines 906:20-908:21
     Visibility: public -/
 def U128.Insts.CoreIterRangeStep.backward_checked
   (start : Std.U128) (n : Std.Usize) : Result (option.Option Std.U128) := do
@@ -5479,7 +5479,7 @@ def U128.Insts.CoreIterRangeStep.backward_checked
   num.U128.checked_sub start i
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u128}::backward]:
-    Source: 'core-models/src/core/iter.rs', lines 783:12-785:13
+    Source: 'core-models/src/core/iter.rs', lines 784:12-786:13
     Visibility: public -/
 def U128.Insts.CoreIterRangeStep.backward
   (start : Std.U128) (n : Std.Usize) : Result Std.U128 := do
@@ -5487,7 +5487,7 @@ def U128.Insts.CoreIterRangeStep.backward
   option.Option.unwrap o
 
 /-- [core_models::num::{core_models::num::i128}::checked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 251:12-254:13
+    Source: 'core-models/src/core/num/mod.rs', lines 267:12-274:13
     Visibility: public -/
 def num.I128.checked_sub
   (x : Std.I128) (y : Std.I128) : Result (option.Option Std.I128) := do
@@ -5497,7 +5497,7 @@ def num.I128.checked_sub
   else ok (option.Option.Some result)
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i128}::backward_checked]:
-    Source: 'core-models/src/core/iter.rs', lines 936:20-938:21
+    Source: 'core-models/src/core/iter.rs', lines 937:20-939:21
     Visibility: public -/
 def I128.Insts.CoreIterRangeStep.backward_checked
   (start : Std.I128) (n : Std.Usize) : Result (option.Option Std.I128) := do
@@ -5505,7 +5505,7 @@ def I128.Insts.CoreIterRangeStep.backward_checked
   num.I128.checked_sub start i
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i128}::backward]:
-    Source: 'core-models/src/core/iter.rs', lines 783:12-785:13
+    Source: 'core-models/src/core/iter.rs', lines 784:12-786:13
     Visibility: public -/
 def I128.Insts.CoreIterRangeStep.backward
   (start : Std.I128) (n : Std.Usize) : Result Std.I128 := do
@@ -5513,7 +5513,7 @@ def I128.Insts.CoreIterRangeStep.backward
   option.Option.unwrap o
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u8}::steps_between]:
-    Source: 'core-models/src/core/iter.rs', lines 801:20-809:21
+    Source: 'core-models/src/core/iter.rs', lines 802:20-810:21
     Visibility: public -/
 def U8.Insts.CoreIterRangeStep.steps_between
   (start : Std.U8) (end1 : Std.U8) :
@@ -5527,7 +5527,7 @@ def U8.Insts.CoreIterRangeStep.steps_between
   else ok (0#usize, option.Option.None)
 
 /-- Trait implementation: [core_models::iter::range::{core_models::iter::range::Step for u8}]
-    Source: 'core-models/src/core/iter.rs', lines 797:16-824:17 -/
+    Source: 'core-models/src/core/iter.rs', lines 798:16-825:17 -/
 @[reducible]
 def U8.Insts.CoreIterRangeStep : iter.range.Step Std.U8 := {
   cloneCloneInst := U8.Insts.CoreCloneClone
@@ -5542,7 +5542,7 @@ def U8.Insts.CoreIterRangeStep : iter.range.Step Std.U8 := {
 }
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u16}::steps_between]:
-    Source: 'core-models/src/core/iter.rs', lines 801:20-809:21
+    Source: 'core-models/src/core/iter.rs', lines 802:20-810:21
     Visibility: public -/
 def U16.Insts.CoreIterRangeStep.steps_between
   (start : Std.U16) (end1 : Std.U16) :
@@ -5556,7 +5556,7 @@ def U16.Insts.CoreIterRangeStep.steps_between
   else ok (0#usize, option.Option.None)
 
 /-- Trait implementation: [core_models::iter::range::{core_models::iter::range::Step for u16}]
-    Source: 'core-models/src/core/iter.rs', lines 797:16-824:17 -/
+    Source: 'core-models/src/core/iter.rs', lines 798:16-825:17 -/
 @[reducible]
 def U16.Insts.CoreIterRangeStep : iter.range.Step Std.U16 := {
   cloneCloneInst := U16.Insts.CoreCloneClone
@@ -5571,7 +5571,7 @@ def U16.Insts.CoreIterRangeStep : iter.range.Step Std.U16 := {
 }
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u32}::steps_between]:
-    Source: 'core-models/src/core/iter.rs', lines 801:20-809:21
+    Source: 'core-models/src/core/iter.rs', lines 802:20-810:21
     Visibility: public -/
 def U32.Insts.CoreIterRangeStep.steps_between
   (start : Std.U32) (end1 : Std.U32) :
@@ -5585,7 +5585,7 @@ def U32.Insts.CoreIterRangeStep.steps_between
   else ok (0#usize, option.Option.None)
 
 /-- Trait implementation: [core_models::iter::range::{core_models::iter::range::Step for u32}]
-    Source: 'core-models/src/core/iter.rs', lines 797:16-824:17 -/
+    Source: 'core-models/src/core/iter.rs', lines 798:16-825:17 -/
 @[reducible]
 def U32.Insts.CoreIterRangeStep : iter.range.Step Std.U32 := {
   cloneCloneInst := U32.Insts.CoreCloneClone
@@ -5600,7 +5600,7 @@ def U32.Insts.CoreIterRangeStep : iter.range.Step Std.U32 := {
 }
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u64}::steps_between]:
-    Source: 'core-models/src/core/iter.rs', lines 801:20-809:21
+    Source: 'core-models/src/core/iter.rs', lines 802:20-810:21
     Visibility: public -/
 def U64.Insts.CoreIterRangeStep.steps_between
   (start : Std.U64) (end1 : Std.U64) :
@@ -5614,7 +5614,7 @@ def U64.Insts.CoreIterRangeStep.steps_between
   else ok (0#usize, option.Option.None)
 
 /-- Trait implementation: [core_models::iter::range::{core_models::iter::range::Step for u64}]
-    Source: 'core-models/src/core/iter.rs', lines 797:16-824:17 -/
+    Source: 'core-models/src/core/iter.rs', lines 798:16-825:17 -/
 @[reducible]
 def U64.Insts.CoreIterRangeStep : iter.range.Step Std.U64 := {
   cloneCloneInst := U64.Insts.CoreCloneClone
@@ -5629,7 +5629,7 @@ def U64.Insts.CoreIterRangeStep : iter.range.Step Std.U64 := {
 }
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for usize}::steps_between]:
-    Source: 'core-models/src/core/iter.rs', lines 801:20-809:21
+    Source: 'core-models/src/core/iter.rs', lines 802:20-810:21
     Visibility: public -/
 def Usize.Insts.CoreIterRangeStep.steps_between
   (start : Std.Usize) (end1 : Std.Usize) :
@@ -5641,7 +5641,7 @@ def Usize.Insts.CoreIterRangeStep.steps_between
   else ok (0#usize, option.Option.None)
 
 /-- Trait implementation: [core_models::iter::range::{core_models::iter::range::Step for usize}]
-    Source: 'core-models/src/core/iter.rs', lines 797:16-824:17 -/
+    Source: 'core-models/src/core/iter.rs', lines 798:16-825:17 -/
 @[reducible]
 def Usize.Insts.CoreIterRangeStep : iter.range.Step Std.Usize := {
   cloneCloneInst := Usize.Insts.CoreCloneClone
@@ -5656,7 +5656,7 @@ def Usize.Insts.CoreIterRangeStep : iter.range.Step Std.Usize := {
 }
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i8}::steps_between]:
-    Source: 'core-models/src/core/iter.rs', lines 830:20-841:21
+    Source: 'core-models/src/core/iter.rs', lines 831:20-842:21
     Visibility: public -/
 def I8.Insts.CoreIterRangeStep.steps_between
   (start : Std.I8) (end1 : Std.I8) :
@@ -5672,7 +5672,7 @@ def I8.Insts.CoreIterRangeStep.steps_between
   else ok (0#usize, option.Option.None)
 
 /-- Trait implementation: [core_models::iter::range::{core_models::iter::range::Step for i8}]
-    Source: 'core-models/src/core/iter.rs', lines 826:16-882:17 -/
+    Source: 'core-models/src/core/iter.rs', lines 827:16-883:17 -/
 @[reducible]
 def I8.Insts.CoreIterRangeStep : iter.range.Step Std.I8 := {
   cloneCloneInst := I8.Insts.CoreCloneClone
@@ -5687,7 +5687,7 @@ def I8.Insts.CoreIterRangeStep : iter.range.Step Std.I8 := {
 }
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i16}::steps_between]:
-    Source: 'core-models/src/core/iter.rs', lines 830:20-841:21
+    Source: 'core-models/src/core/iter.rs', lines 831:20-842:21
     Visibility: public -/
 def I16.Insts.CoreIterRangeStep.steps_between
   (start : Std.I16) (end1 : Std.I16) :
@@ -5703,7 +5703,7 @@ def I16.Insts.CoreIterRangeStep.steps_between
   else ok (0#usize, option.Option.None)
 
 /-- Trait implementation: [core_models::iter::range::{core_models::iter::range::Step for i16}]
-    Source: 'core-models/src/core/iter.rs', lines 826:16-882:17 -/
+    Source: 'core-models/src/core/iter.rs', lines 827:16-883:17 -/
 @[reducible]
 def I16.Insts.CoreIterRangeStep : iter.range.Step Std.I16 := {
   cloneCloneInst := I16.Insts.CoreCloneClone
@@ -5718,7 +5718,7 @@ def I16.Insts.CoreIterRangeStep : iter.range.Step Std.I16 := {
 }
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i32}::steps_between]:
-    Source: 'core-models/src/core/iter.rs', lines 830:20-841:21
+    Source: 'core-models/src/core/iter.rs', lines 831:20-842:21
     Visibility: public -/
 def I32.Insts.CoreIterRangeStep.steps_between
   (start : Std.I32) (end1 : Std.I32) :
@@ -5734,7 +5734,7 @@ def I32.Insts.CoreIterRangeStep.steps_between
   else ok (0#usize, option.Option.None)
 
 /-- Trait implementation: [core_models::iter::range::{core_models::iter::range::Step for i32}]
-    Source: 'core-models/src/core/iter.rs', lines 826:16-882:17 -/
+    Source: 'core-models/src/core/iter.rs', lines 827:16-883:17 -/
 @[reducible]
 def I32.Insts.CoreIterRangeStep : iter.range.Step Std.I32 := {
   cloneCloneInst := I32.Insts.CoreCloneClone
@@ -5749,7 +5749,7 @@ def I32.Insts.CoreIterRangeStep : iter.range.Step Std.I32 := {
 }
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i64}::steps_between]:
-    Source: 'core-models/src/core/iter.rs', lines 830:20-841:21
+    Source: 'core-models/src/core/iter.rs', lines 831:20-842:21
     Visibility: public -/
 def I64.Insts.CoreIterRangeStep.steps_between
   (start : Std.I64) (end1 : Std.I64) :
@@ -5765,7 +5765,7 @@ def I64.Insts.CoreIterRangeStep.steps_between
   else ok (0#usize, option.Option.None)
 
 /-- Trait implementation: [core_models::iter::range::{core_models::iter::range::Step for i64}]
-    Source: 'core-models/src/core/iter.rs', lines 826:16-882:17 -/
+    Source: 'core-models/src/core/iter.rs', lines 827:16-883:17 -/
 @[reducible]
 def I64.Insts.CoreIterRangeStep : iter.range.Step Std.I64 := {
   cloneCloneInst := I64.Insts.CoreCloneClone
@@ -5780,7 +5780,7 @@ def I64.Insts.CoreIterRangeStep : iter.range.Step Std.I64 := {
 }
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for isize}::steps_between]:
-    Source: 'core-models/src/core/iter.rs', lines 830:20-841:21
+    Source: 'core-models/src/core/iter.rs', lines 831:20-842:21
     Visibility: public -/
 def Isize.Insts.CoreIterRangeStep.steps_between
   (start : Std.Isize) (end1 : Std.Isize) :
@@ -5794,7 +5794,7 @@ def Isize.Insts.CoreIterRangeStep.steps_between
   else ok (0#usize, option.Option.None)
 
 /-- Trait implementation: [core_models::iter::range::{core_models::iter::range::Step for isize}]
-    Source: 'core-models/src/core/iter.rs', lines 826:16-882:17 -/
+    Source: 'core-models/src/core/iter.rs', lines 827:16-883:17 -/
 @[reducible]
 def Isize.Insts.CoreIterRangeStep : iter.range.Step Std.Isize := {
   cloneCloneInst := Isize.Insts.CoreCloneClone
@@ -5809,7 +5809,7 @@ def Isize.Insts.CoreIterRangeStep : iter.range.Step Std.Isize := {
 }
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for u128}::steps_between]:
-    Source: 'core-models/src/core/iter.rs', lines 890:20-899:21
+    Source: 'core-models/src/core/iter.rs', lines 891:20-900:21
     Visibility: public -/
 def U128.Insts.CoreIterRangeStep.steps_between
   (start : Std.U128) (end1 : Std.U128) :
@@ -5826,7 +5826,7 @@ def U128.Insts.CoreIterRangeStep.steps_between
   else ok (0#usize, option.Option.None)
 
 /-- Trait implementation: [core_models::iter::range::{core_models::iter::range::Step for u128}]
-    Source: 'core-models/src/core/iter.rs', lines 886:16-908:17 -/
+    Source: 'core-models/src/core/iter.rs', lines 887:16-909:17 -/
 @[reducible]
 def U128.Insts.CoreIterRangeStep : iter.range.Step Std.U128 := {
   cloneCloneInst := U128.Insts.CoreCloneClone
@@ -5841,7 +5841,7 @@ def U128.Insts.CoreIterRangeStep : iter.range.Step Std.U128 := {
 }
 
 /-- [core_models::iter::range::{core_models::iter::range::Step for i128}::steps_between]:
-    Source: 'core-models/src/core/iter.rs', lines 914:20-930:21
+    Source: 'core-models/src/core/iter.rs', lines 915:20-931:21
     Visibility: public -/
 def I128.Insts.CoreIterRangeStep.steps_between
   (start : Std.I128) (end1 : Std.I128) :
@@ -5862,7 +5862,7 @@ def I128.Insts.CoreIterRangeStep.steps_between
   else ok (0#usize, option.Option.None)
 
 /-- Trait implementation: [core_models::iter::range::{core_models::iter::range::Step for i128}]
-    Source: 'core-models/src/core/iter.rs', lines 910:16-939:17 -/
+    Source: 'core-models/src/core/iter.rs', lines 911:16-940:17 -/
 @[reducible]
 def I128.Insts.CoreIterRangeStep : iter.range.Step Std.I128 := {
   cloneCloneInst := I128.Insts.CoreCloneClone
@@ -6274,199 +6274,199 @@ def num.Usize.saturating_add
   rust_primitives.arithmetic.saturating_add_usize x y
 
 /-- [core_models::num::{core_models::num::u8}::wrapping_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 49:12-51:13
+    Source: 'core-models/src/core/num/mod.rs', lines 53:12-55:13
     Visibility: public -/
 def num.U8.wrapping_sub (x : Std.U8) (y : Std.U8) : Result Std.U8 := do
   rust_primitives.arithmetic.wrapping_sub_u8 x y
 
 /-- [core_models::num::{core_models::num::u16}::wrapping_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 49:12-51:13
+    Source: 'core-models/src/core/num/mod.rs', lines 53:12-55:13
     Visibility: public -/
 def num.U16.wrapping_sub (x : Std.U16) (y : Std.U16) : Result Std.U16 := do
   rust_primitives.arithmetic.wrapping_sub_u16 x y
 
 /-- [core_models::num::{core_models::num::u32}::wrapping_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 49:12-51:13
+    Source: 'core-models/src/core/num/mod.rs', lines 53:12-55:13
     Visibility: public -/
 def num.U32.wrapping_sub (x : Std.U32) (y : Std.U32) : Result Std.U32 := do
   rust_primitives.arithmetic.wrapping_sub_u32 x y
 
 /-- [core_models::num::{core_models::num::u64}::wrapping_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 49:12-51:13
+    Source: 'core-models/src/core/num/mod.rs', lines 53:12-55:13
     Visibility: public -/
 def num.U64.wrapping_sub (x : Std.U64) (y : Std.U64) : Result Std.U64 := do
   rust_primitives.arithmetic.wrapping_sub_u64 x y
 
 /-- [core_models::num::{core_models::num::u128}::wrapping_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 49:12-51:13
+    Source: 'core-models/src/core/num/mod.rs', lines 53:12-55:13
     Visibility: public -/
 def num.U128.wrapping_sub (x : Std.U128) (y : Std.U128) : Result Std.U128 := do
   rust_primitives.arithmetic.wrapping_sub_u128 x y
 
 /-- [core_models::num::{core_models::num::usize}::wrapping_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 49:12-51:13
+    Source: 'core-models/src/core/num/mod.rs', lines 53:12-55:13
     Visibility: public -/
 def num.Usize.wrapping_sub
   (x : Std.Usize) (y : Std.Usize) : Result Std.Usize := do
   rust_primitives.arithmetic.wrapping_sub_usize x y
 
 /-- [core_models::num::{core_models::num::u8}::saturating_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 53:12-55:13
+    Source: 'core-models/src/core/num/mod.rs', lines 57:12-59:13
     Visibility: public -/
 def num.U8.saturating_sub (x : Std.U8) (y : Std.U8) : Result Std.U8 := do
   rust_primitives.arithmetic.saturating_sub_u8 x y
 
 /-- [core_models::num::{core_models::num::u16}::saturating_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 53:12-55:13
+    Source: 'core-models/src/core/num/mod.rs', lines 57:12-59:13
     Visibility: public -/
 def num.U16.saturating_sub (x : Std.U16) (y : Std.U16) : Result Std.U16 := do
   rust_primitives.arithmetic.saturating_sub_u16 x y
 
 /-- [core_models::num::{core_models::num::u32}::saturating_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 53:12-55:13
+    Source: 'core-models/src/core/num/mod.rs', lines 57:12-59:13
     Visibility: public -/
 def num.U32.saturating_sub (x : Std.U32) (y : Std.U32) : Result Std.U32 := do
   rust_primitives.arithmetic.saturating_sub_u32 x y
 
 /-- [core_models::num::{core_models::num::u64}::saturating_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 53:12-55:13
+    Source: 'core-models/src/core/num/mod.rs', lines 57:12-59:13
     Visibility: public -/
 def num.U64.saturating_sub (x : Std.U64) (y : Std.U64) : Result Std.U64 := do
   rust_primitives.arithmetic.saturating_sub_u64 x y
 
 /-- [core_models::num::{core_models::num::u128}::saturating_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 53:12-55:13
+    Source: 'core-models/src/core/num/mod.rs', lines 57:12-59:13
     Visibility: public -/
 def num.U128.saturating_sub
   (x : Std.U128) (y : Std.U128) : Result Std.U128 := do
   rust_primitives.arithmetic.saturating_sub_u128 x y
 
 /-- [core_models::num::{core_models::num::usize}::saturating_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 53:12-55:13
+    Source: 'core-models/src/core/num/mod.rs', lines 57:12-59:13
     Visibility: public -/
 def num.Usize.saturating_sub
   (x : Std.Usize) (y : Std.Usize) : Result Std.Usize := do
   rust_primitives.arithmetic.saturating_sub_usize x y
 
 /-- [core_models::num::{core_models::num::u8}::wrapping_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 70:12-72:13
+    Source: 'core-models/src/core/num/mod.rs', lines 78:12-80:13
     Visibility: public -/
 def num.U8.wrapping_mul (x : Std.U8) (y : Std.U8) : Result Std.U8 := do
   rust_primitives.arithmetic.wrapping_mul_u8 x y
 
 /-- [core_models::num::{core_models::num::u16}::wrapping_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 70:12-72:13
+    Source: 'core-models/src/core/num/mod.rs', lines 78:12-80:13
     Visibility: public -/
 def num.U16.wrapping_mul (x : Std.U16) (y : Std.U16) : Result Std.U16 := do
   rust_primitives.arithmetic.wrapping_mul_u16 x y
 
 /-- [core_models::num::{core_models::num::u32}::wrapping_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 70:12-72:13
+    Source: 'core-models/src/core/num/mod.rs', lines 78:12-80:13
     Visibility: public -/
 def num.U32.wrapping_mul (x : Std.U32) (y : Std.U32) : Result Std.U32 := do
   rust_primitives.arithmetic.wrapping_mul_u32 x y
 
 /-- [core_models::num::{core_models::num::u64}::wrapping_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 70:12-72:13
+    Source: 'core-models/src/core/num/mod.rs', lines 78:12-80:13
     Visibility: public -/
 def num.U64.wrapping_mul (x : Std.U64) (y : Std.U64) : Result Std.U64 := do
   rust_primitives.arithmetic.wrapping_mul_u64 x y
 
 /-- [core_models::num::{core_models::num::u128}::wrapping_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 70:12-72:13
+    Source: 'core-models/src/core/num/mod.rs', lines 78:12-80:13
     Visibility: public -/
 def num.U128.wrapping_mul (x : Std.U128) (y : Std.U128) : Result Std.U128 := do
   rust_primitives.arithmetic.wrapping_mul_u128 x y
 
 /-- [core_models::num::{core_models::num::usize}::wrapping_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 70:12-72:13
+    Source: 'core-models/src/core/num/mod.rs', lines 78:12-80:13
     Visibility: public -/
 def num.Usize.wrapping_mul
   (x : Std.Usize) (y : Std.Usize) : Result Std.Usize := do
   rust_primitives.arithmetic.wrapping_mul_usize x y
 
 /-- [core_models::num::{core_models::num::u8}::saturating_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 74:12-76:13
+    Source: 'core-models/src/core/num/mod.rs', lines 82:12-84:13
     Visibility: public -/
 def num.U8.saturating_mul (x : Std.U8) (y : Std.U8) : Result Std.U8 := do
   rust_primitives.arithmetic.saturating_mul_u8 x y
 
 /-- [core_models::num::{core_models::num::u16}::saturating_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 74:12-76:13
+    Source: 'core-models/src/core/num/mod.rs', lines 82:12-84:13
     Visibility: public -/
 def num.U16.saturating_mul (x : Std.U16) (y : Std.U16) : Result Std.U16 := do
   rust_primitives.arithmetic.saturating_mul_u16 x y
 
 /-- [core_models::num::{core_models::num::u32}::saturating_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 74:12-76:13
+    Source: 'core-models/src/core/num/mod.rs', lines 82:12-84:13
     Visibility: public -/
 def num.U32.saturating_mul (x : Std.U32) (y : Std.U32) : Result Std.U32 := do
   rust_primitives.arithmetic.saturating_mul_u32 x y
 
 /-- [core_models::num::{core_models::num::u64}::saturating_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 74:12-76:13
+    Source: 'core-models/src/core/num/mod.rs', lines 82:12-84:13
     Visibility: public -/
 def num.U64.saturating_mul (x : Std.U64) (y : Std.U64) : Result Std.U64 := do
   rust_primitives.arithmetic.saturating_mul_u64 x y
 
 /-- [core_models::num::{core_models::num::u128}::saturating_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 74:12-76:13
+    Source: 'core-models/src/core/num/mod.rs', lines 82:12-84:13
     Visibility: public -/
 def num.U128.saturating_mul
   (x : Std.U128) (y : Std.U128) : Result Std.U128 := do
   rust_primitives.arithmetic.saturating_mul_u128 x y
 
 /-- [core_models::num::{core_models::num::usize}::saturating_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 74:12-76:13
+    Source: 'core-models/src/core/num/mod.rs', lines 82:12-84:13
     Visibility: public -/
 def num.Usize.saturating_mul
   (x : Std.Usize) (y : Std.Usize) : Result Std.Usize := do
   rust_primitives.arithmetic.saturating_mul_usize x y
 
 /-- [core_models::num::{core_models::num::u8}::overflowing_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 78:12-80:13
+    Source: 'core-models/src/core/num/mod.rs', lines 86:12-88:13
     Visibility: public -/
 def num.U8.overflowing_mul
   (x : Std.U8) (y : Std.U8) : Result (Std.U8 × Bool) := do
   rust_primitives.arithmetic.overflowing_mul_u8 x y
 
 /-- [core_models::num::{core_models::num::u16}::overflowing_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 78:12-80:13
+    Source: 'core-models/src/core/num/mod.rs', lines 86:12-88:13
     Visibility: public -/
 def num.U16.overflowing_mul
   (x : Std.U16) (y : Std.U16) : Result (Std.U16 × Bool) := do
   rust_primitives.arithmetic.overflowing_mul_u16 x y
 
 /-- [core_models::num::{core_models::num::u32}::overflowing_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 78:12-80:13
+    Source: 'core-models/src/core/num/mod.rs', lines 86:12-88:13
     Visibility: public -/
 def num.U32.overflowing_mul
   (x : Std.U32) (y : Std.U32) : Result (Std.U32 × Bool) := do
   rust_primitives.arithmetic.overflowing_mul_u32 x y
 
 /-- [core_models::num::{core_models::num::u64}::overflowing_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 78:12-80:13
+    Source: 'core-models/src/core/num/mod.rs', lines 86:12-88:13
     Visibility: public -/
 def num.U64.overflowing_mul
   (x : Std.U64) (y : Std.U64) : Result (Std.U64 × Bool) := do
   rust_primitives.arithmetic.overflowing_mul_u64 x y
 
 /-- [core_models::num::{core_models::num::u128}::overflowing_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 78:12-80:13
+    Source: 'core-models/src/core/num/mod.rs', lines 86:12-88:13
     Visibility: public -/
 def num.U128.overflowing_mul
   (x : Std.U128) (y : Std.U128) : Result (Std.U128 × Bool) := do
   rust_primitives.arithmetic.overflowing_mul_u128 x y
 
 /-- [core_models::num::{core_models::num::usize}::overflowing_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 78:12-80:13
+    Source: 'core-models/src/core/num/mod.rs', lines 86:12-88:13
     Visibility: public -/
 def num.Usize.overflowing_mul
   (x : Std.Usize) (y : Std.Usize) : Result (Std.Usize × Bool) := do
   rust_primitives.arithmetic.overflowing_mul_usize x y
 
 /-- [core_models::num::{core_models::num::u8}::checked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 82:12-85:13
+    Source: 'core-models/src/core/num/mod.rs', lines 90:12-97:13
     Visibility: public -/
 def num.U8.checked_mul
   (x : Std.U8) (y : Std.U8) : Result (option.Option Std.U8) := do
@@ -6476,7 +6476,7 @@ def num.U8.checked_mul
   else ok (option.Option.Some result)
 
 /-- [core_models::num::{core_models::num::u16}::checked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 82:12-85:13
+    Source: 'core-models/src/core/num/mod.rs', lines 90:12-97:13
     Visibility: public -/
 def num.U16.checked_mul
   (x : Std.U16) (y : Std.U16) : Result (option.Option Std.U16) := do
@@ -6486,7 +6486,7 @@ def num.U16.checked_mul
   else ok (option.Option.Some result)
 
 /-- [core_models::num::{core_models::num::u32}::checked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 82:12-85:13
+    Source: 'core-models/src/core/num/mod.rs', lines 90:12-97:13
     Visibility: public -/
 def num.U32.checked_mul
   (x : Std.U32) (y : Std.U32) : Result (option.Option Std.U32) := do
@@ -6496,7 +6496,7 @@ def num.U32.checked_mul
   else ok (option.Option.Some result)
 
 /-- [core_models::num::{core_models::num::u64}::checked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 82:12-85:13
+    Source: 'core-models/src/core/num/mod.rs', lines 90:12-97:13
     Visibility: public -/
 def num.U64.checked_mul
   (x : Std.U64) (y : Std.U64) : Result (option.Option Std.U64) := do
@@ -6506,7 +6506,7 @@ def num.U64.checked_mul
   else ok (option.Option.Some result)
 
 /-- [core_models::num::{core_models::num::u128}::checked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 82:12-85:13
+    Source: 'core-models/src/core/num/mod.rs', lines 90:12-97:13
     Visibility: public -/
 def num.U128.checked_mul
   (x : Std.U128) (y : Std.U128) : Result (option.Option Std.U128) := do
@@ -6516,7 +6516,7 @@ def num.U128.checked_mul
   else ok (option.Option.Some result)
 
 /-- [core_models::num::{core_models::num::usize}::checked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 82:12-85:13
+    Source: 'core-models/src/core/num/mod.rs', lines 90:12-97:13
     Visibility: public -/
 def num.Usize.checked_mul
   (x : Std.Usize) (y : Std.Usize) : Result (option.Option Std.Usize) := do
@@ -6526,300 +6526,300 @@ def num.Usize.checked_mul
   else ok (option.Option.Some result)
 
 /-- [core_models::num::{core_models::num::u8}::unchecked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 87:12-89:13
+    Source: 'core-models/src/core/num/mod.rs', lines 99:12-101:13
     Visibility: public -/
 def num.U8.unchecked_mul (x : Std.U8) (y : Std.U8) : Result Std.U8 := do
   x * y
 
 /-- [core_models::num::{core_models::num::u16}::unchecked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 87:12-89:13
+    Source: 'core-models/src/core/num/mod.rs', lines 99:12-101:13
     Visibility: public -/
 def num.U16.unchecked_mul (x : Std.U16) (y : Std.U16) : Result Std.U16 := do
   x * y
 
 /-- [core_models::num::{core_models::num::u32}::unchecked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 87:12-89:13
+    Source: 'core-models/src/core/num/mod.rs', lines 99:12-101:13
     Visibility: public -/
 def num.U32.unchecked_mul (x : Std.U32) (y : Std.U32) : Result Std.U32 := do
   x * y
 
 /-- [core_models::num::{core_models::num::u64}::unchecked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 87:12-89:13
+    Source: 'core-models/src/core/num/mod.rs', lines 99:12-101:13
     Visibility: public -/
 def num.U64.unchecked_mul (x : Std.U64) (y : Std.U64) : Result Std.U64 := do
   x * y
 
 /-- [core_models::num::{core_models::num::u128}::unchecked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 87:12-89:13
+    Source: 'core-models/src/core/num/mod.rs', lines 99:12-101:13
     Visibility: public -/
 def num.U128.unchecked_mul
   (x : Std.U128) (y : Std.U128) : Result Std.U128 := do
   x * y
 
 /-- [core_models::num::{core_models::num::usize}::unchecked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 87:12-89:13
+    Source: 'core-models/src/core/num/mod.rs', lines 99:12-101:13
     Visibility: public -/
 def num.Usize.unchecked_mul
   (x : Std.Usize) (y : Std.Usize) : Result Std.Usize := do
   x * y
 
 /-- [core_models::num::{core_models::num::u8}::rem_euclid]:
-    Source: 'core-models/src/core/num/mod.rs', lines 92:12-94:13
+    Source: 'core-models/src/core/num/mod.rs', lines 104:12-106:13
     Visibility: public -/
 def num.U8.rem_euclid (x : Std.U8) (y : Std.U8) : Result Std.U8 := do
   rust_primitives.arithmetic.rem_euclid_u8 x y
 
 /-- [core_models::num::{core_models::num::u16}::rem_euclid]:
-    Source: 'core-models/src/core/num/mod.rs', lines 92:12-94:13
+    Source: 'core-models/src/core/num/mod.rs', lines 104:12-106:13
     Visibility: public -/
 def num.U16.rem_euclid (x : Std.U16) (y : Std.U16) : Result Std.U16 := do
   rust_primitives.arithmetic.rem_euclid_u16 x y
 
 /-- [core_models::num::{core_models::num::u32}::rem_euclid]:
-    Source: 'core-models/src/core/num/mod.rs', lines 92:12-94:13
+    Source: 'core-models/src/core/num/mod.rs', lines 104:12-106:13
     Visibility: public -/
 def num.U32.rem_euclid (x : Std.U32) (y : Std.U32) : Result Std.U32 := do
   rust_primitives.arithmetic.rem_euclid_u32 x y
 
 /-- [core_models::num::{core_models::num::u64}::rem_euclid]:
-    Source: 'core-models/src/core/num/mod.rs', lines 92:12-94:13
+    Source: 'core-models/src/core/num/mod.rs', lines 104:12-106:13
     Visibility: public -/
 def num.U64.rem_euclid (x : Std.U64) (y : Std.U64) : Result Std.U64 := do
   rust_primitives.arithmetic.rem_euclid_u64 x y
 
 /-- [core_models::num::{core_models::num::u128}::rem_euclid]:
-    Source: 'core-models/src/core/num/mod.rs', lines 92:12-94:13
+    Source: 'core-models/src/core/num/mod.rs', lines 104:12-106:13
     Visibility: public -/
 def num.U128.rem_euclid (x : Std.U128) (y : Std.U128) : Result Std.U128 := do
   rust_primitives.arithmetic.rem_euclid_u128 x y
 
 /-- [core_models::num::{core_models::num::usize}::rem_euclid]:
-    Source: 'core-models/src/core/num/mod.rs', lines 92:12-94:13
+    Source: 'core-models/src/core/num/mod.rs', lines 104:12-106:13
     Visibility: public -/
 def num.Usize.rem_euclid
   (x : Std.Usize) (y : Std.Usize) : Result Std.Usize := do
   rust_primitives.arithmetic.rem_euclid_usize x y
 
 /-- [core_models::num::{core_models::num::u8}::pow]:
-    Source: 'core-models/src/core/num/mod.rs', lines 96:12-98:13
+    Source: 'core-models/src/core/num/mod.rs', lines 108:12-110:13
     Visibility: public -/
 def num.U8.pow (x : Std.U8) (exp : Std.U32) : Result Std.U8 := do
   rust_primitives.arithmetic.pow_u8 x exp
 
 /-- [core_models::num::{core_models::num::u16}::pow]:
-    Source: 'core-models/src/core/num/mod.rs', lines 96:12-98:13
+    Source: 'core-models/src/core/num/mod.rs', lines 108:12-110:13
     Visibility: public -/
 def num.U16.pow (x : Std.U16) (exp : Std.U32) : Result Std.U16 := do
   rust_primitives.arithmetic.pow_u16 x exp
 
 /-- [core_models::num::{core_models::num::u32}::pow]:
-    Source: 'core-models/src/core/num/mod.rs', lines 96:12-98:13
+    Source: 'core-models/src/core/num/mod.rs', lines 108:12-110:13
     Visibility: public -/
 def num.U32.pow (x : Std.U32) (exp : Std.U32) : Result Std.U32 := do
   rust_primitives.arithmetic.pow_u32 x exp
 
 /-- [core_models::num::{core_models::num::u64}::pow]:
-    Source: 'core-models/src/core/num/mod.rs', lines 96:12-98:13
+    Source: 'core-models/src/core/num/mod.rs', lines 108:12-110:13
     Visibility: public -/
 def num.U64.pow (x : Std.U64) (exp : Std.U32) : Result Std.U64 := do
   rust_primitives.arithmetic.pow_u64 x exp
 
 /-- [core_models::num::{core_models::num::u128}::pow]:
-    Source: 'core-models/src/core/num/mod.rs', lines 96:12-98:13
+    Source: 'core-models/src/core/num/mod.rs', lines 108:12-110:13
     Visibility: public -/
 def num.U128.pow (x : Std.U128) (exp : Std.U32) : Result Std.U128 := do
   rust_primitives.arithmetic.pow_u128 x exp
 
 /-- [core_models::num::{core_models::num::usize}::pow]:
-    Source: 'core-models/src/core/num/mod.rs', lines 96:12-98:13
+    Source: 'core-models/src/core/num/mod.rs', lines 108:12-110:13
     Visibility: public -/
 def num.Usize.pow (x : Std.Usize) (exp : Std.U32) : Result Std.Usize := do
   rust_primitives.arithmetic.pow_usize x exp
 
 /-- [core_models::num::{core_models::num::u8}::count_ones]:
-    Source: 'core-models/src/core/num/mod.rs', lines 100:12-102:13
+    Source: 'core-models/src/core/num/mod.rs', lines 112:12-114:13
     Visibility: public -/
 def num.U8.count_ones (x : Std.U8) : Result Std.U32 := do
   rust_primitives.arithmetic.count_ones_u8 x
 
 /-- [core_models::num::{core_models::num::u16}::count_ones]:
-    Source: 'core-models/src/core/num/mod.rs', lines 100:12-102:13
+    Source: 'core-models/src/core/num/mod.rs', lines 112:12-114:13
     Visibility: public -/
 def num.U16.count_ones (x : Std.U16) : Result Std.U32 := do
   rust_primitives.arithmetic.count_ones_u16 x
 
 /-- [core_models::num::{core_models::num::u32}::count_ones]:
-    Source: 'core-models/src/core/num/mod.rs', lines 100:12-102:13
+    Source: 'core-models/src/core/num/mod.rs', lines 112:12-114:13
     Visibility: public -/
 def num.U32.count_ones (x : Std.U32) : Result Std.U32 := do
   rust_primitives.arithmetic.count_ones_u32 x
 
 /-- [core_models::num::{core_models::num::u64}::count_ones]:
-    Source: 'core-models/src/core/num/mod.rs', lines 100:12-102:13
+    Source: 'core-models/src/core/num/mod.rs', lines 112:12-114:13
     Visibility: public -/
 def num.U64.count_ones (x : Std.U64) : Result Std.U32 := do
   rust_primitives.arithmetic.count_ones_u64 x
 
 /-- [core_models::num::{core_models::num::u128}::count_ones]:
-    Source: 'core-models/src/core/num/mod.rs', lines 100:12-102:13
+    Source: 'core-models/src/core/num/mod.rs', lines 112:12-114:13
     Visibility: public -/
 def num.U128.count_ones (x : Std.U128) : Result Std.U32 := do
   rust_primitives.arithmetic.count_ones_u128 x
 
 /-- [core_models::num::{core_models::num::usize}::count_ones]:
-    Source: 'core-models/src/core/num/mod.rs', lines 100:12-102:13
+    Source: 'core-models/src/core/num/mod.rs', lines 112:12-114:13
     Visibility: public -/
 def num.Usize.count_ones (x : Std.Usize) : Result Std.U32 := do
   rust_primitives.arithmetic.count_ones_usize x
 
 /-- [core_models::num::{core_models::num::u8}::rotate_right]:
-    Source: 'core-models/src/core/num/mod.rs', lines 105:12-107:13
+    Source: 'core-models/src/core/num/mod.rs', lines 117:12-119:13
     Visibility: public -/
 def num.U8.rotate_right (x : Std.U8) (n : Std.U32) : Result Std.U8 := do
   rust_primitives.arithmetic.rotate_right_u8 x n
 
 /-- [core_models::num::{core_models::num::u16}::rotate_right]:
-    Source: 'core-models/src/core/num/mod.rs', lines 105:12-107:13
+    Source: 'core-models/src/core/num/mod.rs', lines 117:12-119:13
     Visibility: public -/
 def num.U16.rotate_right (x : Std.U16) (n : Std.U32) : Result Std.U16 := do
   rust_primitives.arithmetic.rotate_right_u16 x n
 
 /-- [core_models::num::{core_models::num::u32}::rotate_right]:
-    Source: 'core-models/src/core/num/mod.rs', lines 105:12-107:13
+    Source: 'core-models/src/core/num/mod.rs', lines 117:12-119:13
     Visibility: public -/
 def num.U32.rotate_right (x : Std.U32) (n : Std.U32) : Result Std.U32 := do
   rust_primitives.arithmetic.rotate_right_u32 x n
 
 /-- [core_models::num::{core_models::num::u64}::rotate_right]:
-    Source: 'core-models/src/core/num/mod.rs', lines 105:12-107:13
+    Source: 'core-models/src/core/num/mod.rs', lines 117:12-119:13
     Visibility: public -/
 def num.U64.rotate_right (x : Std.U64) (n : Std.U32) : Result Std.U64 := do
   rust_primitives.arithmetic.rotate_right_u64 x n
 
 /-- [core_models::num::{core_models::num::u128}::rotate_right]:
-    Source: 'core-models/src/core/num/mod.rs', lines 105:12-107:13
+    Source: 'core-models/src/core/num/mod.rs', lines 117:12-119:13
     Visibility: public -/
 def num.U128.rotate_right (x : Std.U128) (n : Std.U32) : Result Std.U128 := do
   rust_primitives.arithmetic.rotate_right_u128 x n
 
 /-- [core_models::num::{core_models::num::usize}::rotate_right]:
-    Source: 'core-models/src/core/num/mod.rs', lines 105:12-107:13
+    Source: 'core-models/src/core/num/mod.rs', lines 117:12-119:13
     Visibility: public -/
 def num.Usize.rotate_right
   (x : Std.Usize) (n : Std.U32) : Result Std.Usize := do
   rust_primitives.arithmetic.rotate_right_usize x n
 
 /-- [core_models::num::{core_models::num::u8}::rotate_left]:
-    Source: 'core-models/src/core/num/mod.rs', lines 110:12-112:13
+    Source: 'core-models/src/core/num/mod.rs', lines 122:12-124:13
     Visibility: public -/
 def num.U8.rotate_left (x : Std.U8) (n : Std.U32) : Result Std.U8 := do
   rust_primitives.arithmetic.rotate_left_u8 x n
 
 /-- [core_models::num::{core_models::num::u16}::rotate_left]:
-    Source: 'core-models/src/core/num/mod.rs', lines 110:12-112:13
+    Source: 'core-models/src/core/num/mod.rs', lines 122:12-124:13
     Visibility: public -/
 def num.U16.rotate_left (x : Std.U16) (n : Std.U32) : Result Std.U16 := do
   rust_primitives.arithmetic.rotate_left_u16 x n
 
 /-- [core_models::num::{core_models::num::u32}::rotate_left]:
-    Source: 'core-models/src/core/num/mod.rs', lines 110:12-112:13
+    Source: 'core-models/src/core/num/mod.rs', lines 122:12-124:13
     Visibility: public -/
 def num.U32.rotate_left (x : Std.U32) (n : Std.U32) : Result Std.U32 := do
   rust_primitives.arithmetic.rotate_left_u32 x n
 
 /-- [core_models::num::{core_models::num::u64}::rotate_left]:
-    Source: 'core-models/src/core/num/mod.rs', lines 110:12-112:13
+    Source: 'core-models/src/core/num/mod.rs', lines 122:12-124:13
     Visibility: public -/
 def num.U64.rotate_left (x : Std.U64) (n : Std.U32) : Result Std.U64 := do
   rust_primitives.arithmetic.rotate_left_u64 x n
 
 /-- [core_models::num::{core_models::num::u128}::rotate_left]:
-    Source: 'core-models/src/core/num/mod.rs', lines 110:12-112:13
+    Source: 'core-models/src/core/num/mod.rs', lines 122:12-124:13
     Visibility: public -/
 def num.U128.rotate_left (x : Std.U128) (n : Std.U32) : Result Std.U128 := do
   rust_primitives.arithmetic.rotate_left_u128 x n
 
 /-- [core_models::num::{core_models::num::usize}::rotate_left]:
-    Source: 'core-models/src/core/num/mod.rs', lines 110:12-112:13
+    Source: 'core-models/src/core/num/mod.rs', lines 122:12-124:13
     Visibility: public -/
 def num.Usize.rotate_left
   (x : Std.Usize) (n : Std.U32) : Result Std.Usize := do
   rust_primitives.arithmetic.rotate_left_usize x n
 
 /-- [core_models::num::{core_models::num::u8}::leading_zeros]:
-    Source: 'core-models/src/core/num/mod.rs', lines 115:12-117:13
+    Source: 'core-models/src/core/num/mod.rs', lines 127:12-129:13
     Visibility: public -/
 def num.U8.leading_zeros (x : Std.U8) : Result Std.U32 := do
   rust_primitives.arithmetic.leading_zeros_u8 x
 
 /-- [core_models::num::{core_models::num::u16}::leading_zeros]:
-    Source: 'core-models/src/core/num/mod.rs', lines 115:12-117:13
+    Source: 'core-models/src/core/num/mod.rs', lines 127:12-129:13
     Visibility: public -/
 def num.U16.leading_zeros (x : Std.U16) : Result Std.U32 := do
   rust_primitives.arithmetic.leading_zeros_u16 x
 
 /-- [core_models::num::{core_models::num::u32}::leading_zeros]:
-    Source: 'core-models/src/core/num/mod.rs', lines 115:12-117:13
+    Source: 'core-models/src/core/num/mod.rs', lines 127:12-129:13
     Visibility: public -/
 def num.U32.leading_zeros (x : Std.U32) : Result Std.U32 := do
   rust_primitives.arithmetic.leading_zeros_u32 x
 
 /-- [core_models::num::{core_models::num::u64}::leading_zeros]:
-    Source: 'core-models/src/core/num/mod.rs', lines 115:12-117:13
+    Source: 'core-models/src/core/num/mod.rs', lines 127:12-129:13
     Visibility: public -/
 def num.U64.leading_zeros (x : Std.U64) : Result Std.U32 := do
   rust_primitives.arithmetic.leading_zeros_u64 x
 
 /-- [core_models::num::{core_models::num::u128}::leading_zeros]:
-    Source: 'core-models/src/core/num/mod.rs', lines 115:12-117:13
+    Source: 'core-models/src/core/num/mod.rs', lines 127:12-129:13
     Visibility: public -/
 def num.U128.leading_zeros (x : Std.U128) : Result Std.U32 := do
   rust_primitives.arithmetic.leading_zeros_u128 x
 
 /-- [core_models::num::{core_models::num::usize}::leading_zeros]:
-    Source: 'core-models/src/core/num/mod.rs', lines 115:12-117:13
+    Source: 'core-models/src/core/num/mod.rs', lines 127:12-129:13
     Visibility: public -/
 def num.Usize.leading_zeros (x : Std.Usize) : Result Std.U32 := do
   rust_primitives.arithmetic.leading_zeros_usize x
 
 /-- [core_models::num::{core_models::num::u8}::ilog2]:
-    Source: 'core-models/src/core/num/mod.rs', lines 120:12-122:13
+    Source: 'core-models/src/core/num/mod.rs', lines 132:12-134:13
     Visibility: public -/
 def num.U8.ilog2 (x : Std.U8) : Result Std.U32 := do
   rust_primitives.arithmetic.ilog2_u8 x
 
 /-- [core_models::num::{core_models::num::u16}::ilog2]:
-    Source: 'core-models/src/core/num/mod.rs', lines 120:12-122:13
+    Source: 'core-models/src/core/num/mod.rs', lines 132:12-134:13
     Visibility: public -/
 def num.U16.ilog2 (x : Std.U16) : Result Std.U32 := do
   rust_primitives.arithmetic.ilog2_u16 x
 
 /-- [core_models::num::{core_models::num::u32}::ilog2]:
-    Source: 'core-models/src/core/num/mod.rs', lines 120:12-122:13
+    Source: 'core-models/src/core/num/mod.rs', lines 132:12-134:13
     Visibility: public -/
 def num.U32.ilog2 (x : Std.U32) : Result Std.U32 := do
   rust_primitives.arithmetic.ilog2_u32 x
 
 /-- [core_models::num::{core_models::num::u64}::ilog2]:
-    Source: 'core-models/src/core/num/mod.rs', lines 120:12-122:13
+    Source: 'core-models/src/core/num/mod.rs', lines 132:12-134:13
     Visibility: public -/
 def num.U64.ilog2 (x : Std.U64) : Result Std.U32 := do
   rust_primitives.arithmetic.ilog2_u64 x
 
 /-- [core_models::num::{core_models::num::u128}::ilog2]:
-    Source: 'core-models/src/core/num/mod.rs', lines 120:12-122:13
+    Source: 'core-models/src/core/num/mod.rs', lines 132:12-134:13
     Visibility: public -/
 def num.U128.ilog2 (x : Std.U128) : Result Std.U32 := do
   rust_primitives.arithmetic.ilog2_u128 x
 
 /-- [core_models::num::{core_models::num::usize}::ilog2]:
-    Source: 'core-models/src/core/num/mod.rs', lines 120:12-122:13
+    Source: 'core-models/src/core/num/mod.rs', lines 132:12-134:13
     Visibility: public -/
 def num.Usize.ilog2 (x : Std.Usize) : Result Std.U32 := do
   rust_primitives.arithmetic.ilog2_usize x
 
 /-- [core_models::num::{core_models::num::u8}::from_str_radix]:
-    Source: 'core-models/src/core/num/mod.rs', lines 125:12-130:13
+    Source: 'core-models/src/core/num/mod.rs', lines 137:12-142:13
     Visibility: public -/
 def num.U8.from_str_radix
   (src : Str) (radix : Std.U32) :
@@ -6828,7 +6828,7 @@ def num.U8.from_str_radix
   panicking.internal.panic (result.Result Std.U8 num.error.ParseIntError)
 
 /-- [core_models::num::{core_models::num::u16}::from_str_radix]:
-    Source: 'core-models/src/core/num/mod.rs', lines 125:12-130:13
+    Source: 'core-models/src/core/num/mod.rs', lines 137:12-142:13
     Visibility: public -/
 def num.U16.from_str_radix
   (src : Str) (radix : Std.U32) :
@@ -6837,7 +6837,7 @@ def num.U16.from_str_radix
   panicking.internal.panic (result.Result Std.U16 num.error.ParseIntError)
 
 /-- [core_models::num::{core_models::num::u32}::from_str_radix]:
-    Source: 'core-models/src/core/num/mod.rs', lines 125:12-130:13
+    Source: 'core-models/src/core/num/mod.rs', lines 137:12-142:13
     Visibility: public -/
 def num.U32.from_str_radix
   (src : Str) (radix : Std.U32) :
@@ -6846,7 +6846,7 @@ def num.U32.from_str_radix
   panicking.internal.panic (result.Result Std.U32 num.error.ParseIntError)
 
 /-- [core_models::num::{core_models::num::u64}::from_str_radix]:
-    Source: 'core-models/src/core/num/mod.rs', lines 125:12-130:13
+    Source: 'core-models/src/core/num/mod.rs', lines 137:12-142:13
     Visibility: public -/
 def num.U64.from_str_radix
   (src : Str) (radix : Std.U32) :
@@ -6855,7 +6855,7 @@ def num.U64.from_str_radix
   panicking.internal.panic (result.Result Std.U64 num.error.ParseIntError)
 
 /-- [core_models::num::{core_models::num::u128}::from_str_radix]:
-    Source: 'core-models/src/core/num/mod.rs', lines 125:12-130:13
+    Source: 'core-models/src/core/num/mod.rs', lines 137:12-142:13
     Visibility: public -/
 def num.U128.from_str_radix
   (src : Str) (radix : Std.U32) :
@@ -6864,7 +6864,7 @@ def num.U128.from_str_radix
   panicking.internal.panic (result.Result Std.U128 num.error.ParseIntError)
 
 /-- [core_models::num::{core_models::num::usize}::from_str_radix]:
-    Source: 'core-models/src/core/num/mod.rs', lines 125:12-130:13
+    Source: 'core-models/src/core/num/mod.rs', lines 137:12-142:13
     Visibility: public -/
 def num.Usize.from_str_radix
   (src : Str) (radix : Std.U32) :
@@ -6873,159 +6873,159 @@ def num.Usize.from_str_radix
   panicking.internal.panic (result.Result Std.Usize num.error.ParseIntError)
 
 /-- [core_models::num::{core_models::num::u8}::from_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 133:12-135:13
+    Source: 'core-models/src/core/num/mod.rs', lines 145:12-147:13
     Visibility: public -/
 def num.U8.from_be_bytes (bytes : Array Std.U8 1#usize) : Result Std.U8 := do
   rust_primitives.arithmetic.from_be_bytes_u8 bytes
 
 /-- [core_models::num::{core_models::num::u16}::from_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 133:12-135:13
+    Source: 'core-models/src/core/num/mod.rs', lines 145:12-147:13
     Visibility: public -/
 def num.U16.from_be_bytes (bytes : Array Std.U8 2#usize) : Result Std.U16 := do
   rust_primitives.arithmetic.from_be_bytes_u16 bytes
 
 /-- [core_models::num::{core_models::num::u32}::from_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 133:12-135:13
+    Source: 'core-models/src/core/num/mod.rs', lines 145:12-147:13
     Visibility: public -/
 def num.U32.from_be_bytes (bytes : Array Std.U8 4#usize) : Result Std.U32 := do
   rust_primitives.arithmetic.from_be_bytes_u32 bytes
 
 /-- [core_models::num::{core_models::num::u64}::from_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 133:12-135:13
+    Source: 'core-models/src/core/num/mod.rs', lines 145:12-147:13
     Visibility: public -/
 def num.U64.from_be_bytes (bytes : Array Std.U8 8#usize) : Result Std.U64 := do
   rust_primitives.arithmetic.from_be_bytes_u64 bytes
 
 /-- [core_models::num::{core_models::num::u128}::from_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 133:12-135:13
+    Source: 'core-models/src/core/num/mod.rs', lines 145:12-147:13
     Visibility: public -/
 def num.U128.from_be_bytes
   (bytes : Array Std.U8 16#usize) : Result Std.U128 := do
   rust_primitives.arithmetic.from_be_bytes_u128 bytes
 
 /-- [core_models::num::{core_models::num::usize}::from_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 133:12-135:13
+    Source: 'core-models/src/core/num/mod.rs', lines 145:12-147:13
     Visibility: public -/
 def num.Usize.from_be_bytes
   (bytes : Array Std.U8 8#usize) : Result Std.Usize := do
   rust_primitives.arithmetic.from_be_bytes_usize bytes
 
 /-- [core_models::num::{core_models::num::u8}::from_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 138:12-140:13
+    Source: 'core-models/src/core/num/mod.rs', lines 150:12-152:13
     Visibility: public -/
 def num.U8.from_le_bytes (bytes : Array Std.U8 1#usize) : Result Std.U8 := do
   rust_primitives.arithmetic.from_le_bytes_u8 bytes
 
 /-- [core_models::num::{core_models::num::u16}::from_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 138:12-140:13
+    Source: 'core-models/src/core/num/mod.rs', lines 150:12-152:13
     Visibility: public -/
 def num.U16.from_le_bytes (bytes : Array Std.U8 2#usize) : Result Std.U16 := do
   rust_primitives.arithmetic.from_le_bytes_u16 bytes
 
 /-- [core_models::num::{core_models::num::u32}::from_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 138:12-140:13
+    Source: 'core-models/src/core/num/mod.rs', lines 150:12-152:13
     Visibility: public -/
 def num.U32.from_le_bytes (bytes : Array Std.U8 4#usize) : Result Std.U32 := do
   rust_primitives.arithmetic.from_le_bytes_u32 bytes
 
 /-- [core_models::num::{core_models::num::u64}::from_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 138:12-140:13
+    Source: 'core-models/src/core/num/mod.rs', lines 150:12-152:13
     Visibility: public -/
 def num.U64.from_le_bytes (bytes : Array Std.U8 8#usize) : Result Std.U64 := do
   rust_primitives.arithmetic.from_le_bytes_u64 bytes
 
 /-- [core_models::num::{core_models::num::u128}::from_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 138:12-140:13
+    Source: 'core-models/src/core/num/mod.rs', lines 150:12-152:13
     Visibility: public -/
 def num.U128.from_le_bytes
   (bytes : Array Std.U8 16#usize) : Result Std.U128 := do
   rust_primitives.arithmetic.from_le_bytes_u128 bytes
 
 /-- [core_models::num::{core_models::num::usize}::from_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 138:12-140:13
+    Source: 'core-models/src/core/num/mod.rs', lines 150:12-152:13
     Visibility: public -/
 def num.Usize.from_le_bytes
   (bytes : Array Std.U8 8#usize) : Result Std.Usize := do
   rust_primitives.arithmetic.from_le_bytes_usize bytes
 
 /-- [core_models::num::{core_models::num::u8}::to_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 143:12-145:13
+    Source: 'core-models/src/core/num/mod.rs', lines 155:12-157:13
     Visibility: public -/
 def num.U8.to_be_bytes (bytes : Std.U8) : Result (Array Std.U8 1#usize) := do
   rust_primitives.arithmetic.to_be_bytes_u8 bytes
 
 /-- [core_models::num::{core_models::num::u16}::to_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 143:12-145:13
+    Source: 'core-models/src/core/num/mod.rs', lines 155:12-157:13
     Visibility: public -/
 def num.U16.to_be_bytes (bytes : Std.U16) : Result (Array Std.U8 2#usize) := do
   rust_primitives.arithmetic.to_be_bytes_u16 bytes
 
 /-- [core_models::num::{core_models::num::u32}::to_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 143:12-145:13
+    Source: 'core-models/src/core/num/mod.rs', lines 155:12-157:13
     Visibility: public -/
 def num.U32.to_be_bytes (bytes : Std.U32) : Result (Array Std.U8 4#usize) := do
   rust_primitives.arithmetic.to_be_bytes_u32 bytes
 
 /-- [core_models::num::{core_models::num::u64}::to_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 143:12-145:13
+    Source: 'core-models/src/core/num/mod.rs', lines 155:12-157:13
     Visibility: public -/
 def num.U64.to_be_bytes (bytes : Std.U64) : Result (Array Std.U8 8#usize) := do
   rust_primitives.arithmetic.to_be_bytes_u64 bytes
 
 /-- [core_models::num::{core_models::num::u128}::to_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 143:12-145:13
+    Source: 'core-models/src/core/num/mod.rs', lines 155:12-157:13
     Visibility: public -/
 def num.U128.to_be_bytes
   (bytes : Std.U128) : Result (Array Std.U8 16#usize) := do
   rust_primitives.arithmetic.to_be_bytes_u128 bytes
 
 /-- [core_models::num::{core_models::num::usize}::to_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 143:12-145:13
+    Source: 'core-models/src/core/num/mod.rs', lines 155:12-157:13
     Visibility: public -/
 def num.Usize.to_be_bytes
   (bytes : Std.Usize) : Result (Array Std.U8 8#usize) := do
   rust_primitives.arithmetic.to_be_bytes_usize bytes
 
 /-- [core_models::num::{core_models::num::u8}::to_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 148:12-150:13
+    Source: 'core-models/src/core/num/mod.rs', lines 160:12-162:13
     Visibility: public -/
 def num.U8.to_le_bytes (bytes : Std.U8) : Result (Array Std.U8 1#usize) := do
   rust_primitives.arithmetic.to_le_bytes_u8 bytes
 
 /-- [core_models::num::{core_models::num::u16}::to_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 148:12-150:13
+    Source: 'core-models/src/core/num/mod.rs', lines 160:12-162:13
     Visibility: public -/
 def num.U16.to_le_bytes (bytes : Std.U16) : Result (Array Std.U8 2#usize) := do
   rust_primitives.arithmetic.to_le_bytes_u16 bytes
 
 /-- [core_models::num::{core_models::num::u32}::to_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 148:12-150:13
+    Source: 'core-models/src/core/num/mod.rs', lines 160:12-162:13
     Visibility: public -/
 def num.U32.to_le_bytes (bytes : Std.U32) : Result (Array Std.U8 4#usize) := do
   rust_primitives.arithmetic.to_le_bytes_u32 bytes
 
 /-- [core_models::num::{core_models::num::u64}::to_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 148:12-150:13
+    Source: 'core-models/src/core/num/mod.rs', lines 160:12-162:13
     Visibility: public -/
 def num.U64.to_le_bytes (bytes : Std.U64) : Result (Array Std.U8 8#usize) := do
   rust_primitives.arithmetic.to_le_bytes_u64 bytes
 
 /-- [core_models::num::{core_models::num::u128}::to_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 148:12-150:13
+    Source: 'core-models/src/core/num/mod.rs', lines 160:12-162:13
     Visibility: public -/
 def num.U128.to_le_bytes
   (bytes : Std.U128) : Result (Array Std.U8 16#usize) := do
   rust_primitives.arithmetic.to_le_bytes_u128 bytes
 
 /-- [core_models::num::{core_models::num::usize}::to_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 148:12-150:13
+    Source: 'core-models/src/core/num/mod.rs', lines 160:12-162:13
     Visibility: public -/
 def num.Usize.to_le_bytes
   (bytes : Std.Usize) : Result (Array Std.U8 8#usize) := do
   rust_primitives.arithmetic.to_le_bytes_usize bytes
 
 /-- [core_models::num::{core_models::num::u8}::checked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 152:12-158:13
+    Source: 'core-models/src/core/num/mod.rs', lines 164:12-170:13
     Visibility: public -/
 def num.U8.checked_div
   (x : Std.U8) (y : Std.U8) : Result (option.Option Std.U8) := do
@@ -7035,7 +7035,7 @@ def num.U8.checked_div
        ok (option.Option.Some i)
 
 /-- [core_models::num::{core_models::num::u16}::checked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 152:12-158:13
+    Source: 'core-models/src/core/num/mod.rs', lines 164:12-170:13
     Visibility: public -/
 def num.U16.checked_div
   (x : Std.U16) (y : Std.U16) : Result (option.Option Std.U16) := do
@@ -7045,7 +7045,7 @@ def num.U16.checked_div
        ok (option.Option.Some i)
 
 /-- [core_models::num::{core_models::num::u32}::checked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 152:12-158:13
+    Source: 'core-models/src/core/num/mod.rs', lines 164:12-170:13
     Visibility: public -/
 def num.U32.checked_div
   (x : Std.U32) (y : Std.U32) : Result (option.Option Std.U32) := do
@@ -7055,7 +7055,7 @@ def num.U32.checked_div
        ok (option.Option.Some i)
 
 /-- [core_models::num::{core_models::num::u64}::checked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 152:12-158:13
+    Source: 'core-models/src/core/num/mod.rs', lines 164:12-170:13
     Visibility: public -/
 def num.U64.checked_div
   (x : Std.U64) (y : Std.U64) : Result (option.Option Std.U64) := do
@@ -7065,7 +7065,7 @@ def num.U64.checked_div
        ok (option.Option.Some i)
 
 /-- [core_models::num::{core_models::num::u128}::checked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 152:12-158:13
+    Source: 'core-models/src/core/num/mod.rs', lines 164:12-170:13
     Visibility: public -/
 def num.U128.checked_div
   (x : Std.U128) (y : Std.U128) : Result (option.Option Std.U128) := do
@@ -7075,7 +7075,7 @@ def num.U128.checked_div
        ok (option.Option.Some i)
 
 /-- [core_models::num::{core_models::num::usize}::checked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 152:12-158:13
+    Source: 'core-models/src/core/num/mod.rs', lines 164:12-170:13
     Visibility: public -/
 def num.Usize.checked_div
   (x : Std.Usize) (y : Std.Usize) : Result (option.Option Std.Usize) := do
@@ -7085,45 +7085,45 @@ def num.Usize.checked_div
        ok (option.Option.Some i)
 
 /-- [core_models::num::{core_models::num::u8}::unchecked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 160:12-162:13
+    Source: 'core-models/src/core/num/mod.rs', lines 172:12-174:13
     Visibility: public -/
 def num.U8.unchecked_div (x : Std.U8) (y : Std.U8) : Result Std.U8 := do
   x / y
 
 /-- [core_models::num::{core_models::num::u16}::unchecked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 160:12-162:13
+    Source: 'core-models/src/core/num/mod.rs', lines 172:12-174:13
     Visibility: public -/
 def num.U16.unchecked_div (x : Std.U16) (y : Std.U16) : Result Std.U16 := do
   x / y
 
 /-- [core_models::num::{core_models::num::u32}::unchecked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 160:12-162:13
+    Source: 'core-models/src/core/num/mod.rs', lines 172:12-174:13
     Visibility: public -/
 def num.U32.unchecked_div (x : Std.U32) (y : Std.U32) : Result Std.U32 := do
   x / y
 
 /-- [core_models::num::{core_models::num::u64}::unchecked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 160:12-162:13
+    Source: 'core-models/src/core/num/mod.rs', lines 172:12-174:13
     Visibility: public -/
 def num.U64.unchecked_div (x : Std.U64) (y : Std.U64) : Result Std.U64 := do
   x / y
 
 /-- [core_models::num::{core_models::num::u128}::unchecked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 160:12-162:13
+    Source: 'core-models/src/core/num/mod.rs', lines 172:12-174:13
     Visibility: public -/
 def num.U128.unchecked_div
   (x : Std.U128) (y : Std.U128) : Result Std.U128 := do
   x / y
 
 /-- [core_models::num::{core_models::num::usize}::unchecked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 160:12-162:13
+    Source: 'core-models/src/core/num/mod.rs', lines 172:12-174:13
     Visibility: public -/
 def num.Usize.unchecked_div
   (x : Std.Usize) (y : Std.Usize) : Result Std.Usize := do
   x / y
 
 /-- [core_models::num::{core_models::num::u8}::checked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 164:12-170:13
+    Source: 'core-models/src/core/num/mod.rs', lines 176:12-182:13
     Visibility: public -/
 def num.U8.checked_rem
   (x : Std.U8) (y : Std.U8) : Result (option.Option Std.U8) := do
@@ -7133,7 +7133,7 @@ def num.U8.checked_rem
        ok (option.Option.Some i)
 
 /-- [core_models::num::{core_models::num::u16}::checked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 164:12-170:13
+    Source: 'core-models/src/core/num/mod.rs', lines 176:12-182:13
     Visibility: public -/
 def num.U16.checked_rem
   (x : Std.U16) (y : Std.U16) : Result (option.Option Std.U16) := do
@@ -7143,7 +7143,7 @@ def num.U16.checked_rem
        ok (option.Option.Some i)
 
 /-- [core_models::num::{core_models::num::u32}::checked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 164:12-170:13
+    Source: 'core-models/src/core/num/mod.rs', lines 176:12-182:13
     Visibility: public -/
 def num.U32.checked_rem
   (x : Std.U32) (y : Std.U32) : Result (option.Option Std.U32) := do
@@ -7153,7 +7153,7 @@ def num.U32.checked_rem
        ok (option.Option.Some i)
 
 /-- [core_models::num::{core_models::num::u64}::checked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 164:12-170:13
+    Source: 'core-models/src/core/num/mod.rs', lines 176:12-182:13
     Visibility: public -/
 def num.U64.checked_rem
   (x : Std.U64) (y : Std.U64) : Result (option.Option Std.U64) := do
@@ -7163,7 +7163,7 @@ def num.U64.checked_rem
        ok (option.Option.Some i)
 
 /-- [core_models::num::{core_models::num::u128}::checked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 164:12-170:13
+    Source: 'core-models/src/core/num/mod.rs', lines 176:12-182:13
     Visibility: public -/
 def num.U128.checked_rem
   (x : Std.U128) (y : Std.U128) : Result (option.Option Std.U128) := do
@@ -7173,7 +7173,7 @@ def num.U128.checked_rem
        ok (option.Option.Some i)
 
 /-- [core_models::num::{core_models::num::usize}::checked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 164:12-170:13
+    Source: 'core-models/src/core/num/mod.rs', lines 176:12-182:13
     Visibility: public -/
 def num.Usize.checked_rem
   (x : Std.Usize) (y : Std.Usize) : Result (option.Option Std.Usize) := do
@@ -7183,45 +7183,45 @@ def num.Usize.checked_rem
        ok (option.Option.Some i)
 
 /-- [core_models::num::{core_models::num::u8}::unchecked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 172:12-174:13
+    Source: 'core-models/src/core/num/mod.rs', lines 184:12-186:13
     Visibility: public -/
 def num.U8.unchecked_rem (x : Std.U8) (y : Std.U8) : Result Std.U8 := do
   x % y
 
 /-- [core_models::num::{core_models::num::u16}::unchecked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 172:12-174:13
+    Source: 'core-models/src/core/num/mod.rs', lines 184:12-186:13
     Visibility: public -/
 def num.U16.unchecked_rem (x : Std.U16) (y : Std.U16) : Result Std.U16 := do
   x % y
 
 /-- [core_models::num::{core_models::num::u32}::unchecked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 172:12-174:13
+    Source: 'core-models/src/core/num/mod.rs', lines 184:12-186:13
     Visibility: public -/
 def num.U32.unchecked_rem (x : Std.U32) (y : Std.U32) : Result Std.U32 := do
   x % y
 
 /-- [core_models::num::{core_models::num::u64}::unchecked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 172:12-174:13
+    Source: 'core-models/src/core/num/mod.rs', lines 184:12-186:13
     Visibility: public -/
 def num.U64.unchecked_rem (x : Std.U64) (y : Std.U64) : Result Std.U64 := do
   x % y
 
 /-- [core_models::num::{core_models::num::u128}::unchecked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 172:12-174:13
+    Source: 'core-models/src/core/num/mod.rs', lines 184:12-186:13
     Visibility: public -/
 def num.U128.unchecked_rem
   (x : Std.U128) (y : Std.U128) : Result Std.U128 := do
   x % y
 
 /-- [core_models::num::{core_models::num::usize}::unchecked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 172:12-174:13
+    Source: 'core-models/src/core/num/mod.rs', lines 184:12-186:13
     Visibility: public -/
 def num.Usize.unchecked_rem
   (x : Std.Usize) (y : Std.Usize) : Result Std.Usize := do
   x % y
 
 /-- [core_models::num::{core_models::num::u8}::is_power_of_two]:
-    Source: 'core-models/src/core/num/mod.rs', lines 176:12-178:13
+    Source: 'core-models/src/core/num/mod.rs', lines 188:12-190:13
     Visibility: public -/
 def num.U8.is_power_of_two (x : Std.U8) : Result Bool := do
   if x != 0#u8
@@ -7231,7 +7231,7 @@ def num.U8.is_power_of_two (x : Std.U8) : Result Bool := do
   else ok false
 
 /-- [core_models::num::{core_models::num::u16}::is_power_of_two]:
-    Source: 'core-models/src/core/num/mod.rs', lines 176:12-178:13
+    Source: 'core-models/src/core/num/mod.rs', lines 188:12-190:13
     Visibility: public -/
 def num.U16.is_power_of_two (x : Std.U16) : Result Bool := do
   if x != 0#u16
@@ -7241,7 +7241,7 @@ def num.U16.is_power_of_two (x : Std.U16) : Result Bool := do
   else ok false
 
 /-- [core_models::num::{core_models::num::u32}::is_power_of_two]:
-    Source: 'core-models/src/core/num/mod.rs', lines 176:12-178:13
+    Source: 'core-models/src/core/num/mod.rs', lines 188:12-190:13
     Visibility: public -/
 def num.U32.is_power_of_two (x : Std.U32) : Result Bool := do
   if x != 0#u32
@@ -7251,7 +7251,7 @@ def num.U32.is_power_of_two (x : Std.U32) : Result Bool := do
   else ok false
 
 /-- [core_models::num::{core_models::num::u64}::is_power_of_two]:
-    Source: 'core-models/src/core/num/mod.rs', lines 176:12-178:13
+    Source: 'core-models/src/core/num/mod.rs', lines 188:12-190:13
     Visibility: public -/
 def num.U64.is_power_of_two (x : Std.U64) : Result Bool := do
   if x != 0#u64
@@ -7261,7 +7261,7 @@ def num.U64.is_power_of_two (x : Std.U64) : Result Bool := do
   else ok false
 
 /-- [core_models::num::{core_models::num::u128}::is_power_of_two]:
-    Source: 'core-models/src/core/num/mod.rs', lines 176:12-178:13
+    Source: 'core-models/src/core/num/mod.rs', lines 188:12-190:13
     Visibility: public -/
 def num.U128.is_power_of_two (x : Std.U128) : Result Bool := do
   if x != 0#u128
@@ -7271,7 +7271,7 @@ def num.U128.is_power_of_two (x : Std.U128) : Result Bool := do
   else ok false
 
 /-- [core_models::num::{core_models::num::usize}::is_power_of_two]:
-    Source: 'core-models/src/core/num/mod.rs', lines 176:12-178:13
+    Source: 'core-models/src/core/num/mod.rs', lines 188:12-190:13
     Visibility: public -/
 def num.Usize.is_power_of_two (x : Std.Usize) : Result Bool := do
   if x != 0#usize
@@ -7282,28 +7282,28 @@ def num.Usize.is_power_of_two (x : Std.Usize) : Result Bool := do
 
 /-
 /-- [core_models::num::{core_models::num::i8}::MIN]
-    Source: 'core-models/src/core/num/mod.rs', lines 213:12-213:40
+    Source: 'core-models/src/core/num/mod.rs', lines 225:12-225:40
     Visibility: public -/
 @[global_simps, irreducible] def num.I8.MIN : Std.I8 := (-128)#i8
 -/  -- provided by CoreModels.Core.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::i16}::MIN]
-    Source: 'core-models/src/core/num/mod.rs', lines 213:12-213:40
+    Source: 'core-models/src/core/num/mod.rs', lines 225:12-225:40
     Visibility: public -/
 @[global_simps, irreducible] def num.I16.MIN : Std.I16 := (-32768)#i16
 -/  -- provided by CoreModels.Core.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::i32}::MIN]
-    Source: 'core-models/src/core/num/mod.rs', lines 213:12-213:40
+    Source: 'core-models/src/core/num/mod.rs', lines 225:12-225:40
     Visibility: public -/
 @[global_simps, irreducible] def num.I32.MIN : Std.I32 := (-2147483648)#i32
 -/  -- provided by CoreModels.Core.FunsPrologue
 
 /-
 /-- [core_models::num::{core_models::num::i64}::MIN]
-    Source: 'core-models/src/core/num/mod.rs', lines 213:12-213:40
+    Source: 'core-models/src/core/num/mod.rs', lines 225:12-225:40
     Visibility: public -/
 @[global_simps, irreducible]
 def num.I64.MIN : Std.I64 := (-9223372036854775808)#i64
@@ -7311,7 +7311,7 @@ def num.I64.MIN : Std.I64 := (-9223372036854775808)#i64
 
 /-
 /-- [core_models::num::{core_models::num::i128}::MIN]
-    Source: 'core-models/src/core/num/mod.rs', lines 213:12-213:40
+    Source: 'core-models/src/core/num/mod.rs', lines 225:12-225:40
     Visibility: public -/
 @[global_simps, irreducible]
 def num.I128.MIN : Std.I128 := (-170141183460469231731687303715884105728)#i128
@@ -7319,89 +7319,89 @@ def num.I128.MIN : Std.I128 := (-170141183460469231731687303715884105728)#i128
 
 /-
 /-- [core_models::num::{core_models::num::isize}::MIN]
-    Source: 'core-models/src/core/num/mod.rs', lines 213:12-213:40
+    Source: 'core-models/src/core/num/mod.rs', lines 225:12-225:40
     Visibility: public -/
 @[global_simps, irreducible]
 def num.Isize.MIN : Result Std.Isize := rust_primitives.arithmetic.ISIZE_MIN
 -/  -- provided by CoreModels.Core.FunsPrologue
 
 /-- [core_models::num::{core_models::num::i8}::BITS]
-    Source: 'core-models/src/core/num/mod.rs', lines 217:12-217:57
+    Source: 'core-models/src/core/num/mod.rs', lines 229:12-229:57
     Visibility: public -/
 @[global_simps, irreducible] def num.I8.BITS : Std.U32 := 8#u32
 
 /-- [core_models::num::{core_models::num::i16}::BITS]
-    Source: 'core-models/src/core/num/mod.rs', lines 217:12-217:57
+    Source: 'core-models/src/core/num/mod.rs', lines 229:12-229:57
     Visibility: public -/
 @[global_simps, irreducible] def num.I16.BITS : Std.U32 := 16#u32
 
 /-- [core_models::num::{core_models::num::i32}::BITS]
-    Source: 'core-models/src/core/num/mod.rs', lines 217:12-217:57
+    Source: 'core-models/src/core/num/mod.rs', lines 229:12-229:57
     Visibility: public -/
 @[global_simps, irreducible] def num.I32.BITS : Std.U32 := 32#u32
 
 /-- [core_models::num::{core_models::num::i64}::BITS]
-    Source: 'core-models/src/core/num/mod.rs', lines 217:12-217:57
+    Source: 'core-models/src/core/num/mod.rs', lines 229:12-229:57
     Visibility: public -/
 @[global_simps, irreducible] def num.I64.BITS : Std.U32 := 64#u32
 
 /-- [core_models::num::{core_models::num::i128}::BITS]
-    Source: 'core-models/src/core/num/mod.rs', lines 217:12-217:57
+    Source: 'core-models/src/core/num/mod.rs', lines 229:12-229:57
     Visibility: public -/
 @[global_simps, irreducible] def num.I128.BITS : Std.U32 := 128#u32
 
 /-- [core_models::num::{core_models::num::isize}::BITS]
-    Source: 'core-models/src/core/num/mod.rs', lines 217:12-217:57
+    Source: 'core-models/src/core/num/mod.rs', lines 229:12-229:57
     Visibility: public -/
 @[global_simps, irreducible]
 def num.Isize.BITS : Result Std.U32 := rust_primitives.arithmetic.SIZE_BITS
 
 /-- [core_models::num::{core_models::num::i128}::wrapping_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 218:12-220:13
+    Source: 'core-models/src/core/num/mod.rs', lines 230:12-232:13
     Visibility: public -/
 def num.I128.wrapping_add (x : Std.I128) (y : Std.I128) : Result Std.I128 := do
   rust_primitives.arithmetic.wrapping_add_i128 x y
 
 /-- [core_models::num::{core_models::num::i8}::saturating_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 222:12-224:13
+    Source: 'core-models/src/core/num/mod.rs', lines 234:12-236:13
     Visibility: public -/
 def num.I8.saturating_add (x : Std.I8) (y : Std.I8) : Result Std.I8 := do
   rust_primitives.arithmetic.saturating_add_i8 x y
 
 /-- [core_models::num::{core_models::num::i16}::saturating_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 222:12-224:13
+    Source: 'core-models/src/core/num/mod.rs', lines 234:12-236:13
     Visibility: public -/
 def num.I16.saturating_add (x : Std.I16) (y : Std.I16) : Result Std.I16 := do
   rust_primitives.arithmetic.saturating_add_i16 x y
 
 /-- [core_models::num::{core_models::num::i32}::saturating_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 222:12-224:13
+    Source: 'core-models/src/core/num/mod.rs', lines 234:12-236:13
     Visibility: public -/
 def num.I32.saturating_add (x : Std.I32) (y : Std.I32) : Result Std.I32 := do
   rust_primitives.arithmetic.saturating_add_i32 x y
 
 /-- [core_models::num::{core_models::num::i64}::saturating_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 222:12-224:13
+    Source: 'core-models/src/core/num/mod.rs', lines 234:12-236:13
     Visibility: public -/
 def num.I64.saturating_add (x : Std.I64) (y : Std.I64) : Result Std.I64 := do
   rust_primitives.arithmetic.saturating_add_i64 x y
 
 /-- [core_models::num::{core_models::num::i128}::saturating_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 222:12-224:13
+    Source: 'core-models/src/core/num/mod.rs', lines 234:12-236:13
     Visibility: public -/
 def num.I128.saturating_add
   (x : Std.I128) (y : Std.I128) : Result Std.I128 := do
   rust_primitives.arithmetic.saturating_add_i128 x y
 
 /-- [core_models::num::{core_models::num::isize}::saturating_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 222:12-224:13
+    Source: 'core-models/src/core/num/mod.rs', lines 234:12-236:13
     Visibility: public -/
 def num.Isize.saturating_add
   (x : Std.Isize) (y : Std.Isize) : Result Std.Isize := do
   rust_primitives.arithmetic.saturating_add_isize x y
 
 /-- [core_models::num::{core_models::num::i8}::checked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 230:12-233:13
+    Source: 'core-models/src/core/num/mod.rs', lines 242:12-249:13
     Visibility: public -/
 def num.I8.checked_add
   (x : Std.I8) (y : Std.I8) : Result (option.Option Std.I8) := do
@@ -7411,7 +7411,7 @@ def num.I8.checked_add
   else ok (option.Option.Some result)
 
 /-- [core_models::num::{core_models::num::i16}::checked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 230:12-233:13
+    Source: 'core-models/src/core/num/mod.rs', lines 242:12-249:13
     Visibility: public -/
 def num.I16.checked_add
   (x : Std.I16) (y : Std.I16) : Result (option.Option Std.I16) := do
@@ -7421,7 +7421,7 @@ def num.I16.checked_add
   else ok (option.Option.Some result)
 
 /-- [core_models::num::{core_models::num::i32}::checked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 230:12-233:13
+    Source: 'core-models/src/core/num/mod.rs', lines 242:12-249:13
     Visibility: public -/
 def num.I32.checked_add
   (x : Std.I32) (y : Std.I32) : Result (option.Option Std.I32) := do
@@ -7431,7 +7431,7 @@ def num.I32.checked_add
   else ok (option.Option.Some result)
 
 /-- [core_models::num::{core_models::num::i64}::checked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 230:12-233:13
+    Source: 'core-models/src/core/num/mod.rs', lines 242:12-249:13
     Visibility: public -/
 def num.I64.checked_add
   (x : Std.I64) (y : Std.I64) : Result (option.Option Std.I64) := do
@@ -7441,7 +7441,7 @@ def num.I64.checked_add
   else ok (option.Option.Some result)
 
 /-- [core_models::num::{core_models::num::isize}::checked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 230:12-233:13
+    Source: 'core-models/src/core/num/mod.rs', lines 242:12-249:13
     Visibility: public -/
 def num.Isize.checked_add
   (x : Std.Isize) (y : Std.Isize) : Result (option.Option Std.Isize) := do
@@ -7451,89 +7451,89 @@ def num.Isize.checked_add
   else ok (option.Option.Some result)
 
 /-- [core_models::num::{core_models::num::i8}::unchecked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 235:12-237:13
+    Source: 'core-models/src/core/num/mod.rs', lines 251:12-253:13
     Visibility: public -/
 def num.I8.unchecked_add (x : Std.I8) (y : Std.I8) : Result Std.I8 := do
   x + y
 
 /-- [core_models::num::{core_models::num::i16}::unchecked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 235:12-237:13
+    Source: 'core-models/src/core/num/mod.rs', lines 251:12-253:13
     Visibility: public -/
 def num.I16.unchecked_add (x : Std.I16) (y : Std.I16) : Result Std.I16 := do
   x + y
 
 /-- [core_models::num::{core_models::num::i32}::unchecked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 235:12-237:13
+    Source: 'core-models/src/core/num/mod.rs', lines 251:12-253:13
     Visibility: public -/
 def num.I32.unchecked_add (x : Std.I32) (y : Std.I32) : Result Std.I32 := do
   x + y
 
 /-- [core_models::num::{core_models::num::i64}::unchecked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 235:12-237:13
+    Source: 'core-models/src/core/num/mod.rs', lines 251:12-253:13
     Visibility: public -/
 def num.I64.unchecked_add (x : Std.I64) (y : Std.I64) : Result Std.I64 := do
   x + y
 
 /-- [core_models::num::{core_models::num::i128}::unchecked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 235:12-237:13
+    Source: 'core-models/src/core/num/mod.rs', lines 251:12-253:13
     Visibility: public -/
 def num.I128.unchecked_add
   (x : Std.I128) (y : Std.I128) : Result Std.I128 := do
   x + y
 
 /-- [core_models::num::{core_models::num::isize}::unchecked_add]:
-    Source: 'core-models/src/core/num/mod.rs', lines 235:12-237:13
+    Source: 'core-models/src/core/num/mod.rs', lines 251:12-253:13
     Visibility: public -/
 def num.Isize.unchecked_add
   (x : Std.Isize) (y : Std.Isize) : Result Std.Isize := do
   x + y
 
 /-- [core_models::num::{core_models::num::i128}::wrapping_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 239:12-241:13
+    Source: 'core-models/src/core/num/mod.rs', lines 255:12-257:13
     Visibility: public -/
 def num.I128.wrapping_sub (x : Std.I128) (y : Std.I128) : Result Std.I128 := do
   rust_primitives.arithmetic.wrapping_sub_i128 x y
 
 /-- [core_models::num::{core_models::num::i8}::saturating_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 243:12-245:13
+    Source: 'core-models/src/core/num/mod.rs', lines 259:12-261:13
     Visibility: public -/
 def num.I8.saturating_sub (x : Std.I8) (y : Std.I8) : Result Std.I8 := do
   rust_primitives.arithmetic.saturating_sub_i8 x y
 
 /-- [core_models::num::{core_models::num::i16}::saturating_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 243:12-245:13
+    Source: 'core-models/src/core/num/mod.rs', lines 259:12-261:13
     Visibility: public -/
 def num.I16.saturating_sub (x : Std.I16) (y : Std.I16) : Result Std.I16 := do
   rust_primitives.arithmetic.saturating_sub_i16 x y
 
 /-- [core_models::num::{core_models::num::i32}::saturating_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 243:12-245:13
+    Source: 'core-models/src/core/num/mod.rs', lines 259:12-261:13
     Visibility: public -/
 def num.I32.saturating_sub (x : Std.I32) (y : Std.I32) : Result Std.I32 := do
   rust_primitives.arithmetic.saturating_sub_i32 x y
 
 /-- [core_models::num::{core_models::num::i64}::saturating_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 243:12-245:13
+    Source: 'core-models/src/core/num/mod.rs', lines 259:12-261:13
     Visibility: public -/
 def num.I64.saturating_sub (x : Std.I64) (y : Std.I64) : Result Std.I64 := do
   rust_primitives.arithmetic.saturating_sub_i64 x y
 
 /-- [core_models::num::{core_models::num::i128}::saturating_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 243:12-245:13
+    Source: 'core-models/src/core/num/mod.rs', lines 259:12-261:13
     Visibility: public -/
 def num.I128.saturating_sub
   (x : Std.I128) (y : Std.I128) : Result Std.I128 := do
   rust_primitives.arithmetic.saturating_sub_i128 x y
 
 /-- [core_models::num::{core_models::num::isize}::saturating_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 243:12-245:13
+    Source: 'core-models/src/core/num/mod.rs', lines 259:12-261:13
     Visibility: public -/
 def num.Isize.saturating_sub
   (x : Std.Isize) (y : Std.Isize) : Result Std.Isize := do
   rust_primitives.arithmetic.saturating_sub_isize x y
 
 /-- [core_models::num::{core_models::num::i8}::checked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 251:12-254:13
+    Source: 'core-models/src/core/num/mod.rs', lines 267:12-274:13
     Visibility: public -/
 def num.I8.checked_sub
   (x : Std.I8) (y : Std.I8) : Result (option.Option Std.I8) := do
@@ -7543,7 +7543,7 @@ def num.I8.checked_sub
   else ok (option.Option.Some result)
 
 /-- [core_models::num::{core_models::num::i16}::checked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 251:12-254:13
+    Source: 'core-models/src/core/num/mod.rs', lines 267:12-274:13
     Visibility: public -/
 def num.I16.checked_sub
   (x : Std.I16) (y : Std.I16) : Result (option.Option Std.I16) := do
@@ -7553,7 +7553,7 @@ def num.I16.checked_sub
   else ok (option.Option.Some result)
 
 /-- [core_models::num::{core_models::num::i32}::checked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 251:12-254:13
+    Source: 'core-models/src/core/num/mod.rs', lines 267:12-274:13
     Visibility: public -/
 def num.I32.checked_sub
   (x : Std.I32) (y : Std.I32) : Result (option.Option Std.I32) := do
@@ -7563,7 +7563,7 @@ def num.I32.checked_sub
   else ok (option.Option.Some result)
 
 /-- [core_models::num::{core_models::num::i64}::checked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 251:12-254:13
+    Source: 'core-models/src/core/num/mod.rs', lines 267:12-274:13
     Visibility: public -/
 def num.I64.checked_sub
   (x : Std.I64) (y : Std.I64) : Result (option.Option Std.I64) := do
@@ -7573,7 +7573,7 @@ def num.I64.checked_sub
   else ok (option.Option.Some result)
 
 /-- [core_models::num::{core_models::num::isize}::checked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 251:12-254:13
+    Source: 'core-models/src/core/num/mod.rs', lines 267:12-274:13
     Visibility: public -/
 def num.Isize.checked_sub
   (x : Std.Isize) (y : Std.Isize) : Result (option.Option Std.Isize) := do
@@ -7583,162 +7583,162 @@ def num.Isize.checked_sub
   else ok (option.Option.Some result)
 
 /-- [core_models::num::{core_models::num::i8}::unchecked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 256:12-258:13
+    Source: 'core-models/src/core/num/mod.rs', lines 276:12-278:13
     Visibility: public -/
 def num.I8.unchecked_sub (x : Std.I8) (y : Std.I8) : Result Std.I8 := do
   x - y
 
 /-- [core_models::num::{core_models::num::i16}::unchecked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 256:12-258:13
+    Source: 'core-models/src/core/num/mod.rs', lines 276:12-278:13
     Visibility: public -/
 def num.I16.unchecked_sub (x : Std.I16) (y : Std.I16) : Result Std.I16 := do
   x - y
 
 /-- [core_models::num::{core_models::num::i32}::unchecked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 256:12-258:13
+    Source: 'core-models/src/core/num/mod.rs', lines 276:12-278:13
     Visibility: public -/
 def num.I32.unchecked_sub (x : Std.I32) (y : Std.I32) : Result Std.I32 := do
   x - y
 
 /-- [core_models::num::{core_models::num::i64}::unchecked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 256:12-258:13
+    Source: 'core-models/src/core/num/mod.rs', lines 276:12-278:13
     Visibility: public -/
 def num.I64.unchecked_sub (x : Std.I64) (y : Std.I64) : Result Std.I64 := do
   x - y
 
 /-- [core_models::num::{core_models::num::i128}::unchecked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 256:12-258:13
+    Source: 'core-models/src/core/num/mod.rs', lines 276:12-278:13
     Visibility: public -/
 def num.I128.unchecked_sub
   (x : Std.I128) (y : Std.I128) : Result Std.I128 := do
   x - y
 
 /-- [core_models::num::{core_models::num::isize}::unchecked_sub]:
-    Source: 'core-models/src/core/num/mod.rs', lines 256:12-258:13
+    Source: 'core-models/src/core/num/mod.rs', lines 276:12-278:13
     Visibility: public -/
 def num.Isize.unchecked_sub
   (x : Std.Isize) (y : Std.Isize) : Result Std.Isize := do
   x - y
 
 /-- [core_models::num::{core_models::num::i8}::wrapping_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 272:12-274:13
+    Source: 'core-models/src/core/num/mod.rs', lines 300:12-302:13
     Visibility: public -/
 def num.I8.wrapping_mul (x : Std.I8) (y : Std.I8) : Result Std.I8 := do
   rust_primitives.arithmetic.wrapping_mul_i8 x y
 
 /-- [core_models::num::{core_models::num::i16}::wrapping_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 272:12-274:13
+    Source: 'core-models/src/core/num/mod.rs', lines 300:12-302:13
     Visibility: public -/
 def num.I16.wrapping_mul (x : Std.I16) (y : Std.I16) : Result Std.I16 := do
   rust_primitives.arithmetic.wrapping_mul_i16 x y
 
 /-- [core_models::num::{core_models::num::i32}::wrapping_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 272:12-274:13
+    Source: 'core-models/src/core/num/mod.rs', lines 300:12-302:13
     Visibility: public -/
 def num.I32.wrapping_mul (x : Std.I32) (y : Std.I32) : Result Std.I32 := do
   rust_primitives.arithmetic.wrapping_mul_i32 x y
 
 /-- [core_models::num::{core_models::num::i64}::wrapping_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 272:12-274:13
+    Source: 'core-models/src/core/num/mod.rs', lines 300:12-302:13
     Visibility: public -/
 def num.I64.wrapping_mul (x : Std.I64) (y : Std.I64) : Result Std.I64 := do
   rust_primitives.arithmetic.wrapping_mul_i64 x y
 
 /-- [core_models::num::{core_models::num::i128}::wrapping_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 272:12-274:13
+    Source: 'core-models/src/core/num/mod.rs', lines 300:12-302:13
     Visibility: public -/
 def num.I128.wrapping_mul (x : Std.I128) (y : Std.I128) : Result Std.I128 := do
   rust_primitives.arithmetic.wrapping_mul_i128 x y
 
 /-- [core_models::num::{core_models::num::isize}::wrapping_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 272:12-274:13
+    Source: 'core-models/src/core/num/mod.rs', lines 300:12-302:13
     Visibility: public -/
 def num.Isize.wrapping_mul
   (x : Std.Isize) (y : Std.Isize) : Result Std.Isize := do
   rust_primitives.arithmetic.wrapping_mul_isize x y
 
 /-- [core_models::num::{core_models::num::i8}::saturating_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 276:12-278:13
+    Source: 'core-models/src/core/num/mod.rs', lines 304:12-306:13
     Visibility: public -/
 def num.I8.saturating_mul (x : Std.I8) (y : Std.I8) : Result Std.I8 := do
   rust_primitives.arithmetic.saturating_mul_i8 x y
 
 /-- [core_models::num::{core_models::num::i16}::saturating_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 276:12-278:13
+    Source: 'core-models/src/core/num/mod.rs', lines 304:12-306:13
     Visibility: public -/
 def num.I16.saturating_mul (x : Std.I16) (y : Std.I16) : Result Std.I16 := do
   rust_primitives.arithmetic.saturating_mul_i16 x y
 
 /-- [core_models::num::{core_models::num::i32}::saturating_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 276:12-278:13
+    Source: 'core-models/src/core/num/mod.rs', lines 304:12-306:13
     Visibility: public -/
 def num.I32.saturating_mul (x : Std.I32) (y : Std.I32) : Result Std.I32 := do
   rust_primitives.arithmetic.saturating_mul_i32 x y
 
 /-- [core_models::num::{core_models::num::i64}::saturating_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 276:12-278:13
+    Source: 'core-models/src/core/num/mod.rs', lines 304:12-306:13
     Visibility: public -/
 def num.I64.saturating_mul (x : Std.I64) (y : Std.I64) : Result Std.I64 := do
   rust_primitives.arithmetic.saturating_mul_i64 x y
 
 /-- [core_models::num::{core_models::num::i128}::saturating_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 276:12-278:13
+    Source: 'core-models/src/core/num/mod.rs', lines 304:12-306:13
     Visibility: public -/
 def num.I128.saturating_mul
   (x : Std.I128) (y : Std.I128) : Result Std.I128 := do
   rust_primitives.arithmetic.saturating_mul_i128 x y
 
 /-- [core_models::num::{core_models::num::isize}::saturating_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 276:12-278:13
+    Source: 'core-models/src/core/num/mod.rs', lines 304:12-306:13
     Visibility: public -/
 def num.Isize.saturating_mul
   (x : Std.Isize) (y : Std.Isize) : Result Std.Isize := do
   rust_primitives.arithmetic.saturating_mul_isize x y
 
 /-- [core_models::num::{core_models::num::i8}::overflowing_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 280:12-282:13
+    Source: 'core-models/src/core/num/mod.rs', lines 308:12-310:13
     Visibility: public -/
 def num.I8.overflowing_mul
   (x : Std.I8) (y : Std.I8) : Result (Std.I8 × Bool) := do
   rust_primitives.arithmetic.overflowing_mul_i8 x y
 
 /-- [core_models::num::{core_models::num::i16}::overflowing_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 280:12-282:13
+    Source: 'core-models/src/core/num/mod.rs', lines 308:12-310:13
     Visibility: public -/
 def num.I16.overflowing_mul
   (x : Std.I16) (y : Std.I16) : Result (Std.I16 × Bool) := do
   rust_primitives.arithmetic.overflowing_mul_i16 x y
 
 /-- [core_models::num::{core_models::num::i32}::overflowing_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 280:12-282:13
+    Source: 'core-models/src/core/num/mod.rs', lines 308:12-310:13
     Visibility: public -/
 def num.I32.overflowing_mul
   (x : Std.I32) (y : Std.I32) : Result (Std.I32 × Bool) := do
   rust_primitives.arithmetic.overflowing_mul_i32 x y
 
 /-- [core_models::num::{core_models::num::i64}::overflowing_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 280:12-282:13
+    Source: 'core-models/src/core/num/mod.rs', lines 308:12-310:13
     Visibility: public -/
 def num.I64.overflowing_mul
   (x : Std.I64) (y : Std.I64) : Result (Std.I64 × Bool) := do
   rust_primitives.arithmetic.overflowing_mul_i64 x y
 
 /-- [core_models::num::{core_models::num::i128}::overflowing_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 280:12-282:13
+    Source: 'core-models/src/core/num/mod.rs', lines 308:12-310:13
     Visibility: public -/
 def num.I128.overflowing_mul
   (x : Std.I128) (y : Std.I128) : Result (Std.I128 × Bool) := do
   rust_primitives.arithmetic.overflowing_mul_i128 x y
 
 /-- [core_models::num::{core_models::num::isize}::overflowing_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 280:12-282:13
+    Source: 'core-models/src/core/num/mod.rs', lines 308:12-310:13
     Visibility: public -/
 def num.Isize.overflowing_mul
   (x : Std.Isize) (y : Std.Isize) : Result (Std.Isize × Bool) := do
   rust_primitives.arithmetic.overflowing_mul_isize x y
 
 /-- [core_models::num::{core_models::num::i8}::checked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 284:12-287:13
+    Source: 'core-models/src/core/num/mod.rs', lines 312:12-319:13
     Visibility: public -/
 def num.I8.checked_mul
   (x : Std.I8) (y : Std.I8) : Result (option.Option Std.I8) := do
@@ -7748,7 +7748,7 @@ def num.I8.checked_mul
   else ok (option.Option.Some result)
 
 /-- [core_models::num::{core_models::num::i16}::checked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 284:12-287:13
+    Source: 'core-models/src/core/num/mod.rs', lines 312:12-319:13
     Visibility: public -/
 def num.I16.checked_mul
   (x : Std.I16) (y : Std.I16) : Result (option.Option Std.I16) := do
@@ -7758,7 +7758,7 @@ def num.I16.checked_mul
   else ok (option.Option.Some result)
 
 /-- [core_models::num::{core_models::num::i32}::checked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 284:12-287:13
+    Source: 'core-models/src/core/num/mod.rs', lines 312:12-319:13
     Visibility: public -/
 def num.I32.checked_mul
   (x : Std.I32) (y : Std.I32) : Result (option.Option Std.I32) := do
@@ -7768,7 +7768,7 @@ def num.I32.checked_mul
   else ok (option.Option.Some result)
 
 /-- [core_models::num::{core_models::num::i64}::checked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 284:12-287:13
+    Source: 'core-models/src/core/num/mod.rs', lines 312:12-319:13
     Visibility: public -/
 def num.I64.checked_mul
   (x : Std.I64) (y : Std.I64) : Result (option.Option Std.I64) := do
@@ -7778,7 +7778,7 @@ def num.I64.checked_mul
   else ok (option.Option.Some result)
 
 /-- [core_models::num::{core_models::num::i128}::checked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 284:12-287:13
+    Source: 'core-models/src/core/num/mod.rs', lines 312:12-319:13
     Visibility: public -/
 def num.I128.checked_mul
   (x : Std.I128) (y : Std.I128) : Result (option.Option Std.I128) := do
@@ -7788,7 +7788,7 @@ def num.I128.checked_mul
   else ok (option.Option.Some result)
 
 /-- [core_models::num::{core_models::num::isize}::checked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 284:12-287:13
+    Source: 'core-models/src/core/num/mod.rs', lines 312:12-319:13
     Visibility: public -/
 def num.Isize.checked_mul
   (x : Std.Isize) (y : Std.Isize) : Result (option.Option Std.Isize) := do
@@ -7798,336 +7798,336 @@ def num.Isize.checked_mul
   else ok (option.Option.Some result)
 
 /-- [core_models::num::{core_models::num::i8}::unchecked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 289:12-291:13
+    Source: 'core-models/src/core/num/mod.rs', lines 321:12-323:13
     Visibility: public -/
 def num.I8.unchecked_mul (x : Std.I8) (y : Std.I8) : Result Std.I8 := do
   x * y
 
 /-- [core_models::num::{core_models::num::i16}::unchecked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 289:12-291:13
+    Source: 'core-models/src/core/num/mod.rs', lines 321:12-323:13
     Visibility: public -/
 def num.I16.unchecked_mul (x : Std.I16) (y : Std.I16) : Result Std.I16 := do
   x * y
 
 /-- [core_models::num::{core_models::num::i32}::unchecked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 289:12-291:13
+    Source: 'core-models/src/core/num/mod.rs', lines 321:12-323:13
     Visibility: public -/
 def num.I32.unchecked_mul (x : Std.I32) (y : Std.I32) : Result Std.I32 := do
   x * y
 
 /-- [core_models::num::{core_models::num::i64}::unchecked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 289:12-291:13
+    Source: 'core-models/src/core/num/mod.rs', lines 321:12-323:13
     Visibility: public -/
 def num.I64.unchecked_mul (x : Std.I64) (y : Std.I64) : Result Std.I64 := do
   x * y
 
 /-- [core_models::num::{core_models::num::i128}::unchecked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 289:12-291:13
+    Source: 'core-models/src/core/num/mod.rs', lines 321:12-323:13
     Visibility: public -/
 def num.I128.unchecked_mul
   (x : Std.I128) (y : Std.I128) : Result Std.I128 := do
   x * y
 
 /-- [core_models::num::{core_models::num::isize}::unchecked_mul]:
-    Source: 'core-models/src/core/num/mod.rs', lines 289:12-291:13
+    Source: 'core-models/src/core/num/mod.rs', lines 321:12-323:13
     Visibility: public -/
 def num.Isize.unchecked_mul
   (x : Std.Isize) (y : Std.Isize) : Result Std.Isize := do
   x * y
 
 /-- [core_models::num::{core_models::num::i8}::rem_euclid]:
-    Source: 'core-models/src/core/num/mod.rs', lines 294:12-296:13
+    Source: 'core-models/src/core/num/mod.rs', lines 326:12-328:13
     Visibility: public -/
 def num.I8.rem_euclid (x : Std.I8) (y : Std.I8) : Result Std.I8 := do
   rust_primitives.arithmetic.rem_euclid_i8 x y
 
 /-- [core_models::num::{core_models::num::i16}::rem_euclid]:
-    Source: 'core-models/src/core/num/mod.rs', lines 294:12-296:13
+    Source: 'core-models/src/core/num/mod.rs', lines 326:12-328:13
     Visibility: public -/
 def num.I16.rem_euclid (x : Std.I16) (y : Std.I16) : Result Std.I16 := do
   rust_primitives.arithmetic.rem_euclid_i16 x y
 
 /-- [core_models::num::{core_models::num::i32}::rem_euclid]:
-    Source: 'core-models/src/core/num/mod.rs', lines 294:12-296:13
+    Source: 'core-models/src/core/num/mod.rs', lines 326:12-328:13
     Visibility: public -/
 def num.I32.rem_euclid (x : Std.I32) (y : Std.I32) : Result Std.I32 := do
   rust_primitives.arithmetic.rem_euclid_i32 x y
 
 /-- [core_models::num::{core_models::num::i64}::rem_euclid]:
-    Source: 'core-models/src/core/num/mod.rs', lines 294:12-296:13
+    Source: 'core-models/src/core/num/mod.rs', lines 326:12-328:13
     Visibility: public -/
 def num.I64.rem_euclid (x : Std.I64) (y : Std.I64) : Result Std.I64 := do
   rust_primitives.arithmetic.rem_euclid_i64 x y
 
 /-- [core_models::num::{core_models::num::i128}::rem_euclid]:
-    Source: 'core-models/src/core/num/mod.rs', lines 294:12-296:13
+    Source: 'core-models/src/core/num/mod.rs', lines 326:12-328:13
     Visibility: public -/
 def num.I128.rem_euclid (x : Std.I128) (y : Std.I128) : Result Std.I128 := do
   rust_primitives.arithmetic.rem_euclid_i128 x y
 
 /-- [core_models::num::{core_models::num::isize}::rem_euclid]:
-    Source: 'core-models/src/core/num/mod.rs', lines 294:12-296:13
+    Source: 'core-models/src/core/num/mod.rs', lines 326:12-328:13
     Visibility: public -/
 def num.Isize.rem_euclid
   (x : Std.Isize) (y : Std.Isize) : Result Std.Isize := do
   rust_primitives.arithmetic.rem_euclid_isize x y
 
 /-- [core_models::num::{core_models::num::i8}::pow]:
-    Source: 'core-models/src/core/num/mod.rs', lines 298:12-300:13
+    Source: 'core-models/src/core/num/mod.rs', lines 330:12-332:13
     Visibility: public -/
 def num.I8.pow (x : Std.I8) (exp : Std.U32) : Result Std.I8 := do
   rust_primitives.arithmetic.pow_i8 x exp
 
 /-- [core_models::num::{core_models::num::i16}::pow]:
-    Source: 'core-models/src/core/num/mod.rs', lines 298:12-300:13
+    Source: 'core-models/src/core/num/mod.rs', lines 330:12-332:13
     Visibility: public -/
 def num.I16.pow (x : Std.I16) (exp : Std.U32) : Result Std.I16 := do
   rust_primitives.arithmetic.pow_i16 x exp
 
 /-- [core_models::num::{core_models::num::i32}::pow]:
-    Source: 'core-models/src/core/num/mod.rs', lines 298:12-300:13
+    Source: 'core-models/src/core/num/mod.rs', lines 330:12-332:13
     Visibility: public -/
 def num.I32.pow (x : Std.I32) (exp : Std.U32) : Result Std.I32 := do
   rust_primitives.arithmetic.pow_i32 x exp
 
 /-- [core_models::num::{core_models::num::i64}::pow]:
-    Source: 'core-models/src/core/num/mod.rs', lines 298:12-300:13
+    Source: 'core-models/src/core/num/mod.rs', lines 330:12-332:13
     Visibility: public -/
 def num.I64.pow (x : Std.I64) (exp : Std.U32) : Result Std.I64 := do
   rust_primitives.arithmetic.pow_i64 x exp
 
 /-- [core_models::num::{core_models::num::i128}::pow]:
-    Source: 'core-models/src/core/num/mod.rs', lines 298:12-300:13
+    Source: 'core-models/src/core/num/mod.rs', lines 330:12-332:13
     Visibility: public -/
 def num.I128.pow (x : Std.I128) (exp : Std.U32) : Result Std.I128 := do
   rust_primitives.arithmetic.pow_i128 x exp
 
 /-- [core_models::num::{core_models::num::isize}::pow]:
-    Source: 'core-models/src/core/num/mod.rs', lines 298:12-300:13
+    Source: 'core-models/src/core/num/mod.rs', lines 330:12-332:13
     Visibility: public -/
 def num.Isize.pow (x : Std.Isize) (exp : Std.U32) : Result Std.Isize := do
   rust_primitives.arithmetic.pow_isize x exp
 
 /-- [core_models::num::{core_models::num::i8}::count_ones]:
-    Source: 'core-models/src/core/num/mod.rs', lines 302:12-304:13
+    Source: 'core-models/src/core/num/mod.rs', lines 334:12-336:13
     Visibility: public -/
 def num.I8.count_ones (x : Std.I8) : Result Std.U32 := do
   rust_primitives.arithmetic.count_ones_i8 x
 
 /-- [core_models::num::{core_models::num::i16}::count_ones]:
-    Source: 'core-models/src/core/num/mod.rs', lines 302:12-304:13
+    Source: 'core-models/src/core/num/mod.rs', lines 334:12-336:13
     Visibility: public -/
 def num.I16.count_ones (x : Std.I16) : Result Std.U32 := do
   rust_primitives.arithmetic.count_ones_i16 x
 
 /-- [core_models::num::{core_models::num::i32}::count_ones]:
-    Source: 'core-models/src/core/num/mod.rs', lines 302:12-304:13
+    Source: 'core-models/src/core/num/mod.rs', lines 334:12-336:13
     Visibility: public -/
 def num.I32.count_ones (x : Std.I32) : Result Std.U32 := do
   rust_primitives.arithmetic.count_ones_i32 x
 
 /-- [core_models::num::{core_models::num::i64}::count_ones]:
-    Source: 'core-models/src/core/num/mod.rs', lines 302:12-304:13
+    Source: 'core-models/src/core/num/mod.rs', lines 334:12-336:13
     Visibility: public -/
 def num.I64.count_ones (x : Std.I64) : Result Std.U32 := do
   rust_primitives.arithmetic.count_ones_i64 x
 
 /-- [core_models::num::{core_models::num::i128}::count_ones]:
-    Source: 'core-models/src/core/num/mod.rs', lines 302:12-304:13
+    Source: 'core-models/src/core/num/mod.rs', lines 334:12-336:13
     Visibility: public -/
 def num.I128.count_ones (x : Std.I128) : Result Std.U32 := do
   rust_primitives.arithmetic.count_ones_i128 x
 
 /-- [core_models::num::{core_models::num::isize}::count_ones]:
-    Source: 'core-models/src/core/num/mod.rs', lines 302:12-304:13
+    Source: 'core-models/src/core/num/mod.rs', lines 334:12-336:13
     Visibility: public -/
 def num.Isize.count_ones (x : Std.Isize) : Result Std.U32 := do
   rust_primitives.arithmetic.count_ones_isize x
 
 /-- [core_models::num::{core_models::num::i8}::abs]:
-    Source: 'core-models/src/core/num/mod.rs', lines 307:12-309:13
+    Source: 'core-models/src/core/num/mod.rs', lines 339:12-341:13
     Visibility: public -/
 def num.I8.abs (x : Std.I8) : Result Std.I8 := do
   rust_primitives.arithmetic.abs_i8 x
 
 /-- [core_models::num::{core_models::num::i16}::abs]:
-    Source: 'core-models/src/core/num/mod.rs', lines 307:12-309:13
+    Source: 'core-models/src/core/num/mod.rs', lines 339:12-341:13
     Visibility: public -/
 def num.I16.abs (x : Std.I16) : Result Std.I16 := do
   rust_primitives.arithmetic.abs_i16 x
 
 /-- [core_models::num::{core_models::num::i32}::abs]:
-    Source: 'core-models/src/core/num/mod.rs', lines 307:12-309:13
+    Source: 'core-models/src/core/num/mod.rs', lines 339:12-341:13
     Visibility: public -/
 def num.I32.abs (x : Std.I32) : Result Std.I32 := do
   rust_primitives.arithmetic.abs_i32 x
 
 /-- [core_models::num::{core_models::num::i64}::abs]:
-    Source: 'core-models/src/core/num/mod.rs', lines 307:12-309:13
+    Source: 'core-models/src/core/num/mod.rs', lines 339:12-341:13
     Visibility: public -/
 def num.I64.abs (x : Std.I64) : Result Std.I64 := do
   rust_primitives.arithmetic.abs_i64 x
 
 /-- [core_models::num::{core_models::num::i128}::abs]:
-    Source: 'core-models/src/core/num/mod.rs', lines 307:12-309:13
+    Source: 'core-models/src/core/num/mod.rs', lines 339:12-341:13
     Visibility: public -/
 def num.I128.abs (x : Std.I128) : Result Std.I128 := do
   rust_primitives.arithmetic.abs_i128 x
 
 /-- [core_models::num::{core_models::num::isize}::abs]:
-    Source: 'core-models/src/core/num/mod.rs', lines 307:12-309:13
+    Source: 'core-models/src/core/num/mod.rs', lines 339:12-341:13
     Visibility: public -/
 def num.Isize.abs (x : Std.Isize) : Result Std.Isize := do
   rust_primitives.arithmetic.abs_isize x
 
 /-- [core_models::num::{core_models::num::i8}::rotate_right]:
-    Source: 'core-models/src/core/num/mod.rs', lines 312:12-314:13
+    Source: 'core-models/src/core/num/mod.rs', lines 344:12-346:13
     Visibility: public -/
 def num.I8.rotate_right (x : Std.I8) (n : Std.U32) : Result Std.I8 := do
   rust_primitives.arithmetic.rotate_right_i8 x n
 
 /-- [core_models::num::{core_models::num::i16}::rotate_right]:
-    Source: 'core-models/src/core/num/mod.rs', lines 312:12-314:13
+    Source: 'core-models/src/core/num/mod.rs', lines 344:12-346:13
     Visibility: public -/
 def num.I16.rotate_right (x : Std.I16) (n : Std.U32) : Result Std.I16 := do
   rust_primitives.arithmetic.rotate_right_i16 x n
 
 /-- [core_models::num::{core_models::num::i32}::rotate_right]:
-    Source: 'core-models/src/core/num/mod.rs', lines 312:12-314:13
+    Source: 'core-models/src/core/num/mod.rs', lines 344:12-346:13
     Visibility: public -/
 def num.I32.rotate_right (x : Std.I32) (n : Std.U32) : Result Std.I32 := do
   rust_primitives.arithmetic.rotate_right_i32 x n
 
 /-- [core_models::num::{core_models::num::i64}::rotate_right]:
-    Source: 'core-models/src/core/num/mod.rs', lines 312:12-314:13
+    Source: 'core-models/src/core/num/mod.rs', lines 344:12-346:13
     Visibility: public -/
 def num.I64.rotate_right (x : Std.I64) (n : Std.U32) : Result Std.I64 := do
   rust_primitives.arithmetic.rotate_right_i64 x n
 
 /-- [core_models::num::{core_models::num::i128}::rotate_right]:
-    Source: 'core-models/src/core/num/mod.rs', lines 312:12-314:13
+    Source: 'core-models/src/core/num/mod.rs', lines 344:12-346:13
     Visibility: public -/
 def num.I128.rotate_right (x : Std.I128) (n : Std.U32) : Result Std.I128 := do
   rust_primitives.arithmetic.rotate_right_i128 x n
 
 /-- [core_models::num::{core_models::num::isize}::rotate_right]:
-    Source: 'core-models/src/core/num/mod.rs', lines 312:12-314:13
+    Source: 'core-models/src/core/num/mod.rs', lines 344:12-346:13
     Visibility: public -/
 def num.Isize.rotate_right
   (x : Std.Isize) (n : Std.U32) : Result Std.Isize := do
   rust_primitives.arithmetic.rotate_right_isize x n
 
 /-- [core_models::num::{core_models::num::i8}::rotate_left]:
-    Source: 'core-models/src/core/num/mod.rs', lines 317:12-319:13
+    Source: 'core-models/src/core/num/mod.rs', lines 349:12-351:13
     Visibility: public -/
 def num.I8.rotate_left (x : Std.I8) (n : Std.U32) : Result Std.I8 := do
   rust_primitives.arithmetic.rotate_left_i8 x n
 
 /-- [core_models::num::{core_models::num::i16}::rotate_left]:
-    Source: 'core-models/src/core/num/mod.rs', lines 317:12-319:13
+    Source: 'core-models/src/core/num/mod.rs', lines 349:12-351:13
     Visibility: public -/
 def num.I16.rotate_left (x : Std.I16) (n : Std.U32) : Result Std.I16 := do
   rust_primitives.arithmetic.rotate_left_i16 x n
 
 /-- [core_models::num::{core_models::num::i32}::rotate_left]:
-    Source: 'core-models/src/core/num/mod.rs', lines 317:12-319:13
+    Source: 'core-models/src/core/num/mod.rs', lines 349:12-351:13
     Visibility: public -/
 def num.I32.rotate_left (x : Std.I32) (n : Std.U32) : Result Std.I32 := do
   rust_primitives.arithmetic.rotate_left_i32 x n
 
 /-- [core_models::num::{core_models::num::i64}::rotate_left]:
-    Source: 'core-models/src/core/num/mod.rs', lines 317:12-319:13
+    Source: 'core-models/src/core/num/mod.rs', lines 349:12-351:13
     Visibility: public -/
 def num.I64.rotate_left (x : Std.I64) (n : Std.U32) : Result Std.I64 := do
   rust_primitives.arithmetic.rotate_left_i64 x n
 
 /-- [core_models::num::{core_models::num::i128}::rotate_left]:
-    Source: 'core-models/src/core/num/mod.rs', lines 317:12-319:13
+    Source: 'core-models/src/core/num/mod.rs', lines 349:12-351:13
     Visibility: public -/
 def num.I128.rotate_left (x : Std.I128) (n : Std.U32) : Result Std.I128 := do
   rust_primitives.arithmetic.rotate_left_i128 x n
 
 /-- [core_models::num::{core_models::num::isize}::rotate_left]:
-    Source: 'core-models/src/core/num/mod.rs', lines 317:12-319:13
+    Source: 'core-models/src/core/num/mod.rs', lines 349:12-351:13
     Visibility: public -/
 def num.Isize.rotate_left
   (x : Std.Isize) (n : Std.U32) : Result Std.Isize := do
   rust_primitives.arithmetic.rotate_left_isize x n
 
 /-- [core_models::num::{core_models::num::i8}::leading_zeros]:
-    Source: 'core-models/src/core/num/mod.rs', lines 322:12-324:13
+    Source: 'core-models/src/core/num/mod.rs', lines 354:12-356:13
     Visibility: public -/
 def num.I8.leading_zeros (x : Std.I8) : Result Std.U32 := do
   rust_primitives.arithmetic.leading_zeros_i8 x
 
 /-- [core_models::num::{core_models::num::i16}::leading_zeros]:
-    Source: 'core-models/src/core/num/mod.rs', lines 322:12-324:13
+    Source: 'core-models/src/core/num/mod.rs', lines 354:12-356:13
     Visibility: public -/
 def num.I16.leading_zeros (x : Std.I16) : Result Std.U32 := do
   rust_primitives.arithmetic.leading_zeros_i16 x
 
 /-- [core_models::num::{core_models::num::i32}::leading_zeros]:
-    Source: 'core-models/src/core/num/mod.rs', lines 322:12-324:13
+    Source: 'core-models/src/core/num/mod.rs', lines 354:12-356:13
     Visibility: public -/
 def num.I32.leading_zeros (x : Std.I32) : Result Std.U32 := do
   rust_primitives.arithmetic.leading_zeros_i32 x
 
 /-- [core_models::num::{core_models::num::i64}::leading_zeros]:
-    Source: 'core-models/src/core/num/mod.rs', lines 322:12-324:13
+    Source: 'core-models/src/core/num/mod.rs', lines 354:12-356:13
     Visibility: public -/
 def num.I64.leading_zeros (x : Std.I64) : Result Std.U32 := do
   rust_primitives.arithmetic.leading_zeros_i64 x
 
 /-- [core_models::num::{core_models::num::i128}::leading_zeros]:
-    Source: 'core-models/src/core/num/mod.rs', lines 322:12-324:13
+    Source: 'core-models/src/core/num/mod.rs', lines 354:12-356:13
     Visibility: public -/
 def num.I128.leading_zeros (x : Std.I128) : Result Std.U32 := do
   rust_primitives.arithmetic.leading_zeros_i128 x
 
 /-- [core_models::num::{core_models::num::isize}::leading_zeros]:
-    Source: 'core-models/src/core/num/mod.rs', lines 322:12-324:13
+    Source: 'core-models/src/core/num/mod.rs', lines 354:12-356:13
     Visibility: public -/
 def num.Isize.leading_zeros (x : Std.Isize) : Result Std.U32 := do
   rust_primitives.arithmetic.leading_zeros_isize x
 
 /-- [core_models::num::{core_models::num::i8}::ilog2]:
-    Source: 'core-models/src/core/num/mod.rs', lines 327:12-329:13
+    Source: 'core-models/src/core/num/mod.rs', lines 359:12-361:13
     Visibility: public -/
 def num.I8.ilog2 (x : Std.I8) : Result Std.U32 := do
   rust_primitives.arithmetic.ilog2_i8 x
 
 /-- [core_models::num::{core_models::num::i16}::ilog2]:
-    Source: 'core-models/src/core/num/mod.rs', lines 327:12-329:13
+    Source: 'core-models/src/core/num/mod.rs', lines 359:12-361:13
     Visibility: public -/
 def num.I16.ilog2 (x : Std.I16) : Result Std.U32 := do
   rust_primitives.arithmetic.ilog2_i16 x
 
 /-- [core_models::num::{core_models::num::i32}::ilog2]:
-    Source: 'core-models/src/core/num/mod.rs', lines 327:12-329:13
+    Source: 'core-models/src/core/num/mod.rs', lines 359:12-361:13
     Visibility: public -/
 def num.I32.ilog2 (x : Std.I32) : Result Std.U32 := do
   rust_primitives.arithmetic.ilog2_i32 x
 
 /-- [core_models::num::{core_models::num::i64}::ilog2]:
-    Source: 'core-models/src/core/num/mod.rs', lines 327:12-329:13
+    Source: 'core-models/src/core/num/mod.rs', lines 359:12-361:13
     Visibility: public -/
 def num.I64.ilog2 (x : Std.I64) : Result Std.U32 := do
   rust_primitives.arithmetic.ilog2_i64 x
 
 /-- [core_models::num::{core_models::num::i128}::ilog2]:
-    Source: 'core-models/src/core/num/mod.rs', lines 327:12-329:13
+    Source: 'core-models/src/core/num/mod.rs', lines 359:12-361:13
     Visibility: public -/
 def num.I128.ilog2 (x : Std.I128) : Result Std.U32 := do
   rust_primitives.arithmetic.ilog2_i128 x
 
 /-- [core_models::num::{core_models::num::isize}::ilog2]:
-    Source: 'core-models/src/core/num/mod.rs', lines 327:12-329:13
+    Source: 'core-models/src/core/num/mod.rs', lines 359:12-361:13
     Visibility: public -/
 def num.Isize.ilog2 (x : Std.Isize) : Result Std.U32 := do
   rust_primitives.arithmetic.ilog2_isize x
 
 /-- [core_models::num::{core_models::num::i8}::from_str_radix]:
-    Source: 'core-models/src/core/num/mod.rs', lines 332:12-337:13
+    Source: 'core-models/src/core/num/mod.rs', lines 364:12-369:13
     Visibility: public -/
 def num.I8.from_str_radix
   (src : Str) (radix : Std.U32) :
@@ -8136,7 +8136,7 @@ def num.I8.from_str_radix
   panicking.internal.panic (result.Result Std.I8 num.error.ParseIntError)
 
 /-- [core_models::num::{core_models::num::i16}::from_str_radix]:
-    Source: 'core-models/src/core/num/mod.rs', lines 332:12-337:13
+    Source: 'core-models/src/core/num/mod.rs', lines 364:12-369:13
     Visibility: public -/
 def num.I16.from_str_radix
   (src : Str) (radix : Std.U32) :
@@ -8145,7 +8145,7 @@ def num.I16.from_str_radix
   panicking.internal.panic (result.Result Std.I16 num.error.ParseIntError)
 
 /-- [core_models::num::{core_models::num::i32}::from_str_radix]:
-    Source: 'core-models/src/core/num/mod.rs', lines 332:12-337:13
+    Source: 'core-models/src/core/num/mod.rs', lines 364:12-369:13
     Visibility: public -/
 def num.I32.from_str_radix
   (src : Str) (radix : Std.U32) :
@@ -8154,7 +8154,7 @@ def num.I32.from_str_radix
   panicking.internal.panic (result.Result Std.I32 num.error.ParseIntError)
 
 /-- [core_models::num::{core_models::num::i64}::from_str_radix]:
-    Source: 'core-models/src/core/num/mod.rs', lines 332:12-337:13
+    Source: 'core-models/src/core/num/mod.rs', lines 364:12-369:13
     Visibility: public -/
 def num.I64.from_str_radix
   (src : Str) (radix : Std.U32) :
@@ -8163,7 +8163,7 @@ def num.I64.from_str_radix
   panicking.internal.panic (result.Result Std.I64 num.error.ParseIntError)
 
 /-- [core_models::num::{core_models::num::i128}::from_str_radix]:
-    Source: 'core-models/src/core/num/mod.rs', lines 332:12-337:13
+    Source: 'core-models/src/core/num/mod.rs', lines 364:12-369:13
     Visibility: public -/
 def num.I128.from_str_radix
   (src : Str) (radix : Std.U32) :
@@ -8172,7 +8172,7 @@ def num.I128.from_str_radix
   panicking.internal.panic (result.Result Std.I128 num.error.ParseIntError)
 
 /-- [core_models::num::{core_models::num::isize}::from_str_radix]:
-    Source: 'core-models/src/core/num/mod.rs', lines 332:12-337:13
+    Source: 'core-models/src/core/num/mod.rs', lines 364:12-369:13
     Visibility: public -/
 def num.Isize.from_str_radix
   (src : Str) (radix : Std.U32) :
@@ -8181,159 +8181,159 @@ def num.Isize.from_str_radix
   panicking.internal.panic (result.Result Std.Isize num.error.ParseIntError)
 
 /-- [core_models::num::{core_models::num::i8}::from_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 340:12-342:13
+    Source: 'core-models/src/core/num/mod.rs', lines 372:12-374:13
     Visibility: public -/
 def num.I8.from_be_bytes (bytes : Array Std.U8 1#usize) : Result Std.I8 := do
   rust_primitives.arithmetic.from_be_bytes_i8 bytes
 
 /-- [core_models::num::{core_models::num::i16}::from_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 340:12-342:13
+    Source: 'core-models/src/core/num/mod.rs', lines 372:12-374:13
     Visibility: public -/
 def num.I16.from_be_bytes (bytes : Array Std.U8 2#usize) : Result Std.I16 := do
   rust_primitives.arithmetic.from_be_bytes_i16 bytes
 
 /-- [core_models::num::{core_models::num::i32}::from_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 340:12-342:13
+    Source: 'core-models/src/core/num/mod.rs', lines 372:12-374:13
     Visibility: public -/
 def num.I32.from_be_bytes (bytes : Array Std.U8 4#usize) : Result Std.I32 := do
   rust_primitives.arithmetic.from_be_bytes_i32 bytes
 
 /-- [core_models::num::{core_models::num::i64}::from_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 340:12-342:13
+    Source: 'core-models/src/core/num/mod.rs', lines 372:12-374:13
     Visibility: public -/
 def num.I64.from_be_bytes (bytes : Array Std.U8 8#usize) : Result Std.I64 := do
   rust_primitives.arithmetic.from_be_bytes_i64 bytes
 
 /-- [core_models::num::{core_models::num::i128}::from_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 340:12-342:13
+    Source: 'core-models/src/core/num/mod.rs', lines 372:12-374:13
     Visibility: public -/
 def num.I128.from_be_bytes
   (bytes : Array Std.U8 16#usize) : Result Std.I128 := do
   rust_primitives.arithmetic.from_be_bytes_i128 bytes
 
 /-- [core_models::num::{core_models::num::isize}::from_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 340:12-342:13
+    Source: 'core-models/src/core/num/mod.rs', lines 372:12-374:13
     Visibility: public -/
 def num.Isize.from_be_bytes
   (bytes : Array Std.U8 8#usize) : Result Std.Isize := do
   rust_primitives.arithmetic.from_be_bytes_isize bytes
 
 /-- [core_models::num::{core_models::num::i8}::from_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 345:12-347:13
+    Source: 'core-models/src/core/num/mod.rs', lines 377:12-379:13
     Visibility: public -/
 def num.I8.from_le_bytes (bytes : Array Std.U8 1#usize) : Result Std.I8 := do
   rust_primitives.arithmetic.from_le_bytes_i8 bytes
 
 /-- [core_models::num::{core_models::num::i16}::from_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 345:12-347:13
+    Source: 'core-models/src/core/num/mod.rs', lines 377:12-379:13
     Visibility: public -/
 def num.I16.from_le_bytes (bytes : Array Std.U8 2#usize) : Result Std.I16 := do
   rust_primitives.arithmetic.from_le_bytes_i16 bytes
 
 /-- [core_models::num::{core_models::num::i32}::from_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 345:12-347:13
+    Source: 'core-models/src/core/num/mod.rs', lines 377:12-379:13
     Visibility: public -/
 def num.I32.from_le_bytes (bytes : Array Std.U8 4#usize) : Result Std.I32 := do
   rust_primitives.arithmetic.from_le_bytes_i32 bytes
 
 /-- [core_models::num::{core_models::num::i64}::from_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 345:12-347:13
+    Source: 'core-models/src/core/num/mod.rs', lines 377:12-379:13
     Visibility: public -/
 def num.I64.from_le_bytes (bytes : Array Std.U8 8#usize) : Result Std.I64 := do
   rust_primitives.arithmetic.from_le_bytes_i64 bytes
 
 /-- [core_models::num::{core_models::num::i128}::from_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 345:12-347:13
+    Source: 'core-models/src/core/num/mod.rs', lines 377:12-379:13
     Visibility: public -/
 def num.I128.from_le_bytes
   (bytes : Array Std.U8 16#usize) : Result Std.I128 := do
   rust_primitives.arithmetic.from_le_bytes_i128 bytes
 
 /-- [core_models::num::{core_models::num::isize}::from_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 345:12-347:13
+    Source: 'core-models/src/core/num/mod.rs', lines 377:12-379:13
     Visibility: public -/
 def num.Isize.from_le_bytes
   (bytes : Array Std.U8 8#usize) : Result Std.Isize := do
   rust_primitives.arithmetic.from_le_bytes_isize bytes
 
 /-- [core_models::num::{core_models::num::i8}::to_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 350:12-352:13
+    Source: 'core-models/src/core/num/mod.rs', lines 382:12-384:13
     Visibility: public -/
 def num.I8.to_be_bytes (bytes : Std.I8) : Result (Array Std.U8 1#usize) := do
   rust_primitives.arithmetic.to_be_bytes_i8 bytes
 
 /-- [core_models::num::{core_models::num::i16}::to_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 350:12-352:13
+    Source: 'core-models/src/core/num/mod.rs', lines 382:12-384:13
     Visibility: public -/
 def num.I16.to_be_bytes (bytes : Std.I16) : Result (Array Std.U8 2#usize) := do
   rust_primitives.arithmetic.to_be_bytes_i16 bytes
 
 /-- [core_models::num::{core_models::num::i32}::to_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 350:12-352:13
+    Source: 'core-models/src/core/num/mod.rs', lines 382:12-384:13
     Visibility: public -/
 def num.I32.to_be_bytes (bytes : Std.I32) : Result (Array Std.U8 4#usize) := do
   rust_primitives.arithmetic.to_be_bytes_i32 bytes
 
 /-- [core_models::num::{core_models::num::i64}::to_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 350:12-352:13
+    Source: 'core-models/src/core/num/mod.rs', lines 382:12-384:13
     Visibility: public -/
 def num.I64.to_be_bytes (bytes : Std.I64) : Result (Array Std.U8 8#usize) := do
   rust_primitives.arithmetic.to_be_bytes_i64 bytes
 
 /-- [core_models::num::{core_models::num::i128}::to_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 350:12-352:13
+    Source: 'core-models/src/core/num/mod.rs', lines 382:12-384:13
     Visibility: public -/
 def num.I128.to_be_bytes
   (bytes : Std.I128) : Result (Array Std.U8 16#usize) := do
   rust_primitives.arithmetic.to_be_bytes_i128 bytes
 
 /-- [core_models::num::{core_models::num::isize}::to_be_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 350:12-352:13
+    Source: 'core-models/src/core/num/mod.rs', lines 382:12-384:13
     Visibility: public -/
 def num.Isize.to_be_bytes
   (bytes : Std.Isize) : Result (Array Std.U8 8#usize) := do
   rust_primitives.arithmetic.to_be_bytes_isize bytes
 
 /-- [core_models::num::{core_models::num::i8}::to_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 355:12-357:13
+    Source: 'core-models/src/core/num/mod.rs', lines 387:12-389:13
     Visibility: public -/
 def num.I8.to_le_bytes (bytes : Std.I8) : Result (Array Std.U8 1#usize) := do
   rust_primitives.arithmetic.to_le_bytes_i8 bytes
 
 /-- [core_models::num::{core_models::num::i16}::to_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 355:12-357:13
+    Source: 'core-models/src/core/num/mod.rs', lines 387:12-389:13
     Visibility: public -/
 def num.I16.to_le_bytes (bytes : Std.I16) : Result (Array Std.U8 2#usize) := do
   rust_primitives.arithmetic.to_le_bytes_i16 bytes
 
 /-- [core_models::num::{core_models::num::i32}::to_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 355:12-357:13
+    Source: 'core-models/src/core/num/mod.rs', lines 387:12-389:13
     Visibility: public -/
 def num.I32.to_le_bytes (bytes : Std.I32) : Result (Array Std.U8 4#usize) := do
   rust_primitives.arithmetic.to_le_bytes_i32 bytes
 
 /-- [core_models::num::{core_models::num::i64}::to_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 355:12-357:13
+    Source: 'core-models/src/core/num/mod.rs', lines 387:12-389:13
     Visibility: public -/
 def num.I64.to_le_bytes (bytes : Std.I64) : Result (Array Std.U8 8#usize) := do
   rust_primitives.arithmetic.to_le_bytes_i64 bytes
 
 /-- [core_models::num::{core_models::num::i128}::to_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 355:12-357:13
+    Source: 'core-models/src/core/num/mod.rs', lines 387:12-389:13
     Visibility: public -/
 def num.I128.to_le_bytes
   (bytes : Std.I128) : Result (Array Std.U8 16#usize) := do
   rust_primitives.arithmetic.to_le_bytes_i128 bytes
 
 /-- [core_models::num::{core_models::num::isize}::to_le_bytes]:
-    Source: 'core-models/src/core/num/mod.rs', lines 355:12-357:13
+    Source: 'core-models/src/core/num/mod.rs', lines 387:12-389:13
     Visibility: public -/
 def num.Isize.to_le_bytes
   (bytes : Std.Isize) : Result (Array Std.U8 8#usize) := do
   rust_primitives.arithmetic.to_le_bytes_isize bytes
 
 /-- [core_models::num::{core_models::num::i8}::checked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 359:12-365:13
+    Source: 'core-models/src/core/num/mod.rs', lines 391:12-397:13
     Visibility: public -/
 def num.I8.checked_div
   (x : Std.I8) (y : Std.I8) : Result (option.Option Std.I8) := do
@@ -8350,7 +8350,7 @@ def num.I8.checked_div
          ok (option.Option.Some i)
 
 /-- [core_models::num::{core_models::num::i16}::checked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 359:12-365:13
+    Source: 'core-models/src/core/num/mod.rs', lines 391:12-397:13
     Visibility: public -/
 def num.I16.checked_div
   (x : Std.I16) (y : Std.I16) : Result (option.Option Std.I16) := do
@@ -8367,7 +8367,7 @@ def num.I16.checked_div
          ok (option.Option.Some i)
 
 /-- [core_models::num::{core_models::num::i32}::checked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 359:12-365:13
+    Source: 'core-models/src/core/num/mod.rs', lines 391:12-397:13
     Visibility: public -/
 def num.I32.checked_div
   (x : Std.I32) (y : Std.I32) : Result (option.Option Std.I32) := do
@@ -8384,7 +8384,7 @@ def num.I32.checked_div
          ok (option.Option.Some i)
 
 /-- [core_models::num::{core_models::num::i64}::checked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 359:12-365:13
+    Source: 'core-models/src/core/num/mod.rs', lines 391:12-397:13
     Visibility: public -/
 def num.I64.checked_div
   (x : Std.I64) (y : Std.I64) : Result (option.Option Std.I64) := do
@@ -8401,7 +8401,7 @@ def num.I64.checked_div
          ok (option.Option.Some i)
 
 /-- [core_models::num::{core_models::num::i128}::checked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 359:12-365:13
+    Source: 'core-models/src/core/num/mod.rs', lines 391:12-397:13
     Visibility: public -/
 def num.I128.checked_div
   (x : Std.I128) (y : Std.I128) : Result (option.Option Std.I128) := do
@@ -8418,7 +8418,7 @@ def num.I128.checked_div
          ok (option.Option.Some i)
 
 /-- [core_models::num::{core_models::num::isize}::checked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 359:12-365:13
+    Source: 'core-models/src/core/num/mod.rs', lines 391:12-397:13
     Visibility: public -/
 def num.Isize.checked_div
   (x : Std.Isize) (y : Std.Isize) : Result (option.Option Std.Isize) := do
@@ -8436,45 +8436,45 @@ def num.Isize.checked_div
          ok (option.Option.Some i1)
 
 /-- [core_models::num::{core_models::num::i8}::unchecked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 367:12-369:13
+    Source: 'core-models/src/core/num/mod.rs', lines 399:12-401:13
     Visibility: public -/
 def num.I8.unchecked_div (x : Std.I8) (y : Std.I8) : Result Std.I8 := do
   x / y
 
 /-- [core_models::num::{core_models::num::i16}::unchecked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 367:12-369:13
+    Source: 'core-models/src/core/num/mod.rs', lines 399:12-401:13
     Visibility: public -/
 def num.I16.unchecked_div (x : Std.I16) (y : Std.I16) : Result Std.I16 := do
   x / y
 
 /-- [core_models::num::{core_models::num::i32}::unchecked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 367:12-369:13
+    Source: 'core-models/src/core/num/mod.rs', lines 399:12-401:13
     Visibility: public -/
 def num.I32.unchecked_div (x : Std.I32) (y : Std.I32) : Result Std.I32 := do
   x / y
 
 /-- [core_models::num::{core_models::num::i64}::unchecked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 367:12-369:13
+    Source: 'core-models/src/core/num/mod.rs', lines 399:12-401:13
     Visibility: public -/
 def num.I64.unchecked_div (x : Std.I64) (y : Std.I64) : Result Std.I64 := do
   x / y
 
 /-- [core_models::num::{core_models::num::i128}::unchecked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 367:12-369:13
+    Source: 'core-models/src/core/num/mod.rs', lines 399:12-401:13
     Visibility: public -/
 def num.I128.unchecked_div
   (x : Std.I128) (y : Std.I128) : Result Std.I128 := do
   x / y
 
 /-- [core_models::num::{core_models::num::isize}::unchecked_div]:
-    Source: 'core-models/src/core/num/mod.rs', lines 367:12-369:13
+    Source: 'core-models/src/core/num/mod.rs', lines 399:12-401:13
     Visibility: public -/
 def num.Isize.unchecked_div
   (x : Std.Isize) (y : Std.Isize) : Result Std.Isize := do
   x / y
 
 /-- [core_models::num::{core_models::num::i8}::checked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 371:12-377:13
+    Source: 'core-models/src/core/num/mod.rs', lines 403:12-409:13
     Visibility: public -/
 def num.I8.checked_rem
   (x : Std.I8) (y : Std.I8) : Result (option.Option Std.I8) := do
@@ -8491,7 +8491,7 @@ def num.I8.checked_rem
          ok (option.Option.Some i)
 
 /-- [core_models::num::{core_models::num::i16}::checked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 371:12-377:13
+    Source: 'core-models/src/core/num/mod.rs', lines 403:12-409:13
     Visibility: public -/
 def num.I16.checked_rem
   (x : Std.I16) (y : Std.I16) : Result (option.Option Std.I16) := do
@@ -8508,7 +8508,7 @@ def num.I16.checked_rem
          ok (option.Option.Some i)
 
 /-- [core_models::num::{core_models::num::i32}::checked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 371:12-377:13
+    Source: 'core-models/src/core/num/mod.rs', lines 403:12-409:13
     Visibility: public -/
 def num.I32.checked_rem
   (x : Std.I32) (y : Std.I32) : Result (option.Option Std.I32) := do
@@ -8525,7 +8525,7 @@ def num.I32.checked_rem
          ok (option.Option.Some i)
 
 /-- [core_models::num::{core_models::num::i64}::checked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 371:12-377:13
+    Source: 'core-models/src/core/num/mod.rs', lines 403:12-409:13
     Visibility: public -/
 def num.I64.checked_rem
   (x : Std.I64) (y : Std.I64) : Result (option.Option Std.I64) := do
@@ -8542,7 +8542,7 @@ def num.I64.checked_rem
          ok (option.Option.Some i)
 
 /-- [core_models::num::{core_models::num::i128}::checked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 371:12-377:13
+    Source: 'core-models/src/core/num/mod.rs', lines 403:12-409:13
     Visibility: public -/
 def num.I128.checked_rem
   (x : Std.I128) (y : Std.I128) : Result (option.Option Std.I128) := do
@@ -8559,7 +8559,7 @@ def num.I128.checked_rem
          ok (option.Option.Some i)
 
 /-- [core_models::num::{core_models::num::isize}::checked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 371:12-377:13
+    Source: 'core-models/src/core/num/mod.rs', lines 403:12-409:13
     Visibility: public -/
 def num.Isize.checked_rem
   (x : Std.Isize) (y : Std.Isize) : Result (option.Option Std.Isize) := do
@@ -8577,45 +8577,45 @@ def num.Isize.checked_rem
          ok (option.Option.Some i1)
 
 /-- [core_models::num::{core_models::num::i8}::unchecked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 379:12-381:13
+    Source: 'core-models/src/core/num/mod.rs', lines 411:12-413:13
     Visibility: public -/
 def num.I8.unchecked_rem (x : Std.I8) (y : Std.I8) : Result Std.I8 := do
   x % y
 
 /-- [core_models::num::{core_models::num::i16}::unchecked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 379:12-381:13
+    Source: 'core-models/src/core/num/mod.rs', lines 411:12-413:13
     Visibility: public -/
 def num.I16.unchecked_rem (x : Std.I16) (y : Std.I16) : Result Std.I16 := do
   x % y
 
 /-- [core_models::num::{core_models::num::i32}::unchecked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 379:12-381:13
+    Source: 'core-models/src/core/num/mod.rs', lines 411:12-413:13
     Visibility: public -/
 def num.I32.unchecked_rem (x : Std.I32) (y : Std.I32) : Result Std.I32 := do
   x % y
 
 /-- [core_models::num::{core_models::num::i64}::unchecked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 379:12-381:13
+    Source: 'core-models/src/core/num/mod.rs', lines 411:12-413:13
     Visibility: public -/
 def num.I64.unchecked_rem (x : Std.I64) (y : Std.I64) : Result Std.I64 := do
   x % y
 
 /-- [core_models::num::{core_models::num::i128}::unchecked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 379:12-381:13
+    Source: 'core-models/src/core/num/mod.rs', lines 411:12-413:13
     Visibility: public -/
 def num.I128.unchecked_rem
   (x : Std.I128) (y : Std.I128) : Result Std.I128 := do
   x % y
 
 /-- [core_models::num::{core_models::num::isize}::unchecked_rem]:
-    Source: 'core-models/src/core/num/mod.rs', lines 379:12-381:13
+    Source: 'core-models/src/core/num/mod.rs', lines 411:12-413:13
     Visibility: public -/
 def num.Isize.unchecked_rem
   (x : Std.Isize) (y : Std.Isize) : Result Std.Isize := do
   x % y
 
 /-- [core_models::num::{core_models::num::i8}::signum]:
-    Source: 'core-models/src/core/num/mod.rs', lines 383:12-391:13
+    Source: 'core-models/src/core/num/mod.rs', lines 415:12-423:13
     Visibility: public -/
 def num.I8.signum (x : Std.I8) : Result Std.I8 := do
   if x > 0#i8
@@ -8625,7 +8625,7 @@ def num.I8.signum (x : Std.I8) : Result Std.I8 := do
        else ok (-1)#i8
 
 /-- [core_models::num::{core_models::num::i16}::signum]:
-    Source: 'core-models/src/core/num/mod.rs', lines 383:12-391:13
+    Source: 'core-models/src/core/num/mod.rs', lines 415:12-423:13
     Visibility: public -/
 def num.I16.signum (x : Std.I16) : Result Std.I16 := do
   if x > 0#i16
@@ -8635,7 +8635,7 @@ def num.I16.signum (x : Std.I16) : Result Std.I16 := do
        else ok (-1)#i16
 
 /-- [core_models::num::{core_models::num::i32}::signum]:
-    Source: 'core-models/src/core/num/mod.rs', lines 383:12-391:13
+    Source: 'core-models/src/core/num/mod.rs', lines 415:12-423:13
     Visibility: public -/
 def num.I32.signum (x : Std.I32) : Result Std.I32 := do
   if x > 0#i32
@@ -8645,7 +8645,7 @@ def num.I32.signum (x : Std.I32) : Result Std.I32 := do
        else ok (-1)#i32
 
 /-- [core_models::num::{core_models::num::i64}::signum]:
-    Source: 'core-models/src/core/num/mod.rs', lines 383:12-391:13
+    Source: 'core-models/src/core/num/mod.rs', lines 415:12-423:13
     Visibility: public -/
 def num.I64.signum (x : Std.I64) : Result Std.I64 := do
   if x > 0#i64
@@ -8655,7 +8655,7 @@ def num.I64.signum (x : Std.I64) : Result Std.I64 := do
        else ok (-1)#i64
 
 /-- [core_models::num::{core_models::num::i128}::signum]:
-    Source: 'core-models/src/core/num/mod.rs', lines 383:12-391:13
+    Source: 'core-models/src/core/num/mod.rs', lines 415:12-423:13
     Visibility: public -/
 def num.I128.signum (x : Std.I128) : Result Std.I128 := do
   if x > 0#i128
@@ -8665,7 +8665,7 @@ def num.I128.signum (x : Std.I128) : Result Std.I128 := do
        else ok (-1)#i128
 
 /-- [core_models::num::{core_models::num::isize}::signum]:
-    Source: 'core-models/src/core/num/mod.rs', lines 383:12-391:13
+    Source: 'core-models/src/core/num/mod.rs', lines 415:12-423:13
     Visibility: public -/
 def num.Isize.signum (x : Std.Isize) : Result Std.Isize := do
   if x > 0#isize
@@ -8675,169 +8675,169 @@ def num.Isize.signum (x : Std.Isize) : Result Std.Isize := do
        else ok (-1)#isize
 
 /-- [core_models::num::{core_models::default::Default for u8}::default]:
-    Source: 'core-models/src/core/num/mod.rs', lines 577:16-579:17
+    Source: 'core-models/src/core/num/mod.rs', lines 609:16-611:17
     Visibility: public -/
 def U8.Insts.CoreDefaultDefault.default : Result Std.U8 := do
   ok 0#u8
 
 /-- Trait implementation: [core_models::num::{core_models::default::Default for u8}]
-    Source: 'core-models/src/core/num/mod.rs', lines 576:12-580:13 -/
+    Source: 'core-models/src/core/num/mod.rs', lines 608:12-612:13 -/
 @[reducible]
 def U8.Insts.CoreDefaultDefault : default.Default Std.U8 := {
   default := U8.Insts.CoreDefaultDefault.default
 }
 
 /-- [core_models::num::{core_models::default::Default for u16}::default]:
-    Source: 'core-models/src/core/num/mod.rs', lines 577:16-579:17
+    Source: 'core-models/src/core/num/mod.rs', lines 609:16-611:17
     Visibility: public -/
 def U16.Insts.CoreDefaultDefault.default : Result Std.U16 := do
   ok 0#u16
 
 /-- Trait implementation: [core_models::num::{core_models::default::Default for u16}]
-    Source: 'core-models/src/core/num/mod.rs', lines 576:12-580:13 -/
+    Source: 'core-models/src/core/num/mod.rs', lines 608:12-612:13 -/
 @[reducible]
 def U16.Insts.CoreDefaultDefault : default.Default Std.U16 := {
   default := U16.Insts.CoreDefaultDefault.default
 }
 
 /-- [core_models::num::{core_models::default::Default for u32}::default]:
-    Source: 'core-models/src/core/num/mod.rs', lines 577:16-579:17
+    Source: 'core-models/src/core/num/mod.rs', lines 609:16-611:17
     Visibility: public -/
 def U32.Insts.CoreDefaultDefault.default : Result Std.U32 := do
   ok 0#u32
 
 /-- Trait implementation: [core_models::num::{core_models::default::Default for u32}]
-    Source: 'core-models/src/core/num/mod.rs', lines 576:12-580:13 -/
+    Source: 'core-models/src/core/num/mod.rs', lines 608:12-612:13 -/
 @[reducible]
 def U32.Insts.CoreDefaultDefault : default.Default Std.U32 := {
   default := U32.Insts.CoreDefaultDefault.default
 }
 
 /-- [core_models::num::{core_models::default::Default for u64}::default]:
-    Source: 'core-models/src/core/num/mod.rs', lines 577:16-579:17
+    Source: 'core-models/src/core/num/mod.rs', lines 609:16-611:17
     Visibility: public -/
 def U64.Insts.CoreDefaultDefault.default : Result Std.U64 := do
   ok 0#u64
 
 /-- Trait implementation: [core_models::num::{core_models::default::Default for u64}]
-    Source: 'core-models/src/core/num/mod.rs', lines 576:12-580:13 -/
+    Source: 'core-models/src/core/num/mod.rs', lines 608:12-612:13 -/
 @[reducible]
 def U64.Insts.CoreDefaultDefault : default.Default Std.U64 := {
   default := U64.Insts.CoreDefaultDefault.default
 }
 
 /-- [core_models::num::{core_models::default::Default for u128}::default]:
-    Source: 'core-models/src/core/num/mod.rs', lines 577:16-579:17
+    Source: 'core-models/src/core/num/mod.rs', lines 609:16-611:17
     Visibility: public -/
 def U128.Insts.CoreDefaultDefault.default : Result Std.U128 := do
   ok 0#u128
 
 /-- Trait implementation: [core_models::num::{core_models::default::Default for u128}]
-    Source: 'core-models/src/core/num/mod.rs', lines 576:12-580:13 -/
+    Source: 'core-models/src/core/num/mod.rs', lines 608:12-612:13 -/
 @[reducible]
 def U128.Insts.CoreDefaultDefault : default.Default Std.U128 := {
   default := U128.Insts.CoreDefaultDefault.default
 }
 
 /-- [core_models::num::{core_models::default::Default for usize}::default]:
-    Source: 'core-models/src/core/num/mod.rs', lines 577:16-579:17
+    Source: 'core-models/src/core/num/mod.rs', lines 609:16-611:17
     Visibility: public -/
 def Usize.Insts.CoreDefaultDefault.default : Result Std.Usize := do
   ok 0#usize
 
 /-- Trait implementation: [core_models::num::{core_models::default::Default for usize}]
-    Source: 'core-models/src/core/num/mod.rs', lines 576:12-580:13 -/
+    Source: 'core-models/src/core/num/mod.rs', lines 608:12-612:13 -/
 @[reducible]
 def Usize.Insts.CoreDefaultDefault : default.Default Std.Usize := {
   default := Usize.Insts.CoreDefaultDefault.default
 }
 
 /-- [core_models::num::{core_models::default::Default for i8}::default]:
-    Source: 'core-models/src/core/num/mod.rs', lines 577:16-579:17
+    Source: 'core-models/src/core/num/mod.rs', lines 609:16-611:17
     Visibility: public -/
 def I8.Insts.CoreDefaultDefault.default : Result Std.I8 := do
   ok 0#i8
 
 /-- Trait implementation: [core_models::num::{core_models::default::Default for i8}]
-    Source: 'core-models/src/core/num/mod.rs', lines 576:12-580:13 -/
+    Source: 'core-models/src/core/num/mod.rs', lines 608:12-612:13 -/
 @[reducible]
 def I8.Insts.CoreDefaultDefault : default.Default Std.I8 := {
   default := I8.Insts.CoreDefaultDefault.default
 }
 
 /-- [core_models::num::{core_models::default::Default for i16}::default]:
-    Source: 'core-models/src/core/num/mod.rs', lines 577:16-579:17
+    Source: 'core-models/src/core/num/mod.rs', lines 609:16-611:17
     Visibility: public -/
 def I16.Insts.CoreDefaultDefault.default : Result Std.I16 := do
   ok 0#i16
 
 /-- Trait implementation: [core_models::num::{core_models::default::Default for i16}]
-    Source: 'core-models/src/core/num/mod.rs', lines 576:12-580:13 -/
+    Source: 'core-models/src/core/num/mod.rs', lines 608:12-612:13 -/
 @[reducible]
 def I16.Insts.CoreDefaultDefault : default.Default Std.I16 := {
   default := I16.Insts.CoreDefaultDefault.default
 }
 
 /-- [core_models::num::{core_models::default::Default for i32}::default]:
-    Source: 'core-models/src/core/num/mod.rs', lines 577:16-579:17
+    Source: 'core-models/src/core/num/mod.rs', lines 609:16-611:17
     Visibility: public -/
 def I32.Insts.CoreDefaultDefault.default : Result Std.I32 := do
   ok 0#i32
 
 /-- Trait implementation: [core_models::num::{core_models::default::Default for i32}]
-    Source: 'core-models/src/core/num/mod.rs', lines 576:12-580:13 -/
+    Source: 'core-models/src/core/num/mod.rs', lines 608:12-612:13 -/
 @[reducible]
 def I32.Insts.CoreDefaultDefault : default.Default Std.I32 := {
   default := I32.Insts.CoreDefaultDefault.default
 }
 
 /-- [core_models::num::{core_models::default::Default for i64}::default]:
-    Source: 'core-models/src/core/num/mod.rs', lines 577:16-579:17
+    Source: 'core-models/src/core/num/mod.rs', lines 609:16-611:17
     Visibility: public -/
 def I64.Insts.CoreDefaultDefault.default : Result Std.I64 := do
   ok 0#i64
 
 /-- Trait implementation: [core_models::num::{core_models::default::Default for i64}]
-    Source: 'core-models/src/core/num/mod.rs', lines 576:12-580:13 -/
+    Source: 'core-models/src/core/num/mod.rs', lines 608:12-612:13 -/
 @[reducible]
 def I64.Insts.CoreDefaultDefault : default.Default Std.I64 := {
   default := I64.Insts.CoreDefaultDefault.default
 }
 
 /-- [core_models::num::{core_models::default::Default for i128}::default]:
-    Source: 'core-models/src/core/num/mod.rs', lines 577:16-579:17
+    Source: 'core-models/src/core/num/mod.rs', lines 609:16-611:17
     Visibility: public -/
 def I128.Insts.CoreDefaultDefault.default : Result Std.I128 := do
   ok 0#i128
 
 /-- Trait implementation: [core_models::num::{core_models::default::Default for i128}]
-    Source: 'core-models/src/core/num/mod.rs', lines 576:12-580:13 -/
+    Source: 'core-models/src/core/num/mod.rs', lines 608:12-612:13 -/
 @[reducible]
 def I128.Insts.CoreDefaultDefault : default.Default Std.I128 := {
   default := I128.Insts.CoreDefaultDefault.default
 }
 
 /-- [core_models::num::{core_models::default::Default for isize}::default]:
-    Source: 'core-models/src/core/num/mod.rs', lines 577:16-579:17
+    Source: 'core-models/src/core/num/mod.rs', lines 609:16-611:17
     Visibility: public -/
 def Isize.Insts.CoreDefaultDefault.default : Result Std.Isize := do
   ok 0#isize
 
 /-- Trait implementation: [core_models::num::{core_models::default::Default for isize}]
-    Source: 'core-models/src/core/num/mod.rs', lines 576:12-580:13 -/
+    Source: 'core-models/src/core/num/mod.rs', lines 608:12-612:13 -/
 @[reducible]
 def Isize.Insts.CoreDefaultDefault : default.Default Std.Isize := {
   default := Isize.Insts.CoreDefaultDefault.default
 }
 
 /-- [core_models::num::{core_models::default::Default for bool}::default]:
-    Source: 'core-models/src/core/num/mod.rs', lines 603:4-605:5
+    Source: 'core-models/src/core/num/mod.rs', lines 635:4-637:5
     Visibility: public -/
 def Bool.Insts.CoreDefaultDefault.default : Result Bool := do
   ok false
 
 /-- Trait implementation: [core_models::num::{core_models::default::Default for bool}]
-    Source: 'core-models/src/core/num/mod.rs', lines 601:0-606:1 -/
+    Source: 'core-models/src/core/num/mod.rs', lines 633:0-638:1 -/
 @[reducible]
 def Bool.Insts.CoreDefaultDefault : default.Default Bool := {
   default := Bool.Insts.CoreDefaultDefault.default
@@ -9391,7 +9391,7 @@ def option.Option.and_then
   | option.Option.None => ok option.Option.None
 
 /-- [core_models::option::{core_models::option::Option<T>}::or]:
-    Source: 'core-models/src/core/option.rs', lines 195:4-200:5
+    Source: 'core-models/src/core/option.rs', lines 196:4-201:5
     Visibility: public -/
 def option.Option.or
   {T : Type} (self : option.Option T) (optb : option.Option T) :
@@ -9402,7 +9402,7 @@ def option.Option.or
   | option.Option.None => ok optb
 
 /-- [core_models::option::{core_models::option::Option<T>}::or_else]:
-    Source: 'core-models/src/core/option.rs', lines 203:4-208:5
+    Source: 'core-models/src/core/option.rs', lines 204:4-209:5
     Visibility: public -/
 def option.Option.or_else
   {T : Type} {F : Type} (coreopsfunctionFnOnceFTupleOptionInst :
@@ -9415,7 +9415,7 @@ def option.Option.or_else
   | option.Option.None => coreopsfunctionFnOnceFTupleOptionInst.call_once f ()
 
 /-- [core_models::option::{core_models::option::Option<T>}::xor]:
-    Source: 'core-models/src/core/option.rs', lines 211:4-217:5
+    Source: 'core-models/src/core/option.rs', lines 212:4-218:5
     Visibility: public -/
 def option.Option.xor
   {T : Type} (self : option.Option T) (optb : option.Option T) :
@@ -9432,7 +9432,7 @@ def option.Option.xor
     | option.Option.None => ok option.Option.None
 
 /-- [core_models::option::{core_models::option::Option<T>}::zip]:
-    Source: 'core-models/src/core/option.rs', lines 220:4-225:5
+    Source: 'core-models/src/core/option.rs', lines 221:4-226:5
     Visibility: public -/
 def option.Option.zip
   {T : Type} {U : Type} (self : option.Option T) (other : option.Option U) :
@@ -9446,7 +9446,7 @@ def option.Option.zip
   | option.Option.None => ok option.Option.None
 
 /-- [core_models::option::{core_models::option::Option<core_models::option::Option<T>>}::flatten]:
-    Source: 'core-models/src/core/option.rs', lines 239:4-244:5
+    Source: 'core-models/src/core/option.rs', lines 241:4-246:5
     Visibility: public -/
 def option.OptionOption.flatten
   {T : Type} (self : option.Option (option.Option T)) :
@@ -9457,14 +9457,14 @@ def option.OptionOption.flatten
   | option.Option.None => ok option.Option.None
 
 /-- [core_models::option::{core_models::default::Default for core_models::option::Option<T>}::default]:
-    Source: 'core-models/src/core/option.rs', lines 250:4-252:5
+    Source: 'core-models/src/core/option.rs', lines 252:4-254:5
     Visibility: public -/
 def option.Option.Insts.CoreDefaultDefault.default
   (T : Type) : Result (option.Option T) := do
   ok option.Option.None
 
 /-- Trait implementation: [core_models::option::{core_models::default::Default for core_models::option::Option<T>}]
-    Source: 'core-models/src/core/option.rs', lines 248:0-253:1 -/
+    Source: 'core-models/src/core/option.rs', lines 250:0-255:1 -/
 @[reducible]
 def option.Option.Insts.CoreDefaultDefault (T : Type) : default.Default
   (option.Option T) := {
