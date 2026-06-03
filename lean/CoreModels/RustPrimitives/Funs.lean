@@ -1043,17 +1043,17 @@ def rust_primitives.arithmetic.saturating_sub_usize (x y : Usize) : Result Usize
   .ok (UScalar.saturating_sub x y)
 
 def rust_primitives.arithmetic.overflowing_add_i8 (x y : I8) : Result (I8 × Bool) :=
-  .ok (IScalar.overflowing_add .I8 x y)
+  .ok (IScalar.overflowing_add x y)
 def rust_primitives.arithmetic.overflowing_add_i16 (x y : I16) : Result (I16 × Bool) :=
-  .ok (IScalar.overflowing_add .I16 x y)
+  .ok (IScalar.overflowing_add x y)
 def rust_primitives.arithmetic.overflowing_add_i32 (x y : I32) : Result (I32 × Bool) :=
-  .ok (IScalar.overflowing_add .I32 x y)
+  .ok (IScalar.overflowing_add x y)
 def rust_primitives.arithmetic.overflowing_add_i64 (x y : I64) : Result (I64 × Bool) :=
-  .ok (IScalar.overflowing_add .I64 x y)
+  .ok (IScalar.overflowing_add x y)
 def rust_primitives.arithmetic.overflowing_add_i128 (x y : I128) : Result (I128 × Bool) :=
-  .ok (IScalar.overflowing_add .I128 x y)
+  .ok (IScalar.overflowing_add x y)
 def rust_primitives.arithmetic.overflowing_add_isize (x y : Isize) : Result (Isize × Bool) :=
-  .ok (IScalar.overflowing_add .Isize x y)
+  .ok (IScalar.overflowing_add x y)
 def rust_primitives.arithmetic.overflowing_add_u8 (x y : U8) : Result (U8 × Bool) :=
   .ok (UScalar.overflowing_add x y)
 def rust_primitives.arithmetic.overflowing_add_u16 (x y : U16) : Result (U16 × Bool) :=
