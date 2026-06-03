@@ -19,9 +19,6 @@ set_option maxHeartbeats 1000000
 /- You can set the `maxRecDepth` value with the `-max-recdepth` CLI option -/
 set_option maxRecDepth 2048
 
-/- You can remove the following line by using the CLI option `-all-computable`: -/
-noncomputable section
-
 namespace CoreModels.core
 
 /-- [core_models::array::{core_models::array::Dummy<T, N>}::map]:
