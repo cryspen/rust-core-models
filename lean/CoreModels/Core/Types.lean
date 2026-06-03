@@ -3,7 +3,7 @@
 import Aeneas
 import CoreModels.Command
 import CoreModels.Core.TypesPrologue
-import CoreModels.Core.TypesExternal
+import CoreModels.RustPrimitives.Types
 open CoreModels Aeneas
 open Aeneas.Std hiding namespace core alloc
 open Result ControlFlow Error
