@@ -277,7 +277,7 @@ def fmt.Arguments := Unit
     Source: 'core-models/src/core/fmt.rs', lines 52:4-59:5 -/
 @[discriminant isize]
 inductive fmt.rt.ArgumentType where
-| Placeholder : core.Phantom Unit → fmt.rt.ArgumentType
+| Placeholder : core.marker.PhantomData Unit → fmt.rt.ArgumentType
 
 /-- [core_models::fmt::rt::Argument]
     Source: 'core-models/src/core/fmt.rs', lines 61:4-63:5
@@ -503,7 +503,7 @@ structure marker.StructuralPartialEq (Self : Type) where
     Source: 'core-models/src/core/marker.rs', lines 48:0-48:25 -/
 @[reducible]
 def marker.PhantomData (T : Type) := T
--/  -- replaced by core.Phantom (see rewrite_alloc_phantom_data)
+-/  -- replaced by rewrite_phantom_data in favor of the def in `TypesPrologue.lean`
 
 /-- [core_models::mem::manually_drop::ManuallyDrop]
     Source: 'core-models/src/core/mem.rs', lines 118:4-120:5

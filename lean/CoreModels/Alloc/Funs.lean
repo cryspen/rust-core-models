@@ -114,14 +114,14 @@ def slice.Dummy.to_vec
   := do
   let seq ← rust_primitives.sequence.seq_empty T
   let seq1 ← rust_primitives.sequence.seq_extend corecloneCloneInst seq s
-  ok (seq1, core.Phantom.mk)
+  ok (seq1, core.marker.PhantomData.mk)
 
 /-- [alloc::slice::{alloc::slice::Dummy<T>}::into_vec]:
     Source: 'src/lib.rs', lines 245:8-247:9 -/
 def slice.Dummy.into_vec
   {T : Type} (A : Type) (s : Slice T) : Result (vec.Vec T A) := do
   let s1 ← rust_primitives.sequence.seq_from_boxed_slice s
-  ok (s1, core.Phantom.mk)
+  ok (s1, core.marker.PhantomData.mk)
 
 /-- [alloc::vec::from_elem]:
     Source: 'src/lib.rs', lines 349:4-354:5 -/
@@ -131,14 +131,14 @@ def vec.from_elem
   Result (vec.Vec T alloc.Global)
   := do
   let s ← rust_primitives.sequence.seq_create corecloneCloneInst item len
-  ok (s, core.Phantom.mk)
+  ok (s, core.marker.PhantomData.mk)
 
 /-- [alloc::vec::{alloc::vec::Vec<T, alloc::alloc::Global>}::new]:
     Source: 'src/lib.rs', lines 358:8-363:9
     Visibility: public -/
 def vec.VecTGlobal.new (T : Type) : Result (vec.Vec T alloc.Global) := do
   let s ← rust_primitives.sequence.seq_empty T
-  ok (s, core.Phantom.mk)
+  ok (s, core.marker.PhantomData.mk)
 
 /-- [alloc::vec::{alloc::vec::Vec<T, alloc::alloc::Global>}::with_capacity]:
     Source: 'src/lib.rs', lines 364:8-366:9
@@ -282,7 +282,7 @@ def vec.Vec.drain
   let (s, pd) := self
   let l ← rust_primitives.sequence.seq_len s
   let (s1, s2) ← rust_primitives.sequence.seq_drain s 0#usize l
-  ok ((s1, core.Phantom.mk), (s2, pd))
+  ok ((s1, core.marker.PhantomData.mk), (s2, pd))
 
 /-- [alloc::vec::drain::{core::iter::traits::iterator::Iterator<T> for alloc::vec::drain::Drain<T, A>}::next]:
     Source: 'src/lib.rs', lines 431:12-438:13
