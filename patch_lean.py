@@ -166,16 +166,7 @@ def fix_vec_allocator(text: str) -> str:
          "def vec.into_iter.IntoIter (T : Type) (A : Type := alloc.Global) :=\n"
          "  rust_primitives.sequence.Seq T × core.marker.PhantomData A"),
     ])
-
-    # alloc.vec.Vec.len/push/extend_from_slice/insert have {A : Type} inferred from the
-    # allocator default, but Lean needs it explicit at call sites — make it a
-    # regular (non-implicit) parameter.
-    text = re.sub(
-        r'(vec\.Vec\.(?:len|push|extend_from_slice|insert))\s+(\{T\s*:\s*Type\})\s+(\{A\s*:\s*Type\})',
-        r'\1 \2 (A : Type)',
-        text, flags=re.MULTILINE,
-    )
-
+    
     return text
 
 def fix_result_match(text: str) -> str:
@@ -228,13 +219,6 @@ def rewrite_phantom_data(text: str) -> str:
         text, ["core_models::marker::PhantomData"],
         trailer="replaced by rewrite_phantom_data in favor of the def in `TypesPrologue.lean`",
     )
-    
-def escape_keywords(text: str) -> str:
-    """Aeneas introduces `branch` as a keyword, so we need to escape it.
-    https://github.com/AeneasVerif/aeneas/issues/1023
-    """
-    return re.sub(r"(?<![A-Za-z0-9])branch(?![A-Za-z0-9])", "«branch»", text)
-
 
 def desugar_pure_num_bound_binds(text: str) -> str:
     """The generated `Funs.lean` uses monadic bind syntax to fetch numeric
@@ -496,7 +480,6 @@ def main() -> int:
         text = rewrite_imports_and_opens(text)
         text = rename_namespace(text)
         text = rewrite_phantom_data(text)
-        text = escape_keywords(text)
         if path == funs_path:
             text = fix_fail_panic(text)
             text = add_funs_prologue_import(text)

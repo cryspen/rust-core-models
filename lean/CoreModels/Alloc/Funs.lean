@@ -23,13 +23,13 @@ set_option maxRecDepth 2048
 
 namespace CoreModels.alloc
 
-/-- [alloc::borrow::{alloc::borrow::ToOwned for T}::to_owned]:
+/-- [alloc::borrow::{impl alloc::borrow::ToOwned for T}::to_owned]:
     Source: 'src/lib.rs', lines 23:8-25:9
     Visibility: public -/
 def borrow.ToOwned.Blanket.to_owned {T : Type} (self : T) : Result T := do
   ok self
 
-/-- Trait implementation: [alloc::borrow::{alloc::borrow::ToOwned for T}]
+/-- Trait implementation: [alloc::borrow::{impl alloc::borrow::ToOwned for T}]
     Source: 'src/lib.rs', lines 22:4-26:5 -/
 @[reducible]
 def borrow.ToOwned.Blanket (T : Type) : borrow.ToOwned T := {
@@ -78,7 +78,7 @@ def collections.vec_deque.VecDeque.pop_front
     let (t, s1) ← rust_primitives.sequence.seq_remove s 0#usize
     ok (core.option.Option.Some t, (s1, pd))
 
-/-- [alloc::collections::vec_deque::{core::ops::index::Index<usize, T> for alloc::collections::vec_deque::VecDeque<T, A>}::index]:
+/-- [alloc::collections::vec_deque::{impl core::ops::index::Index<usize, T> for alloc::collections::vec_deque::VecDeque<T, A>}::index]:
     Source: 'src/lib.rs', lines 215:12-217:13
     Visibility: public -/
 def collections.vec_deque.VecDeque.Insts.CoreOpsIndexIndexUsizeT.index
@@ -89,7 +89,7 @@ def collections.vec_deque.VecDeque.Insts.CoreOpsIndexIndexUsizeT.index
   let (s, _) := self
   rust_primitives.sequence.seq_index s i
 
-/-- Trait implementation: [alloc::collections::vec_deque::{core::ops::index::Index<usize, T> for alloc::collections::vec_deque::VecDeque<T, A>}]
+/-- Trait implementation: [alloc::collections::vec_deque::{impl core::ops::index::Index<usize, T> for alloc::collections::vec_deque::VecDeque<T, A>}]
     Source: 'src/lib.rs', lines 212:8-218:9 -/
 @[reducible]
 def collections.vec_deque.VecDeque.Insts.CoreOpsIndexIndexUsizeT (T : Type) (A
@@ -147,14 +147,16 @@ def vec.VecTGlobal.with_capacity
 /-- [alloc::vec::{alloc::vec::Vec<T, A>}::len]:
     Source: 'src/lib.rs', lines 371:8-373:9
     Visibility: public -/
-def vec.Vec.len {T : Type} (A : Type) (self : vec.Vec T A) : Result Std.Usize := do
+def vec.Vec.len
+  {T : Type} {A : Type} (self : vec.Vec T A) : Result Std.Usize := do
   let (s, _) := self
   rust_primitives.sequence.seq_len s
 
 /-- [alloc::vec::{alloc::vec::Vec<T, A>}::push]:
     Source: 'src/lib.rs', lines 375:8-377:9
     Visibility: public -/
-def vec.Vec.push {T : Type} (A : Type) (self : vec.Vec T A) (x : T) :
+def vec.Vec.push
+  {T : Type} {A : Type} (self : vec.Vec T A) (x : T) :
   Result (vec.Vec T A)
   := do
   let (s, pd) := self
@@ -189,7 +191,8 @@ def vec.Vec.is_empty
 /-- [alloc::vec::{alloc::vec::Vec<T, A>}::insert]:
     Source: 'src/lib.rs', lines 391:8-396:9
     Visibility: public -/
-def vec.Vec.insert {T : Type} (A : Type) (self : vec.Vec T A) (index : Std.Usize) (element : T)
+def vec.Vec.insert
+  {T : Type} {A : Type} (self : vec.Vec T A) (index : Std.Usize) (element : T)
   :
   Result (vec.Vec T A)
   := do
@@ -281,7 +284,7 @@ def vec.Vec.drain
   let (s1, s2) ← rust_primitives.sequence.seq_drain s 0#usize l
   ok ((s1, core.marker.PhantomData.mk), (s2, pd))
 
-/-- [alloc::vec::drain::{core::iter::traits::iterator::Iterator<T> for alloc::vec::drain::Drain<T, A>}::next]:
+/-- [alloc::vec::drain::{impl core::iter::traits::iterator::Iterator<T> for alloc::vec::drain::Drain<T, A>}::next]:
     Source: 'src/lib.rs', lines 431:12-438:13
     Visibility: public -/
 def vec.drain.Drain.Insts.CoreIterTraitsIteratorIterator.next
@@ -296,7 +299,7 @@ def vec.drain.Drain.Insts.CoreIterTraitsIteratorIterator.next
     let (res, s1) ← rust_primitives.sequence.seq_remove s 0#usize
     ok (core.option.Option.Some res, (s1, pd))
 
-/-- Trait implementation: [alloc::vec::drain::{core::iter::traits::iterator::Iterator<T> for alloc::vec::drain::Drain<T, A>}]
+/-- Trait implementation: [alloc::vec::drain::{impl core::iter::traits::iterator::Iterator<T> for alloc::vec::drain::Drain<T, A>}]
     Source: 'src/lib.rs', lines 429:8-439:9 -/
 @[reducible]
 def vec.drain.Drain.Insts.CoreIterTraitsIteratorIterator (T : Type) (A : Type)
@@ -306,7 +309,8 @@ def vec.drain.Drain.Insts.CoreIterTraitsIteratorIterator (T : Type) (A : Type)
 
 /-- [alloc::vec::{alloc::vec::Vec<T, A>}::extend_from_slice]:
     Source: 'src/lib.rs', lines 445:8-447:9 -/
-def vec.Vec.extend_from_slice {T : Type} (A : Type) (corecloneCloneInst : core.clone.Clone T)
+def vec.Vec.extend_from_slice
+  {T : Type} {A : Type} (corecloneCloneInst : core.clone.Clone T)
   (self : vec.Vec T A) (other : Slice T) :
   Result (vec.Vec T A)
   := do
@@ -314,14 +318,14 @@ def vec.Vec.extend_from_slice {T : Type} (A : Type) (corecloneCloneInst : core.c
   let s1 ← rust_primitives.sequence.seq_extend corecloneCloneInst s other
   ok (s1, pd)
 
-/-- [alloc::vec::{core::ops::deref::Deref<[T]> for alloc::vec::Vec<T, A>}::deref]:
+/-- [alloc::vec::{impl core::ops::deref::Deref<[T]> for alloc::vec::Vec<T, A>}::deref]:
     Source: 'src/lib.rs', lines 478:8-480:9
     Visibility: public -/
 def vec.Vec.Insts.CoreOpsDerefDerefSlice.deref
   {T : Type} {A : Type} (self : vec.Vec T A) : Result (Slice T) := do
   vec.Vec.as_slice self
 
-/-- Trait implementation: [alloc::vec::{core::ops::deref::Deref<[T]> for alloc::vec::Vec<T, A>}]
+/-- Trait implementation: [alloc::vec::{impl core::ops::deref::Deref<[T]> for alloc::vec::Vec<T, A>}]
     Source: 'src/lib.rs', lines 475:4-481:5 -/
 @[reducible]
 def vec.Vec.Insts.CoreOpsDerefDerefSlice (T : Type) (A : Type) :

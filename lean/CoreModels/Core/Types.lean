@@ -205,7 +205,7 @@ structure convert.TryFrom (Self : Type) (T : Type) (Self_Error : Type) where
 @[reducible]
 def convert.Infallible := Unit
 
-/-- [core_models::convert::{core_models::convert::TryFrom<&0 ([T]), core_models::array::TryFromSliceError> for [T; N]}::try_from::closure]
+/-- [core_models::convert::{impl core_models::convert::TryFrom<&'_0 [T], core_models::array::TryFromSliceError> for [T; N]}::try_from::closure]
     Source: 'core-models/src/core/convert.rs', lines 59:61-61:13 -/
 @[reducible]
 def convert.TryFromArrayShared0SliceTryFromSliceError.try_from.closure (T :
@@ -774,7 +774,7 @@ structure ops.try_trait.FromResidual (Self : Type) (R : Type) where
 structure ops.try_trait.Try (Self : Type) (Self_Output : Type) (Self_Residual :
   Type) where
   from_output : Self_Output → Result Self
-  «branch» : Self → Result (ops.control_flow.ControlFlow Self_Residual
+  branch : Self → Result (ops.control_flow.ControlFlow Self_Residual
     Self_Output)
 
 /-- Trait declaration: [core_models::ops::deref::Deref]
