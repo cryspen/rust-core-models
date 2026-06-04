@@ -315,10 +315,6 @@ pub fn test_vec_swap_remove_back() -> bool {
 // TODO(vec-iter-extraction): Vec::iter / Vec::into_iter use iterator traits
 // whose Lean models we don't have yet.
 
-// ----- Re-test now that `Vec` dropped its allocator param --------------------
-// Previously blocked by "vec-extraction-arity-mismatch"; the branch's
-// `Vec<T, A>` -> `Vec<T>` change should unblock these.
-
 #[rust_lean_test]
 pub fn test_vec_new_len_zero() -> bool {
     let v: Vec<u8> = Vec::new();

@@ -701,7 +701,7 @@ pub mod vec {
                 prop_assert_eq!(model, vec![x; len].inject());
             }
 
-            // ----- Clone / PartialEq / IntoIterator (branch additions) -------
+            // ----- Clone / PartialEq / IntoIterator -------
 
             #[test]
             fn test_vec_clone(v in prop::collection::vec(any::<u8>(), 0..30)) {

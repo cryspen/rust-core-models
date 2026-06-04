@@ -693,8 +693,6 @@ pub fn test_manual_take_some_bool() -> bool {
 */
 
 // ----- PartialEq: `Option<T> == Option<T>` -----------------------------------
-// Unblocked by implementing `Option::eq` (previously `todo!()`, which
-// extracted to `fail panic` in Lean).
 
 #[rust_lean_test]
 pub fn test_option_eq_some_same() -> bool {
