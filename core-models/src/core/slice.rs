@@ -717,5 +717,52 @@ mod tests {
                 &slice[..]
             );
         }
+
+        // ----- PartialEq / PartialOrd / Ord (lexicographic) ------------------
+
+        #[test]
+        fn test_slice_eq(
+            a in prop::collection::vec(any::<u8>(), 0..=8),
+            b in prop::collection::vec(any::<u8>(), 0..=8),
+        ) {
+            prop_assert_eq!(
+                <[u8] as crate::cmp::PartialEq<[u8]>>::eq(&a[..], &b[..]),
+                a == b
+            );
+        }
+
+        // Equal-length pairs make the per-element comparison the deciding factor
+        // more often than two independent (usually different-length) slices.
+        #[test]
+        fn test_slice_eq_same_len(pairs in prop::collection::vec((any::<u8>(), any::<u8>()), 0..=8)) {
+            let a: Vec<u8> = pairs.iter().map(|p| p.0).collect();
+            let b: Vec<u8> = pairs.iter().map(|p| p.1).collect();
+            prop_assert_eq!(
+                <[u8] as crate::cmp::PartialEq<[u8]>>::eq(&a[..], &b[..]),
+                a == b
+            );
+        }
+
+        #[test]
+        fn test_slice_partial_cmp(
+            a in prop::collection::vec(any::<u8>(), 0..=8),
+            b in prop::collection::vec(any::<u8>(), 0..=8),
+        ) {
+            prop_assert_eq!(
+                <[u8] as crate::cmp::PartialOrd<[u8]>>::partial_cmp(&a[..], &b[..]),
+                a[..].partial_cmp(&b[..]).inject()
+            );
+        }
+
+        #[test]
+        fn test_slice_cmp(
+            a in prop::collection::vec(any::<u8>(), 0..=8),
+            b in prop::collection::vec(any::<u8>(), 0..=8),
+        ) {
+            prop_assert_eq!(
+                <[u8] as crate::cmp::Ord>::cmp(&a[..], &b[..]),
+                a[..].cmp(&b[..]).inject()
+            );
+        }
     }
 }

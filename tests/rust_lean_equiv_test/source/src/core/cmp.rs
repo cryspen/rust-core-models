@@ -106,3 +106,31 @@ pub fn test_int_ge_false() -> bool {
 // option type (fine, helpers exist) AND the Ordering variant. We test the
 // downstream `is_lt` / `is_eq` / `is_gt` predicates above instead; matching
 // on `Option<Ordering>` directly needs more care to keep types pinned.
+
+// ----- u8: Ord::cmp ----------------------------------------------------------
+// Directly exercises the scalar `Ord` instance (`U8.Insts.CoreCmpOrd`)
+// re-provided in `FunsPrologue`.
+
+#[rust_lean_test]
+pub fn test_u8_cmp_less() -> bool {
+    match 3u8.cmp(&7u8) {
+        std::cmp::Ordering::Less => true,
+        _ => false,
+    }
+}
+
+#[rust_lean_test]
+pub fn test_u8_cmp_greater() -> bool {
+    match 9u8.cmp(&2u8) {
+        std::cmp::Ordering::Greater => true,
+        _ => false,
+    }
+}
+
+#[rust_lean_test]
+pub fn test_u8_cmp_equal() -> bool {
+    match 5u8.cmp(&5u8) {
+        std::cmp::Ordering::Equal => true,
+        _ => false,
+    }
+}

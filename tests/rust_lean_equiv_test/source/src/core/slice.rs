@@ -681,3 +681,80 @@ pub fn test_slice_index_range_full_len() -> bool {
     t.len() == 8
 }
 */
+
+// ----- PartialEq / Ord on slices (branch additions) --------------------------
+
+#[rust_lean_test]
+pub fn test_slice_eq_same() -> bool {
+    let a: &[u8] = &[1u8, 2, 3];
+    let b: &[u8] = &[1u8, 2, 3];
+    (a == b) == true
+}
+
+#[rust_lean_test]
+pub fn test_slice_eq_diff() -> bool {
+    let a: &[u8] = &[1u8, 2, 3];
+    let b: &[u8] = &[1u8, 2, 4];
+    (a == b) == false
+}
+
+// ----- Ord / PartialOrd on slices (lexicographic) ----------------------------
+// These exercise the extracted `partial_cmp_loop` / `cmp_loop`.
+
+#[rust_lean_test]
+pub fn test_slice_cmp_less_by_elem() -> bool {
+    let a: &[u8] = &[1, 2, 3];
+    let b: &[u8] = &[1, 5, 0];
+    match a.cmp(b) {
+        std::cmp::Ordering::Less => true,
+        _ => false,
+    }
+}
+
+#[rust_lean_test]
+pub fn test_slice_cmp_less_by_len() -> bool {
+    // `[1,2]` is a prefix of `[1,2,3]`, so it is `Less`.
+    let a: &[u8] = &[1, 2];
+    let b: &[u8] = &[1, 2, 3];
+    match a.cmp(b) {
+        std::cmp::Ordering::Less => true,
+        _ => false,
+    }
+}
+
+#[rust_lean_test]
+pub fn test_slice_cmp_greater_by_elem() -> bool {
+    let a: &[u8] = &[2];
+    let b: &[u8] = &[1, 9, 9];
+    match a.cmp(b) {
+        std::cmp::Ordering::Greater => true,
+        _ => false,
+    }
+}
+
+#[rust_lean_test]
+pub fn test_slice_cmp_equal() -> bool {
+    let a: &[u8] = &[4, 5, 6];
+    let b: &[u8] = &[4, 5, 6];
+    match a.cmp(b) {
+        std::cmp::Ordering::Equal => true,
+        _ => false,
+    }
+}
+
+#[rust_lean_test]
+pub fn test_slice_partial_cmp_less() -> bool {
+    let a: &[u8] = &[1, 2];
+    let b: &[u8] = &[1, 3];
+    match a.partial_cmp(b) {
+        Some(std::cmp::Ordering::Less) => true,
+        _ => false,
+    }
+}
+
+#[rust_lean_test]
+pub fn test_slice_eq_diff_len() -> bool {
+    let a: &[u8] = &[1, 2];
+    let b: &[u8] = &[1, 2, 3];
+    (a == b) == false
+}

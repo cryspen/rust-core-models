@@ -691,3 +691,32 @@ pub fn test_manual_take_some_bool() -> bool {
     old == Some(true) && x.is_none()
 }
 */
+
+// ----- PartialEq: `Option<T> == Option<T>` -----------------------------------
+// Unblocked by implementing `Option::eq` (previously `todo!()`, which
+// extracted to `fail panic` in Lean).
+
+#[rust_lean_test]
+pub fn test_option_eq_some_same() -> bool {
+    (Some(5u8) == Some(5u8)) == true
+}
+
+#[rust_lean_test]
+pub fn test_option_eq_some_diff() -> bool {
+    (Some(5u8) == Some(6u8)) == false
+}
+
+#[rust_lean_test]
+pub fn test_option_eq_none_none() -> bool {
+    (none_u8() == none_u8()) == true
+}
+
+#[rust_lean_test]
+pub fn test_option_eq_some_none() -> bool {
+    (Some(5u8) == none_u8()) == false
+}
+
+#[rust_lean_test]
+pub fn test_option_eq_none_some() -> bool {
+    (none_u8() == Some(5u8)) == false
+}

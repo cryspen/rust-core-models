@@ -9457,17 +9457,25 @@ def option.Option.Insts.CoreCloneClone {T : Type} (cloneCloneInst :
 }
 
 /-- [core_models::option::{impl core_models::cmp::PartialEq<core_models::option::Option<T>> for core_models::option::Option<T>}::eq]:
-    Source: 'core-models/src/core/option.rs', lines 267:4-269:5
+    Source: 'core-models/src/core/option.rs', lines 267:4-273:5
     Visibility: public -/
 def option.Option.Insts.CoreCmpPartialEqOption.eq
   {T : Type} (cmpPartialEqInst : cmp.PartialEq T T) (self : option.Option T)
   (other : option.Option T) :
   Result Bool
   := do
-  fail Error.panic
+  match self with
+  | option.Option.Some a =>
+    match other with
+    | option.Option.Some b => cmpPartialEqInst.eq a b
+    | option.Option.None => ok false
+  | option.Option.None =>
+    match other with
+    | option.Option.Some _ => ok false
+    | option.Option.None => ok true
 
 /-- Trait implementation: [core_models::option::{impl core_models::cmp::PartialEq<core_models::option::Option<T>> for core_models::option::Option<T>}]
-    Source: 'core-models/src/core/option.rs', lines 266:0-270:1 -/
+    Source: 'core-models/src/core/option.rs', lines 266:0-274:1 -/
 @[reducible]
 def option.Option.Insts.CoreCmpPartialEqOption {T : Type}
   (cmpPartialEqInst : cmp.PartialEq T T) : cmp.PartialEq (option.Option T)

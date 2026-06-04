@@ -314,3 +314,74 @@ pub fn test_vec_swap_remove_back() -> bool {
 // once Vec tests can compile in the first place.
 // TODO(vec-iter-extraction): Vec::iter / Vec::into_iter use iterator traits
 // whose Lean models we don't have yet.
+
+// ----- Re-test now that `Vec` dropped its allocator param --------------------
+// Previously blocked by "vec-extraction-arity-mismatch"; the branch's
+// `Vec<T, A>` -> `Vec<T>` change should unblock these.
+
+#[rust_lean_test]
+pub fn test_vec_new_len_zero() -> bool {
+    let v: Vec<u8> = Vec::new();
+    v.len() == 0
+}
+
+#[rust_lean_test]
+pub fn test_vec_push_len() -> bool {
+    let mut v: Vec<u8> = Vec::new();
+    v.push(7u8);
+    v.len() == 1
+}
+
+#[rust_lean_test]
+pub fn test_vec_push_pop() -> bool {
+    let mut v: Vec<u8> = Vec::new();
+    v.push(9u8);
+    match v.pop() {
+        Some(x) => x == 9u8,
+        None => false,
+    }
+}
+
+// ----- PartialEq / Clone / IntoIterator on Vec (branch additions) ------------
+// These exercise the extracted `eq_loop` / `clone_loop` / `IntoIter::next`.
+
+#[rust_lean_test]
+pub fn test_vec_eq_same() -> bool {
+    let mut a: Vec<u8> = Vec::new();
+    a.push(1u8);
+    a.push(2u8);
+    let mut b: Vec<u8> = Vec::new();
+    b.push(1u8);
+    b.push(2u8);
+    (a == b) == true
+}
+
+#[rust_lean_test]
+pub fn test_vec_eq_diff() -> bool {
+    let mut a: Vec<u8> = Vec::new();
+    a.push(1u8);
+    let mut b: Vec<u8> = Vec::new();
+    b.push(2u8);
+    (a == b) == false
+}
+
+#[rust_lean_test]
+pub fn test_vec_clone_preserves() -> bool {
+    let mut a: Vec<u8> = Vec::new();
+    a.push(3u8);
+    a.push(4u8);
+    let b = a.clone();
+    (a == b) == true
+}
+
+#[rust_lean_test]
+pub fn test_vec_into_iter_first() -> bool {
+    let mut v: Vec<u8> = Vec::new();
+    v.push(7u8);
+    v.push(8u8);
+    let mut it = v.into_iter();
+    match it.next() {
+        Some(x) => x == 7u8,
+        None => false,
+    }
+}

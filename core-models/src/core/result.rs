@@ -480,5 +480,43 @@ mod tests {
         fn test_flatten(x in any::<Result<Result<u8, u8>, u8>>(), is_ok in any::<bool>()) {
             prop_assert!(x.inject().flatten() == x.flatten().inject());
         }
+
+        // ----- Try (from_output / branch) -----------------------------------
+        // std's `Try` is unstable, so these pin the model's documented
+        // semantics (which mirror `?`): `from_output` injects into `Ok`,
+        // `branch` sends `Ok(v)` to `Continue(v)` and `Err(e)` to `Break(Err(e))`.
+
+        #[test]
+        fn test_try_from_output(v in any::<u8>()) {
+            use crate::ops::try_trait::Try;
+            prop_assert_eq!(
+                <super::Result<u8, u8> as Try>::from_output(v),
+                super::Result::Ok(v)
+            );
+        }
+
+        #[test]
+        fn test_try_branch_ok(v in any::<u8>()) {
+            use crate::ops::try_trait::Try;
+            use crate::ops::control_flow::ControlFlow;
+            let r: super::Result<u8, u8> = super::Result::Ok(v);
+            match r.branch() {
+                ControlFlow::Continue(c) => prop_assert_eq!(c, v),
+                ControlFlow::Break(_) => prop_assert!(false, "Ok should Continue"),
+            }
+        }
+
+        #[test]
+        fn test_try_branch_err(e in any::<u8>()) {
+            use crate::ops::try_trait::Try;
+            use crate::ops::control_flow::ControlFlow;
+            let r: super::Result<u8, u8> = super::Result::Err(e);
+            match r.branch() {
+                // `Break` carries the residual `Result<Infallible, u8>`; match
+                // the `Err` arm to read the error without needing `Infallible: Eq`.
+                ControlFlow::Break(super::Result::Err(ee)) => prop_assert_eq!(ee, e),
+                _ => prop_assert!(false, "Err should Break(Err(e))"),
+            }
+        }
     }
 }

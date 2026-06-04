@@ -392,7 +392,6 @@ pub mod vec {
     #[hax_lib::fstar::before("open Rust_primitives.Notations")]
     pub struct Vec<T>(pub Seq<T>);
 
-    // TODO: fix the following impls
     impl<T: Clone> Clone for Vec<T> {
         fn clone(&self) -> Self {
             let mut new_vec = seq_empty();
@@ -700,6 +699,34 @@ pub mod vec {
             fn test_from_elem(x in any::<u8>(), len in 0usize..100) {
                 let model = super::from_elem(x, len);
                 prop_assert_eq!(model, vec![x; len].inject());
+            }
+
+            // ----- Clone / PartialEq / IntoIterator (branch additions) -------
+
+            #[test]
+            fn test_vec_clone(v in prop::collection::vec(any::<u8>(), 0..30)) {
+                // Compare the clone's contents to std directly (independent of
+                // the model's own `PartialEq`, which is tested separately).
+                let cloned = v.inject().clone();
+                prop_assert_eq!(cloned.as_slice(), v.as_slice());
+            }
+
+            #[test]
+            fn test_vec_eq(
+                a in prop::collection::vec(any::<u8>(), 0..15),
+                b in prop::collection::vec(any::<u8>(), 0..15),
+            ) {
+                prop_assert_eq!(a.inject() == b.inject(), a == b);
+            }
+
+            #[test]
+            fn test_vec_into_iter(v in prop::collection::vec(any::<u8>(), 0..30)) {
+                let mut it = v.inject().into_iter();
+                let mut collected: std::vec::Vec<u8> = std::vec::Vec::new();
+                while let Some(x) = it.next() {
+                    collected.push(x);
+                }
+                prop_assert_eq!(collected.as_slice(), v.as_slice());
             }
         }
 

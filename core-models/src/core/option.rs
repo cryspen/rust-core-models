@@ -265,7 +265,11 @@ impl<T: super::clone::Clone> super::clone::Clone for Option<T> {
 
 impl<T: super::cmp::PartialEq<T>> super::cmp::PartialEq<Option<T>> for Option<T> {
     fn eq(&self, other: &Self) -> bool {
-        todo!()
+        match (self, other) {
+            (Self::Some(a), Self::Some(b)) => a.eq(b),
+            (Self::None, Self::None) => true,
+            _ => false,
+        }
     }
 }
 
@@ -423,6 +427,25 @@ mod tests {
 
             prop_assert!(remaining_model == remaining_std.inject());
             prop_assert!(taken_model == taken_std.inject());
+        }
+
+        #[test]
+        fn test_option_eq(x in any::<Option<u8>>(), y in any::<Option<u8>>()) {
+            prop_assert_eq!(
+                <super::Option<u8> as crate::cmp::PartialEq<super::Option<u8>>>::eq(
+                    &x.inject(), &y.inject()
+                ),
+                x == y
+            );
+        }
+
+        #[test]
+        fn test_option_clone(x in any::<Option<u8>>()) {
+            // `core_models`' `Clone::clone` takes `self` by value.
+            prop_assert_eq!(
+                <super::Option<u8> as crate::clone::Clone>::clone(x.inject()),
+                x.clone().inject()
+            );
         }
     }
 
