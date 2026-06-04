@@ -283,6 +283,42 @@ impl<T, E> Result<Result<T, E>, E> {
     }
 }
 
+/// Models the std impl `FromIterator<Result<A, E>> for Result<V, E>`: collect
+/// an iterator of `Result`s into a `Result` of a collection, short-circuiting
+/// on the first `Err`.
+///
+/// Opaque: our `FromIterator::from_iter` signature deliberately omits the
+/// `Item = ...` bound (to avoid the associated-type constraint), so the
+/// short-circuiting body cannot be written in terms of the iterator's items;
+/// the behaviour is axiomatised. The body below exists only to typecheck —
+/// it delegates to `V`'s own `from_iter`.
+#[hax_lib::opaque]
+impl<A, E, V: crate::iter::traits::collect::FromIterator<A>>
+    crate::iter::traits::collect::FromIterator<Result<A, E>> for Result<V, E>
+{
+    fn from_iter<T: crate::iter::traits::collect::IntoIterator>(iter: T) -> Result<V, E> {
+        Ok(<V as crate::iter::traits::collect::FromIterator<A>>::from_iter(iter))
+    }
+}
+
+impl<T, E> crate::ops::try_trait::Try for Result<T, E> {
+    type Output = T;
+    type Residual = Result<crate::convert::Infallible, E>;
+
+    #[inline]
+    fn from_output(output: Self::Output) -> Self {
+        Ok(output)
+    }
+
+    #[inline]
+    fn branch(self) -> crate::ops::control_flow::ControlFlow<Self::Residual, Self::Output> {
+        match self {
+            Ok(v) => crate::ops::control_flow::ControlFlow::Continue(v),
+            Err(e) => crate::ops::control_flow::ControlFlow::Break(Err(e)),
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::testing::Inject;

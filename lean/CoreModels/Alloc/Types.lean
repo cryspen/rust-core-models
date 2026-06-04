@@ -20,61 +20,73 @@ set_option maxRecDepth 2048
 
 namespace CoreModels.alloc
 
+/-- Trait declaration: [alloc::alloc::Allocator]
+    Source: 'src/lib.rs', lines 12:4-14:5
+    Visibility: public -/
+structure alloc.Allocator (Self : Type) where
+  dummy : Result Unit
+
 /-- [alloc::alloc::Global]
-    Source: 'src/lib.rs', lines 13:4-13:22
+    Source: 'src/lib.rs', lines 18:4-18:22
     Visibility: public -/
 @[reducible]
 def alloc.Global := Unit
 
 /-- [alloc::borrow::Cow]
-    Source: 'src/lib.rs', lines 17:4-17:21 -/
+    Source: 'src/lib.rs', lines 26:4-26:21 -/
 @[reducible]
 def borrow.Cow (T : Type) := T
 
 /-- Trait declaration: [alloc::borrow::ToOwned]
-    Source: 'src/lib.rs', lines 19:4-21:5
+    Source: 'src/lib.rs', lines 28:4-30:5
     Visibility: public -/
 structure borrow.ToOwned (Self : Type) where
   to_owned : Self → Result Self
 
 /-- [alloc::boxed::Box]
-    Source: 'src/lib.rs', lines 30:4-30:29
+    Source: 'src/lib.rs', lines 39:4-39:29
     Visibility: public -/
 @[reducible]
 def boxed.Box (T : Type) := T
 
 /-- [alloc::collections::btree::set::BTreeSet]
-    Source: 'src/lib.rs', lines 164:12-164:56 -/
+    Source: 'src/lib.rs', lines 173:12-173:56 -/
 def collections.btree.set.BTreeSet (T : Type) (U : Type) :=
   core.option.Option T × core.option.Option U
 
 /-- [alloc::collections::vec_deque::VecDeque]
-    Source: 'src/lib.rs', lines 188:8-188:75
+    Source: 'src/lib.rs', lines 197:8-197:75
     Visibility: public -/
 def collections.vec_deque.VecDeque (T : Type) (A : Type) :=
   rust_primitives.sequence.Seq T × core.marker.PhantomData A
 
+/-- [alloc::collections::vec_deque::into_iter::IntoIter]
+    Source: 'src/lib.rs', lines 231:12-231:83
+    Visibility: public -/
+def collections.vec_deque.into_iter.IntoIter (T : Type) (A : Type) :=
+  rust_primitives.sequence.Seq T × core.marker.PhantomData A
+
 /-- [alloc::slice::Dummy]
-    Source: 'src/lib.rs', lines 231:4-231:23 -/
+    Source: 'src/lib.rs', lines 286:4-286:23 -/
 @[reducible]
 def slice.Dummy (T : Type) := T
 
 /-- [alloc::vec::Vec]
-    Source: 'src/lib.rs', lines 338:4-338:70
+    Source: 'src/lib.rs', lines 393:4-393:34
     Visibility: public -/
-def vec.Vec (T : Type) (A : Type := alloc.Global) :=
-  rust_primitives.sequence.Seq T × core.marker.PhantomData A
+@[reducible]
+def vec.Vec (T : Type) := rust_primitives.sequence.Seq T
 
 /-- [alloc::vec::into_iter::IntoIter]
-    Source: 'src/lib.rs', lines 346:8-346:79
+    Source: 'src/lib.rs', lines 420:8-420:43
     Visibility: public -/
-def vec.into_iter.IntoIter (T : Type) (A : Type := alloc.Global) :=
-  rust_primitives.sequence.Seq T × core.marker.PhantomData A
+@[reducible]
+def vec.into_iter.IntoIter (T : Type) := rust_primitives.sequence.Seq T
 
 /-- [alloc::vec::drain::Drain]
-    Source: 'src/lib.rs', lines 428:8-428:76
+    Source: 'src/lib.rs', lines 524:8-524:76
     Visibility: public -/
-def vec.drain.Drain (T : Type) (A : Type := alloc.Global) :=
+def vec.drain.Drain (T : Type) (A : Type) :=
   rust_primitives.sequence.Seq T × core.marker.PhantomData A
 
 end CoreModels.alloc

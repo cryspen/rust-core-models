@@ -39,6 +39,25 @@ LEAN_DIR = Path(__file__).parent / "lean"
 CORE_DIR = LEAN_DIR / "CoreModels" / "Core"
 ALLOC_DIR = LEAN_DIR / "CoreModels" / "Alloc"
 
+# Type declarations in Types.lean to delete outright.
+#
+# `array.Array` is just an alias for Aeneas's builtin `Array T N`, so the
+# generated `def` is redundant and shadows the builtin.
+#
+# `slice.Slice` is the dummy `struct Slice<T>(T)` we declare in Rust only to
+# hang the `Slice::*` impls off of; Aeneas translates it to
+# `def slice.Slice (T) := T`, which wrongly says a slice *is* its element type.
+# Every actual slice *type* reference in the generated Lean uses the bare
+# `Slice T` (the opened Aeneas builtin) — i.e. exactly what `[T]` translates to
+# — and the `slice.Slice.*` methods only need `slice.Slice` as a name prefix,
+# not as a type. So we drop the dummy def and let `Slice T` resolve to the
+# builtin, just like `array.Array`.
+TYPES_TO_DELETE = [
+    "core_models::array::Array",
+    "core_models::slice::Slice",
+]
+
+
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -112,6 +131,10 @@ def rename_alloc_models(text: str) -> str:
     text = text.replace("namespace alloc_models", "namespace CoreModels.alloc")
     text = text.replace("end alloc_models", "end CoreModels.alloc")
     text = text.replace("alloc_models", "alloc")
+    # Aeneas also PascalCases the staged crate name when it synthesises
+    # trait-impl identifiers (e.g. `Alloc_modelsAllocAllocator`), which the
+    # lowercase replace above misses.
+    text = text.replace("Alloc_models", "Alloc")
     return text
 
 
@@ -152,21 +175,6 @@ def rewrite_alloc_imports(text: str) -> str:
         "open Aeneas\nopen Aeneas.Std hiding namespace core alloc\nopen Result ControlFlow Error",
         text, flags=re.MULTILINE,
     )
-    return text
-
-def fix_vec_allocator(text: str) -> str:
-    text = replace_blocks(text, [
-        ("alloc::vec::Vec",
-         "def vec.Vec (T : Type) (A : Type := alloc.Global) :=\n"
-         "  rust_primitives.sequence.Seq T × core.marker.PhantomData A"),
-        ("alloc::vec::drain::Drain",
-         "def vec.drain.Drain (T : Type) (A : Type := alloc.Global) :=\n"
-         "  rust_primitives.sequence.Seq T × core.marker.PhantomData A"),
-        ("alloc::vec::into_iter::IntoIter",
-         "def vec.into_iter.IntoIter (T : Type) (A : Type := alloc.Global) :=\n"
-         "  rust_primitives.sequence.Seq T × core.marker.PhantomData A"),
-    ])
-    
     return text
 
 def fix_result_match(text: str) -> str:
@@ -219,6 +227,134 @@ def rewrite_phantom_data(text: str) -> str:
         text, ["core_models::marker::PhantomData"],
         trailer="replaced by rewrite_phantom_data in favor of the def in `TypesPrologue.lean`",
     )
+
+
+def rename_iter_param(text: str) -> str:
+    """Aeneas sometimes names a function parameter `iter`, which shadows the
+    `iter` *namespace* (`core_models::iter`). Inside the body, a qualified
+    reference like `iter.adapters.step_by...next_loop.body` then resolves to
+    the local parameter instead of the namespace and fails to elaborate.
+    See https://github.com/AeneasVerif/aeneas/issues/1098.
+
+    For every top-level block whose signature binds a parameter named `iter`,
+    rename that parameter (and its value-level uses) to `iter_`. We leave
+    `iter.<...>` namespace paths, `::iter::` Rust paths (in doc headers), and
+    `iter :=` struct-field names untouched.
+
+    One subtlety: an adapter constructor such as `Skip::new` builds its value
+    with Rust field-shorthand, which Aeneas extracts as `ok { iter, n }`. Here
+    `iter` is simultaneously the struct field *name* and the (binder) value.
+    Blindly renaming it to `{ iter_, n }` would reference a nonexistent field
+    `iter_`, so we first expand the shorthand to `{ iter := iter_, n }` —
+    keeping the field name `iter` while pointing it at the renamed binder.
+    """
+    # A standalone `iter` identifier (binder or value), i.e. NOT:
+    #   - part of a `::iter::` Rust path or `.iter` projection (lookbehind),
+    #   - the prefix of `iter1` or a namespace path `iter.foo` (lookahead),
+    #   - the struct-field name in `iter := ...` (negative lookahead for `:=`).
+    token = re.compile(r"(?<![\w.:])iter(?![\w.])(?!\s*:=)")
+    # `iter` as the leading field of a record literal `{ iter, ... }` / `{ iter }`
+    # (but not the already-explicit `{ iter := ... }`).
+    shorthand = re.compile(r"(\{\s*)iter\b(?!\s*:=)")
+
+    def fn(ident: str, block_lines: list[str]) -> str | None:
+        block = "\n".join(block_lines)
+        # Only act on blocks that actually bind an `iter` parameter.
+        if not re.search(r"\(\s*iter\s*:(?!=)", block):
+            return None
+        # Expand field-shorthand before the generic rename so the field name
+        # survives (the inserted `iter := iter_` is then left alone: `iter` is
+        # guarded by the `:=` lookahead, `iter_` by the trailing-`_` lookahead).
+        block = shorthand.sub(r"\1iter := iter_", block)
+        return token.sub("iter_", block)
+
+    return transform_blocks(text, fn)
+
+
+def drop_intoiterator_iterator_inst(text: str) -> str:
+    """Strip the `iteratorIteratorInst := ...` field from `IntoIterator` impl
+    records.
+
+    Aeneas extracts the alloc crate against the *real* `core`'s
+    `IntoIterator` trait, whose Lean shape carries an `iteratorIteratorInst`
+    field (the materialised `IntoIter: Iterator` super-bound). Our
+    replacement `core_models` `IntoIterator` (in `CoreModels.Core`) has no
+    such field — the core-side impls (e.g. arrays) never set it. So the
+    `iteratorIteratorInst := ...` assignment Aeneas emits in every alloc
+    `IntoIterator` impl record refers to a nonexistent field and breaks
+    elaboration; we drop it, leaving just the `into_iter := ...` field.
+
+    Only `IntoIterator` trait-implementation blocks are touched. Within such
+    a block we delete the `iteratorIteratorInst :=` line and any (more
+    deeply indented) continuation lines of its value, up to the next field
+    assignment (`<name> :=`) or the closing `}`.
+    """
+    def fn(ident: str, block_lines: list[str]) -> str | None:
+        if "iter::traits::collect::IntoIterator" not in ident:
+            return None
+        out: list[str] = []
+        i, n, dropped = 0, len(block_lines), False
+        while i < n:
+            if block_lines[i].lstrip().startswith("iteratorIteratorInst :="):
+                i += 1  # skip the field line itself
+                # Skip its value continuation lines until the next field /  `}`.
+                while i < n:
+                    nxt = block_lines[i].strip()
+                    if nxt == "}" or re.match(r"\w+ :=", nxt):
+                        break
+                    i += 1
+                dropped = True
+                continue
+            out.append(block_lines[i])
+            i += 1
+        return "\n".join(out) if dropped else None
+
+    return transform_blocks(text, fn)
+
+
+# Standalone `Result` / `ok` tokens, i.e. NOT already part of a dotted path
+# such as `result.Result`, `Aeneas.Std.Result`, or `result.Result.ok`.
+_BARE_RESULT_RE = re.compile(r"(?<![\w.])Result\b")
+_BARE_OK_RE = re.compile(r"(?<![\w.])ok\b")
+
+
+def qualify_result_monad_impls(text: str) -> str:
+    """Fully qualify the Aeneas error monad inside any trait impl whose `Self`
+    is `Result<_, _>` (e.g. the `Try` impl's `from_output` / `«branch»`, and
+    the `FromIterator<Result<_, _>>` impl's `from_iter`).
+
+    Those defs are emitted into the `result.Result.*` namespace. Inside that
+    namespace the bare names `Result` and `ok` resolve to *our* `result.Result`
+    inductive (from `TypesPrologue.lean`) and `result.Result.ok` projection,
+    not to Aeneas's `Aeneas.Std.Result` / `Aeneas.Std.Result.ok`, so the
+    generated bodies fail to elaborate with `type expected, got Result ...`.
+
+    `TypesPrologue.lean` dodges the exact same clash by hand by spelling out
+    `Aeneas.Std.Result`. We apply that convention here: in every block of an
+    impl `for ... result::Result`, rewrite each *standalone* `Result` ->
+    `Aeneas.Std.Result` and `ok` -> `Aeneas.Std.Result.ok` (dotted paths like
+    `result.Result.Ok` are left untouched). The doc-comment header is
+    preserved verbatim. The match keys on the un-renamed Rust path in the doc
+    header (`core_models` survives `rename_namespace`, which only rewrites
+    `namespace`/`end` lines and `Core_models`).
+    """
+    def fn(ident: str, block_lines: list[str]) -> str | None:
+        if "for core_models::result::Result" not in ident:
+            return None
+        # Preserve the `/-- ... -/` doc comment; only rewrite the code below it.
+        doc_end = 0
+        while doc_end < len(block_lines) and \
+                not block_lines[doc_end].rstrip().endswith("-/"):
+            doc_end += 1
+        doc_end += 1
+        head = block_lines[:doc_end]
+        body = "\n".join(block_lines[doc_end:])
+        body = _BARE_RESULT_RE.sub("Aeneas.Std.Result", body)
+        body = _BARE_OK_RE.sub("Aeneas.Std.Result.ok", body)
+        return "\n".join(head) + ("\n" + body if body else "")
+
+    return transform_blocks(text, fn)
+
 
 def desugar_pure_num_bound_binds(text: str) -> str:
     """The generated `Funs.lean` uses monadic bind syntax to fetch numeric
@@ -349,8 +485,8 @@ def _find_block_end(lines: list[str], i: int, n: int) -> tuple[int, int]:
 
 
 def _ident_matches(ident: str, sub: str) -> bool:
-    """Substring match modes used by both `comment_out_blocks` and
-    `replace_blocks`:
+    """Substring match modes used by `comment_out_blocks`, `remove_blocks`,
+    and `relocate_blocks_to_end`:
 
       * `"foo::"`  — prefix match (entry ends with `::`)
       * exact equality
@@ -431,31 +567,61 @@ def comment_out_blocks(
     return transform_blocks(text, fn)
 
 
-def replace_blocks(text: str, replacements: list[tuple[str, str]]) -> str:
-    """Replace the def body of each top-level doc-headed block whose
-    identifier contains a matching substring.
+def remove_blocks(text: str, name_substrings: list[str]) -> str:
+    """Delete each top-level block whose doc-comment header contains one of the
+    given substrings (doc comment + attributes + def + body all go away).
 
-    `replacements` is a list of `(substring, replacement_text)` pairs;
-    matching uses the same modes as `comment_out_blocks`. First match wins,
-    so order entries from most-specific to least-specific if any could
-    overlap. The original `/-- ... -/` doc-comment header is preserved;
-    only the attributes / def / body that follow it are swapped for
-    `replacement_text`.
+    Unlike `comment_out_blocks`, this drops the block entirely rather than
+    wrapping it in `/- -/`. Matching uses the same modes as
+    `comment_out_blocks` (see `_ident_matches`).
     """
     def fn(ident: str, block_lines: list[str]) -> str | None:
-        for sub, repl in replacements:
-            if _ident_matches(ident, sub):
-                # Preserve the doc-comment lines (up to and including the
-                # one ending in `-/`); replace everything after.
-                doc_end = 0
-                while doc_end < len(block_lines) and \
-                        not block_lines[doc_end].rstrip().endswith("-/"):
-                    doc_end += 1
-                doc_end += 1
-                return "\n".join(block_lines[:doc_end]) + "\n" + repl
+        if any(_ident_matches(ident, s) for s in name_substrings):
+            return ""
         return None
 
     return transform_blocks(text, fn)
+
+
+def relocate_blocks_to_end(
+    text: str,
+    name_substrings: list[str],
+    *,
+    end_marker: str,
+) -> str:
+    """Move every top-level doc-headed block whose identifier matches one of
+    `name_substrings` to the end of the namespace — just before the line
+    `end_marker` — preserving their relative order.
+
+    Aeneas orders definitions from its *generic* call graph, which does not
+    see the *monomorphised* dependency a `StepBy<Range<usize>>` iterator has
+    on the concrete `Usize` `Step` instance. That instance is a computable
+    `def` emitted late in `Funs.lean` (interleaved with the `num.*` defs it
+    relies on), so the adapter lands *before* it and elaboration fails with
+    `unknown identifier core.Usize.Insts.CoreIterRangeStep`. Hoisting the
+    adapter past the instance fixes the order; nothing else in the file
+    references the adapter's `Iterator` impl, so no new forward reference is
+    introduced. The later (already-correct) users — e.g. the slice compare
+    loops — are untouched because they sit after the instance already.
+    """
+    captured: list[str] = []
+
+    def fn(ident: str, block_lines: list[str]) -> str | None:
+        if any(_ident_matches(ident, s) for s in name_substrings):
+            captured.append("\n".join(block_lines))
+            return ""
+        return None
+
+    body = transform_blocks(text, fn)
+    if not captured:
+        return body
+
+    needle = "\n" + end_marker
+    idx = body.rfind(needle)
+    block_text = "\n\n".join(captured)
+    if idx == -1:
+        return body.rstrip() + "\n\n" + block_text + "\n"
+    return body[:idx] + "\n\n" + block_text + "\n" + body[idx:]
 
 
 # ---------------------------------------------------------------------------
@@ -487,8 +653,19 @@ def main() -> int:
             text = comment_out_num_bounds(text)
             text = desugar_pure_num_bound_binds(text)
             text = fix_result_match(text)
+            text = rename_iter_param(text)
+            text = qualify_result_monad_impls(text)
+            # The `StepBy` iterator monomorphises onto the concrete `Usize`
+            # `Step` instance, which Aeneas emits *later* in the file. Hoist
+            # the adapter past it so the reference resolves.
+            text = relocate_blocks_to_end(
+                text,
+                ["iter::adapters::step_by::{impl core_models::iter::traits::iterator::Iterator"],
+                end_marker="end CoreModels.core",
+            )
         if path == types_path:
             text = comment_out_types(text)
+            text = remove_blocks(text, TYPES_TO_DELETE)
         write(path, text)
         print(f"patched {CORE_DIR}.")
 
@@ -533,7 +710,9 @@ def patch_alloc() -> None:
         text = rewrite_alloc_imports(text)
         text = fix_fail_panic(text)
         text = rewrite_phantom_data(text)
-        text = fix_vec_allocator(text)
+        if path == funs:
+            text = rename_iter_param(text)
+            text = drop_intoiterator_iterator_inst(text)
         write(path, text)
     print(f"patched {ALLOC_DIR}.")
 

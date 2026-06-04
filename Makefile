@@ -35,11 +35,11 @@ ALLOC_CHARON_EXCLUDES = \
     --exclude '{impl alloc_models::collections::binary_heap::BinaryHeap<_, _>}::*' \
     --exclude 'alloc_models::string::*' \
     --exclude '{impl alloc_models::string::String}::*' \
-    --exclude '{impl core::iter::traits::collect::FromIterator<_> for alloc_models::vec::Vec<_, _>}' \
-    --exclude '{impl core::iter::traits::collect::FromIterator<_> for alloc_models::vec::Vec<_, _>}::*' \
-    --exclude 'alloc_models::slice::_::sort_by' \
-    --exclude '{impl core::ops::index::Index<_> for alloc_models::vec::Vec<_, _>}' \
-    --exclude '{impl core::ops::index::Index<_> for alloc_models::vec::Vec<_, _>}::*'
+    --exclude '{impl core::iter::traits::collect::FromIterator<_> for alloc_models::vec::Vec<_>}' \
+    --exclude '{impl core::iter::traits::collect::FromIterator<_> for alloc_models::vec::Vec<_>}::*' \
+    --exclude '{impl core::iter::traits::collect::FromIterator<_> for alloc_models::collections::vec_deque::VecDeque<_, _>}' \
+    --exclude '{impl core::iter::traits::collect::FromIterator<_> for alloc_models::collections::vec_deque::VecDeque<_, _>}::*' \
+    --exclude 'alloc_models::slice::_::sort_by'
 
 .PHONY: all llbc extract patch lean build clean clean-generated tests \
         tests-clean alloc-stage alloc-llbc alloc-extract alloc-clean
@@ -66,8 +66,7 @@ CHARON_EXCLUDES = \
     --exclude 'core_models::option::_::is_some' \
     --exclude 'core_models::option::_::is_none' \
     --exclude 'core_models::option::_::unwrap_or' \
-    --exclude 'core_models::option::_::take' \
-    --exclude 'core_models::slice::index::*'
+    --exclude 'core_models::option::_::take' 
 
 llbc: $(LLBC_FILE)
 

@@ -40,6 +40,52 @@ end core
 
 namespace alloc
 
+/-! ## `IntoIter::map` (a provided `Iterator` method)
+
+`map` lives on the extraction-excluded `IteratorMethods` trait, so Aeneas
+never synthesises the per-impl `Iterator::map` specialisation that a
+downstream crate references when it writes `v.into_iter().map(f)`. We supply
+it by hand, mirroring Aeneas's own builtin `Aeneas/Std/VecIter.lean` (which
+this project shadows via `open Aeneas.Std hiding namespace core alloc`).
+
+The `@[rust_fun "…"]` attribute binds the Rust path of the provided method to
+this body, so the downstream name-map lands here. The body just builds the
+`Map` adapter; iteration then runs through `Map`'s own `Iterator` instance.
+`F` is the closure, `T` the item, `O` its output (the `FnMut` instance is
+irrelevant to the model, hence `_`-prefixed). -/
+@[rust_fun "alloc::vec::into_iter::{core::iter::traits::iterator::Iterator<alloc::vec::into_iter::IntoIter<@T, @A>, @T>}::map"]
+def vec.into_iter.IntoIter.Insts.CoreIterTraitsIteratorIterator.map
+  {T O F : Type} (_FnMutInst : core.ops.function.FnMut F T O) :
+  vec.into_iter.IntoIter T → F →
+  Aeneas.Std.Result (core.iter.adapters.map.Map (vec.into_iter.IntoIter T) F) :=
+  fun it f => .ok { iter := it, f := f }
+
+/-! ## `FromIterator<T>` for `VecDeque<T, Global>`
+
+Like `Vec`'s `FromIterator`, this impl is `--exclude`d from charon: alloc
+implements *std*'s `FromIterator`, whose `from_iter<I: IntoIterator<Item = A>>`
+pins the iterator's `Item` to the element type, which cannot match
+core-models' deliberately bound-free `FromIterator::from_iter<T: IntoIterator>`
+(its `Clause0_Item` is a free implicit). So we supply the instance by hand,
+binding `Item` free to match the trait field.
+
+NOTE: this is a *stub* — `from_iter` returns an empty deque. We cannot model
+the real collect: core-models' `IntoIterator` carries no `Iterator`
+super-instance (the `iteratorIteratorInst` field was dropped), so there is no
+`next` to drive a fold here. Refine if downstream reasoning depends on the
+contents of a `VecDeque::from_iter` result. -/
+@[rust_trait_impl "core::iter::traits::collect::FromIterator<alloc::collections::vec_deque::VecDeque<@T, alloc::alloc::Global>, @T>"]
+def collections.vec_deque.VecDequeTGlobal.Insts.CoreIterTraitsCollectFromIterator
+  (T : Type) :
+  core.iter.traits.collect.FromIterator
+    (collections.vec_deque.VecDeque T alloc.Global) T := {
+  from_iter := fun {U Item IntoIter}
+    (_IntoIteratorInst : core.iter.traits.collect.IntoIterator U Item IntoIter)
+    (_iter : U) => do
+    let s ← rust_primitives.sequence.seq_empty T
+    Aeneas.Std.Result.ok (s, core.marker.PhantomData.mk)
+}
+
 /-! ## `[T]::to_vec` and `Box<[T]>::into_vec`
 
 Aeneas's builtin name map turns `<[T]>::to_vec` into a reference to
@@ -50,7 +96,7 @@ type" workaround. Re-export them at the std-map name so downstream
 extractions land on a defined symbol.
 -/
 
-noncomputable section
+/- noncomputable section
 
 @[rust_fun "alloc::slice::{[@T]}::to_vec"]
 def slice.Slice.to_vec
@@ -66,7 +112,7 @@ def slice.Slice.into_vec
 end
 
 def vec.Vec.new := @vec.VecTGlobal.new
-def vec.Vec.with_capacity := @vec.VecTGlobal.with_capacity
+def vec.Vec.with_capacity := @vec.VecTGlobal.with_capacity -/
 
 end alloc
 end CoreModels

@@ -242,18 +242,18 @@ pub mod function {
     } */
 }
 
-mod try_trait {
+pub mod try_trait {
     /// See [`std::ops::FromResidual`]
     trait FromResidual<R> {
         fn from_residual(x: R) -> Self;
     }
 
     /// See [`std::ops::Try`]
-    trait Try {
+    pub trait Try {
         type Output;
         type Residual;
         fn from_output(x: Self::Output) -> Self;
-        fn branch(&self) -> super::control_flow::ControlFlow<Self::Residual, Self::Output>;
+        fn branch(self) -> super::control_flow::ControlFlow<Self::Residual, Self::Output>;
     }
 }
 

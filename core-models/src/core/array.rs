@@ -5,34 +5,34 @@ pub struct TryFromSliceError;
 
 // Dummy type to allow impls
 #[hax_lib::exclude]
-struct Dummy<T, const N: usize>([T; N]);
+struct Array<T, const N: usize>([T; N]);
 
-// Dummy impls to get the right disambiguator (https://github.com/cryspen/hax/issues/828)
-impl<T> Dummy<T, 0> {}
-impl<T> Dummy<T, 0> {}
-impl<T> Dummy<T, 0> {}
-impl<T> Dummy<T, 0> {}
-impl<T> Dummy<T, 0> {}
-impl<T> Dummy<T, 0> {}
-impl<T> Dummy<T, 0> {}
-impl<T> Dummy<T, 0> {}
-impl<T> Dummy<T, 0> {}
-impl<T> Dummy<T, 0> {}
-impl<T> Dummy<T, 0> {}
-impl<T> Dummy<T, 0> {}
-impl<T> Dummy<T, 0> {}
-impl<T> Dummy<T, 0> {}
-impl<T> Dummy<T, 0> {}
-impl<T> Dummy<T, 0> {}
-impl<T> Dummy<T, 0> {}
-impl<T> Dummy<T, 0> {}
-impl<T> Dummy<T, 0> {}
-impl<T> Dummy<T, 0> {}
-impl<T> Dummy<T, 0> {}
-impl<T> Dummy<T, 0> {}
-impl<T> Dummy<T, 0> {}
+// Array impls to get the right disambiguator (https://github.com/cryspen/hax/issues/828)
+impl<T> Array<T, 0> {}
+impl<T> Array<T, 0> {}
+impl<T> Array<T, 0> {}
+impl<T> Array<T, 0> {}
+impl<T> Array<T, 0> {}
+impl<T> Array<T, 0> {}
+impl<T> Array<T, 0> {}
+impl<T> Array<T, 0> {}
+impl<T> Array<T, 0> {}
+impl<T> Array<T, 0> {}
+impl<T> Array<T, 0> {}
+impl<T> Array<T, 0> {}
+impl<T> Array<T, 0> {}
+impl<T> Array<T, 0> {}
+impl<T> Array<T, 0> {}
+impl<T> Array<T, 0> {}
+impl<T> Array<T, 0> {}
+impl<T> Array<T, 0> {}
+impl<T> Array<T, 0> {}
+impl<T> Array<T, 0> {}
+impl<T> Array<T, 0> {}
+impl<T> Array<T, 0> {}
+impl<T> Array<T, 0> {}
 
-impl<T, const N: usize> Dummy<T, N> {
+impl<T, const N: usize> Array<T, N> {
     /// See [`std::array::map`]
     pub fn map<F: Fn(T) -> U, U>(s: [T; N], f: F) -> [U; N] {
         array_map(s, f)
@@ -70,6 +70,19 @@ use crate::ops::{
 };
 
 #[hax_lib::attributes]
+#[cfg_attr(hax_backend_lean, hax_lib::exclude)]
+impl<T, I, const N: usize> crate::ops::index::Index<I> for [T; N]
+where
+    [T]: Index<I>,
+{
+    type Output = <[T] as Index<I>>::Output;
+    #[hax_lib::requires(i.get(self).is_some())]
+    fn index(&self, i: I) -> &Self::Output {
+        self.as_slice().index(i)
+    }
+}
+
+/* #[hax_lib::attributes]
 #[cfg_attr(hax_backend_lean, hax_lib::exclude)]
 impl<T, const N: usize> Index<usize> for [T; N] {
     type Output = T;
@@ -113,7 +126,7 @@ impl<T, const N: usize> Index<RangeFull> for [T; N] {
     fn index(&self, i: RangeFull) -> &[T] {
         array_slice(self, 0, N)
     }
-}
+} */
 
 #[cfg(not(hax))]
 impl<T: crate::clone::Clone, const N: usize> crate::clone::Clone for [T; N] {
@@ -177,7 +190,7 @@ mod tests {
         fn test_as_slice(arr in any::<[u8; 4]>()) {
             let model_arr = arr.inject();
             prop_assert_eq!(
-                super::Dummy::<u8, 4>::as_slice(&model_arr),
+                super::Array::<u8, 4>::as_slice(&model_arr),
                 arr.as_slice()
             );
         }
@@ -216,7 +229,7 @@ mod tests {
         #[test]
         fn test_each_ref(arr in any::<[u8; 4]>()) {
             let model_arr = arr.inject();
-            let model_refs = super::Dummy::<u8, 4>::each_ref(&model_arr);
+            let model_refs = super::Array::<u8, 4>::each_ref(&model_arr);
             let std_refs = arr.each_ref();
             for i in 0..4 {
                 prop_assert_eq!(*model_refs[i], *std_refs[i]);

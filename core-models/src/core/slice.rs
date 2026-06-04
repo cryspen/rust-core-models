@@ -2,7 +2,7 @@ use crate::result::Result;
 
 // Dummy type to allow impls
 #[hax_lib::exclude]
-struct Slice<T>(T);
+struct Slice<T>([T]);
 
 pub mod iter {
     use crate::option::Option;
@@ -248,6 +248,75 @@ impl<T> Slice<T> {
     {
         for i in 0..s.len() {
             s[i] = value.clone();
+        }
+    }
+}
+
+impl<T: crate::cmp::PartialEq<T>> crate::cmp::PartialEq<[T]> for [T] {
+    fn eq(&self, other: &[T]) -> bool {
+        if self.len() != other.len() {
+            false
+        } else {
+            for i in 0..self.len() {
+                if !self[i].eq(&other[i]) {
+                    return false;
+                }
+            }
+            true
+        }
+    }
+}
+
+impl<T: crate::cmp::Eq> crate::cmp::Eq for [T] {}
+
+impl<T: crate::cmp::PartialOrd<T>> crate::cmp::PartialOrd<[T]> for [T] {
+    fn partial_cmp(&self, other: &[T]) -> crate::option::Option<crate::cmp::Ordering> {
+        // Lexicographic order: compare elements pairwise up to the shorter
+        // length; the first non-`Equal` result (including `None`) decides.
+        let l = if self.len() < other.len() {
+            self.len()
+        } else {
+            other.len()
+        };
+        for i in 0..l {
+            match self[i].partial_cmp(&other[i]) {
+                crate::option::Option::Some(crate::cmp::Ordering::Equal) => (),
+                non_eq => return non_eq,
+            }
+        }
+        // All common elements are equal: the shorter slice is smaller.
+        if self.len() < other.len() {
+            crate::option::Option::Some(crate::cmp::Ordering::Less)
+        } else if self.len() > other.len() {
+            crate::option::Option::Some(crate::cmp::Ordering::Greater)
+        } else {
+            crate::option::Option::Some(crate::cmp::Ordering::Equal)
+        }
+    }
+}
+
+impl<T: crate::cmp::Ord> crate::cmp::Ord for [T] {
+    fn cmp(&self, other: &[T]) -> crate::cmp::Ordering {
+        // Lexicographic order: compare elements pairwise up to the shorter
+        // length; the first non-`Equal` result decides.
+        let l = if self.len() < other.len() {
+            self.len()
+        } else {
+            other.len()
+        };
+        for i in 0..l {
+            match self[i].cmp(&other[i]) {
+                crate::cmp::Ordering::Equal => (),
+                non_eq => return non_eq,
+            }
+        }
+        // All common elements are equal: the shorter slice is smaller.
+        if self.len() < other.len() {
+            crate::cmp::Ordering::Less
+        } else if self.len() > other.len() {
+            crate::cmp::Ordering::Greater
+        } else {
+            crate::cmp::Ordering::Equal
         }
     }
 }

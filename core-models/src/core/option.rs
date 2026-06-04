@@ -254,6 +254,21 @@ impl<T> Default for Option<T> {
     }
 }
 
+impl<T: super::clone::Clone> super::clone::Clone for Option<T> {
+    fn clone(self) -> Self {
+        match self {
+            Self::Some(arg0) => Self::Some(arg0.clone()),
+            Self::None => Self::None,
+        }
+    }
+}
+
+impl<T: super::cmp::PartialEq<T>> super::cmp::PartialEq<Option<T>> for Option<T> {
+    fn eq(&self, other: &Self) -> bool {
+        todo!()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::testing::Inject;
