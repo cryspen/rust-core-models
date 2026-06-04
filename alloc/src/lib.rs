@@ -396,9 +396,9 @@ pub mod vec {
     impl<T: Clone> Clone for Vec<T> {
         fn clone(&self) -> Self {
             let mut new_vec = seq_empty();
-            /* for it in self.iter() {
+            for it in self.iter() {
                 seq_push(&mut new_vec, it.clone());
-            } */
+            }
             Vec(new_vec)
         }
     }
@@ -407,7 +407,17 @@ pub mod vec {
         T: PartialEq<U>,
     {
         fn eq(&self, other: &Vec<U>) -> bool {
-            true
+            if !(self.len() == other.len()) {
+                false
+            } else {
+                let mut res = true;
+                for i in 0..self.len() {
+                    if !(self[i] == other[i]) {
+                        res = false
+                    }
+                }
+                res
+            }
         }
     }
 
