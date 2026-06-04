@@ -81,9 +81,7 @@ $(LLBC_FILE): $(CORE_MODELS_DIR)/src/**/*.rs $(CORE_MODELS_DIR)/Cargo.toml
 #    $(LEAN_DIR)/Aeneas/ is left untouched.
 extract: $(LLBC_FILE) alloc-extract
 	mkdir -p $(LEAN_DIR)
-	# Aeneas may exit non-zero while still producing partial files; that's OK,
-	# our patcher and the surrounding hand-written library handle the gaps.
-	-$(AENEAS) -core-models-lib -backend lean $(LLBC_FILE) -split-files -dest $(LEAN_DIR) \
+	$(AENEAS) -core-models-lib -backend lean $(LLBC_FILE) -split-files -dest $(LEAN_DIR) \
 	-subdir CoreModels/Core -all-computable
 
 # -----------------------------------------------------------------------------
@@ -118,7 +116,7 @@ alloc-llbc: $(ALLOC_LLBC_FILE)
 # `-subdir CoreModels/Alloc` makes Aeneas emit `import CoreModels.Alloc.<X>` rather
 # than the auto-derived `Alloc_models.<X>` prefix.
 alloc-extract: $(ALLOC_LLBC_FILE)
-	-$(AENEAS) -core-models-lib -backend lean $(ALLOC_LLBC_FILE) -split-files \
+	$(AENEAS) -core-models-lib -backend lean $(ALLOC_LLBC_FILE) -split-files \
 	    -dest $(LEAN_DIR) -subdir CoreModels/Alloc -all-computable
 
 # 3. Move generated files into $(LEAN_DIR)/CoreModels/ and apply our patches
