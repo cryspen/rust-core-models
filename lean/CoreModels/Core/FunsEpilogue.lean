@@ -104,7 +104,7 @@ type" workaround. Re-export them at the std-map name so downstream
 extractions land on a defined symbol.
 -/
 
-/- noncomputable section
+noncomputable section
 
 @[rust_fun "alloc::slice::{[@T]}::to_vec"]
 def slice.Slice.to_vec
@@ -118,7 +118,13 @@ def slice.Slice.into_vec
   slice.Dummy.into_vec s
 
 end
--/
+
+-- `vec.Vec.new` / `vec.Vec.with_capacity` are now extracted directly into
+-- `CoreModels.Alloc` (and `vec.VecTGlobal` no longer exists, since `vec.Vec`
+-- dropped its allocator type parameter), so these manual re-exports are
+-- obsolete:
+-- def vec.Vec.new := @vec.VecTGlobal.new
+-- def vec.Vec.with_capacity := @vec.VecTGlobal.with_capacity
 
 end alloc
 end CoreModels
