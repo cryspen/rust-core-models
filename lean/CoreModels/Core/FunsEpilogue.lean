@@ -104,7 +104,7 @@ type" workaround. Re-export them at the std-map name so downstream
 extractions land on a defined symbol.
 -/
 
-noncomputable section
+/- noncomputable section
 
 @[rust_fun "alloc::slice::{[@T]}::to_vec"]
 def slice.Slice.to_vec
@@ -118,6 +118,7 @@ def slice.Slice.into_vec
   slice.Dummy.into_vec s
 
 end
+-/
 
 end alloc
 end CoreModels

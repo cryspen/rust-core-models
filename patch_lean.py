@@ -39,6 +39,25 @@ LEAN_DIR = Path(__file__).parent / "lean"
 CORE_DIR = LEAN_DIR / "CoreModels" / "Core"
 ALLOC_DIR = LEAN_DIR / "CoreModels" / "Alloc"
 
+# Type declarations in Types.lean to delete outright.
+#
+# `array.Array` is just an alias for Aeneas's builtin `Array T N`, so the
+# generated `def` is redundant and shadows the builtin.
+#
+# `slice.Slice` is the dummy `struct Slice<T>(T)` we declare in Rust only to
+# hang the `Slice::*` impls off of; Aeneas translates it to
+# `def slice.Slice (T) := T`, which wrongly says a slice *is* its element type.
+# Every actual slice *type* reference in the generated Lean uses the bare
+# `Slice T` (the opened Aeneas builtin) — i.e. exactly what `[T]` translates to
+# — and the `slice.Slice.*` methods only need `slice.Slice` as a name prefix,
+# not as a type. So we drop the dummy def and let `Slice T` resolve to the
+# builtin, just like `array.Array`.
+TYPES_TO_DELETE = [
+    "core_models::array::Array",
+    "core_models::slice::Slice",
+]
+
+
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -371,9 +390,9 @@ def comment_out_num_bounds(text: str) -> str:
 
 def comment_out_types(text: str) -> str:
     """
-    Some type declarations in Types.lean are commented out: most are provided
-    by TypesPrologue.lean, while `array::Array` / `slice::Slice` are redundant
-    aliases for the Aeneas builtins `Array T N` / `Slice T` (see below).
+    Comment out the type declarations in Types.lean that we forward-declare in
+    TypesPrologue.lean. (`array::Array` / `slice::Slice` are instead *removed*
+    outright by `remove_blocks(TYPES_TO_DELETE)`; see `TYPES_TO_DELETE`.)
     """
     return comment_out_blocks(text, [
         "core_models::ops::function::FnOnce",
@@ -382,19 +401,6 @@ def comment_out_types(text: str) -> str:
         "core_models::cmp::Ordering",
         "core_models::option::Option",
         "core_models::result::Result",
-        # `array.Array` is just an alias for Aeneas's builtin `Array T N`, so
-        # the generated `def` is redundant and only shadows the builtin.
-        #
-        # `slice.Slice` is the dummy `struct Slice<T>([T])` we declare in Rust
-        # only to hang the `Slice::*` impls off of; Aeneas translates it to a
-        # `def slice.Slice`, but every actual slice *type* reference in the
-        # generated Lean uses the bare `Slice T` (the opened Aeneas builtin) —
-        # i.e. exactly what `[T]` translates to — and the `slice.Slice.*`
-        # methods only need `slice.Slice` as a name prefix, not as a type. So
-        # we drop the dummy def and let `Slice T` resolve to the builtin, just
-        # like `array.Array`.
-        "core_models::array::Array",
-        "core_models::slice::Slice",
     ])
 
 def add_funs_prologue_import(text: str) -> str:
@@ -480,8 +486,8 @@ def _find_block_end(lines: list[str], i: int, n: int) -> tuple[int, int]:
 
 
 def _ident_matches(ident: str, sub: str) -> bool:
-    """Substring match modes used by `comment_out_blocks` and
-    `relocate_blocks_to_end`:
+    """Substring match modes used by `comment_out_blocks`, `remove_blocks`,
+    and `relocate_blocks_to_end`:
 
       * `"foo::"`  — prefix match (entry ends with `::`)
       * exact equality
@@ -560,6 +566,33 @@ def comment_out_blocks(
         return None
 
     return transform_blocks(text, fn)
+
+
+def remove_blocks(text: str, name_substrings: list[str]) -> str:
+    """Delete each top-level block whose doc-comment header contains one of the
+    given substrings (doc comment + attributes + def + body all go away).
+
+    Unlike `comment_out_blocks`, this drops the block entirely rather than
+    wrapping it in `/- -/`. Matching uses the same modes as
+    `comment_out_blocks` (see `_ident_matches`).
+    """
+    captured: list[str] = []
+
+    def fn(ident: str, block_lines: list[str]) -> str | None:
+        if any(_ident_matches(ident, s) for s in name_substrings):
+            return ""
+        return None
+
+    body = transform_blocks(text, fn)
+    if not captured:
+        return body
+
+    needle = "\n" + end_marker
+    idx = body.rfind(needle)
+    block_text = "\n\n".join(captured)
+    if idx == -1:
+        return body.rstrip() + "\n\n" + block_text + "\n"
+    return body[:idx] + "\n\n" + block_text + "\n" + body[idx:]
 
 
 def relocate_blocks_to_end(
@@ -644,6 +677,7 @@ def main() -> int:
             )
         if path == types_path:
             text = comment_out_types(text)
+            text = remove_blocks(text, TYPES_TO_DELETE)
         write(path, text)
         print(f"patched {CORE_DIR}.")
 
