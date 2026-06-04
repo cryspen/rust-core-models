@@ -96,23 +96,27 @@ type" workaround. Re-export them at the std-map name so downstream
 extractions land on a defined symbol.
 -/
 
-/- noncomputable section
+noncomputable section
 
 @[rust_fun "alloc::slice::{[@T]}::to_vec"]
 def slice.Slice.to_vec
   {T : Type} (cloneInst : core.clone.Clone T) (s : Aeneas.Std.Slice T) :
-  Aeneas.Std.Result (vec.Vec T alloc.Global) :=
+  Aeneas.Std.Result (vec.Vec T) :=
   slice.Dummy.to_vec cloneInst s
 
 @[rust_fun "alloc::slice::{alloc::boxed::Box<[@T], @A>}::into_vec"]
 def slice.Slice.into_vec
-  {T : Type} (A : Type) (s : Aeneas.Std.Slice T) : Aeneas.Std.Result (vec.Vec T A) :=
-  slice.Dummy.into_vec A s
+  {T : Type} (s : Aeneas.Std.Slice T) : Aeneas.Std.Result (vec.Vec T) :=
+  slice.Dummy.into_vec s
 
 end
 
-def vec.Vec.new := @vec.VecTGlobal.new
-def vec.Vec.with_capacity := @vec.VecTGlobal.with_capacity -/
+-- `vec.Vec.new` / `vec.Vec.with_capacity` are now extracted directly into
+-- `CoreModels.Alloc` (and `vec.VecTGlobal` no longer exists, since `vec.Vec`
+-- dropped its allocator type parameter), so these manual re-exports are
+-- obsolete:
+-- def vec.Vec.new := @vec.VecTGlobal.new
+-- def vec.Vec.with_capacity := @vec.VecTGlobal.with_capacity
 
 end alloc
 end CoreModels

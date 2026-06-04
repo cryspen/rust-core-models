@@ -252,17 +252,18 @@ impl<T> Slice<T> {
     }
 }
 
-impl<T: crate::cmp::PartialEq<T>> crate::cmp::PartialEq<[T]> for [T] {
-    fn eq(&self, other: &[T]) -> bool {
+impl<U, T: crate::cmp::PartialEq<U>> crate::cmp::PartialEq<[U]> for [T] {
+    fn eq(&self, other: &[U]) -> bool {
         if self.len() != other.len() {
             false
         } else {
+            let mut res = true;
             for i in 0..self.len() {
                 if !self[i].eq(&other[i]) {
-                    return false;
+                    res = false;
                 }
             }
-            true
+            res
         }
     }
 }

@@ -104,18 +104,6 @@ def Shared1A.Insts.CoreCmpPartialOrdShared0B.gt
   | some cmp.Ordering.Greater => ok true
   | _ => ok false
 
-/-- [core::slice::cmp::{core::cmp::PartialEq<[U]> for [T]}::eq]:
-    Source: '/rustc/library/core/src/slice/cmp.rs', lines 18:4-18:37
-    Name pattern: [core::slice::cmp::{core::cmp::PartialEq<[@T], [@U]>}::eq]
-    Visibility: public -/
-@[rust_fun "core::slice::cmp::{core::cmp::PartialEq<[@T], [@U]>}::eq"]
-def Slice.Insts.CoreCmpPartialEqSlice.eq
-  {T : Type} {U : Type} (cmpPartialEqInst : cmp.PartialEq T U) :
-  Slice T → Slice U → Result Bool := fun s1 s2 =>
-  if s1.length ≠ s2.length then ok false
-  else do
-    let rs ← (s1.val.zip s2.val).mapM (fun p => cmpPartialEqInst.eq p.1 p.2)
-    ok (rs.all id)
 
 /-! ## Slice -/
 
