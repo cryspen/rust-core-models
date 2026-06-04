@@ -25,7 +25,12 @@ namespace CoreModels.core
 @[reducible]
 def array.TryFromSliceError := Unit
 
-
+/-
+/-- [core_models::array::Array]
+    Source: 'core-models/src/core/array.rs', lines 8:0-8:40 -/
+@[reducible]
+def array.Array (T : Type) (N : Std.Usize) := Array T N
+-/
 
 /-- [core_models::array::{core_models::array::Array<T, N>}::each_ref::closure]
     Source: 'core-models/src/core/array.rs', lines 46:22-46:43 -/
@@ -793,7 +798,12 @@ structure ops.range.RangeInclusive (T : Type) where
   start : T
   «end» : T
 
-
+/-
+/-- [core_models::slice::Slice]
+    Source: 'core-models/src/core/slice.rs', lines 5:0-5:21 -/
+@[reducible]
+def slice.Slice (T : Type) := Slice T
+-/
 
 /-- [core_models::slice::iter::Chunks]
     Source: 'core-models/src/core/slice.rs', lines 12:4-15:5
