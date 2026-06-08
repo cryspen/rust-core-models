@@ -319,6 +319,20 @@ impl<T, E> crate::ops::try_trait::Try for Result<T, E> {
     }
 }
 
+/// The error half of `?`: re-inject a `Break(Err(e))` residual, widening the
+/// error via `From` (mirrors std's `impl<T, E, F: From<E>> ... for Result<T, F>`).
+/// `Ok` is unreachable — the residual's payload is `Infallible`.
+impl<T, E, F: crate::convert::From<E>>
+    crate::ops::try_trait::FromResidual<Result<crate::convert::Infallible, E>> for Result<T, F>
+{
+    fn from_residual(residual: Result<crate::convert::Infallible, E>) -> Self {
+        match residual {
+            Err(e) => Err(<F as crate::convert::From<E>>::from(e)),
+            Ok(_) => super::panicking::internal::panic(),
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::testing::Inject;
@@ -517,6 +531,19 @@ mod tests {
                 ControlFlow::Break(super::Result::Err(ee)) => prop_assert_eq!(ee, e),
                 _ => prop_assert!(false, "Err should Break(Err(e))"),
             }
+        }
+
+        // `?` end-to-end lives in the equiv suite; here we pin `from_residual`
+        // directly (std's `Try` is unstable, so we can't `?` on the model type).
+        #[test]
+        fn test_try_from_residual(e in any::<u8>()) {
+            use crate::ops::try_trait::FromResidual;
+            use crate::convert::Infallible;
+            let residual: super::Result<Infallible, u8> = super::Result::Err(e);
+            prop_assert_eq!(
+                <super::Result<u8, u8> as FromResidual<super::Result<Infallible, u8>>>::from_residual(residual),
+                super::Result::Err(e)
+            );
         }
     }
 }

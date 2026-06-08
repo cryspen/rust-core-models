@@ -46,6 +46,12 @@ end iter.range
 abbrev ops.range.Range.Insts.Core_modelsIterTraitsIteratorIterator.next :=
   @iter.range.IteratorRange.next
 
+/-- Downstream `?` references this `Try::branch` impl under the un-suffixed name
+    `…CoreOpsTry_traitTry.branch`, but our own extraction suffixes it
+    `…TResultInfallibleE.branch`. Alias so `?` on `Result` elaborates. -/
+abbrev result.Result.Insts.CoreOpsTry_traitTry.branch :=
+  @result.Result.Insts.CoreOpsTry_traitTryTResultInfallibleE.branch
+
 end core
 
 namespace alloc
@@ -118,13 +124,6 @@ def slice.Slice.into_vec
   slice.Dummy.into_vec s
 
 end
-
--- `vec.Vec.new` / `vec.Vec.with_capacity` are now extracted directly into
--- `CoreModels.Alloc` (and `vec.VecTGlobal` no longer exists, since `vec.Vec`
--- dropped its allocator type parameter), so these manual re-exports are
--- obsolete:
--- def vec.Vec.new := @vec.VecTGlobal.new
--- def vec.Vec.with_capacity := @vec.VecTGlobal.with_capacity
 
 end alloc
 end CoreModels

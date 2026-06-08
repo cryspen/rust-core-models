@@ -19,7 +19,7 @@ trait Into<T> {
 
 /// See [`std::convert::From`]
 #[hax_lib::attributes]
-trait From<T> {
+pub trait From<T> {
     /// See [`std::convert::From::from`]
     #[hax_lib::requires(true)]
     fn from(x: T) -> Self;
@@ -55,7 +55,12 @@ use crate::array::TryFromSliceError;
 impl<T: Copy, const N: usize> TryFrom<&[T]> for [T; N] {
     type Error = TryFromSliceError;
     fn try_from(x: &[T]) -> Result<[T; N], TryFromSliceError> {
-        if x.len() == N {
+        // Use the primitive length directly rather than `x.len()`: the latter
+        // extracts to a reference to `slice::Slice::len`, which (under
+        // `-core-models-lib`) Aeneas emits as an external-looking name with no
+        // dependency edge, producing a forward reference here (this `convert`
+        // module is extracted before `slice`).
+        if rust_primitives::slice::slice_length(x) == N {
             Result::Ok(rust_primitives::slice::array_from_fn(|i| {
                 *rust_primitives::slice::slice_index(x, i)
             }))
@@ -80,14 +85,18 @@ impl<T> From<T> for T {
 
 /// See [`std::convert::AsRef`]
 #[hax_lib::attributes]
-trait AsRef<T> {
+pub trait AsRef<T: ?Sized> {
     /// See [`std::convert::AsRef::as_ref`]
     #[hax_lib::requires(true)]
-    fn as_ref(self) -> T;
+    fn as_ref(&self) -> &T;
 }
 
-impl<T> AsRef<T> for T {
-    fn as_ref(self) -> T {
+/// `impl AsRef<[T]> for [T]`. std exposes many concrete `AsRef` impls; the model
+/// used a single `impl<T> AsRef<T> for T` blanket, but that can't cover the
+/// unsized `[T]` (and Aeneas references the per-type impl name anyway), so we
+/// provide the concrete slice impl.
+impl<T> AsRef<[T]> for [T] {
+    fn as_ref(&self) -> &[T] {
         self
     }
 }
@@ -250,8 +259,9 @@ mod tests {
         }
 
         #[test]
-        fn test_as_ref_identity(x in any::<u8>()) {
-            prop_assert_eq!(super::AsRef::as_ref(x.inject()), x);
+        fn test_as_ref_slice_identity(v in prop::collection::vec(any::<u8>(), 0..=8)) {
+            let s: &[u8] = &v[..];
+            prop_assert_eq!(super::AsRef::as_ref(s), s);
         }
     }
 

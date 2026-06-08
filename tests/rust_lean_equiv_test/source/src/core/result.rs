@@ -434,3 +434,28 @@ pub fn test_transpose_err() -> bool {
 // `result_flattening` feature on stable std. The model defines `flatten`
 // directly so the Lean side works, but the Rust side cannot call
 // `r.flatten()` on stable. Revisit once `result_flattening` stabilises.
+
+// ----- `?` operator (Try::branch + FromResidual::from_residual) --------------
+// `?` is stable even though `Try`/`FromResidual` aren't, so it's the only way to
+// drive the whole desugaring against our model end-to-end.
+
+fn question_identity(a: Result<u8, u8>) -> Result<u8, u8> {
+    let x = a?;
+    Ok(x)
+}
+
+#[rust_lean_test]
+pub fn test_question_propagates_ok() -> bool {
+    match question_identity(ok_u8_u8(7)) {
+        Ok(v) => v == 7,
+        Err(_) => false,
+    }
+}
+
+#[rust_lean_test]
+pub fn test_question_propagates_err() -> bool {
+    match question_identity(err_u8_u8(3)) {
+        Ok(_) => false,
+        Err(e) => e == 3,
+    }
+}

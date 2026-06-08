@@ -371,15 +371,9 @@ def comment_out_num_bounds(text: str) -> str:
 
 def comment_out_types(text: str) -> str:
     """
-<<<<<<< HEAD
-    Comment out the type declarations in Types.lean that we forward-declare in
-    TypesPrologue.lean. (`array::Array` / `slice::Slice` are instead *removed*
-    outright by `remove_blocks(TYPES_TO_DELETE)`; see `TYPES_TO_DELETE`.)
-=======
     Some type declarations in Types.lean are commented out: most are provided
     by TypesPrologue.lean, while `array::Array` / `slice::Slice` are redundant
     aliases for the Aeneas builtins `Array T N` / `Slice T` (see below).
->>>>>>> dab1160 (Extensions cleanup.)
     """
     return comment_out_blocks(text, [
         "core_models::ops::function::FnOnce",

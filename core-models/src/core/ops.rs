@@ -244,7 +244,7 @@ pub mod function {
 
 pub mod try_trait {
     /// See [`std::ops::FromResidual`]
-    trait FromResidual<R> {
+    pub trait FromResidual<R> {
         fn from_residual(x: R) -> Self;
     }
 

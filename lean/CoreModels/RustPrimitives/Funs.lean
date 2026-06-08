@@ -67,6 +67,41 @@ def rust_primitives.slice.slice_clone_from_slice
   if dest.length = src.length then ok src
   else fail .panic
 
+/-- [rust_primitives::slice::slice_index_mut]: returns the element together with
+    the write-back function (Aeneas's pure encoding of `&mut s[i]`). -/
+@[rust_fun "rust_primitives::slice::slice_index_mut"]
+def rust_primitives.slice.slice_index_mut
+  {T : Type} : Slice T → Std.Usize → Result (T × (T → Slice T)) :=
+  fun s i => Slice.index_mut_usize s i
+
+/-- [rust_primitives::slice::slice_slice_mut]: returns the subslice together with
+    its write-back function (the pure encoding of `&mut s[b..e]`). -/
+@[rust_fun "rust_primitives::slice::slice_slice_mut"]
+def rust_primitives.slice.slice_slice_mut
+  {T : Type} : Slice T → Std.Usize → Std.Usize → Result ((Slice T) × (Slice T → Slice T)) :=
+  fun s b e => do
+  let sub ← Slice.subslice s ⟨b, e⟩
+  ok (sub, fun ss => match Slice.update_subslice s ⟨b, e⟩ ss with
+                     | .ok r => r
+                     | _     => s)
+
+/-- [rust_primitives::slice::slice_reverse]: in-place reverse, threaded as
+    `Slice T → Slice T`. -/
+@[rust_fun "rust_primitives::slice::slice_reverse"]
+def rust_primitives.slice.slice_reverse
+  {T : Type} : Slice T → Result (Slice T) :=
+  fun s => ok ⟨ s.val.reverse, by have := s.property; simp [*] ⟩
+
+/-- [rust_primitives::slice::slice_swap]: swap elements `a` and `b`. -/
+@[rust_fun "rust_primitives::slice::slice_swap"]
+def rust_primitives.slice.slice_swap
+  {T : Type} : Slice T → Std.Usize → Std.Usize → Result (Slice T) :=
+  fun s a b => do
+  let va ← Slice.index_usize s a
+  let vb ← Slice.index_usize s b
+  let s1 ← Slice.update s a vb
+  Slice.update s1 b va
+
 private theorem foldlM_list_build_length {T F : Type}
     (step : List T × F → Nat → Result (List T × F))
     (hstep : ∀ l f i r, step (l, f) i = .ok r → r.1.length = l.length + 1) :

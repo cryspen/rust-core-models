@@ -758,3 +758,26 @@ pub fn test_slice_eq_diff_len() -> bool {
     let b: &[u8] = &[1, 2, 3];
     (a == b) == false
 }
+
+// ----- get_unchecked (in-bounds) ---------------------------------------------
+// In-bounds is the only defined behaviour; the model projects like `index`.
+
+#[rust_lean_test]
+pub fn test_slice_get_unchecked_first() -> bool {
+    let s: &[u8] = &[10u8, 20, 30];
+    unsafe { *s.get_unchecked(0) == 10 }
+}
+
+#[rust_lean_test]
+pub fn test_slice_get_unchecked_last() -> bool {
+    let s: &[u8] = &[10u8, 20, 30];
+    unsafe { *s.get_unchecked(2) == 30 }
+}
+
+#[rust_lean_test]
+pub fn test_slice_get_unchecked_range() -> bool {
+    let s: &[u8] = &[10u8, 20, 30, 40];
+    let sub: &[u8] = unsafe { s.get_unchecked(1..3) };
+    let expected: &[u8] = &[20u8, 30];
+    sub == expected
+}
