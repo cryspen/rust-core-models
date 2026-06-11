@@ -263,6 +263,7 @@ def comment_out_types(text: str) -> str:
         "core_models::cmp::Ordering",
         "core_models::option::Option",
         "core_models::result::Result",
+        "core_models::slice::Slice",
     ])
 
 def add_funs_prologue_import(text: str) -> str:

@@ -795,10 +795,12 @@ structure ops.range.RangeInclusive (T : Type) where
   start : T
   «end» : T
 
+/-
 /-- [core_models::slice::Slice]
     Source: 'core-models/src/core/slice.rs', lines 5:0-5:19 -/
 @[reducible]
 def slice.Slice (T : Type) := T
+-/
 
 /-- [core_models::slice::iter::Chunks]
     Source: 'core-models/src/core/slice.rs', lines 12:4-15:5
