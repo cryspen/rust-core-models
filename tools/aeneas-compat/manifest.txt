@@ -1,0 +1,48 @@
+# Manual-surface manifest for aeneas-compat.
+#
+# The auto-derived covered set (from core_models.llbc / alloc.llbc) misses two
+# things, which this file patches:
+#
+#   [covered]  core/alloc/std items the library DOES provide but that don't
+#              name-match the model LLBC: glue routed through `rust_primitives`
+#              or hand-written Lean (Prologue/Epilogue/*External.lean), and
+#              items removed at the LLBC level via CHARON_EXCLUDES yet
+#              re-supplied in Lean.
+#
+#   [ignore]   compiler-internal items that show up in every crate's LLBC but
+#              are never a real coverage gap (drop glue, marker traits, derive
+#              support shims). Aeneas handles these specially.
+#
+# Paste keys EXACTLY as they appear in the tool's `missing` output (they are
+# the normalized form: generics/lifetimes stripped, impl-block paths reduced).
+
+[ignore]
+# Drop glue — every owned value gets one; never a real coverage gap.
+*{impl Destruct for *}::drop_in_place
+core::marker::Destruct
+core::marker::Destruct::drop_in_place
+# Marker / derive-support traits handled specially by aeneas.
+core::marker::Sized
+core::marker::Copy
+core::marker::StructuralPartialEq
+core::marker::PhantomData
+core::cmp::Eq::assert_fields_are_eq
+*::assert_fields_are_eq
+
+[covered]
+# (grow as false positives are triaged against real crates; see README for the
+#  known categories: rust_primitives glue, abstract default methods, blanket
+#  impls, CHARON_EXCLUDES items re-supplied in Lean.)
+#
+# CHARON_EXCLUDES'd in the Makefile, re-supplied as hand-written Lean
+# (lean/CoreModels/.../*External.lean) — see the repo README's "Excluded items".
+core::slice::index::SliceIndex::*
+core::slice::index::private_slice_index::Sealed
+*{impl SliceIndex for *}::*
+*{impl Sealed for *}
+core::mem::swap
+core::mem::replace
+*{impl Option<*>}::is_some
+*{impl Option<*>}::is_none
+*{impl Option<*>}::unwrap_or
+*{impl Option<*>}::take
