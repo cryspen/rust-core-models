@@ -57,6 +57,27 @@ jobs:
       - run: cargo test --workspace --lib
         working-directory: tests
 
+  # ------------------------------------------------------------ coverage report
+  coverage:
+    name: core/alloc coverage report up to date
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # rust-docs-json ships the prebuilt rustdoc JSON of real core/alloc
+      # (the denominator); the same nightly builds the model crates' rustdoc
+      # JSON (the numerator), so their format_version agrees.
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.RUST_TOOLCHAIN }}
+          components: rust-docs-json
+
+      - name: COVERAGE.md must match a fresh regeneration
+        run: make check-coverage
+        env:
+          TOOLCHAIN: ${{ env.RUST_TOOLCHAIN }}
+
   # ----------------------------------------------------------- lean extraction
   lean-build:
     name: aeneas extraction + lake build
