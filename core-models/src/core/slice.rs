@@ -2,7 +2,7 @@ use crate::result::Result;
 
 // Dummy type to allow impls
 #[hax_lib::exclude]
-struct Slice<T>(T);
+struct Slice<T>([T]);
 
 pub mod iter {
     use crate::option::Option;
@@ -248,6 +248,77 @@ impl<T> Slice<T> {
     {
         for i in 0..s.len() {
             s[i] = value.clone();
+        }
+    }
+}
+
+impl<U, T: crate::cmp::PartialEq<U>> crate::cmp::PartialEq<[U]> for [T] {
+    fn eq(&self, other: &[U]) -> bool {
+        if self.len() != other.len() {
+            false
+        } else {
+            let mut res = true;
+            for i in 0..self.len() {
+                if res && !self[i].eq(&other[i]) {
+                    // This should be an early return, but aeneas doesn't support that
+                    res = false;
+                }
+            }
+            res
+        }
+    }
+}
+
+impl<T: crate::cmp::Eq> crate::cmp::Eq for [T] {}
+
+impl<T: crate::cmp::PartialOrd<T>> crate::cmp::PartialOrd<[T]> for [T] {
+    fn partial_cmp(&self, other: &[T]) -> crate::option::Option<crate::cmp::Ordering> {
+        // Lexicographic order: compare elements pairwise up to the shorter
+        // length; the first non-`Equal` result (including `None`) decides.
+        let l = if self.len() < other.len() {
+            self.len()
+        } else {
+            other.len()
+        };
+        for i in 0..l {
+            match self[i].partial_cmp(&other[i]) {
+                crate::option::Option::Some(crate::cmp::Ordering::Equal) => (),
+                non_eq => return non_eq,
+            }
+        }
+        // All common elements are equal: the shorter slice is smaller.
+        if self.len() < other.len() {
+            crate::option::Option::Some(crate::cmp::Ordering::Less)
+        } else if self.len() > other.len() {
+            crate::option::Option::Some(crate::cmp::Ordering::Greater)
+        } else {
+            crate::option::Option::Some(crate::cmp::Ordering::Equal)
+        }
+    }
+}
+
+impl<T: crate::cmp::Ord> crate::cmp::Ord for [T] {
+    fn cmp(&self, other: &[T]) -> crate::cmp::Ordering {
+        // Lexicographic order: compare elements pairwise up to the shorter
+        // length; the first non-`Equal` result decides.
+        let l = if self.len() < other.len() {
+            self.len()
+        } else {
+            other.len()
+        };
+        for i in 0..l {
+            match self[i].cmp(&other[i]) {
+                crate::cmp::Ordering::Equal => (),
+                non_eq => return non_eq,
+            }
+        }
+        // All common elements are equal: the shorter slice is smaller.
+        if self.len() < other.len() {
+            crate::cmp::Ordering::Less
+        } else if self.len() > other.len() {
+            crate::cmp::Ordering::Greater
+        } else {
+            crate::cmp::Ordering::Equal
         }
     }
 }
@@ -645,6 +716,53 @@ mod tests {
             prop_assert_eq!(
                 crate::ops::index::Index::index(&s, crate::ops::range::RangeFull),
                 &slice[..]
+            );
+        }
+
+        // ----- PartialEq / PartialOrd / Ord (lexicographic) ------------------
+
+        #[test]
+        fn test_slice_eq(
+            a in prop::collection::vec(any::<u8>(), 0..=8),
+            b in prop::collection::vec(any::<u8>(), 0..=8),
+        ) {
+            prop_assert_eq!(
+                <[u8] as crate::cmp::PartialEq<[u8]>>::eq(&a[..], &b[..]),
+                a == b
+            );
+        }
+
+        // Equal-length pairs make the per-element comparison the deciding factor
+        // more often than two independent (usually different-length) slices.
+        #[test]
+        fn test_slice_eq_same_len(pairs in prop::collection::vec((any::<u8>(), any::<u8>()), 0..=8)) {
+            let a: Vec<u8> = pairs.iter().map(|p| p.0).collect();
+            let b: Vec<u8> = pairs.iter().map(|p| p.1).collect();
+            prop_assert_eq!(
+                <[u8] as crate::cmp::PartialEq<[u8]>>::eq(&a[..], &b[..]),
+                a == b
+            );
+        }
+
+        #[test]
+        fn test_slice_partial_cmp(
+            a in prop::collection::vec(any::<u8>(), 0..=8),
+            b in prop::collection::vec(any::<u8>(), 0..=8),
+        ) {
+            prop_assert_eq!(
+                <[u8] as crate::cmp::PartialOrd<[u8]>>::partial_cmp(&a[..], &b[..]),
+                a[..].partial_cmp(&b[..]).inject()
+            );
+        }
+
+        #[test]
+        fn test_slice_cmp(
+            a in prop::collection::vec(any::<u8>(), 0..=8),
+            b in prop::collection::vec(any::<u8>(), 0..=8),
+        ) {
+            prop_assert_eq!(
+                <[u8] as crate::cmp::Ord>::cmp(&a[..], &b[..]),
+                a[..].cmp(&b[..]).inject()
             );
         }
     }

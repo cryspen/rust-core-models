@@ -4,6 +4,7 @@
 -/
 import CoreModels.Core.Types
 import CoreModels.Alloc.Types
+import CoreModels.RustPrimitives.Funs
 
 namespace CoreModels.core
 
@@ -75,6 +76,47 @@ instance I64.Insts.CoreCmpPartialOrdI64     : cmp.PartialOrd I64   I64   := mkIP
 instance I128.Insts.CoreCmpPartialOrdI128   : cmp.PartialOrd I128  I128  := mkIPartialOrd
 instance Isize.Insts.CoreCmpPartialOrdIsize : cmp.PartialOrd Isize Isize := mkIPartialOrd
 
+/-! ## Scalar `Ord` instances
+
+`core::cmp::Ord for <int>` is `aeneas::exclude`d in `cmp.rs` (like `PartialEq`
+/ `PartialOrd`), so — to match the excluded `PartialOrd` instances above — we
+re-provide it here. Without these, any model code requiring `T: Ord` on a
+scalar (e.g. `<[T]>::cmp`, sorting, `BinaryHeap`) references an undefined
+`<int>.Insts.CoreCmpOrd`. -/
+
+def mkUOrd {ty} : cmp.Ord (UScalar ty) := {
+  EqInst := { PartialEqInst := { eq := fun x y => ok (x == y) } }
+  PartialOrdInst := mkUPartialOrd
+  cmp := fun x y =>
+    ok (match compare x.val y.val with
+        | .lt => cmp.Ordering.Less
+        | .eq => cmp.Ordering.Equal
+        | .gt => cmp.Ordering.Greater)
+}
+
+def mkIOrd {ty} : cmp.Ord (IScalar ty) := {
+  EqInst := { PartialEqInst := { eq := fun x y => ok (x == y) } }
+  PartialOrdInst := mkIPartialOrd
+  cmp := fun x y =>
+    ok (match compare x.val y.val with
+        | .lt => cmp.Ordering.Less
+        | .eq => cmp.Ordering.Equal
+        | .gt => cmp.Ordering.Greater)
+}
+
+instance U8.Insts.CoreCmpOrd    : cmp.Ord U8    := mkUOrd
+instance U16.Insts.CoreCmpOrd   : cmp.Ord U16   := mkUOrd
+instance U32.Insts.CoreCmpOrd   : cmp.Ord U32   := mkUOrd
+instance U64.Insts.CoreCmpOrd   : cmp.Ord U64   := mkUOrd
+instance U128.Insts.CoreCmpOrd  : cmp.Ord U128  := mkUOrd
+instance Usize.Insts.CoreCmpOrd : cmp.Ord Usize := mkUOrd
+instance I8.Insts.CoreCmpOrd    : cmp.Ord I8    := mkIOrd
+instance I16.Insts.CoreCmpOrd   : cmp.Ord I16   := mkIOrd
+instance I32.Insts.CoreCmpOrd   : cmp.Ord I32   := mkIOrd
+instance I64.Insts.CoreCmpOrd   : cmp.Ord I64   := mkIOrd
+instance I128.Insts.CoreCmpOrd  : cmp.Ord I128  := mkIOrd
+instance Isize.Insts.CoreCmpOrd : cmp.Ord Isize := mkIOrd
+
 abbrev ops.range.Range.Insts.CoreIterTraitsIteratorIterator.next :=
   @IteratorRange.next
 
@@ -104,23 +146,37 @@ def Shared1A.Insts.CoreCmpPartialOrdShared0B.gt
   | some cmp.Ordering.Greater => ok true
   | _ => ok false
 
-/-- [core::slice::cmp::{core::cmp::PartialEq<[U]> for [T]}::eq]:
-    Source: '/rustc/library/core/src/slice/cmp.rs', lines 18:4-18:37
-    Name pattern: [core::slice::cmp::{core::cmp::PartialEq<[@T], [@U]>}::eq]
-    Visibility: public -/
-@[rust_fun "core::slice::cmp::{core::cmp::PartialEq<[@T], [@U]>}::eq"]
-def Slice.Insts.CoreCmpPartialEqSlice.eq
-  {T : Type} {U : Type} (cmpPartialEqInst : cmp.PartialEq T U) :
-  Slice T → Slice U → Result Bool := fun s1 s2 =>
-  if s1.length ≠ s2.length then ok false
-  else do
-    let rs ← (s1.val.zip s2.val).mapM (fun p => cmpPartialEqInst.eq p.1 p.2)
-    ok (rs.all id)
 
 /-! ## Slice -/
 
 def slice.Slice.len {T : Type u} (v : Aeneas.Std.Slice T) : Aeneas.Std.Result Usize :=
   pure (@Aeneas.Std.Slice.len T v)
+
+/-- `[T]::iter()` — constructs `core_models::slice::iter::Iter<'a, T>`.
+
+    Part of the `aeneas::exclude`d `impl Slice<T>` block (like `len` above), so
+    it's provided here. The Rust is `Iter(seq_from_slice(s))`; since the model
+    is `Iter T := Seq T` (refs erased), the `Iter(…)` wrap is the identity. -/
+def slice.Slice.iter {T : Type} (s : Aeneas.Std.Slice T) :
+    Result (slice.iter.Iter T) :=
+  rust_primitives.sequence.seq_from_slice s
+
+/-- `Iterator::next` for `core_models::slice::iter::Iter<'a, T>` (the iterator
+    returned by `[T]::iter()`, with `Item = &'a T`).
+
+    The `impl … Iterator for Iter` is `aeneas::exclude`d (aeneas#805), so Aeneas
+    emits *references* to this `next` — e.g. from `Vec::clone`'s loop in
+    `Alloc/Funs.lean` — but never a body. The model erases the `&'a`, so `Iter`
+    is just the remaining `Seq T`; `next` pops the front element. This mirrors
+    the generated `vec.into_iter.IntoIter` `next`. -/
+def slice.iter.Iter.Insts.CoreIterTraitsIteratorIteratorSharedAT.next
+    {T : Type} (self : slice.iter.Iter T) :
+    Result ((option.Option T) × slice.iter.Iter T) := do
+  let i ← rust_primitives.sequence.seq_len self
+  if i = 0#usize then ok (option.Option.None, self)
+  else
+    let (t, s) ← rust_primitives.sequence.seq_remove self 0#usize
+    ok (option.Option.Some t, s)
 
 /-! ## Option -/
 

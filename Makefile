@@ -35,11 +35,11 @@ ALLOC_CHARON_EXCLUDES = \
     --exclude '{impl alloc_models::collections::binary_heap::BinaryHeap<_, _>}::*' \
     --exclude 'alloc_models::string::*' \
     --exclude '{impl alloc_models::string::String}::*' \
-    --exclude '{impl core::iter::traits::collect::FromIterator<_> for alloc_models::vec::Vec<_, _>}' \
-    --exclude '{impl core::iter::traits::collect::FromIterator<_> for alloc_models::vec::Vec<_, _>}::*' \
-    --exclude 'alloc_models::slice::_::sort_by' \
-    --exclude '{impl core::ops::index::Index<_> for alloc_models::vec::Vec<_, _>}' \
-    --exclude '{impl core::ops::index::Index<_> for alloc_models::vec::Vec<_, _>}::*'
+    --exclude '{impl core::iter::traits::collect::FromIterator<_> for alloc_models::vec::Vec<_>}' \
+    --exclude '{impl core::iter::traits::collect::FromIterator<_> for alloc_models::vec::Vec<_>}::*' \
+    --exclude '{impl core::iter::traits::collect::FromIterator<_> for alloc_models::collections::vec_deque::VecDeque<_, _>}' \
+    --exclude '{impl core::iter::traits::collect::FromIterator<_> for alloc_models::collections::vec_deque::VecDeque<_, _>}::*' \
+    --exclude 'alloc_models::slice::_::sort_by'
 
 .PHONY: all llbc extract patch lean build clean clean-generated tests \
         tests-clean alloc-stage alloc-llbc alloc-extract alloc-clean
@@ -66,8 +66,7 @@ CHARON_EXCLUDES = \
     --exclude 'core_models::option::_::is_some' \
     --exclude 'core_models::option::_::is_none' \
     --exclude 'core_models::option::_::unwrap_or' \
-    --exclude 'core_models::option::_::take' \
-    --exclude 'core_models::slice::index::*'
+    --exclude 'core_models::option::_::take' 
 
 llbc: $(LLBC_FILE)
 
@@ -82,9 +81,7 @@ $(LLBC_FILE): $(CORE_MODELS_DIR)/src/**/*.rs $(CORE_MODELS_DIR)/Cargo.toml
 #    $(LEAN_DIR)/Aeneas/ is left untouched.
 extract: $(LLBC_FILE) alloc-extract
 	mkdir -p $(LEAN_DIR)
-	# Aeneas may exit non-zero while still producing partial files; that's OK,
-	# our patcher and the surrounding hand-written library handle the gaps.
-	-$(AENEAS) -core-models-lib -backend lean $(LLBC_FILE) -split-files -dest $(LEAN_DIR) \
+	$(AENEAS) -core-models-lib -backend lean $(LLBC_FILE) -split-files -dest $(LEAN_DIR) \
 	-subdir CoreModels/Core -all-computable
 
 # -----------------------------------------------------------------------------
@@ -119,7 +116,7 @@ alloc-llbc: $(ALLOC_LLBC_FILE)
 # `-subdir CoreModels/Alloc` makes Aeneas emit `import CoreModels.Alloc.<X>` rather
 # than the auto-derived `Alloc_models.<X>` prefix.
 alloc-extract: $(ALLOC_LLBC_FILE)
-	-$(AENEAS) -core-models-lib -backend lean $(ALLOC_LLBC_FILE) -split-files \
+	$(AENEAS) -core-models-lib -backend lean $(ALLOC_LLBC_FILE) -split-files \
 	    -dest $(LEAN_DIR) -subdir CoreModels/Alloc -all-computable
 
 # 3. Move generated files into $(LEAN_DIR)/CoreModels/ and apply our patches

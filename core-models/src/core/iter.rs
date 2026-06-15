@@ -443,7 +443,7 @@ pub mod adapters {
             iter: I,
             step: usize,
         }
-        #[cfg_attr(charon, aeneas::exclude)] // https://github.com/AeneasVerif/aeneas/issues/1098
+
         impl<I> StepBy<I> {
             pub fn new(iter: I, step: usize) -> Self {
                 StepBy { iter, step }
@@ -451,7 +451,6 @@ pub mod adapters {
         }
 
         #[hax_lib::opaque]
-        #[cfg_attr(charon, aeneas::exclude)]
         impl<I: Iterator> Iterator for StepBy<I> {
             type Item = <I as Iterator>::Item;
 
@@ -471,7 +470,7 @@ pub mod adapters {
             iter: I,
             f: F,
         }
-        #[cfg_attr(charon, aeneas::exclude)] // https://github.com/AeneasVerif/aeneas/issues/1098
+
         impl<I, F> Map<I, F> {
             pub fn new(iter: I, f: F) -> Self {
                 Self { iter, f }

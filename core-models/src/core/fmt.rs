@@ -9,6 +9,12 @@ pub type Result = super::result::Result<(), Error>;
 /// See [`std::fmt::Formatter`]
 pub struct Formatter;
 
+impl Formatter {
+    pub fn write_str(&mut self, data: &str) -> Result {
+        Result::Ok(())
+    }
+}
+
 /// See [`std::fmt::Display`]
 pub trait Display {
     /// See [`std::fmt::Display::fmt`]
@@ -18,14 +24,14 @@ pub trait Display {
 /// See [`std::fmt::Debug`]
 pub trait Debug {
     /// See [`std::fmt::Debug::fmt`]
-    fn dbg_fmt(&self, f: &mut Formatter) -> Result;
+    fn fmt(&self, f: &mut Formatter) -> Result;
 }
 
 /// See [`std::fmt::Arguments`]
 pub struct Arguments<'a>(&'a ());
 
 impl<T> Debug for T {
-    fn dbg_fmt(&self, f: &mut Formatter) -> Result {
+    fn fmt(&self, f: &mut Formatter) -> Result {
         Result::Ok(())
     }
 }

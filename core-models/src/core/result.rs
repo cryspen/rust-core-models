@@ -283,6 +283,42 @@ impl<T, E> Result<Result<T, E>, E> {
     }
 }
 
+/// Models the std impl `FromIterator<Result<A, E>> for Result<V, E>`: collect
+/// an iterator of `Result`s into a `Result` of a collection, short-circuiting
+/// on the first `Err`.
+///
+/// Opaque: our `FromIterator::from_iter` signature deliberately omits the
+/// `Item = ...` bound (to avoid the associated-type constraint), so the
+/// short-circuiting body cannot be written in terms of the iterator's items;
+/// the behaviour is axiomatised. The body below exists only to typecheck —
+/// it delegates to `V`'s own `from_iter`.
+#[hax_lib::opaque]
+impl<A, E, V: crate::iter::traits::collect::FromIterator<A>>
+    crate::iter::traits::collect::FromIterator<Result<A, E>> for Result<V, E>
+{
+    fn from_iter<T: crate::iter::traits::collect::IntoIterator>(iter: T) -> Result<V, E> {
+        Ok(<V as crate::iter::traits::collect::FromIterator<A>>::from_iter(iter))
+    }
+}
+
+impl<T, E> crate::ops::try_trait::Try for Result<T, E> {
+    type Output = T;
+    type Residual = Result<crate::convert::Infallible, E>;
+
+    #[inline]
+    fn from_output(output: Self::Output) -> Self {
+        Ok(output)
+    }
+
+    #[inline]
+    fn branch(self) -> crate::ops::control_flow::ControlFlow<Self::Residual, Self::Output> {
+        match self {
+            Ok(v) => crate::ops::control_flow::ControlFlow::Continue(v),
+            Err(e) => crate::ops::control_flow::ControlFlow::Break(Err(e)),
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::testing::Inject;
@@ -443,6 +479,44 @@ mod tests {
         #[test]
         fn test_flatten(x in any::<Result<Result<u8, u8>, u8>>(), is_ok in any::<bool>()) {
             prop_assert!(x.inject().flatten() == x.flatten().inject());
+        }
+
+        // ----- Try (from_output / branch) -----------------------------------
+        // std's `Try` is unstable, so these pin the model's documented
+        // semantics (which mirror `?`): `from_output` injects into `Ok`,
+        // `branch` sends `Ok(v)` to `Continue(v)` and `Err(e)` to `Break(Err(e))`.
+
+        #[test]
+        fn test_try_from_output(v in any::<u8>()) {
+            use crate::ops::try_trait::Try;
+            prop_assert_eq!(
+                <super::Result<u8, u8> as Try>::from_output(v),
+                super::Result::Ok(v)
+            );
+        }
+
+        #[test]
+        fn test_try_branch_ok(v in any::<u8>()) {
+            use crate::ops::try_trait::Try;
+            use crate::ops::control_flow::ControlFlow;
+            let r: super::Result<u8, u8> = super::Result::Ok(v);
+            match r.branch() {
+                ControlFlow::Continue(c) => prop_assert_eq!(c, v),
+                ControlFlow::Break(_) => prop_assert!(false, "Ok should Continue"),
+            }
+        }
+
+        #[test]
+        fn test_try_branch_err(e in any::<u8>()) {
+            use crate::ops::try_trait::Try;
+            use crate::ops::control_flow::ControlFlow;
+            let r: super::Result<u8, u8> = super::Result::Err(e);
+            match r.branch() {
+                // `Break` carries the residual `Result<Infallible, u8>`; match
+                // the `Err` arm to read the error without needing `Infallible: Eq`.
+                ControlFlow::Break(super::Result::Err(ee)) => prop_assert_eq!(ee, e),
+                _ => prop_assert!(false, "Err should Break(Err(e))"),
+            }
         }
     }
 }
