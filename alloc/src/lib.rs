@@ -9,17 +9,13 @@ mod testing {
 }
 
 mod alloc {
-    pub trait Allocator {
-        fn dummy();
-    }
+    pub trait Allocator {}
 
     #[cfg_attr(test, derive(PartialEq, Debug))]
     #[derive(Clone)]
     pub struct Global;
 
-    impl Allocator for Global {
-        fn dummy() {}
-    }
+    impl Allocator for Global {}
 }
 
 mod borrow {

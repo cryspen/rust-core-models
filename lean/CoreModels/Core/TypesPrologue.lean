@@ -19,22 +19,8 @@ structure Fn (Self : Type) (Args : Type) (Self_Clause0_Output : Type) where
   call : Self → Args → Result Self_Clause0_Output
 end ops.function
 
-/-! ## PhantomData — replaces Aeneas's reducible alias
-
-Aeneas extracts `core::marker::PhantomData` as the reducible alias
-`def marker.PhantomData (T) := T` and builds phantom values with `()` (Charon
-models it as a ZST). That alias is unusable here: where `PhantomData A` is the
-second component of a pair (e.g. `vec.drain.Drain T A := Seq T × PhantomData A`),
-Lean unfolds it and loses `A` during unification.
-
-So we model it as a *non-reducible* `structure` instead, which keeps `A`
-syntactically present. `patch_lean.py`'s `rewrite_phantom_data` rewires the
-Aeneas output onto this carrier: it comments out the generated alias and
-rewrites the `()` constructor sites to `core.marker.PhantomData.mk`.
--/
-
-structure marker.PhantomData (A : Type) where mk ::
-deriving Inhabited
+def marker.PhantomData (A : Type) := Unit
+def marker.PhantomData.mk: Unit := ()
 
 /-! ## Option
 

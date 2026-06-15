@@ -259,7 +259,8 @@ impl<U, T: crate::cmp::PartialEq<U>> crate::cmp::PartialEq<[U]> for [T] {
         } else {
             let mut res = true;
             for i in 0..self.len() {
-                if !self[i].eq(&other[i]) {
+                if res && !self[i].eq(&other[i]) {
+                    // This should be an early return, but aeneas doesn't support that
                     res = false;
                 }
             }

@@ -48,12 +48,10 @@ downstream crate references when it writes `v.into_iter().map(f)`. We supply
 it by hand, mirroring Aeneas's own builtin `Aeneas/Std/VecIter.lean` (which
 this project shadows via `open Aeneas.Std hiding namespace core alloc`).
 
-The `@[rust_fun "…"]` attribute binds the Rust path of the provided method to
-this body, so the downstream name-map lands here. The body just builds the
+The body just builds the
 `Map` adapter; iteration then runs through `Map`'s own `Iterator` instance.
 `F` is the closure, `T` the item, `O` its output (the `FnMut` instance is
 irrelevant to the model, hence `_`-prefixed). -/
-@[rust_fun "alloc::vec::into_iter::{core::iter::traits::iterator::Iterator<alloc::vec::into_iter::IntoIter<@T, @A>, @T>}::map"]
 def vec.into_iter.IntoIter.Insts.CoreIterTraitsIteratorIterator.map
   {T O F : Type} (_FnMutInst : core.ops.function.FnMut F T O) :
   vec.into_iter.IntoIter T → F →
@@ -74,16 +72,16 @@ the real collect: core-models' `IntoIterator` carries no `Iterator`
 super-instance (the `iteratorIteratorInst` field was dropped), so there is no
 `next` to drive a fold here. Refine if downstream reasoning depends on the
 contents of a `VecDeque::from_iter` result. -/
-@[rust_trait_impl "core::iter::traits::collect::FromIterator<alloc::collections::vec_deque::VecDeque<@T, alloc::alloc::Global>, @T>"]
+opaque collections.vec_deque.VecDequeTGlobal.Insts.CoreIterTraitsCollectFromIterator.from_iter
+  (T : Type) : {T_1 Clause0_Item Clause0_IntoIter : Type} →
+  core.iter.traits.collect.IntoIterator T_1 Clause0_Item Clause0_IntoIter →
+  T_1 → Aeneas.Std.Result (VecDeque T alloc.Global)
+
 def collections.vec_deque.VecDequeTGlobal.Insts.CoreIterTraitsCollectFromIterator
   (T : Type) :
   core.iter.traits.collect.FromIterator
     (collections.vec_deque.VecDeque T alloc.Global) T := {
-  from_iter := fun {U Item IntoIter}
-    (_IntoIteratorInst : core.iter.traits.collect.IntoIterator U Item IntoIter)
-    (_iter : U) => do
-    let s ← rust_primitives.sequence.seq_empty T
-    Aeneas.Std.Result.ok (s, core.marker.PhantomData.mk)
+  from_iter := collections.vec_deque.VecDequeTGlobal.Insts.CoreIterTraitsCollectFromIterator.from_iter T
 }
 
 /-! ## `[T]::to_vec` and `Box<[T]>::into_vec`
@@ -110,13 +108,6 @@ def slice.Slice.into_vec
   slice.Dummy.into_vec s
 
 end
-
--- `vec.Vec.new` / `vec.Vec.with_capacity` are now extracted directly into
--- `CoreModels.Alloc` (and `vec.VecTGlobal` no longer exists, since `vec.Vec`
--- dropped its allocator type parameter), so these manual re-exports are
--- obsolete:
--- def vec.Vec.new := @vec.VecTGlobal.new
--- def vec.Vec.with_capacity := @vec.VecTGlobal.with_capacity
 
 end alloc
 end CoreModels
