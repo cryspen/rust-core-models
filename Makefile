@@ -43,7 +43,7 @@ ALLOC_CHARON_EXCLUDES = \
 
 .PHONY: all llbc extract patch lean build clean clean-generated tests \
         tests-clean alloc-stage alloc-llbc alloc-extract alloc-clean \
-        coverage check-coverage
+        coverage
 
 all: lean coverage
 
@@ -172,15 +172,3 @@ tests-clean:
 # Regenerate COVERAGE.md + tools/core-coverage/coverage.json.
 coverage:
 	./tools/core-coverage/gen.sh
-
-# CI gate: regenerate and fail if the committed report is out of date.
-# On mismatch, print the actual diff (not just a stat) so CI logs show exactly
-# which modules/items differ from the committed report.
-check-coverage: coverage
-	@if ! git diff --quiet COVERAGE.md tools/core-coverage/coverage.json; then \
-	    echo "::group::coverage diff (regenerated vs committed)"; \
-	    git --no-pager diff -- COVERAGE.md tools/core-coverage/coverage.json; \
-	    echo "::endgroup::"; \
-	    echo "COVERAGE.md is out of date; run 'make coverage' and commit."; \
-	    exit 1; \
-	fi

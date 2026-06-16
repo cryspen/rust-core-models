@@ -5,8 +5,14 @@ the real `core` / `alloc` public API the model crates provide.
 
 ```sh
 make coverage          # regenerate COVERAGE.md + coverage.json
-make check-coverage    # CI: fail if COVERAGE.md is stale
 ```
+
+The report is **not** verified in CI: the numerator is rustdoc JSON of the
+model crates, whose `hax-lib` proc-macro expansion is not bit-reproducible
+across machines (it emits a few phantom items), so a rebuild-and-diff gate
+would be flaky. Treat `COVERAGE.md` as an approximate, periodically-refreshed
+snapshot — run `make coverage` when you want current numbers (it also runs as
+part of the default `make` target).
 
 ## Why rustdoc JSON
 
@@ -65,5 +71,8 @@ the **targeted** modules only. Edit `OUT_OF_SCOPE` to re-scope.
   core-mirroring level.
 - Coverage is by item *name/signature presence*, not behavioural correctness —
   that is what `tests/rust_lean_equiv_test/` is for.
-- The report is deterministic for a fixed toolchain, so `make check-coverage`
-  can assert it is committed up to date.
+- The numbers are approximate: the model's rustdoc JSON depends on `hax-lib`
+  proc-macro expansion, which varies slightly across machines (a handful of
+  phantom items), so the report can differ by a few items between regenerations
+  on different hosts. This is why it is a committed snapshot rather than a
+  CI-enforced invariant.

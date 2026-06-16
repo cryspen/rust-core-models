@@ -12,8 +12,9 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$REPO_ROOT"
 
-# Must match CI's RUST_TOOLCHAIN (.github/workflows/ci.yml) so the committed
-# COVERAGE.md matches what `make check-coverage` regenerates in CI.
+# Pinned so coverage numbers are comparable across regenerations; kept in step
+# with CI's RUST_TOOLCHAIN (.github/workflows/ci.yml). Override with
+# TOOLCHAIN=nightly-YYYY-MM-DD.
 TOOLCHAIN="${TOOLCHAIN:-nightly-2026-02-07}"
 
 # How to get the toolchain + the std rustdoc JSON it ships, shown on any
