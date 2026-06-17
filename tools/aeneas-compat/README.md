@@ -1,7 +1,17 @@
 # aeneas-compat
 
-Estimate a crate's compatibility with the `CoreModels` Aeneas library *before*
-you try to analyze it with charon + aeneas.
+Estimate a crate's compatibility with the `CoreModels` Aeneas library.
+
+There are two tools here, working at different altitudes:
+
+- **`aeneas_compat.py`** (described below) — a *pre-flight estimate* from the
+  crate's charon **LLBC**, before you run aeneas. Needs only `charon`. Fast, but
+  the covered set is derived from the model's LLBC rather than its Lean library,
+  so it has known false-positive categories (see bottom).
+- **`lean_extract_compat.py`** — a *post-extraction* check from the crate's
+  aeneas-emitted **Lean**. The most precise of the tools, but needs the crate to
+  have been extracted by aeneas already. See
+  [The Lean-extraction check](#the-lean-extraction-check).
 
 Given a target crate, it reports:
 
@@ -87,6 +97,60 @@ actually covered, add its key to `[covered]`:
 
 Inspecting `MISSING` and growing `manifest.txt` is the intended workflow; over
 time the false-positive list shrinks to the genuine gaps.
+
+## The Lean-extraction check
+
+`lean_extract_compat.py` answers the same question — *which `core`/`alloc` items
+does this crate need that the model doesn't provide?* — but from the **other
+end** of the pipeline: the Lean that aeneas has already emitted for the crate.
+
+```sh
+python3 tools/aeneas-compat/lean_extract_compat.py --lean-dir path/to/crate/lean
+python3 tools/aeneas-compat/lean_extract_compat.py --lean-dir <dir> --json
+python3 tools/aeneas-compat/lean_extract_compat.py --lean-dir <dir> --show-candidates
+```
+
+It needs a **built** `CoreModels` lake project (the repo's `lean/`, used to
+resolve names; override with `--core-models-lean`). It does *not* need charon or
+aeneas — only the crate's already-extracted `.lean` files.
+
+### Why it's more precise
+
+The extracted `Funs.lean` / `Types.lean` reference `core`/`alloc` as the exact
+mangled identifiers aeneas chose (e.g.
+`core.slice.iter.Iter.Insts.CoreIterTraitsIteratorIteratorSharedAT.map`).
+Reading them directly avoids *reconstructing* those names, so none of aeneas'
+mangling subtleties can produce a false positive.
+
+It is also better than just running `lake build` and reading the errors:
+
+- **deduplicated** — a missing name used at 10 sites is reported once, not ten
+  times;
+- **no cascade noise** — a build emits unrelated type errors once a definition
+  fails; this tool only ever reports unknown `core`/`alloc` names;
+- **strictly more complete** — once a definition fails on its first unknown
+  identifier, the build *masks* the remaining unknowns in that definition; this
+  tool sees them all (on `tests/list_coverage` it surfaces 5 genuine gaps the
+  build never prints).
+
+### How it works
+
+1. Scan the crate's `.lean` files for referenced `core.*` / `alloc.*` names and
+   for the names the crate *defines itself*.
+2. Drop any reference whose name — or any ancestor prefix — is self-defined.
+   This is the Lean-level analogue of charon's `is_local`: test crates that
+   mirror std paths (e.g. `tests/rust_lean_equiv_test`) emit their own functions
+   and lifted closures under literal `core.*` / `alloc.*` namespaces, which are
+   textually indistinguishable from real `core` references.
+3. Resolve the survivors against `CoreModels` with `check_lean_missing.lean`.
+   Resolution uses the **elaborator**, so a dot-notation projection on an
+   instance term (`<instance>.partial_cmp`) counts as covered even though it is
+   not itself a standalone constant — exactly as it would during a real build.
+
+Validated against `lake build` on the bundled test crates: **zero false
+negatives** (it never clears a name the build rejects), `0` missing on the two
+crates that build clean (`client_test`, `rust_lean_equiv_test`), and a
+deduplicated, build-masking-aware gap list on `list_coverage`.
 
 ## Planned extensions
 
