@@ -9,8 +9,8 @@ on:
 # All version pins live here.
 env:
   RUST_TOOLCHAIN: nightly-2026-02-07
-  CHARON_REV:    a535e914f74db4fd9e6be7048f4233270d8945c0
-  AENEAS_REV:    157c25e0010dd4a010813fa5094cd0055ac055b1
+  CHARON_REV:    6f058254eb741c12e9b388df07adaf7cc8aac8ed
+  AENEAS_REV:    925d6131d76b77db6eb78d83c0b730df999bfdea
   # Where the cache step stages the charon / aeneas binaries.
   AENEAS_DIR: ${{ github.workspace }}/.tools/aeneas
 
@@ -85,10 +85,11 @@ jobs:
         uses: actions/cache/restore@v5
         with:
           path: ${{ env.AENEAS_DIR }}
-          # Bump the `v2` suffix when the build invocation changes
+          # Bump the `v3` suffix when the build invocation changes
           # (e.g. switching between `#charon` and `#charon-portable`)
-          # to invalidate caches built with the previous flavour.
-          key: aeneas-v2-${{ runner.os }}-${{ env.CHARON_REV }}-${{ env.AENEAS_REV }}
+          # or to discard a poisoned cache, to invalidate caches built
+          # with the previous flavour.
+          key: aeneas-v3-${{ runner.os }}-${{ env.CHARON_REV }}-${{ env.AENEAS_REV }}
 
       # ---- Build charon + aeneas via the upstream nix flakes -------------
       # Both projects officially support only Nix; rolling our own opam
@@ -118,14 +119,23 @@ jobs:
       # `/lib64/ld-linux-x86-64.so.2`; aeneas-static is statically
       # linked. Both work on any standard Linux without Nix.
       - name: Build charon (cache miss)
+        id: build-charon
         if: steps.cache-tools.outputs.cache-hit != 'true'
+        # We build via `nix/charon-portable-nocheck.nix` rather than the
+        # upstream `#charon-portable` output: that output runs charon's full
+        # `cargo test` suite as its check phase, and two tests (`toml`,
+        # `error-dependencies`) fail in the nix sandbox with EACCES because
+        # they spawn a fresh cargo to compile crates with dependencies. The
+        # wrapper reproduces the portable binary with `doCheck = false`. See
+        # that file for the full rationale.
         run: |
           mkdir -p $AENEAS_DIR/charon/bin
-          charon_out=$(nix build --print-out-paths --no-link \
-            "github:AeneasVerif/charon/$CHARON_REV#charon-portable")
+          charon_out=$(nix build --print-out-paths --no-link --impure \
+            --expr "import ./nix/charon-portable-nocheck.nix { rev = \"$CHARON_REV\"; }")
           cp -L "$charon_out"/bin/* $AENEAS_DIR/charon/bin/
 
       - name: Build aeneas (cache miss)
+        id: build-aeneas
         if: steps.cache-tools.outputs.cache-hit != 'true'
         run: |
           mkdir -p $AENEAS_DIR/bin
@@ -134,13 +144,22 @@ jobs:
           cp -L "$aeneas_out"/bin/aeneas $AENEAS_DIR/bin/aeneas
 
       - name: Save charon + aeneas binaries
-        # `if: always()` so the binaries we just built persist even if a
-        # later step (e.g. the extraction diff-check) fails.
-        if: always() && steps.cache-tools.outputs.cache-hit != 'true'
+        # `always()` so the binaries persist even if a *later* step (e.g.
+        # the extraction diff-check) fails — but ONLY once both build
+        # steps actually succeeded. Without the `outcome == 'success'`
+        # guards, a failed build would still save a half-empty $AENEAS_DIR
+        # (e.g. an empty `charon/bin/`), poisoning the cache: subsequent
+        # runs hit it, skip the rebuild, and fail with charon "not found"
+        # (exit 127).
+        if: >-
+          always()
+          && steps.cache-tools.outputs.cache-hit != 'true'
+          && steps.build-charon.outcome == 'success'
+          && steps.build-aeneas.outcome == 'success'
         uses: actions/cache/save@v5
         with:
           path: ${{ env.AENEAS_DIR }}
-          key: aeneas-v2-${{ runner.os }}-${{ env.CHARON_REV }}-${{ env.AENEAS_REV }}
+          key: aeneas-v3-${{ runner.os }}-${{ env.CHARON_REV }}-${{ env.AENEAS_REV }}
 
       # ---- Lean toolchain ------------------------------------------------
       - name: Install elan
