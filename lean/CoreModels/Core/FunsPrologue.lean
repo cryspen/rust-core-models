@@ -152,31 +152,6 @@ def Shared1A.Insts.CoreCmpPartialOrdShared0B.gt
 def slice.Slice.len {T : Type u} (v : Aeneas.Std.Slice T) : Aeneas.Std.Result Usize :=
   pure (@Aeneas.Std.Slice.len T v)
 
-/-- `[T]::iter()` — constructs `core_models::slice::iter::Iter<'a, T>`.
-
-    Part of the `aeneas::exclude`d `impl Slice<T>` block (like `len` above), so
-    it's provided here. The Rust is `Iter(seq_from_slice(s))`; since the model
-    is `Iter T := Seq T` (refs erased), the `Iter(…)` wrap is the identity. -/
-def slice.Slice.iter {T : Type} (s : Aeneas.Std.Slice T) :
-    Result (slice.iter.Iter T) :=
-  rust_primitives.sequence.seq_from_slice s
-
-/-- `Iterator::next` for `core_models::slice::iter::Iter<'a, T>` (the iterator
-    returned by `[T]::iter()`, with `Item = &'a T`).
-
-    The `impl … Iterator for Iter` is `aeneas::exclude`d (aeneas#805), so Aeneas
-    emits *references* to this `next` — e.g. from `Vec::clone`'s loop in
-    `Alloc/Funs.lean` — but never a body. The model erases the `&'a`, so `Iter`
-    is just the remaining `Seq T`; `next` pops the front element. This mirrors
-    the generated `vec.into_iter.IntoIter` `next`. -/
-def slice.iter.Iter.Insts.CoreIterTraitsIteratorIteratorSharedAT.next
-    {T : Type} (self : slice.iter.Iter T) :
-    Result ((option.Option T) × slice.iter.Iter T) := do
-  let i ← rust_primitives.sequence.seq_len self
-  if i = 0#usize then ok (option.Option.None, self)
-  else
-    let (t, s) ← rust_primitives.sequence.seq_remove self 0#usize
-    ok (option.Option.Some t, s)
 
 /-! ## Option -/
 

@@ -31,7 +31,6 @@ pub mod iter {
     /// See [`std::slice::Iter`]
     pub struct Iter<'a, T>(pub Seq<&'a T>);
 
-    #[cfg_attr(charon, aeneas::exclude)] // https://github.com/AeneasVerif/aeneas/issues/805
     impl<'a, T> crate::iter::traits::iterator::Iterator for Iter<'a, T> {
         type Item = &'a T;
         fn next(&mut self) -> Option<Self::Item> {
@@ -44,7 +43,6 @@ pub mod iter {
         }
     }
 
-    #[cfg_attr(charon, aeneas::exclude)] // https://github.com/AeneasVerif/aeneas/issues/805
     impl<'a, T> crate::iter::traits::iterator::Iterator for Chunks<'a, T> {
         type Item = &'a [T];
         fn next(&mut self) -> Option<Self::Item> {
@@ -62,7 +60,6 @@ pub mod iter {
         }
     }
 
-    #[cfg_attr(charon, aeneas::exclude)] // https://github.com/AeneasVerif/aeneas/issues/805
     impl<'a, T> crate::iter::traits::iterator::Iterator for ChunksExact<'a, T> {
         type Item = &'a [T];
         fn next(&mut self) -> Option<Self::Item> {
@@ -89,7 +86,6 @@ pub mod iter {
     // opaque: F* cannot prove slice bounds (1 <= length) in the else branch
     // This needs the invariant that size > 0
     #[hax_lib::opaque]
-    #[cfg_attr(charon, aeneas::exclude)] // https://github.com/AeneasVerif/aeneas/issues/805
     impl<'a, T> crate::iter::traits::iterator::Iterator for Windows<'a, T> {
         type Item = &'a [T];
         fn next(&mut self) -> Option<Self::Item> {
@@ -325,7 +321,6 @@ impl<T: crate::cmp::Ord> crate::cmp::Ord for [T] {
 
 #[hax_lib::attributes]
 #[cfg_attr(hax_backend_lean, hax_lib::exclude)]
-#[cfg_attr(charon, aeneas::exclude)] // https://github.com/AeneasVerif/aeneas/issues/805
 impl<'a, T> crate::iter::traits::collect::IntoIterator for &'a [T] {
     type Item = &'a T;
     type IntoIter = iter::Iter<'a, T>;
