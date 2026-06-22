@@ -3,6 +3,16 @@ import CoreModels.Alloc.Funs
 namespace CoreModels
 namespace core
 
+/-!
+
+# Funs Epilogue
+
+This file contains workarounds required to be present **after** `Funs.lean` runs.
+
+See `FunsEpilogue.lean` for workarounds that run before `Funs.lean`.
+
+-/
+
 /-! ## core::iter::range — Range iteration
 
 Aeneas extracts `for i in lo..hi { … }` to a loop driven by

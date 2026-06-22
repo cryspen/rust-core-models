@@ -1,10 +1,16 @@
-/-
-  Scalar trait instances for the Aeneas library.
-  Imported after Types.lean which provides the trait structure definitions.
--/
 import CoreModels.Core.Types
 import CoreModels.Alloc.Types
 import CoreModels.RustPrimitives.Funs
+
+/-!
+
+# Funs Prologue
+
+This file contains workarounds required to be present **before** `Funs.lean` runs. The file
+`Funs.lean` contains the functions automatically generated from our Rust implementation of core.
+Since it's automatically generated, we cannot move this material there.
+
+-/
 
 namespace CoreModels.core
 

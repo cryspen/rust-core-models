@@ -1,5 +1,15 @@
 import Aeneas
 
+/-!
+
+# Types Prologue
+
+This file contains workarounds required to be present before `Types.lean` runs. The file
+`Types.lean` contains the types automatically generated from our Rust implementation of core.
+Since it's automatically generated, we cannot move this material there.
+
+-/
+
 open Aeneas.Std
 
 namespace CoreModels.core
