@@ -168,20 +168,7 @@ equivalence test exercises Aeneas's translation of the same item.
 
 ## Using the Lean library downstream
 
-Add to your downstream `lakefile.toml`:
-
-```toml
-[[require]]
-name = "CoreModels"
-git = "https://github.com/cryspen/rust-core-models"
-rev = "COMMIT_HASH_HERE"
-subDir = "lean"
-```
-
-Use aeneas with the `-core-models-lib` option (currently only available with the following aeneas branch: https://github.com/cryspen/aeneas/tree/core-models-option)
-
-Then the Aeneas-extracted code that uses `std::*` types will resolve through this library's
-`core.*` / `alloc.*` shims.
+See [lean/README.md](lean/README.md)
 
 ## Contributing
 
