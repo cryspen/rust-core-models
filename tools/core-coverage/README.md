@@ -19,10 +19,10 @@ part of the default `make` target).
 "How much of core do we model" is a **source-level, tool-agnostic** question, so
 this tool does not use charon. Instead it compares two rustdoc JSON files:
 
-- **denominator** — the real `core`/`alloc`, from the prebuilt `rust-docs-json`
-  rustup component (`$(rustc --print sysroot)/share/doc/rust/json/`);
 - **numerator** — the model crates, via `cargo +nightly rustdoc --output-format
   json --document-private-items`.
+- **denominator** — the real `core`/`alloc`, from the prebuilt `rust-docs-json`
+  rustup component (`$(rustc --print sysroot)/share/doc/rust/json/`);
 
 Both must come from the **same nightly** so their `format_version` agrees.
 `--document-private-items` is required because the model puts almost everything
