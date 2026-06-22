@@ -146,37 +146,25 @@ pub fn test_unwrap_err_err_mid() -> bool {
 
 // ----- unwrap_or -------------------------------------------------------------
 
-// TODO(result-method-missing: `Result::unwrap_or` missing from extracted Lean.)
-/*
 #[rust_lean_test]
 pub fn test_unwrap_or_ok_zero() -> bool {
     ok_u8_u8(0).unwrap_or(99) == 0
 }
-*/
 
-// TODO(result-method-missing: `Result::unwrap_or` missing from extracted Lean.)
-/*
 #[rust_lean_test]
 pub fn test_unwrap_or_ok_max() -> bool {
     ok_u8_u8(u8::MAX).unwrap_or(0) == u8::MAX
 }
-*/
 
-// TODO(result-method-missing: `Result::unwrap_or` missing from extracted Lean.)
-/*
 #[rust_lean_test]
 pub fn test_unwrap_or_err_default_zero() -> bool {
     err_u8_u8(99).unwrap_or(0) == 0
 }
-*/
 
-// TODO(result-method-missing: `Result::unwrap_or` missing from extracted Lean.)
-/*
 #[rust_lean_test]
 pub fn test_unwrap_or_err_default_max() -> bool {
     err_u8_u8(0).unwrap_or(u8::MAX) == u8::MAX
 }
-*/
 
 // ----- unwrap_or_else --------------------------------------------------------
 
@@ -230,9 +218,15 @@ pub fn test_unwrap_or_default_err() -> bool {
 // Lean (see map).)
 
 // ----- map_err ---------------------------------------------------------------
-
-// TODO(result-method-missing: `Result::map_err` missing from extracted Lean
-// (see map).)
+// `Result::map_err` IS now modeled and extracted (its `impl` is no longer
+// `aeneas::exclude`d — see `core-models/src/core/result.rs`), and it resolves
+// in the `list_coverage` probe. It cannot be exercised *here*, though: the
+// model's signature takes CoreModels' `core.ops.function.FnOnce`, but this
+// equiv crate is extracted such that the call site supplies Aeneas's
+// `BuiltinFnOnce`, and the two FnOnce encodings do not unify
+// ("Application type mismatch: BuiltinFnOnce ... vs core.ops.function.FnOnce").
+// TODO(closure-extraction): re-enable once closures passed to a core-models
+// method extract as `core.ops.function.FnOnce` in the equiv pipeline.
 
 // ----- inspect / inspect_err -------------------------------------------------
 

@@ -457,6 +457,13 @@ pub mod vec {
         }
     }
 
+    /// See [`std::vec::Vec::default`]: an empty `Vec`.
+    impl<T> Default for Vec<T> {
+        fn default() -> Vec<T> {
+            Vec::new()
+        }
+    }
+
     #[hax_lib::attributes]
     impl<T> Vec<T> {
         pub fn len(&self) -> usize {
@@ -511,6 +518,13 @@ pub mod vec {
         pub fn append(&mut self, other: &mut Vec<T>) {
             seq_concat(&mut self.0, &mut other.0);
             other.0 = seq_empty()
+        }
+        /// See [`std::vec::Vec::split_off`]: truncate `self` to `[0, at)` and
+        /// return the tail `[at, len)` as a new `Vec`.
+        #[hax_lib::requires(at <= self.len())]
+        pub fn split_off(&mut self, at: usize) -> Vec<T> {
+            let l = seq_len(&self.0);
+            Vec(seq_drain(&mut self.0, at, l))
         }
         #[hax_lib::opaque]
         pub fn drain<R /* : RangeBounds<usize> */>(
@@ -674,6 +688,18 @@ pub mod vec {
             }
 
             #[test]
+            fn test_split_off(v in prop::collection::vec(any::<u8>(), 0..50), at in 0usize..50) {
+                if at <= v.len() {
+                    let mut model = v.inject();
+                    let mut std_v = v.clone();
+                    let model_tail = model.split_off(at);
+                    let std_tail = std_v.split_off(at);
+                    prop_assert_eq!(model, std_v.inject());
+                    prop_assert_eq!(model_tail, std_tail.inject());
+                }
+            }
+
+            #[test]
             fn test_append(v1 in prop::collection::vec(any::<u8>(), 0..50), v2 in prop::collection::vec(any::<u8>(), 0..50)) {
                 let mut model1 = v1.inject();
                 model1.append(&mut v2.inject());
@@ -737,6 +763,13 @@ pub mod vec {
         fn test_with_capacity() {
             let model: super::Vec<u8> = super::Vec::with_capacity(10);
             let std_v: std::vec::Vec<u8> = std::vec::Vec::with_capacity(10);
+            assert_eq!(model, std_v.inject());
+        }
+
+        #[test]
+        fn test_default() {
+            let model: super::Vec<u8> = Default::default();
+            let std_v: std::vec::Vec<u8> = Default::default();
             assert_eq!(model, std_v.inject());
         }
     }

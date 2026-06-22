@@ -94,14 +94,6 @@ impl<T, E> Result<T, E> {
         }
     }
 
-    /// See [`std::result::Result::unwrap_or`]
-    pub fn unwrap_or(self, default: T) -> T {
-        match self {
-            Ok(t) => t,
-            Err(_) => default,
-        }
-    }
-
     /// See [`std::result::Result::unwrap_or_else`]
     pub fn unwrap_or_else<F: FnOnce(E) -> T>(self, op: F) -> T {
         match self {
@@ -164,17 +156,6 @@ impl<T, E> Result<T, E> {
         match self {
             Ok(t) => f(t),
             Err(_) => U::default(),
-        }
-    }
-
-    /// See [`std::result::Result::map_err`]
-    pub fn map_err<F, O>(self, op: O) -> Result<T, F>
-    where
-        O: FnOnce(E) -> F,
-    {
-        match self {
-            Ok(t) => Ok(t),
-            Err(e) => Err(op(e)),
         }
     }
 
@@ -242,6 +223,32 @@ impl<T, E> Result<T, E> {
         match self {
             Ok(t) => Ok(t),
             Err(e) => op(e),
+        }
+    }
+}
+
+/// Result methods we *do* extract to Lean (the big `impl` above is
+/// `aeneas::exclude`d so its members — `unwrap`/`expect`/… — resolve through
+/// Aeneas's builtin `Result` mapping; these two are not provided there, so we
+/// extract them as real bodies).
+#[hax_lib::attributes]
+impl<T, E> Result<T, E> {
+    /// See [`std::result::Result::unwrap_or`]
+    pub fn unwrap_or(self, default: T) -> T {
+        match self {
+            Ok(t) => t,
+            Err(_) => default,
+        }
+    }
+
+    /// See [`std::result::Result::map_err`]
+    pub fn map_err<F, O>(self, op: O) -> Result<T, F>
+    where
+        O: FnOnce(E) -> F,
+    {
+        match self {
+            Ok(t) => Ok(t),
+            Err(e) => Err(op(e)),
         }
     }
 }

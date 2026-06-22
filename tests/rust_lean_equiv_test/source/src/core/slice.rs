@@ -781,3 +781,23 @@ pub fn test_slice_get_unchecked_range() -> bool {
     let expected: &[u8] = &[20u8, 30];
     sub == expected
 }
+
+// ----- PartialEq<[T; N]> for [T]  (slice == array) ---------------------------
+
+#[rust_lean_test]
+pub fn test_slice_eq_array_true() -> bool {
+    let s: &[u8] = &[1u8, 2, 3];
+    *s == [1u8, 2, 3]
+}
+
+#[rust_lean_test]
+pub fn test_slice_eq_array_false_value() -> bool {
+    let s: &[u8] = &[1u8, 2, 3];
+    (*s == [1u8, 2, 9]) == false
+}
+
+#[rust_lean_test]
+pub fn test_slice_eq_array_false_len() -> bool {
+    let s: &[u8] = &[1u8, 2];
+    (*s == [1u8, 2, 3]) == false
+}

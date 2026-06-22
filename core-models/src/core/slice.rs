@@ -612,6 +612,29 @@ impl<T> crate::ops::index::Index<usize> for &[T] {
     }
 }
 
+/// `PartialEq<[U; N]> for [T]` — comparing a slice to an array (`s == [..]`),
+/// mirroring std's `impl PartialEq<[U; N]> for [T]`. Extracts under
+/// `core.Slice.Insts.CoreCmpPartialEqArray.eq`.
+pub mod equality {
+    use rust_primitives::slice::{array_index, slice_index, slice_length};
+
+    impl<T: crate::cmp::PartialEq<U>, U, const N: usize> crate::cmp::PartialEq<[U; N]> for [T] {
+        fn eq(&self, other: &[U; N]) -> bool {
+            if slice_length(self) != N {
+                return false;
+            }
+            let mut i = 0;
+            while i < N {
+                if !slice_index(self, i).eq(array_index(other, i)) {
+                    return false;
+                }
+                i += 1;
+            }
+            true
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::Slice;
@@ -632,6 +655,14 @@ mod tests {
         #[test]
         fn test_contains(slice in prop::collection::vec(any::<u8>(), 0..=10), v in any::<u8>()) {
             prop_assert_eq!(Slice::contains(&slice[..], &v), slice.contains(&v));
+        }
+
+        // `[T]: PartialEq<[U; N]>` — slice vs array (`s == [..]`).
+        #[test]
+        fn test_eq_array(slice in prop::collection::vec(any::<u8>(), 0..=6), arr in any::<[u8; 3]>()) {
+            let model = <[u8] as crate::cmp::PartialEq<[u8; 3]>>::eq(&slice[..], &arr);
+            let std_eq = slice.as_slice() == arr.as_slice();
+            prop_assert_eq!(model, std_eq);
         }
 
         #[test]

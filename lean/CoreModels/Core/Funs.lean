@@ -244,6 +244,19 @@ def array.iter.IntoIter.Insts.CoreIterTraitsIteratorIterator (T : Type)
   next := array.iter.IntoIter.Insts.CoreIterTraitsIteratorIterator.next
 }
 
+/-- [core_models::clone::{impl core_models::clone::Clone for bool}::clone]:
+    Source: 'core-models/src/core/clone.rs', lines 30:16-32:17
+    Visibility: public -/
+def Bool.Insts.CoreCloneClone.clone (self : Bool) : Result Bool := do
+  ok self
+
+/-- Trait implementation: [core_models::clone::{impl core_models::clone::Clone for bool}]
+    Source: 'core-models/src/core/clone.rs', lines 29:12-33:13 -/
+@[reducible]
+def Bool.Insts.CoreCloneClone : clone.Clone Bool := {
+  clone := Bool.Insts.CoreCloneClone.clone
+}
+
 /-- [core_models::clone::{impl core_models::clone::Clone for u8}::clone]:
     Source: 'core-models/src/core/clone.rs', lines 30:16-32:17
     Visibility: public -/
@@ -10190,8 +10203,34 @@ def panicking.panic (_msg : Str) : Result Never := do
 def panicking.panic_fmt (_fmt : fmt.Arguments) : Result Never := do
   fail Error.panic
 
+/-- [core_models::result::{core_models::result::Result<T, E>}::unwrap_or]:
+    Source: 'core-models/src/core/result.rs', lines 237:4-242:5
+    Visibility: public -/
+def result.Result.unwrap_or
+  {T : Type} {E : Type} (self : result.Result T E) (default : T) :
+  Aeneas.Std.Result T
+  := do
+  match self with
+  | core.result.Result.Ok t => Aeneas.Std.Result.ok t
+  | core.result.Result.Err _ => Aeneas.Std.Result.ok default
+
+/-- [core_models::result::{core_models::result::Result<T, E>}::map_err]:
+    Source: 'core-models/src/core/result.rs', lines 245:4-253:5
+    Visibility: public -/
+def result.Result.map_err
+  {T : Type} {E : Type} {F : Type} {O : Type}
+  (coreopsfunctionFnOnceOTupleEFInst : core.ops.function.FnOnce O E F)
+  (self : result.Result T E) (op : O) :
+  Aeneas.Std.Result (result.Result T F)
+  := do
+  match self with
+  | core.result.Result.Ok t => Aeneas.Std.Result.ok (result.Result.Ok t)
+  | core.result.Result.Err e =>
+    let t ← coreopsfunctionFnOnceOTupleEFInst.call_once op e
+    Aeneas.Std.Result.ok (result.Result.Err t)
+
 /-- [core_models::result::{impl core_models::iter::traits::collect::FromIterator<core_models::result::Result<A, E>> for core_models::result::Result<V, E>}::from_iter]:
-    Source: 'core-models/src/core/result.rs', lines 299:4-301:5
+    Source: 'core-models/src/core/result.rs', lines 306:4-308:5
     Visibility: public -/
 def
   result.Result.Insts.CoreIterTraitsCollectFromIteratorResult.from_iter
@@ -10208,7 +10247,7 @@ def
   Aeneas.Std.Result.ok (result.Result.Ok t)
 
 /-- Trait implementation: [core_models::result::{impl core_models::iter::traits::collect::FromIterator<core_models::result::Result<A, E>> for core_models::result::Result<V, E>}]
-    Source: 'core-models/src/core/result.rs', lines 296:0-302:1 -/
+    Source: 'core-models/src/core/result.rs', lines 303:0-309:1 -/
 @[reducible]
 def result.Result.Insts.CoreIterTraitsCollectFromIteratorResult {A :
   Type} (E : Type) {V : Type} (itertraitscollectFromIteratorInst :
@@ -10222,7 +10261,7 @@ def result.Result.Insts.CoreIterTraitsCollectFromIteratorResult {A :
 }
 
 /-- [core_models::result::{impl core_models::ops::try_trait::Try<T, core_models::result::Result<core_models::convert::Infallible, E>> for core_models::result::Result<T, E>}::branch]:
-    Source: 'core-models/src/core/result.rs', lines 314:4-319:5
+    Source: 'core-models/src/core/result.rs', lines 321:4-326:5
     Visibility: public -/
 def result.Result.Insts.CoreOpsTry_traitTryTResultInfallibleE.branch
   {T : Type} {E : Type} (self : result.Result T E) :
@@ -10234,7 +10273,7 @@ def result.Result.Insts.CoreOpsTry_traitTryTResultInfallibleE.branch
     Aeneas.Std.Result.ok (ops.control_flow.ControlFlow.Break (result.Result.Err e))
 
 /-- [core_models::result::{impl core_models::ops::try_trait::Try<T, core_models::result::Result<core_models::convert::Infallible, E>> for core_models::result::Result<T, E>}::from_output]:
-    Source: 'core-models/src/core/result.rs', lines 309:4-311:5
+    Source: 'core-models/src/core/result.rs', lines 316:4-318:5
     Visibility: public -/
 def
   result.Result.Insts.CoreOpsTry_traitTryTResultInfallibleE.from_output
@@ -10242,7 +10281,7 @@ def
   Aeneas.Std.Result.ok (result.Result.Ok output)
 
 /-- Trait implementation: [core_models::result::{impl core_models::ops::try_trait::Try<T, core_models::result::Result<core_models::convert::Infallible, E>> for core_models::result::Result<T, E>}]
-    Source: 'core-models/src/core/result.rs', lines 304:0-320:1 -/
+    Source: 'core-models/src/core/result.rs', lines 311:0-327:1 -/
 @[reducible]
 def result.Result.Insts.CoreOpsTry_traitTryTResultInfallibleE (T : Type)
   (E : Type) : ops.try_trait.Try (result.Result T E) T (result.Result
@@ -10255,7 +10294,7 @@ def result.Result.Insts.CoreOpsTry_traitTryTResultInfallibleE (T : Type)
 }
 
 /-- [core_models::result::{impl core_models::ops::try_trait::FromResidual<core_models::result::Result<core_models::convert::Infallible, E>> for core_models::result::Result<T, F>}::from_residual]:
-    Source: 'core-models/src/core/result.rs', lines 328:4-333:5
+    Source: 'core-models/src/core/result.rs', lines 335:4-340:5
     Visibility: public -/
 def
   result.Result.Insts.CoreOpsTry_traitFromResidualResultInfallibleE.from_residual
@@ -10270,7 +10309,7 @@ def
     Aeneas.Std.Result.ok (result.Result.Err t)
 
 /-- Trait implementation: [core_models::result::{impl core_models::ops::try_trait::FromResidual<core_models::result::Result<core_models::convert::Infallible, E>> for core_models::result::Result<T, F>}]
-    Source: 'core-models/src/core/result.rs', lines 325:0-334:1 -/
+    Source: 'core-models/src/core/result.rs', lines 332:0-341:1 -/
 @[reducible]
 def result.Result.Insts.CoreOpsTry_traitFromResidualResultInfallibleE (T
   : Type) {E : Type} {F : Type} (convertFromInst : convert.From F E) :
@@ -11432,6 +11471,64 @@ def Shared0Slice.Insts.CoreOpsIndexIndexUsizeT.index
 def Shared0Slice.Insts.CoreOpsIndexIndexUsizeT (T : Type) :
   ops.index.Index (Slice T) Std.Usize T := {
   index := Shared0Slice.Insts.CoreOpsIndexIndexUsizeT.index
+}
+
+/-- [core_models::slice::equality::{impl core_models::cmp::PartialEq<[U; N]> for [T]}::eq]: loop body 0:
+    Source: 'core-models/src/core/slice.rs', lines 627:12-634:9
+    Visibility: public -/
+@[rust_loop_body]
+def Slice.Insts.CoreCmpPartialEqArray.eq_loop.body
+  {T : Type} {U : Type} {N : Std.Usize} (cmpPartialEqInst : cmp.PartialEq T U)
+  (self : Slice T) (other : Array U N) (i : Std.Usize) :
+  Result (ControlFlow Std.Usize Bool)
+  := do
+  if i < N
+  then
+    let t ← rust_primitives.slice.slice_index self i
+    let t1 ← rust_primitives.slice.array_index other i
+    let b ← cmpPartialEqInst.eq t t1
+    if b
+    then let i1 ← i + 1#usize
+         ok (cont i1)
+    else ok (done false)
+  else ok (done true)
+
+/-- [core_models::slice::equality::{impl core_models::cmp::PartialEq<[U; N]> for [T]}::eq]: loop 0:
+    Source: 'core-models/src/core/slice.rs', lines 627:12-634:9
+    Visibility: public -/
+@[rust_loop]
+def Slice.Insts.CoreCmpPartialEqArray.eq_loop
+  {T : Type} {U : Type} {N : Std.Usize} (cmpPartialEqInst : cmp.PartialEq T U)
+  (self : Slice T) (other : Array U N) (i : Std.Usize) :
+  Result Bool
+  := do
+  loop
+    (fun i1 => Slice.Insts.CoreCmpPartialEqArray.eq_loop.body
+      cmpPartialEqInst self other i1)
+    i
+
+/-- [core_models::slice::equality::{impl core_models::cmp::PartialEq<[U; N]> for [T]}::eq]:
+    Source: 'core-models/src/core/slice.rs', lines 622:8-634:9
+    Visibility: public -/
+def Slice.Insts.CoreCmpPartialEqArray.eq
+  {T : Type} {U : Type} {N : Std.Usize} (cmpPartialEqInst : cmp.PartialEq T U)
+  (self : Slice T) (other : Array U N) :
+  Result Bool
+  := do
+  let i ← rust_primitives.slice.slice_length self
+  if i != N
+  then ok false
+  else
+    Slice.Insts.CoreCmpPartialEqArray.eq_loop cmpPartialEqInst self
+      other 0#usize
+
+/-- Trait implementation: [core_models::slice::equality::{impl core_models::cmp::PartialEq<[U; N]> for [T]}]
+    Source: 'core-models/src/core/slice.rs', lines 621:4-635:5 -/
+@[reducible]
+def Slice.Insts.CoreCmpPartialEqArray {T : Type} {U : Type} (N :
+  Std.Usize) (cmpPartialEqInst : cmp.PartialEq T U) : cmp.PartialEq (Slice T)
+  (Array U N) := {
+  eq := Slice.Insts.CoreCmpPartialEqArray.eq cmpPartialEqInst
 }
 
 /-- [core_models::str::converts::from_utf8]:

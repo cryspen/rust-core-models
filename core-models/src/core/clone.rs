@@ -23,7 +23,7 @@ impl<T> Clone for T {
     }
 }
 
-macro_rules! clone_impl_for_int {
+macro_rules! clone_impl_for_copy {
     ($($t:ty),*) => {
         $(
             impl crate::clone::Clone for $t {
@@ -36,7 +36,8 @@ macro_rules! clone_impl_for_int {
 }
 
 #[cfg(not(hax))]
-clone_impl_for_int!(
+clone_impl_for_copy!(
+    core::primitive::bool,
     core::primitive::u8,
     core::primitive::u16,
     core::primitive::u32,
@@ -61,6 +62,11 @@ mod tests {
         fn test_clone(x in any::<u8>()) {
             let model = x.inject();
             prop_assert_eq!(model.clone(), model);
+        }
+
+        #[test]
+        fn test_clone_bool(x in any::<bool>()) {
+            prop_assert_eq!(crate::clone::Clone::clone(x), x);
         }
     }
 }
