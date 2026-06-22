@@ -14516,16 +14516,18 @@
    },
    {
     "module": "fmt",
-    "covered": 7,
+    "covered": 9,
     "total": 111,
     "in_scope": true,
     "covered_items": [
      "Arguments",
      "Debug",
+     "Debug::fmt",
      "Display",
      "Display::fmt",
      "Error",
      "Formatter",
+     "Formatter::write_str",
      "Result"
     ],
     "missing_items": [
@@ -14534,7 +14536,6 @@
      "Arguments::from_str",
      "Binary",
      "Binary::fmt",
-     "Debug::fmt",
      "DebugAsHex",
      "DebugList",
      "DebugList::entries",
@@ -14588,7 +14589,6 @@
      "Formatter::width",
      "Formatter::with_options",
      "Formatter::write_fmt",
-     "Formatter::write_str",
      "FormattingOptions",
      "FormattingOptions::align",
      "FormattingOptions::alternate",
@@ -19374,7 +19374,7 @@
    },
    {
     "module": "collections",
-    "covered": 12,
+    "covered": 13,
     "total": 315,
     "in_scope": true,
     "covered_items": [
@@ -19386,6 +19386,7 @@
      "BinaryHeap::peek",
      "BinaryHeap::pop",
      "BinaryHeap::push",
+     "IntoIter",
      "VecDeque",
      "VecDeque::len",
      "VecDeque::pop_front",
@@ -19562,7 +19563,6 @@
      "ExtractIf",
      "ExtractIf::allocator",
      "Intersection",
-     "IntoIter",
      "IntoIter::allocator",
      "IntoIterSorted",
      "IntoIterSorted::allocator",
