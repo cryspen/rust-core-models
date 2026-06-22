@@ -75,8 +75,7 @@ across machines.
 │                          #   parent library to match our package layout
 │                          #   (see comment block at top of the file)
 ├── tools/                 # auxiliary tooling
-│   ├── core-coverage/     #   generates COVERAGE.md (rustdoc-JSON based)
-│   └── aeneas-compat/     #   per-crate compatibility estimate vs the lib
+│   └── core-coverage/     #   generates COVERAGE.md (rustdoc-JSON based)
 ├── COVERAGE.md            # per-module core/alloc coverage report (generated)
 ├── Makefile               # extraction + build orchestration
 └── .github/workflows/ci.yml
