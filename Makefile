@@ -42,9 +42,10 @@ ALLOC_CHARON_EXCLUDES = \
     --exclude 'alloc_models::slice::_::sort_by'
 
 .PHONY: all llbc extract patch lean build clean clean-generated tests \
-        tests-clean alloc-stage alloc-llbc alloc-extract alloc-clean
+        tests-clean alloc-stage alloc-llbc alloc-extract alloc-clean \
+        coverage
 
-all: lean
+all: lean coverage
 
 # 1. Run charon to produce LLBC from the Rust crate.
 #
@@ -159,3 +160,12 @@ tests: lean
 
 tests-clean:
 	$(MAKE) -C tests clean
+
+# -----------------------------------------------------------------------------
+# Coverage report: how much of real core/alloc the model crates provide.
+# (rustdoc-JSON based; independent of the charon/aeneas pipeline above.)
+# -----------------------------------------------------------------------------
+
+# Regenerate COVERAGE.md + tools/core-coverage/coverage.json.
+coverage:
+	./tools/core-coverage/gen.sh
