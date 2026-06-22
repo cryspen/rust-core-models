@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Generate a per-module coverage report of real `core`/`alloc` by our models.
 
-Denominator: rustdoc JSON of the real std crates (the `rust-docs-json` rustup
-component). Numerator: rustdoc JSON of our model crates (`cargo +nightly rustdoc
---output-format json`). Both must come from the *same* nightly so their
-`format_version` agrees.
+Numerator: rustdoc JSON of our model crates (`cargo +nightly rustdoc
+--output-format json`). Denominator: rustdoc JSON of the real std crates
+(the `rust-docs-json` rustup component). Both must come from the *same*
+nightly so their `format_version` agrees.
 
 Why rustdoc JSON (not charon): the question "how much of core do we model" is a
 source-level, tool-agnostic one. rustdoc JSON is the canonical public-API
