@@ -43,7 +43,7 @@ ALLOC_CHARON_EXCLUDES = \
 
 .PHONY: all llbc extract patch lean build clean clean-generated tests \
         tests-clean alloc-stage alloc-llbc alloc-extract alloc-clean \
-        coverage
+        coverage lean-docs
 
 all: lean coverage
 
@@ -149,6 +149,15 @@ alloc-clean:
 clean: clean-generated alloc-clean
 	rm -f $(LLBC_FILE)
 	rm -rf $(LEAN_DIR)/.lake
+
+# -----------------------------------------------------------------------------
+# Lean documentation
+# -----------------------------------------------------------------------------
+
+lean-docs: lean
+	cd $(LEAN_DIR)/docbuild && MATHLIB_NO_CACHE_ON_UPDATE=1 lake update doc-gen4
+	cd $(LEAN_DIR)/docbuild && lake build CoreModels:docs
+	@printf "To open the docs, run:\n    \033[1m(cd $(LEAN_DIR)/docbuild/.lake/build/doc && python3 -m http.server)\033[0m\n"
 
 # -----------------------------------------------------------------------------
 # Tests: a small Rust crate (./tests) that exercises items from `core::*` and
