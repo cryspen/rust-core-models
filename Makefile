@@ -149,6 +149,7 @@ alloc-clean:
 clean: clean-generated alloc-clean
 	rm -f $(LLBC_FILE)
 	rm -rf $(LEAN_DIR)/.lake
+	rm -rf $(LEAN_DIR)/docbuild/.lake
 
 # -----------------------------------------------------------------------------
 # Lean documentation

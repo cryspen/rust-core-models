@@ -199,4 +199,4 @@ jobs:
 
       # ---- Test Lean docs generation -------------------------------------
       - name: Test Lean docs generation
-        run: make lean-docs
+        run: make CHARON=$AENEAS_DIR/charon/bin/charon AENEAS=$AENEAS_DIR/bin/aeneas lean-docs
