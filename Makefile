@@ -45,7 +45,7 @@ ALLOC_CHARON_EXCLUDES = \
         tests-clean alloc-stage alloc-llbc alloc-extract alloc-clean \
         coverage lean-docs
 
-all: lean coverage
+all: lean coverage lean-docs
 
 # 1. Run charon to produce LLBC from the Rust crate.
 #
