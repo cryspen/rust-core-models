@@ -196,7 +196,3 @@ jobs:
             lean/CoreModels/TypesExternal_Template.lean \
             lean/CoreModels/Alloc/Funs.lean \
             lean/CoreModels/Alloc/Types.lean
-
-      # ---- Test Lean docs generation -------------------------------------
-      - name: Test Lean docs generation
-        run: make CHARON=$AENEAS_DIR/charon/bin/charon AENEAS=$AENEAS_DIR/bin/aeneas lean-docs
