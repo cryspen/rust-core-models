@@ -3,7 +3,6 @@ import CoreModels.Alloc.Types
 import CoreModels.RustPrimitives.Funs
 
 /-!
-
 # Funs Prologue
 
 This file contains workarounds required to be present **before** `Funs.lean` runs. The file
