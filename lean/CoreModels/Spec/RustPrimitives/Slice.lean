@@ -17,9 +17,9 @@ theorem rust_primitives.slice.array_from_fn_go_spec
       ⦃ ⌜ True ⌝ ⦄ inst.call_mut c' ⟨BitVec.ofNat _ k⟩ ⦃ ⇓ r => ⌜ r.2 = c ⌝ ⦄) :
     ⦃ ⌜ True ⌝ ⦄
     rust_primitives.slice.array_from_fn_go inst c n
-    ⦃ ⇓ r => ⌜ r.2 = c ∧ ∃ h : r.1.length = n, ∀ i, (hi : i < n) →
+    ⦃ ⇓ (rl, rc) => ⌜ rc = c ∧ ∃ h : rl.length = n, ∀ i, (hi : i < n) →
                 ⦃ ⌜ True ⌝ ⦄ inst.call_mut c ⟨BitVec.ofNat _ i⟩
-                          ⦃ ⇓ r' => ⌜ r.1[i] = r'.1 ⌝ ⦄ ⌝ ⦄ := by
+                          ⦃ ⇓ r' => ⌜ rl[i] = r'.1 ⌝ ⦄ ⌝ ⦄ := by
   induction n generalizing c with
   | zero =>
     mvcgen [rust_primitives.slice.array_from_fn_go]

@@ -13,8 +13,8 @@ theorem Result.ok_spec {α : Type} {a : α} {Q} (hQ : (Q.1 a).down) :
 theorem Result.fail_spec {α : Type} {e : Error} {Q} (hQ : (Q.2.1 e).down) :
   ⦃ ⌜ True ⌝ ⦄ (Result.fail e : Result α) ⦃ Q ⦄ := by simpa [Triple]
 
-/-- A triple with postcondition `r = v` is eqivalent to the program being `.ok v`. -/
-theorem triple_of_result_eq {α : Type} {x : Result α} {v : α} :
+/-- A triple with postcondition `r = v` is equivalent to the program being `.ok v`. -/
+theorem triple_post_eq_iff_eq {α : Type} {x : Result α} {v : α} :
     ⦃ ⌜ True ⌝ ⦄ x ⦃ ⇓ r => ⌜ r = v ⌝ ⦄ ↔ x = .ok v := by
   cases x <;> simp_all [Triple, WP.wp, PredTrans.apply]
 
@@ -34,7 +34,7 @@ theorem triple_with_self {α : Type} {x : Result α} {P : α → Prop}
     (h : ⦃ ⌜ True ⌝ ⦄ x ⦃ ⇓ r => ⌜ P r ⌝ ⦄) :
     ⦃ ⌜ True ⌝ ⦄ x ⦃ ⇓ r => ⌜ P r ∧ ⦃ ⌜ True ⌝ ⦄ x ⦃ ⇓ r' => ⌜ r' = r ⌝ ⦄ ⌝ ⦄ := by
   obtain ⟨a, hx, hPa⟩ := triple_iff_exists_ok.1 h
-  exact (triple_iff_post_of_eq_ok hx).2 ⟨hPa, triple_of_result_eq.2 hx⟩
+  exact (triple_iff_post_of_eq_ok hx).2 ⟨hPa, triple_post_eq_iff_eq.2 hx⟩
 
 /- Modus-ponens-like reasoning on a `noThrow` and a `mayThrow` triple -/
 theorem triple_in_hypothesis {f : Result α} {Q : α → Assertion _} (p : Prop)
@@ -49,7 +49,7 @@ attribute [spec] Function.uncurry lift massert
 theorem loop_spec
   {α β γ : Type}
   {P : PostCond β (PostShape.except Error (PostShape.except PUnit.{1} PostShape.pure))}
-  (body : α → Result (ControlFlow α β)) (init : α)
+  {body : α → Result (ControlFlow α β)} {init : α}
   (inv : α → Prop)
   (rel : γ → γ → Prop)
   (termination : α → γ)
