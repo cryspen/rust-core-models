@@ -1,3 +1,6 @@
+⚠️ This repo is archived, the models now live in https://github.com/cryspen/hax/tree/main/hax-lib/core-models
+
+
 # rust-core-models
 
 A model of Rust's `core` and `alloc` libraries, packaged as:
